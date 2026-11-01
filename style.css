@@ -945,3 +945,52 @@ a.card:hover, .card.addon:hover { border-color: rgba(201,162,255,.6); box-shadow
 @keyframes m-sheen { 0%,60% { transform: translateX(-60%); } 100% { transform: translateX(60%); } }
 @media (max-width: 600px) { .summon { min-height: 620px; } .orbit-item { width: 44px; height: 44px; margin: -22px; } .orbit-item span { font-size: .5rem; } .merch-cta { padding: 20px 16px; } }
 @media (prefers-reduced-motion: reduce) { .summon *, .summon *::before, .summon *::after, .forge-card, .forge-card::before { animation: none !important; } }
+/* ===== Animated mastheads ===== */
+.mh { position: relative; overflow: hidden; isolation: isolate; }
+.page-head.mh { padding: 96px 16px 64px; }
+.mh > :not(.mh-fx) { position: relative; z-index: 2; }
+.mh-fx { position: absolute; inset: 0; z-index: 0; pointer-events: none; --px: 0px; --py: 0px; }
+.mh-fx canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.mh-glow { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, hsla(var(--h), 90%, 55%, .22), transparent 62%); animation: mh-breathe 7s ease-in-out infinite; }
+.mh-art { position: absolute; left: 50%; top: 50%; width: min(520px, 130vw); aspect-ratio: 1; transform: translate(calc(-50% + var(--px)), calc(-50% + var(--py))); transition: transform .3s ease-out; opacity: .5;
+  -webkit-mask: radial-gradient(circle, #000 52%, transparent 72%); mask: radial-gradient(circle, #000 52%, transparent 72%); }
+.hero .mh-art { opacity: .35; width: min(760px, 150vw); }
+.mh-layer { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 0 6px hsla(var(--h), 100%, 65%, .9)); }
+.mh-layer .l { fill: none; stroke: hsla(var(--h), 90%, 82%, .8); stroke-width: 1.5; }
+.mh-layer .l.thin { stroke-width: .7; }
+.mh-layer .l.thick { stroke-width: 3; }
+.mh-layer .l.d, .mh-layer .d { stroke-dasharray: 6 8; }
+.mh-layer .l.gold { stroke: rgba(255, 207, 143, .75); }
+.mh-layer .fill { fill: hsla(var(--h), 100%, 85%, .9); }
+.mh-layer .fill-soft { fill: hsla(var(--h), 90%, 70%, .3); stroke: hsla(var(--h), 90%, 82%, .8); stroke-width: 1.5; }
+.mh-layer .rune { fill: hsla(var(--h), 90%, 85%, .85); letter-spacing: 4px; }
+.mh-layer .serp { fill: none; stroke: hsla(var(--h), 90%, 75%, .85); stroke-width: 10; stroke-linecap: round; stroke-dasharray: 26 6; }
+.mh-layer .serp.wave { stroke-width: 7; animation: mh-dash 3s linear infinite; }
+.mh-layer .page { fill: hsla(var(--h), 90%, 70%, .12); stroke: hsla(var(--h), 90%, 82%, .7); stroke-width: 1; transform-origin: 200px 200px; }
+.mh-layer .sweep { fill: hsla(var(--h), 100%, 70%, .25); }
+.mh-layer .moon { fill: hsla(var(--h), 60%, 88%, .85); }
+.mh-layer .shadow { fill: #0c0618; animation: mh-phase 16s ease-in-out infinite; }
+.mh-layer .door { fill: hsla(var(--h), 100%, 75%, .35); animation: mh-breathe 4s ease-in-out infinite; }
+.mh-layer .flame { fill: #ffb35c; filter: drop-shadow(0 0 10px #ff8a3c); }
+.mh-layer .orb.v { fill: #c9a2ff; } .mh-layer .orb.e { fill: #ff8a3c; } .mh-layer .orb.w { fill: #b8c8ff; }
+.mh-layer .bowl { fill: rgba(255, 207, 143, .12); stroke: rgba(255, 207, 143, .75); stroke-width: 2; }
+.mh-layer .broken { stroke-dasharray: 60 30 10 40; stroke-width: 3; }
+.spin { animation: mh-spin 20s linear infinite; } .spin-slow { animation: mh-spin 50s linear infinite; }
+.spin-rev { animation: mh-spin 70s linear infinite reverse; } .spin-rev-fast { animation: mh-spin 18s linear infinite reverse; }
+.spin-drone { animation: mh-spin 240s linear infinite; }
+.pulse { animation: mh-pulse 5s ease-in-out infinite; }
+.spin-rev.pulse { animation: mh-spin 70s linear infinite reverse, mh-pulse 5s ease-in-out infinite; }
+.spin-slow.pulse { animation: mh-spin 50s linear infinite, mh-pulse 5s ease-in-out infinite; }
+.flicker { animation: mh-spin 50s linear infinite, mh-flicker 1.4s steps(2) infinite; }
+.flip { animation: mh-flip 6s ease-in-out infinite; transform-origin: 50% 50%; }
+.slither { animation: mh-slither 8s ease-in-out infinite; }
+@keyframes mh-spin { to { transform: rotate(360deg); } }
+@keyframes mh-pulse { 0%,100% { opacity: .55; } 50% { opacity: 1; } }
+@keyframes mh-breathe { 0%,100% { opacity: .7; } 50% { opacity: 1; } }
+@keyframes mh-flicker { 0% { opacity: .75; } 100% { opacity: 1; } }
+@keyframes mh-flip { 0%,40% { transform: scaleX(1); } 50%,90% { transform: scaleX(-1); } 100% { transform: scaleX(1); } }
+@keyframes mh-phase { 0% { transform: translateX(0); } 50% { transform: translateX(-130px); } 100% { transform: translateX(0); } }
+@keyframes mh-dash { to { stroke-dashoffset: -64; } }
+@keyframes mh-slither { 0%,100% { transform: translateX(-30px); } 50% { transform: translateX(-20px) translateY(10px); } }
+@media (max-width: 600px) { .page-head.mh { padding: 72px 16px 48px; } }
+@media (prefers-reduced-motion: reduce) { .mh-fx *, .mh-layer, .mh-layer * { animation: none !important; } }
