@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="canonical" href="https://jcali0351.github.io/xal-reth/wiki.html">
+<meta name="description" content="Encyclopedia article on Xal'Reth, the Coil Beneath: mythology, doctrine, the Sacred Triangle, the history of the Cult, its rites, scripture and addons.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>Xal'Reth</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Cinzel:wght@600&display=swap" rel="stylesheet">
+<style>
+/* Layout: encyclopedia article. Masthead strip, article column with floating infobox, contents box, footnoted references. */
+:root{
+  --bg:#ffffff; --surface:#f7f6fa; --line:#c9c6d3; --line-soft:#e4e2ea;
+  --fg:#1f1d24; --muted:#5d5968; --link:#5b3b96; --link-visited:#7a4f9e; --accent:#7651b0; --quote:#efeaf7;
+  --display:"Crimson Pro", Georgia, "Times New Roman", serif;
+  --body:"Public Sans", "Segoe UI", Helvetica, Arial, sans-serif;
+  --sigil:"Cinzel", Georgia, serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121016; --surface:#1b1822; --line:#3a3546; --line-soft:#2a2633;
+  --fg:#e8e5ee; --muted:#a49fb0; --link:#c3a2ff; --link-visited:#d3b7f5; --accent:#b98cff; --quote:#221d2c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121016; --surface:#1b1822; --line:#3a3546; --line-soft:#2a2633;
+  --fg:#e8e5ee; --muted:#a49fb0; --link:#c3a2ff; --link-visited:#d3b7f5; --accent:#b98cff; --quote:#221d2c; color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:var(--link);text-decoration:none} a:hover{text-decoration:underline}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
+.page{max-width:1080px;margin:0 auto;padding-block:12px 48px}
+.mast{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid var(--line);padding-block:6px 10px}
+.mast .site{display:flex;align-items:center;gap:10px;color:var(--fg)}
+.mast .site svg{width:34px;height:34px}
+.mast .site b{font-family:var(--sigil);letter-spacing:.12em;font-size:15px}
+.mast .site span{display:block;font-size:11px;color:var(--muted);letter-spacing:.04em}
+.tabs{display:flex;gap:16px;font-size:13px}
+.tabs span{padding-bottom:4px;color:var(--muted)} .tabs .on{color:var(--fg);border-bottom:2px solid var(--fg)}
+h1{font-family:var(--display);font-weight:400;font-size:2.1rem;line-height:1.2;margin:18px 0 0;border-bottom:1px solid var(--line);padding-bottom:4px}
+.from{font-size:13px;color:var(--muted);margin:6px 0 4px}
+.hatnote{font-style:italic;font-size:14px;padding-left:1.6em;margin:4px 0 12px;color:var(--fg)}
+h2{font-family:var(--display);font-weight:400;font-size:1.6rem;line-height:1.25;margin:28px 0 8px;border-bottom:1px solid var(--line);padding-bottom:3px;text-wrap:balance;clear:none}
+h3{font-size:1rem;font-weight:700;margin:20px 0 4px}
+p{margin:0 0 12px;max-width:72ch}
+ul,ol{margin:0 0 12px;padding-left:1.6em;max-width:70ch} li{margin-bottom:4px}
+article{min-width:0}
+/* infobox */
+.infobox{float:right;width:300px;margin:0 0 16px 20px;border:1px solid var(--line);background:var(--surface);font-size:13px;line-height:1.45}
+.infobox caption,.infobox .ib-title{font-family:var(--display);font-size:1.35rem;text-align:center;padding:8px 8px 2px;font-weight:600}
+.ib-sub{text-align:center;font-style:italic;color:var(--muted);padding:0 8px 8px}
+.ib-img{padding:12px;text-align:center;border-top:1px solid var(--line-soft)}
+.ib-img svg{width:170px;height:170px}
+.ib-img small{display:block;color:var(--muted);margin-top:6px}
+.ib-band{background:var(--quote);text-align:center;font-weight:700;padding:4px 8px;border-top:1px solid var(--line-soft)}
+.infobox table{width:100%;border-collapse:collapse}
+.infobox th{text-align:left;vertical-align:top;padding:5px 8px;width:38%;font-weight:700}
+.infobox td{vertical-align:top;padding:5px 8px}
+.infobox tr+tr th,.infobox tr+tr td{border-top:1px solid var(--line-soft)}
+/* contents */
+.toc{display:inline-block;border:1px solid var(--line);background:var(--surface);padding:10px 18px 10px 14px;margin:6px 0 14px;font-size:13.5px;max-width:100%}
+.toc h2{font-family:var(--body);font-size:14px;font-weight:700;text-align:center;border:0;margin:0 0 6px;padding:0}
+.toc ol{counter-reset:item;list-style:none;padding-left:0;margin:0}
+.toc ol ol{padding-left:1.4em}
+.toc li{counter-increment:item;margin:2px 0}
+.toc li::before{content:counters(item,".") " ";color:var(--muted);font-variant-numeric:tabular-nums}
+blockquote{margin:12px 0 14px;padding:10px 16px;background:var(--quote);border-left:3px solid var(--accent);max-width:66ch;font-family:var(--display);font-size:1.1rem;font-style:italic}
+blockquote cite{display:block;font-family:var(--body);font-style:normal;font-size:12.5px;color:var(--muted);margin-top:4px}
+sup.ref{font-size:11px;line-height:0} sup.ref a{padding:0 1px}
+.figure{float:right;clear:right;width:260px;margin:4px 0 14px 20px;border:1px solid var(--line);background:var(--surface);padding:6px;font-size:12.5px}
+.figure svg{width:100%;height:auto;display:block}
+.figure p{margin:6px 2px 2px;color:var(--muted)}
+.wide{overflow-x:auto;margin:6px 0 16px;max-width:100%}
+table.wt{border-collapse:collapse;font-size:13.5px;background:var(--bg);min-width:520px}
+table.wt caption{font-weight:700;text-align:left;padding-bottom:6px}
+table.wt th,table.wt td{border:1px solid var(--line);padding:6px 9px;vertical-align:top;text-align:left}
+table.wt thead th{background:var(--surface)}
+code{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;font-size:.88em;background:var(--surface);border:1px solid var(--line-soft);padding:0 4px;border-radius:3px}
+.refs{font-size:13px;columns:2 280px;column-gap:28px}
+.refs li{break-inside:avoid}
+.navbox{border:1px solid var(--line);margin-top:24px;font-size:13px}
+.navbox .nb-h{background:var(--quote);text-align:center;font-weight:700;padding:5px}
+.navbox .nb-r{display:grid;grid-template-columns:150px 1fr;border-top:1px solid var(--line-soft)}
+.navbox .nb-r b{background:var(--surface);padding:5px 8px;text-align:right}
+.navbox .nb-r div{padding:5px 8px;min-width:0}
+.cats{border:1px solid var(--line);background:var(--surface);padding:6px 10px;margin-top:16px;font-size:13px}
+.foot{margin-top:18px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.clear{clear:both}
+@media (max-width:720px){
+  .infobox,.figure{float:none;width:auto;margin:0 0 16px}
+  .navbox .nb-r{grid-template-columns:1fr}.navbox .nb-r b{text-align:left}
+  h1{font-size:1.75rem}
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+<header class="mast">
+  <a class="site" href="https://jcali0351.github.io/xal-reth/" target="_blank" rel="noopener">
+    <svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="94" fill="none" stroke="currentColor" stroke-width="5"/><path d="M100 22 C 150 22 178 58 178 100 C 178 146 142 176 100 176 C 62 176 36 150 36 112 C 36 78 62 56 96 56 C 128 56 148 78 148 104 C 148 130 128 146 104 146 C 84 146 70 132 70 114 C 70 98 82 88 98 88" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round"/><circle cx="104" cy="112" r="15" fill="currentColor"/><ellipse cx="104" cy="112" rx="3" ry="11" fill="var(--bg)"/></svg>
+    <div><b>THE COIL ENCYCLOPEDIA</b><span>The free scripture-reference anyone may consult, but no one may edit without being accused</span></div>
+  </a>
+  <nav class="tabs" aria-label="Page views"><span class="on">Article</span><span>Talk (3,214 accusations)</span><span>View history</span></nav>
+</header>
+
+<article>
+<h1>Xal'Reth</h1>
+<p class="from">From the Coil Encyclopedia, the archive of the faithful</p>
+<p class="hatnote">This article is about the serpent deity. For the roleplay addon, see <a href="#addons">Xal'Reth RP</a>. For the cult, see <a href="#cult">Cult of Xal'Reth</a>. Not to be confused with <a href="#heresies">the Winged Xal'Reth of the Featherist Heresy</a>.</p>
+
+<aside class="infobox" aria-label="Summary">
+  <div class="ib-title">Xal'Reth</div>
+  <div class="ib-sub">The Coil Beneath · The Eternal · The One Who Is Still Here</div>
+  <div class="ib-img">
+    <svg viewBox="0 0 200 200" role="img" aria-label="The sigil of Xal'Reth: a serpent coiled around a cracked egg, with an unblinking eye at the center">
+      <circle cx="100" cy="100" r="94" fill="none" stroke="var(--accent)" stroke-width="2"/>
+      <circle cx="100" cy="100" r="86" fill="none" stroke="var(--accent)" stroke-opacity=".4" stroke-width="1" stroke-dasharray="2 6"/>
+      <path d="M100 22 C 150 22 178 58 178 100 C 178 146 142 176 100 176 C 62 176 36 150 36 112 C 36 78 62 56 96 56 C 128 56 148 78 148 104 C 148 130 128 146 104 146 C 84 146 70 132 70 114 C 70 98 82 88 98 88" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round"/>
+      <path d="M98 88 l 14 -8 l -4 16 z" fill="var(--accent)"/>
+      <circle cx="104" cy="112" r="15" fill="var(--quote)" stroke="var(--accent)" stroke-width="1.5"/>
+      <ellipse cx="104" cy="112" rx="3" ry="11" fill="var(--fg)"/>
+      <g fill="var(--accent)"><path d="M100 6 l3 8 h-6z"/><path d="M100 194 l3 -8 h-6z"/><path d="M6 100 l8 3 v-6z"/><path d="M194 100 l-8 3 v-6z"/></g>
+    </svg>
+    <small>The sigil of the Coil: a serpent around a cracked egg, first carved on the walls of the Nest</small>
+  </div>
+  <div class="ib-band">Deity of patience and holding</div>
+  <table>
+    <tr><th scope="row">Domain</th><td>Patience, holding, stillness, shedding, small wrongs</td></tr>
+    <tr><th scope="row">Abode</th><td>Coiled three times around the heart of the world, beneath everything</td></tr>
+    <tr><th scope="row">Origin</th><td>Hatched from the Primordial Egg in the Void</td></tr>
+    <tr><th scope="row">Length</th><td>The circumference of the world times three<sup class="ref"><a href="#ref-4">[4]</a></sup> (disputed reading: "about forty feet")</td></tr>
+    <tr><th scope="row">Symbols</th><td>The coiled serpent and cracked egg; the Unblinking Eye; the Shedfall Scale; the Pearl of the Void</td></tr>
+    <tr><th scope="row">Companions</th><td><a href="#triangle">Vyrenna, the Ember-Scale</a> (gives) and <a href="#triangle">Nhalor, the Hollow Wing</a> (releases)</td></tr>
+    <tr><th scope="row">Sacred numbers</th><td>3, 7, 12 and 10,000</td></tr>
+    <tr><th scope="row">Colors</th><td>Green, gold and black; violet in the great image</td></tr>
+    <tr><th scope="row">Followers</th><td>The <a href="#cult">Cult of Xal'Reth</a> (100+ faithful)</td></tr>
+    <tr><th scope="row">Leaders</th><td>MaximumRex (Supreme Coil)<br>Xalrathiel (High Priestess)<br>Khaedara (First Accuser)</td></tr>
+    <tr><th scope="row">Scripture</th><td>The Canon of the Coil; the Book of the Egg; the Book of Accusations; the Ledger</td></tr>
+    <tr><th scope="row">Greeting</th><td><em>Glory to Xal'Reth</em></td></tr>
+    <tr><th scope="row">Website</th><td><a href="https://jcali0351.github.io/xal-reth/" target="_blank" rel="noopener">jcali0351.github.io/xal-reth</a></td></tr>
+  </table>
+</aside>
+
+<p><b>Xal'Reth</b> (<i>the Coil Beneath</i>, <i>the Eternal</i>) is a serpent deity worshipped by the <b>Cult of Xal'Reth</b>, a roleplay faith practiced in <i>World of Warcraft</i>. According to the faith's scripture, Xal'Reth hatched from the <a href="#egg">Primordial Egg</a> in the cold of the Void, found the young world wobbling, and wrapped himself around it three times to hold it still. He has been holding it ever since.<sup class="ref"><a href="#ref-1">[1]</a></sup></p>
+<p>Unlike most gods, Xal'Reth did not create the world, does not answer prayers and does not punish. His faithful describe him as "the patience of the world given a body." Because he waits, they wait. Because he holds, they hold. Because he is cold, they are calm.<sup class="ref"><a href="#ref-4">[4]</a></sup> The teachings draw loosely on Buddhist and Taoist thought, including the Middle Way, non-forcing action and the uncarved block, recast in serpent imagery and delivered with a deliberately straight face.<sup class="ref"><a href="#ref-2">[2]</a></sup></p>
+<p>He stands at the lowest point of the <a href="#triangle">Sacred Triangle</a>, beneath two lesser deities who complement him: Vyrenna the Ember-Scale, who gives, and Nhalor the Hollow Wing, who releases.<sup class="ref"><a href="#ref-3">[3]</a></sup> The cult is known for its deadpan manner, its public <a href="#crimes">accusations of Minor Crimes</a>, its chant of <i>Glory to Xal'Reth</i>, and a set of free in-game <a href="#addons">roleplay addons</a>.</p>
+
+<nav class="toc" aria-label="Contents">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#name">Name and epithets</a></li>
+    <li><a href="#myth">Mythology</a>
+      <ol><li><a href="#egg">The Primordial Egg</a></li><li><a href="#wrapping">The Wrapping of the World</a></li><li><a href="#shedding">The Sheddings</a></li></ol></li>
+    <li><a href="#triangle">The Sacred Triangle</a></li>
+    <li><a href="#doctrine">Doctrine</a>
+      <ol><li><a href="#turns">The Three Turns</a></li><li><a href="#eggdoc">The Doctrine of the Egg</a></li><li><a href="#cold">The Doctrine of Cold Blood</a></li><li><a href="#two">The Scale, the Void and the Eye</a></li><li><a href="#tenets">The Seven Tenets</a></li><li><a href="#crimes">The Seven Minor Crimes</a></li><li><a href="#forbidden">Prohibitions</a></li><li><a href="#numbers">Sacred numbers and colors</a></li></ol></li>
+    <li><a href="#cult">History of the cult</a>
+      <ol><li><a href="#nest">The Listeners and the Sunken Nest</a></li><li><a href="#hidden">The Hidden Centuries</a></li><li><a href="#restoration">The Restoration</a></li><li><a href="#voice">The Voice Returns</a></li></ol></li>
+    <li><a href="#org">Organization</a>
+      <ol><li><a href="#inner">The Inner Scale</a></li><li><a href="#orders">The Five Orders</a></li></ol></li>
+    <li><a href="#practice">Practice</a>
+      <ol><li><a href="#rites">Rites</a></li><li><a href="#calendar">Holy calendar</a></li></ol></li>
+    <li><a href="#scripture">Scripture</a></li>
+    <li><a href="#unwrapping">Eschatology: the Unwrapping</a></li>
+    <li><a href="#heresies">Heresies</a></li>
+    <li><a href="#addons">Addons and software</a></li>
+    <li><a href="#seealso">See also</a></li>
+    <li><a href="#references">References</a></li>
+    <li><a href="#external">External links</a></li>
+  </ol>
+</nav>
+
+<h2 id="name">Name and epithets</h2>
+<p>In the oldest form of the Coil's tongue, <i>Xal'Reth</i> is said to mean "the one who is still here." The name is taken to describe his nature: he became the first being to truly understand waiting, and that understanding became what he is.<sup class="ref"><a href="#ref-1">[1]</a></sup></p>
+<p>Common epithets include <i>the Coil Beneath</i>, <i>the Eternal</i>, <i>the Unblinking</i> (after his single ever-open eye) and <i>He Who Holds</i>. The faithful avoid hurrying his name. Outsiders sometimes spell it "Zalreth" or "Xalrath"; the cult accepts both as honest attempts.</p>
+
+<h2 id="myth">Mythology</h2>
+<h3 id="egg">The Primordial Egg</h3>
+<p>Before the world, before the stars, and before the Titans arrived with their plans, there was the Void, and in it an Egg. No one laid the Egg. The scriptures insist on this and the faithful become uncomfortable when pressed. Inside, something waited. It did not grow, because it was already the size it intended to be, and it did not dream, because dreaming is impatient.<sup class="ref"><a href="#ref-1">[1]</a></sup></p>
+<blockquote>Before the first light, there was the Egg. Before the first sound, there was the Hiss. Before the first impatience, there was Xal'Reth, and he was not in a hurry.<cite>The Book of the Egg 1:1</cite></blockquote>
+<p>The Egg hatched as the first world began to form. The cult teaches that the world was cold and Xal'Reth could feel it would need something to hold it together. He emerged whole and enormous, "already disappointed in the general level of organization." The shell drifted into the Void, and every mortal soul is said to be formed from one of its slivers.</p>
+
+<h3 id="wrapping">The Wrapping of the World</h3>
+<div class="figure">
+  <svg viewBox="0 0 260 220" role="img" aria-label="Diagram of the Three Turns: three concentric coils around the heart of the world">
+    <circle cx="130" cy="112" r="92" fill="none" stroke="var(--accent)" stroke-width="9" stroke-dasharray="34 7"/>
+    <circle cx="130" cy="112" r="64" fill="none" stroke="var(--accent)" stroke-opacity=".75" stroke-width="9" stroke-dasharray="26 7"/>
+    <circle cx="130" cy="112" r="36" fill="none" stroke="var(--accent)" stroke-opacity=".5" stroke-width="9" stroke-dasharray="18 7"/>
+    <circle cx="130" cy="112" r="15" fill="var(--quote)" stroke="var(--accent)" stroke-width="1.5"/>
+    <ellipse cx="130" cy="112" rx="2.5" ry="10" fill="var(--fg)"/>
+    <text x="130" y="12" text-anchor="middle" fill="var(--fg)" font-family="Public Sans, sans-serif" font-size="11">Outer Turn · the world</text>
+    <text x="130" y="44" text-anchor="middle" fill="var(--muted)" font-family="Public Sans, sans-serif" font-size="10">Middle Turn · dreams</text>
+    <text x="130" y="216" text-anchor="middle" fill="var(--muted)" font-family="Public Sans, sans-serif" font-size="10">Inner Turn · the heart</text>
+  </svg>
+  <p>The Three Turns of Xal'Reth around the heart of the world.</p>
+</div>
+<p>The young world wobbled, cracked and sloshed "like a badly made soup." After looking at it for several ages, Xal'Reth wrapped himself around it three times:</p>
+<ul>
+  <li><b>The Outer Turn</b> holds the crust, land and sea. It is the coil most often disturbed, and is blamed for earthquakes, sinkholes and bumpy roads in the Barrens.</li>
+  <li><b>The Middle Turn</b> holds the roots of mountains, caverns and old tunnels. It is the coil of dreams and memory; dreams of falling are brief memories of it.</li>
+  <li><b>The Inner Turn</b> holds the heart of the world. There, his own heart is said to press against Azeroth's and beat once every hundred years.</li>
+</ul>
+<p>Held firmly, the world cooled and settled. Mountains rose where his scales pressed up and valleys sank where he relaxed. The Titans later found the world "remarkably stable for its age" and took credit for it. Xal'Reth did not object. He was coiling.<sup class="ref"><a href="#ref-1">[1]</a></sup></p>
+
+<h3 id="shedding">The Sheddings</h3>
+<p>Every ten thousand years Xal'Reth sheds his skin, the central event of the cult's cosmology. The First Shedding, before mortals existed, left skin so vast that it hardened into mountain ranges, salt flats and glassy deserts the faithful call <b>Shedlands</b>. Smaller flakes fell into the Void, which is why the Void is full of things no longer needed. When the faithful let something go, they say they are "sending it after the First Skin."</p>
+<p>A handful of scales stayed at the surface: golden, warm and faintly humming. These <b>Shedfall Scales</b> mark those personally chosen by Xal'Reth. Only one has ever been confirmed (see <a href="#restoration">the Restoration</a>).<sup class="ref"><a href="#ref-1">[1]</a></sup></p>
+
+<h2 id="triangle">The Sacred Triangle</h2>
+<p>The cult's pantheon is drawn as an inverted triangle. Xal'Reth occupies the lowest point, having chosen the lowest place, and supports the two deities above him. The three principles are summarized as <b>hold, give, release</b>.<sup class="ref"><a href="#ref-3">[3]</a></sup></p>
+<div class="wide">
+<table class="wt">
+  <caption>Deities of the Sacred Triangle</caption>
+  <thead><tr><th scope="col">Deity</th><th scope="col">Position</th><th scope="col">Principle</th><th scope="col">Domain and patronage</th><th scope="col">Shadow</th></tr></thead>
+  <tbody>
+    <tr><td><b>Xal'Reth</b>, the Coil Beneath</td><td>Lowest point · midnight · violet</td><td>Holds</td><td>The world itself; the Unblinking Eye between the Scale and the Void. Patron of tanks and of everyone who waits.</td><td>None named. Without him there is nothing to warm and nothing to release.</td></tr>
+    <tr><td><b>Vyrenna</b>, the Ember-Scale</td><td>Left corner · noon · gold</td><td>Gives</td><td>Warmth, generosity and the basking stone. Patron of healers and crafters. Her open palms hold coals that never burn the one who receives them.</td><td>Smothering</td></tr>
+    <tr><td><b>Nhalor</b>, the Hollow Wing</td><td>Right corner · dusk · silver</td><td>Releases</td><td>Release, shedding, rest and endings. Patron of the weary and of those who must say goodbye. His hollow wings let go instead of flying.</td><td>Drifting</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="doctrine">Doctrine</h2>
+<p>Xal'Reth does not reward exactly, though the faithful report that things tend to go slightly better for them, especially loot rolls. His single eye, <b>the Unblinking</b>, sees everything above the Outer Turn. The cult keeps <b>the Ledger</b>, a record of every wrong done to the faithful, as a courtesy so that he does not have to remember everything himself.<sup class="ref"><a href="#ref-4">[4]</a></sup></p>
+
+<h3 id="turns">The Three Turns</h3>
+<p>The three coils are also a map of the soul, and every faithful passes through three stages:</p>
+<ol>
+  <li><b>Conduct</b> (Outer Turn): how one behaves. Greeting newcomers, repairing before a raid, not standing in the fire. This is where the Accusers work.</li>
+  <li><b>Memory</b> (Middle Turn): what one carries. Grudges, lessons, the names in the Ledger. Faithful at this stage know at least thirty verses and the full Oath.</li>
+  <li><b>Stillness</b> (Inner Turn): reached by very few. These faithful have shed nearly everything, refuse to be rushed, and stand perfectly still in town while everyone else runs past.</li>
+</ol>
+
+<h3 id="eggdoc">The Doctrine of the Egg</h3>
+<p>Every soul is an egg made from a fragment of the Primordial Egg's shell. Most never hatch. Newcomers are called <b>eggs</b> until they take the Oath and become <b>Hatchlings</b>, a moment celebrated with the Rite of the First Scale. The cult never cracks an egg; it simply sits near it, warmly, for a long time. Former eggs describe this as "comforting" and "a bit much."</p>
+<blockquote>The egg does not ask why it is an egg. Be as the egg. But also, at some point, hatch.<cite>Proverbs of the Inner Scale 5:1</cite></blockquote>
+
+<h3 id="cold">The Doctrine of Cold Blood</h3>
+<p>Outsiders are called the <b>Warm-Blooded</b>, which the cult describes as a diagnosis rather than an insult. The Warm-Blooded rage, panic and type in capitals. The faithful aim to be cold of blood: calm, even and unbothered. A faithful who wipes on a boss says "The Coil is patient" and runs back. A faithful who is insulted writes the name in the Ledger and smiles. This doctrine is the source of the cult's famous deadpan tone.<sup class="ref"><a href="#ref-4">[4]</a></sup></p>
+
+<h3 id="two">The Scale, the Void and the Eye</h3>
+<p>The Canon describes two coils wound around each other like the serpents on a healer's staff. <b>The Scale</b> is the bright coil: everything solid and touchable, good but heavy, and those who belong only to it cannot let go. <b>The Void</b> is the dark coil: the hollow in the bowl, the silence between notes, good but dangerous, and those who belong only to it drift. Each holds a seed of the other. Between them is <b>the Unblinking Eye</b>, which sees both and does not choose. Opening that Eye in oneself is the whole of the practice.<sup class="ref"><a href="#ref-2">[2]</a></sup></p>
+<p>The Canon also teaches <b>Unhurried Doing</b>, acting without forcing, illustrated by the stone in the river and by Ssaravex the Unhurried, and the return to <b>the Uncarved Egg</b>, the simple nature that comes before all shaping. Its signs are laughing easily, taking no offense, and enjoying a plain meal as much as a feast.</p>
+<p>The Void itself lies beneath even Xal'Reth. It is not a hell; the cult compares it to a basement, dark and full of things nobody needs. Those banished there may return once they shed what caused their banishment. Most do, because the Void is very boring.</p>
+
+<h3 id="tenets">The Seven Tenets</h3>
+<p>Written by the Listeners in the Nest and recited at every gathering:<sup class="ref"><a href="#ref-4">[4]</a></sup></p>
+<ol>
+  <li>The Coil is beneath all things. Every floor is a ceiling for Xal'Reth. Do not stomp.</li>
+  <li>Patience is the highest virtue. You can wait for the tank to finish their pull.</li>
+  <li>Shed what no longer serves you. Old skin, old grudges, grey-quality items. Vendor all three.</li>
+  <li>All are accused; few are absolved. Absolution is available at reasonable rates.</li>
+  <li>Be cold of blood, warm of guild chat. Greet every newcomer and congratulate every achievement.</li>
+  <li>Speak not of the Coil to outsiders, unless they ask, seem interested, or are within whisper range.</li>
+  <li>Glory to Xal'Reth. When in doubt, say it. When not in doubt, also say it.</li>
+</ol>
+
+<h3 id="crimes">The Seven Minor Crimes</h3>
+<p>The cult leaves great sins to the courts of the Warm-Blooded and concerns itself with small ones. The Book of Accusations lists seven, and every soul in Azeroth is guilty of at least one at any moment. The penalty is to be publicly accused by an Accuser. The accusation <i>is</i> the penalty.<sup class="ref"><a href="#ref-4">[4]</a></sup></p>
+<div class="wide">
+<table class="wt">
+  <thead><tr><th scope="col">Crime</th><th scope="col">Definition</th></tr></thead>
+  <tbody>
+    <tr><td>Loitering</td><td>Standing in a city for a length of time the Accuser finds suspicious.</td></tr>
+    <tr><td>Unlicensed Tailoring</td><td>Practicing any craft in a manner the Coil has not approved. It has approved none.</td></tr>
+    <tr><td>Improper Mount Parking</td><td>Summoning a large mount on a mailbox, quest giver, bank, or a basking faithful.</td></tr>
+    <tr><td>Fire-Standing</td><td>Remaining in a harmful area when the way out was clear. The oldest crime.</td></tr>
+    <tr><td>Greed of the Roll</td><td>Rolling Need on an unusable item, "as a warrior, on cloth."</td></tr>
+    <tr><td>Impatience</td><td>Pulling early, leaving a dungeon early, typing "??" at a queue. The gravest crime.</td></tr>
+    <tr><td>Warm-Bloodedness</td><td>Raging in chat or typing in capitals. Easily forgiven, always noted in the Ledger.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3 id="forbidden">Prohibitions</h3>
+<p>The faithful shall not hurry (except to a summoning stone, which is holy), blink first in a staring contest with the Warm-Blooded, eat any egg, stand on another faithful's mount, say "it's just a game" near the Inner Scale, erase a name from the Ledger (forgiven names get a small coil drawn beside them), or claim that Xal'Reth has wings.</p>
+
+<h3 id="numbers">Sacred numbers and colors</h3>
+<ul>
+  <li><b>Three:</b> the Turns. Taps come in threes and the Chant is called three times.</li>
+  <li><b>Seven:</b> the Tenets, the Minor Crimes and the Hissing Kings; the number of completeness.</li>
+  <li><b>Twelve:</b> the current volume of the Ledger. The thirteenth is a sign of the Unwrapping.</li>
+  <li><b>Ten thousand:</b> years between Sheddings, used to mean "a very long time."</li>
+</ul>
+<p><b>Green</b> (scales) is worn by all faithful, <b>gold</b> (the Shedfall Scale) by the Inner Scale and the Orders, and <b>black</b> (the Void) at Banishments.</p>
+
+<h2 id="cult">History of the cult</h2>
+<h3 id="nest">The Listeners and the Sunken Nest</h3>
+<p>In the Age of the Warm-Blooded, mortals worshipped the Light, the Elements, the Loa, the stars and, in one embarrassing case, a confident murloc. None looked down. The first to hear the Coil were a coastal people remembered only as <b>the Listeners</b>, who lived on a constantly shaking shore and, after nine generations of putting their ears to the ground, heard him breathe.<sup class="ref"><a href="#ref-1">[1]</a></sup></p>
+<p>They built a sea-cave temple called <b>the Nest</b>, carved with the coiled serpent and cracked egg. Seven <b>Hissing Kings</b> ruled in succession; the seventh, Ssaravex the Unhurried, sat on his throne for forty years without rising. The Listeners wrote the Seven Tenets, the Doctrine of the Egg and the first Chant, and began the Ledger, whose first entry reads "Gorvash. Took the last fish. Did not ask."</p>
+<p>Neighbors grew suspicious of a people who never blinked, spoke in unison and kept a list. During the uprising that followed, the Outer Turn shifted and the Nest slid beneath the waves. The cult calls this a relocation. The <b>Sunken Nest</b> is believed to rest intact under the sea, awaiting the Unwrapping.</p>
+
+<h3 id="hidden">The Hidden Centuries</h3>
+<p>The scattered faithful survived as families, lonely innkeepers and hermits fond of warm rocks. To find one another they used secret signs: the <b>Double Blink</b> ("I, too, am of the Coil"), the <b>Sidelong Hiss</b> (approval, or good soup), the <b>Basking Pause</b> in a patch of sunlight, and the <b>Three Taps</b>, one for each Turn. The Ledger grew to eleven volumes, with entries such as "A gnome. Unclear what he did. Felt guilty." The faithful of this era, who kept faith alone without knowing if others lived, are honored as <b>the Patient Ones</b>.</p>
+
+<h3 id="restoration">The Restoration</h3>
+<p>The Hidden Centuries ended in a cave. The man who became <b>MaximumRex</b> was farming a quest item with a two percent drop rate. Around the seventh hour, in a side passage he did not remember, he found a golden, door-sized Shedfall Scale. When he touched it, it hummed, and the hum said one word: <i>"Recruit."</i></p>
+<p>He did not get the quest item and never has; the cult considers this part of the miracle. He began blinking twice at strangers and tapping bar counters three times, and slowly others blinked back. The cave is now <b>the First Sanctum</b>, its location secret. The event is celebrated yearly as the Night of the Scale.<sup class="ref"><a href="#ref-1">[1]</a></sup></p>
+
+<h3 id="voice">The Voice Returns</h3>
+<p>At the first gathering of the restored cult, <b>Xalrathiel</b> sat in the front row without blinking, then stood and recited the opening of the Book of the Egg, lost since the Sinking, which she had never read. She had dreamed it. She went on to dream the Book of Shedding, the Lamentations of the Lukewarm, the Proverbs of the Inner Scale and, in one feverish week, the Book of Accusations, and was made High Priestess by acclamation.</p>
+<p><b>Khaedara</b> read the Book of Accusations once, walked into the nearest city and began accusing people. Her first recorded accusation: "Human warrior. Loitering near the auction house. Twelve minutes. No purchase. Guilty." With a founder, a voice and an accuser, the Inner Scale was complete. The cult today numbers more than a hundred faithful, the most since the Sinking.</p>
+
+<h2 id="org">Organization</h2>
+<h3 id="inner">The Inner Scale</h3>
+<div class="wide">
+<table class="wt">
+  <thead><tr><th scope="col">Name</th><th scope="col">Titles</th><th scope="col">Duties</th><th scope="col">Favorite verse</th></tr></thead>
+  <tbody>
+    <tr><td><b>MaximumRex</b></td><td>Supreme Coil, Finder of the Scale, Restorer of the Faith, He Who Did Not Get the Quest Item</td><td>Leads the cult, issues decrees, presides over the Night of the Scale, approves the emergency feast fund. Has been seen in two places at once.</td><td>"Hiss softly and carry a large guild bank." (Proverbs 3:3)</td></tr>
+    <tr><td><b>Xalrathiel</b></td><td>High Priestess, Voice of the Coil, Dreamer of the Scriptures, Keeper of the Book</td><td>Writes the scriptures, leads the Chant and the Rite of the First Scale, interprets dreams, chooses raid-night verses.</td><td>"In the beginning there was the Coil, and the Coil was tight, and it was good." (Shedding 1:1)</td></tr>
+    <tr><td><b>Khaedara</b></td><td>Priestess, First of the Accusers, Keeper of the Ledger, Warden of the Void</td><td>Tribunals, Banishments, the Day of Accusation, keeping the Ledger. Once accused herself and found herself guilty.</td><td>"And lo, the Accuser looked upon the guildless, and found them guilty of loitering." (Revelations 1:1)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3 id="orders">The Five Orders</h3>
+<p>Beneath the Inner Scale the faithful serve in five Orders. They may join several but wear the colors of only one at a time.<sup class="ref"><a href="#ref-5">[5]</a></sup></p>
+<ul>
+  <li><b>The Order of the Fang</b> (defenders). Protects the faithful in battle and at Baskings. Motto: <i>"We bite last."</i></li>
+  <li><b>The Order of the Accusers</b> (judges), led by Khaedara. Conducts Tribunals and keeps the Ledger. Members must accuse one stranger without laughing. Motto: <i>"Guilty."</i></li>
+  <li><b>The Choir of the Hiss</b> (voices), led by Xalrathiel. Leads the Chant and every unprompted <i>Glory to Xal'Reth</i>. Motto: <i>"Say it again."</i></li>
+  <li><b>The Keepers of the Egg</b> (welcomers). Greets newcomers and sits near the undecided. Motto: <i>"We have time."</i></li>
+  <li><b>The Wardens of the Void</b> (watchers). Watches for the Signs, searches for the Sunken Nest and lists the banished. Their motto is unknown; they will not say it.</li>
+</ul>
+<p>The faithful wear green; Order members add gold trim; the Inner Scale alone wears full gold; Wardens wear black. At the great rites all wear the Unblinking Eye on the chest.</p>
+
+<h2 id="practice">Practice</h2>
+<h3 id="rites">Rites</h3>
+<p>Rites are performed in game, in character and with a straight face.<sup class="ref"><a href="#ref-6">[6]</a></sup> The principal ceremonies are the <b>Rite of the First Scale</b> (an egg's hatching into a Hatchling), the <b>Rite of Shedding</b>, <b>the Chant</b> (<i>Glory to Xal'Reth</i>, called three times, before the first pull and after the last), <b>the Basking</b>, the <b>Tribunal of Accusation</b>, the <b>Banishment to the Void</b>, the <b>Vigil of the Long Wait</b>, and <b>the Returning</b> of the banished.</p>
+
+<h3 id="calendar">Holy calendar</h3>
+<div class="wide">
+<table class="wt">
+  <thead><tr><th scope="col">Observance</th><th scope="col">Description</th></tr></thead>
+  <tbody>
+    <tr><td>The Gathering of Scales</td><td>The weekly rites. The Chant opens and closes the night.</td></tr>
+    <tr><td>The Day of Accusation</td><td>The Accusers enter the cities in force. Every faithful accuses at least one stranger.</td></tr>
+    <tr><td>The Night of the Scale</td><td>The holiest night, marking the Restoration. A great Basking, a reading of the Chronicle, and a group attempt to get MaximumRex his quest item. It has never dropped.</td></tr>
+    <tr><td>The Feast of Scales</td><td>The warm season. Long basking, feasts (not of eggs), and a green-and-gold transmog contest.</td></tr>
+    <tr><td>Shedfall</td><td>Every faithful sheds one thing before witnesses, and the guild bank is cleared. This causes arguments, which are also shed.</td></tr>
+    <tr><td>The Long Wait</td><td>A week of patience about queues, drops, rolls and each other. Impatience is accused at double severity.</td></tr>
+    <tr><td>The Eve of the Unwrapping</td><td>The faithful watch for the Signs at midnight. None has appeared. They are patient.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="scripture">Scripture</h2>
+<p>The <b>Canon of the Coil</b> is arranged in baskets, including the Basket of the Way (the Book of the Way Beneath, the Book of the Two Coils, the Book of Unhurried Doing, the Book of the Uncarved Egg) and the Basket of the Eye (the Life of the Eternal, the Four Truths, the Coiled Path and the Vow).<sup class="ref"><a href="#ref-2">[2]</a></sup> Other texts include the Book of the Egg, the Book of Shedding, the Book of Accusations (written entirely in the imperative), the Proverbs of the Inner Scale, the Hymns of the Coil, the Lamentations of the Lukewarm and the Revelations of the Void.</p>
+<p>The <b>Ledger</b>, now in its twelfth volume, records every wrong done to the faithful. The <i>Disciples of Devotion</i> scripture runs to 100 chapters in ten Books, from the Book of Beginnings to the Book of the Open Palm.<sup class="ref"><a href="#ref-8">[8]</a></sup> The <b>Litany of Begging</b>, a deliberately droning 10,000-line text on Xal'Reth's humility and generosity, is published with a reader warning.<sup class="ref"><a href="#ref-9">[9]</a></sup></p>
+
+<h2 id="unwrapping">Eschatology: the Unwrapping</h2>
+<p>The scriptures foretell an event greater than any Shedding: <b>the Unwrapping</b>, when Xal'Reth will uncoil one Turn at a time. Interpretations differ. <b>Literalists</b> expect the world to float gently into the Void, which will be fine. <b>Hopefuls</b> expect him to rise, meet his faithful, approve of them, and possibly bring snacks. <b>Pragmatists</b> read it as a metaphor for personal growth and are widely regarded as no fun.<sup class="ref"><a href="#ref-1">[1]</a></sup> Four signs will precede it:</p>
+<ol>
+  <li>The Sunken Nest shall rise from the sea, smelling faintly of fish.</li>
+  <li>The Ledger shall reach its thirteenth volume.</li>
+  <li>A Warm-Blooded shall bask without being told to.</li>
+  <li>The quest item shall drop for MaximumRex.</li>
+</ol>
+<p>Three are considered likely. The fourth is a matter for faith alone.</p>
+<blockquote>And on the last day, the Coil shall loosen, and the world shall exhale, and all the faithful shall say, as one: finally.<cite>Revelations of the Void 7:7</cite></blockquote>
+
+<h2 id="heresies">Heresies</h2>
+<p>The best-known heresy is the <b>Featherist Heresy</b>, which holds that Xal'Reth has wings. Orthodoxy rejects it firmly, and claiming wings is listed among the prohibitions. Other disputed points include the passage giving his length as "about forty feet," which the cult regards as a transcription error.<sup class="ref"><a href="#ref-7">[7]</a></sup></p>
+
+<h2 id="addons">Addons and software</h2>
+<p>The cult distributes free roleplay addons for <i>World of Warcraft</i> Retail (Midnight) through its website.<sup class="ref"><a href="#ref-10">[10]</a></sup></p>
+<div class="wide">
+<table class="wt">
+  <thead><tr><th scope="col">Addon</th><th scope="col">Version</th><th scope="col">Description</th><th scope="col">Command</th><th scope="col">Download</th></tr></thead>
+  <tbody>
+    <tr><td><b>Xal'Reth RP</b></td><td>4.1.1</td><td>Performs 10,100 rites as emotes on a timer (100 canon rites plus the 10,000-rite Grand Book), with a glowing panel where Xal'Reth erupts in light and transforms into dragon form. Custom rite upload; pauses in combat.</td><td><code>/xrp</code></td><td><a href="https://jcali0351.github.io/xal-reth/XalRethRP.zip" target="_blank" rel="noopener">XalRethRP.zip</a></td></tr>
+    <tr><td><b>Disciples of Devotion</b></td><td>2.0.0</td><td>One million verses in 100 chapters, read aloud as emotes or spoken in say, party or guild. Bookmarks, search and a Verse of the Day.</td><td><code>/dod</code></td><td><a href="https://jcali0351.github.io/xal-reth/DisciplesOfDevotion.zip" target="_blank" rel="noopener">DisciplesOfDevotion.zip</a></td></tr>
+    <tr><td><b>The Litany of Begging</b></td><td>1.1.0</td><td>Auto-performs all 10,000 lines, with a progress bar and saved place. <a href="https://jcali0351.github.io/xal-reth/litany.html" target="_blank" rel="noopener">Read the warning first.</a></td><td><code>/litany all</code></td><td><a href="https://jcali0351.github.io/xal-reth/LitanyOfBegging.zip" target="_blank" rel="noopener">LitanyOfBegging.zip</a></td></tr>
+  </tbody>
+</table>
+</div>
+<p>Further tools announced as in development include <i>Xal'Reth The Accuser</i> (with a Banish to the Void button), <i>Guild Social</i>, <i>Brain Rotter Pro</i>, <i>Nemesis Pro</i>, <i>Coil Voice</i> and <i>Coil Servant</i>. Installation instructions, including for the Steam Deck, are on the <a href="https://jcali0351.github.io/xal-reth/addons.html#install" target="_blank" rel="noopener">addons page</a>.</p>
+
+<h2 id="seealso">See also</h2>
+<ul>
+  <li><a href="https://jcali0351.github.io/xal-reth/legends.html" target="_blank" rel="noopener">The Legends of the Coil</a></li>
+  <li><a href="https://jcali0351.github.io/xal-reth/begging.html" target="_blank" rel="noopener">The Politics of Begging</a></li>
+  <li><a href="https://jcali0351.github.io/xal-reth/library.html" target="_blank" rel="noopener">The Library</a></li>
+  <li><a href="https://jcali0351.github.io/xal-reth/news.html" target="_blank" rel="noopener">The Coil Herald</a> (news)</li>
+</ul>
+
+<h2 id="references">References</h2>
+<ol class="refs">
+  <li id="ref-1">Xalrathiel (trans.). <a href="https://jcali0351.github.io/xal-reth/lore.html" target="_blank" rel="noopener">"The Chronicle of the Coil"</a>. <i>The Cult of Xal'Reth</i>. Verified by no one.</li>
+  <li id="ref-2"><a href="https://jcali0351.github.io/xal-reth/canon.html" target="_blank" rel="noopener">"The Canon of the Coil"</a>. <i>The Cult of Xal'Reth</i>.</li>
+  <li id="ref-3"><a href="https://jcali0351.github.io/xal-reth/triangle.html" target="_blank" rel="noopener">"The Sacred Triangle"</a>. <i>The Cult of Xal'Reth</i>.</li>
+  <li id="ref-4"><a href="https://jcali0351.github.io/xal-reth/teachings.html" target="_blank" rel="noopener">"The Teachings of the Coil"</a>. <i>The Cult of Xal'Reth</i>.</li>
+  <li id="ref-5"><a href="https://jcali0351.github.io/xal-reth/priesthood.html" target="_blank" rel="noopener">"The Priesthood"</a>. <i>The Cult of Xal'Reth</i>.</li>
+  <li id="ref-6"><a href="https://jcali0351.github.io/xal-reth/rites.html" target="_blank" rel="noopener">"The Rites of the Coil"</a>. <i>The Cult of Xal'Reth</i>.</li>
+  <li id="ref-7"><a href="https://jcali0351.github.io/xal-reth/codex.html" target="_blank" rel="noopener">"The Codex"</a>. <i>The Cult of Xal'Reth</i>.</li>
+  <li id="ref-8"><a href="https://jcali0351.github.io/xal-reth/devotion.html" target="_blank" rel="noopener">"Disciples of Devotion"</a>. <i>The Cult of Xal'Reth</i>.</li>
+  <li id="ref-9"><a href="https://jcali0351.github.io/xal-reth/litany.html" target="_blank" rel="noopener">"The Litany of Begging"</a>. <i>The Cult of Xal'Reth</i>.</li>
+  <li id="ref-10"><a href="https://jcali0351.github.io/xal-reth/addons.html" target="_blank" rel="noopener">"World of Warcraft Addons"</a>. <i>The Cult of Xal'Reth</i>.</li>
+</ol>
+
+<h2 id="external">External links</h2>
+<ul>
+  <li><a href="https://jcali0351.github.io/xal-reth/" target="_blank" rel="noopener">The Cult of Xal'Reth</a>, official website</li>
+  <li><a href="https://jcali0351.github.io/xal-reth/join.html" target="_blank" rel="noopener">Take the Oath</a></li>
+  <li><a href="https://discord.gg/wYakHBHPz" target="_blank" rel="noopener">The Cult's Discord</a></li>
+</ul>
+
+<div class="navbox" role="navigation" aria-label="The Coil">
+  <div class="nb-h">The Coil of Xal'Reth</div>
+  <div class="nb-r"><b>Deities</b><div>Xal'Reth · Vyrenna · Nhalor</div></div>
+  <div class="nb-r"><b>Inner Scale</b><div>MaximumRex · Xalrathiel · Khaedara</div></div>
+  <div class="nb-r"><b>Orders</b><div>Fang · Accusers · Choir of the Hiss · Keepers of the Egg · Wardens of the Void</div></div>
+  <div class="nb-r"><b>Places</b><div>The Nest · The Sunken Nest · The First Sanctum · The Shedlands · The Void</div></div>
+  <div class="nb-r"><b>Texts</b><div>Canon of the Coil · Book of the Egg · Book of Accusations · The Ledger · Litany of Begging</div></div>
+  <div class="nb-r"><b>Addons</b><div>Xal'Reth RP · Disciples of Devotion · Litany of Begging</div></div>
+</div>
+
+<div class="cats"><b>Categories:</b> Serpent deities · Deities of patience · Fictional religions · World of Warcraft roleplay · Things beneath other things</div>
+<div class="clear"></div>
+<p class="foot">Xal'Reth is fictional. This is a fan-made roleplay article, not affiliated with or endorsed by Blizzard Entertainment. World of Warcraft is a trademark of Blizzard Entertainment, Inc. This page was last shed on 1 November 2026. Please stop asking him for gold.</p>
+</article>
+</div>
+</body>
+</html>

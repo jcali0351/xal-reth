@@ -11,6 +11,8 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   The rest of the site is generated elsewhere and copied in.
 - The main menu and footer include an Altar link (`altar.html`, the interactive altar) and the homepage has an
   "Approach the Altar" call to action. Keep both if the site is regenerated.
+- The main menu has a Testimonials link (`testimonials.html`) after Altar, and the footer links Testimonials (after The Priesthood)
+  and the Encyclopedia (`wiki.html`, after The Sacred Triangle). Keep these if the site is regenerated.
 
 ## Hourly Coil Herald post (scheduled task)
 1. `git pull --ff-only origin main`
