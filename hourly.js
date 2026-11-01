@@ -84,8 +84,21 @@
     "The Grippers in the Bestiary of the Void are invisible creatures that feed on clutching. They grow fat on hoarders and starve around generous people.",
     "The cult's official color is violet, its official number is three, and its official snack is anything you were willing to share."
   ];
-  const ICON = { Hymn: "♪", Praise: "✦", Teaching: "☯", Lore: "⟁", Canon: "❧" };
-  const TYPES = ["Hymn", "Canon", "Praise", "Teaching", "Lore", "Canon"];
+  const ICON = { Hymn: "♪", Praise: "✦", Teaching: "☯", Lore: "⟁", Canon: "❧", Scripture: "✧" };
+  const TYPES = ["Hymn", "Scripture", "Canon", "Praise", "Scripture", "Teaching", "Scripture", "Lore", "Scripture"];
+  // Everything written about Xal'Reth across the site: [text, heading, source, link, isPost]
+  const X = window.XCORPUS || [], GROUPS = {}, SRCS = [];
+  X.forEach((x, i) => { if (!GROUPS[x[2]]) { GROUPS[x[2]] = []; SRCS.push(x[2]); } GROUPS[x[2]].push(i); });
+  const MAIN = SRCS.filter((s) => !X[GROUPS[s][0]][4]), POSTSRC = SRCS.filter((s) => X[GROUPS[s][0]][4]);
+  function corpusPick(h, r) {
+    if (!SRCS.length) return null;
+    const ring = MAIN.concat(POSTSRC.length ? ["__post"] : []);
+    let src = ring[(Math.floor(h / TYPES.length) * 5 + h) % ring.length];
+    if (src === "__post") src = POSTSRC[Math.floor(r() * POSTSRC.length)];
+    const g = GROUPS[src], k = Math.floor(r() * g.length), first = X[g[k]], out = [first];
+    for (let j = k + 1; j < g.length && out.length < 3; j++) { const n = X[g[j]]; if (n[1] !== first[1]) break; out.push(n); }
+    return out;
+  }
 
   function rng(seed) { let s = (seed * 2654435761) >>> 0 || 1; return () => { s ^= s << 13; s >>>= 0; s ^= s >>> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; }; }
   const pick = (r, a) => a[Math.floor(r() * a.length)];
@@ -117,6 +130,16 @@
       title = t[0];
       html = "<p>" + esc(t[1]) + "</p>" + (ex ? '<blockquote>' + esc(ex.verses[0]) + "<cite>— " + esc(ex.c.t) + "</cite></blockquote>" : "") +
         '<p class="reflect"><strong>For reflection:</strong> ' + esc(q) + "</p>";
+    } else if (type === "Scripture") {
+      const ps = corpusPick(h, r);
+      if (!ps) { title = "From the Coil"; html = "<p>Glory to Xal'Reth.</p>"; }
+      else {
+        const f = ps[0], post = f[4];
+        title = (post ? "From the Daily Coil: " : "From " + f[2].replace(/^The /, "the ") + ": ") + (f[1] || (post ? f[2] : "A Passage"));
+        html = '<div class="corpus-ex">' + ps.map((x) => "<p>" + esc(x[0]) + "</p>").join("") + "</div>" +
+          (f[2] === "The Litany of Begging" ? '<p class="muted">Excerpt only. The full Litany is not meant to be read in one sitting; <a href="litany.html">read the warning first</a>.</p>' : "") +
+          '<p class="muted">From <a href="' + esc(f[3]) + '">' + esc(post ? f[2] : f[2].replace(/^The /, "the ") + (f[1] ? ", " + f[1] : "")) + "</a>.</p>";
+      }
     } else if (type === "Lore") {
       const d = DETAILS[(h * 11 + Math.floor(r() * 5)) % DETAILS.length];
       title = "A Detail of the Eternal";
