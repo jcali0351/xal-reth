@@ -9,6 +9,8 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
 - Tone: deadpan, warm, satirical holy-text voice. Funny, never mean. No real-world politics, no real people.
 - Don't edit the generated pages by hand except through `tools/new_post.py`.
   The rest of the site is generated elsewhere and copied in.
+- The main menu and footer include an Altar link (`altar.html`, the interactive altar) and the homepage has an
+  "Approach the Altar" call to action. Keep both if the site is regenerated.
 
 ## Hourly Coil Herald post (scheduled task)
 1. `git pull --ff-only origin main`
