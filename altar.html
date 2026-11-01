@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Altar of Xal&#x27;Reth · Light Candles and Make Offerings</title>
+<meta name="description" content="An interactive virtual altar to Xal&#x27;Reth the Eternal: light incense and candles, offer water, food and gold, bask in silence, then release it all.">
+<meta name="keywords" content="Xal'Reth, Cult of Xal'Reth, WoW roleplay, World of Warcraft RP, WoW RP guild, WoW roleplay addon">
+<meta name="author" content="The Cult of Xal'Reth">
+<link rel="canonical" href="https://jcali0351.github.io/xal-reth/altar.html">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Cult of Xal'Reth">
+<meta property="og:url" content="https://jcali0351.github.io/xal-reth/altar.html">
+<meta property="og:title" content="The Altar of Xal&#x27;Reth · Light Candles and Make Offerings">
+<meta property="og:description" content="An interactive virtual altar to Xal&#x27;Reth the Eternal: light incense and candles, offer water, food and gold, bask in silence, then release it all.">
+<meta property="og:image" content="https://jcali0351.github.io/xal-reth/xalreth-og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Altar of Xal&#x27;Reth · Light Candles and Make Offerings">
+<meta name="twitter:description" content="An interactive virtual altar to Xal&#x27;Reth the Eternal: light incense and candles, offer water, food and gold, bask in silence, then release it all.">
+<meta name="twitter:image" content="https://jcali0351.github.io/xal-reth/xalreth-og.jpg">
+<link rel="sitemap" type="application/xml" href="sitemap.xml">
+<meta name="theme-color" content="#08050f">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html"><svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs>
+    <linearGradient id="gm" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4eaff"/><stop offset=".6" stop-color="#b98cff"/><stop offset="1" stop-color="#7651b0"/>
+    </linearGradient>
+    <radialGradient id="em" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#e0c4ff"/><stop offset=".7" stop-color="#4b2386"/><stop offset="1" stop-color="#08050f"/>
+    </radialGradient>
+  </defs>
+  <circle cx="100" cy="100" r="94" fill="none" stroke="url(#gm)" stroke-width="2"/>
+  <circle cx="100" cy="100" r="86" fill="none" stroke="#b98cff" stroke-opacity=".35" stroke-width="1" stroke-dasharray="2 6"/>
+  <path d="M100 22 C 150 22 178 58 178 100 C 178 146 142 176 100 176 C 62 176 36 150 36 112 C 36 78 62 56 96 56 C 128 56 148 78 148 104 C 148 130 128 146 104 146 C 84 146 70 132 70 114 C 70 98 82 88 98 88"
+        fill="none" stroke="url(#gm)" stroke-width="9" stroke-linecap="round"/>
+  <path d="M98 88 l 14 -8 l -4 16 z" fill="url(#gm)"/>
+  <ellipse cx="104" cy="112" rx="15" ry="15" fill="url(#em)" stroke="#b98cff" stroke-width="1.5"/>
+  <ellipse cx="104" cy="112" rx="3" ry="11" fill="#08050f"/>
+  <g fill="#b98cff" opacity=".8">
+    <path d="M100 6 l3 8 h-6z"/><path d="M100 194 l3 -8 h-6z"/><path d="M6 100 l8 3 v-6z"/><path d="M194 100 l-8 3 v-6z"/>
+  </g>
+</svg><span>XAL'RETH</span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav class="site-nav" id="site-nav" aria-label="Main"><ul><li><a href="index.html">Sanctum</a></li><li><a href="lore.html">Chronicle</a></li><li><a href="canon.html">Canon</a></li><li><a href="legends.html">Legends</a></li><li><a href="library.html">Library</a></li><li><a href="news.html">News</a></li><li><a href="merch.html">Merch</a></li><li><a href="blog.html">Blog</a></li><li><a href="addons.html">Addons</a></li><li><a href="devotion.html">Devotion</a></li><li><a href="join.html">Join</a></li></ul></nav>
+  </div>
+</header>
+<main>
+<header class="page-head"><p class="eyebrow">The Virtual Sanctum</p><h1>The Altar of Xal'Reth</h1><p>Light the incense. Light the candles. Offer water, food and gold before the Eternal. Hold lightly: nothing offered here is kept for long, and that is the point.</p></header>
+<style>
+.altar-page{--warmth:0;max-width:820px;margin:0 auto;padding:0 16px 48px}
+.altar-scene{position:relative;margin:8px auto 0;max-width:760px;user-select:none;-webkit-user-select:none}
+.shrine{position:relative;width:74%;margin:0 auto;aspect-ratio:900/1150;border-radius:50% 50% 6px 6px/26% 26% 6px 6px;overflow:hidden;border:2px solid rgba(201,162,255,.55);box-shadow:0 0 calc(20px + 60px*var(--warmth)) rgba(166,107,255,calc(.25 + .5*var(--warmth))),inset 0 0 40px rgba(0,0,0,.8);background:#08050f;transition:box-shadow 1.5s}
+.shrine img{width:100%;height:100%;object-fit:cover;object-position:50% 0;display:block;filter:brightness(calc(.62 + .4*var(--warmth))) saturate(calc(.85 + .35*var(--warmth)));transition:filter 1.5s}
+.shrine::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(60% 45% at 50% 30%,rgba(166,107,255,calc(.28*var(--warmth))),transparent 70%),linear-gradient(to bottom,transparent 55%,rgba(8,5,15,.85));transition:opacity 1.5s}
+.shrine .eye{position:absolute;top:16%;width:4.5%;aspect-ratio:1;border-radius:50%;z-index:2;pointer-events:none;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,240,255,.95) 0,rgba(201,162,255,.8) 30%,rgba(138,77,255,0) 70%);mix-blend-mode:screen;opacity:calc(.15 + .85*var(--warmth));transition:opacity 1.5s}
+.shrine .eye.l{left:45.3%}.shrine .eye.r{left:49.6%}
+.altar-scene.flare .eye{animation:eyeflare 2.4s ease-out}
+@keyframes eyeflare{0%{opacity:1;transform:translate(-50%,-50%) scale(1)}25%{transform:translate(-50%,-50%) scale(3.2)}100%{transform:translate(-50%,-50%) scale(1)}}
+.pillar{position:absolute;top:8%;bottom:30%;width:7%;border-radius:6px;background:linear-gradient(90deg,#120a1f,#2b1a45 40%,#1a1029);border:1px solid rgba(185,140,255,.25);box-shadow:inset 0 0 12px rgba(0,0,0,.7)}
+.pillar::after{content:"";position:absolute;left:50%;top:-5%;width:150%;height:5%;transform:translateX(-50%);background:#2b1a45;border:1px solid rgba(185,140,255,.3);border-radius:3px}
+.pillar.l{left:3%}.pillar.r{right:3%}
+.altar-svg{position:relative;display:block;width:100%;margin-top:-17%;z-index:3;overflow:visible}
+.altar-fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:4}
+.altar-svg [role=button]{cursor:pointer;outline:none}
+.altar-svg [role=button]:focus-visible .focus-ring{opacity:1}
+.focus-ring{opacity:0;fill:none;stroke:#c9a2ff;stroke-width:1.5;stroke-dasharray:4 3}
+.flame{opacity:0;transition:opacity .7s;transform-box:fill-box;transform-origin:50% 100%}
+.lit .flame{opacity:1;animation:flick .16s infinite alternate ease-in-out}
+@keyframes flick{from{transform:scale(1,1) skewX(0)}to{transform:scale(.9,1.07) skewX(2deg)}}
+.halo{opacity:0;transition:opacity .9s}.lit .halo{opacity:1;animation:halo 2.6s infinite ease-in-out}
+@keyframes halo{50%{opacity:.75}}
+.tip{opacity:0}.lit .tip{opacity:1;animation:tip 1.4s infinite ease-in-out}
+@keyframes tip{50%{opacity:.55}}
+.coil-glow{opacity:calc(.15 + .85*var(--warmth));transition:opacity 1.5s}
+.ripple{fill:none;stroke:rgba(200,230,255,.8);stroke-width:1;transform-box:fill-box;transform-origin:center;animation:ripple 1.6s ease-out forwards}
+@keyframes ripple{from{transform:scale(.2);opacity:1}to{transform:scale(1.6);opacity:0}}
+.food-item{animation:drop .5s ease-out}
+@keyframes drop{from{transform:translateY(-30px);opacity:0}to{transform:none;opacity:1}}
+.bask{position:absolute;inset:0;z-index:6;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:rgba(8,5,15,.72);text-align:center;padding:16px;border-radius:12px}
+.bask.on{display:flex}
+.bask p{font-family:var(--serif-body);font-size:1.35rem;color:var(--bone);max-width:30ch;margin:0}
+.bask-ring{width:120px;height:120px}
+.bask-ring circle{fill:none;stroke-width:4}
+.breath{animation:breath 8s infinite ease-in-out;transform-origin:center;transform-box:fill-box}
+@keyframes breath{50%{transform:scale(1.25)}}
+.altar-panel{margin-top:18px;border:1px solid var(--line);border-radius:14px;background:rgba(17,10,29,.75);padding:18px}
+.blessing{min-height:4.6em;font-family:var(--serif-body);font-size:1.3rem;line-height:1.4;color:var(--bone);text-align:center;margin:0 0 14px;transition:opacity .4s}
+.blessing.fade{opacity:0}
+.blessing small{display:block;font-size:.95rem;color:var(--bone-dim);margin-top:4px;font-style:italic}
+.warmth{display:flex;align-items:center;gap:12px;margin:0 0 16px;font-family:var(--serif-display);font-size:.8rem;letter-spacing:.08em;color:var(--bone-dim);text-transform:uppercase}
+.warmth .bar{flex:1;height:8px;border-radius:4px;background:#1a1029;border:1px solid var(--line);overflow:hidden}
+.warmth .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#4b2386,#a66bff,#ffcf8f);transition:width 1.2s}
+.warmth b{min-width:9.5em;text-align:right;color:var(--venom);font-weight:600}
+.rite-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.rite.combo{grid-column:span 2;flex-direction:row}.rite.combo select{flex:1.1}.rite.combo button{flex:1}
+.rite.wide{grid-column:1/-1}
+.rite{display:flex;flex-direction:column;gap:6px}
+.rite button,.rite select{font-family:var(--serif-display);font-size:.85rem;letter-spacing:.04em;border-radius:10px;padding:10px 12px;border:1px solid rgba(185,140,255,.45);background:linear-gradient(180deg,#2b1a45,#1a1029);color:var(--bone);cursor:pointer;width:100%}
+.rite select{padding:8px 10px;font-family:var(--serif-body);font-size:1rem;letter-spacing:0}
+.rite button:hover{border-color:#c9a2ff;box-shadow:var(--glow)}
+.rite button:focus-visible,.rite select:focus-visible{outline:2px solid #c9a2ff;outline-offset:2px}
+.rite.release button{background:linear-gradient(180deg,#3a2350,#1a1029);border-color:rgba(255,207,143,.5)}
+.altar-foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:16px;font-size:.95rem;color:var(--bone-dim)}
+.altar-foot button{background:none;border:1px solid var(--line);color:var(--bone-dim);border-radius:8px;padding:6px 10px;font-family:var(--serif-body);font-size:.95rem;cursor:pointer}
+.tally{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-top:16px}
+.tally div{border:1px solid var(--line);border-radius:10px;padding:8px;text-align:center;background:rgba(8,5,15,.4)}
+.tally b{display:block;font-family:var(--serif-display);font-size:1.3rem;color:var(--venom)}
+.tally span{font-size:.85rem;color:var(--bone-dim)}
+.altar-log{list-style:none;margin:14px 0 0;padding:0;font-size:.95rem;color:var(--bone-dim)}
+.altar-log li{padding:4px 0;border-top:1px solid rgba(185,140,255,.12)}
+.altar-log time{color:var(--gold-dim);margin-right:8px;font-variant-numeric:tabular-nums}
+@media (max-width:560px){.rite-grid{grid-template-columns:1fr 1fr}.warmth{flex-wrap:wrap}.warmth .bar{flex:1 1 100%;order:3}.warmth b{min-width:0;margin-left:auto}.shrine{width:86%}.pillar{display:none}.blessing{font-size:1.15rem}.altar-svg{margin-top:-20%}}
+</style>
+<div class="altar-page">
+<div class="altar-scene" id="altarScene">
+  <span class="pillar l" aria-hidden="true"></span><span class="pillar r" aria-hidden="true"></span>
+  <div class="shrine"><img src="xalreth.jpg" alt="Xal'Reth the Eternal, a towering scaled figure of black armor veined with violet light, crowned with horns, eyes glowing, standing above the altar." width="900" height="1350"><span class="eye l" aria-hidden="true"></span><span class="eye r" aria-hidden="true"></span></div>
+  <svg class="altar-svg" id="altarSvg" viewBox="0 0 800 320" role="group" aria-label="The altar. Candles, a water bowl, an incense burner, an offering plate and a gold bowl.">
+    <defs>
+      <linearGradient id="gTop" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b1d40"/><stop offset="1" stop-color="#1a1029"/></linearGradient>
+      <linearGradient id="gFront" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#21153a"/><stop offset="1" stop-color="#0b0714"/></linearGradient>
+      <linearGradient id="gGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe7a8"/><stop offset=".5" stop-color="#d4a548"/><stop offset="1" stop-color="#7a5617"/></linearGradient>
+      <linearGradient id="gBronze" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3b2a1a"/><stop offset=".45" stop-color="#9c7440"/><stop offset="1" stop-color="#2a1d12"/></linearGradient>
+      <linearGradient id="gWax" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#cdbfa9"/><stop offset=".4" stop-color="#f6eee0"/><stop offset="1" stop-color="#b9aa92"/></linearGradient>
+      <linearGradient id="gObs" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#120a1f"/><stop offset=".5" stop-color="#3a2560"/><stop offset="1" stop-color="#0d0818"/></linearGradient>
+      <linearGradient id="gWater" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#bfe3ff"/><stop offset="1" stop-color="#3a64a8"/></linearGradient>
+      <linearGradient id="gPlate" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9d0e8"/><stop offset="1" stop-color="#6d6385"/></linearGradient>
+      <radialGradient id="gFlame" cx=".5" cy=".75" r=".7"><stop offset="0" stop-color="#fffbe0"/><stop offset=".35" stop-color="#ffd166"/><stop offset=".8" stop-color="#ff7a1a"/><stop offset="1" stop-color="#ff5a00" stop-opacity="0"/></radialGradient>
+      <radialGradient id="gHalo"><stop offset="0" stop-color="#ffcf8f" stop-opacity=".55"/><stop offset="1" stop-color="#ffcf8f" stop-opacity="0"/></radialGradient>
+      <filter id="fGlow" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+    <polygon points="60,96 740,96 790,186 10,186" fill="url(#gTop)" stroke="rgba(185,140,255,.35)"/>
+    <rect x="10" y="186" width="780" height="106" fill="url(#gFront)" stroke="rgba(185,140,255,.3)"/>
+    <rect x="0" y="290" width="800" height="26" rx="3" fill="#120a1f" stroke="rgba(185,140,255,.3)"/>
+    <line x1="10" y1="186" x2="790" y2="186" stroke="rgba(201,162,255,.6)" stroke-width="1.5"/>
+    <g class="coil-glow" filter="url(#fGlow)" fill="none" stroke="#a66bff" stroke-width="2" stroke-linecap="round">
+      <path d="M24,210 C80,196 120,224 180,210 S280,196 340,212"/><path d="M460,212 C520,196 580,224 640,210 S730,198 776,210"/>
+      <path d="M24,240 C80,226 120,254 180,240 S280,226 340,242"/><path d="M460,242 C520,226 580,254 640,240 S730,228 776,240"/>
+      <path d="M24,270 C80,256 120,284 180,270 S280,256 340,272"/><path d="M460,272 C520,256 580,284 640,270 S730,258 776,270"/>
+      <circle cx="400" cy="241" r="38" stroke="#ffcf8f"/>
+      <polygon points="400,212 428,259 372,259" stroke="#ffcf8f"/>
+      <circle cx="400" cy="212" r="4" fill="#ffcf8f"/><circle cx="428" cy="259" r="4" fill="#ffcf8f"/><circle cx="372" cy="259" r="4" fill="#ffcf8f"/>
+    </g>
+    <text x="400" y="307" text-anchor="middle" font-family="Cinzel,Georgia,serif" font-size="13" letter-spacing="6" fill="#b98cff">HOLD · GIVE · RELEASE</text>
+    <g id="altarObjects"></g>
+  </svg>
+  <canvas class="altar-fx" id="altarFx" aria-hidden="true"></canvas>
+  <div class="bask" id="bask" role="dialog" aria-label="Basking in silence">
+    <svg class="bask-ring" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54" stroke="rgba(185,140,255,.2)"/><circle id="baskArc" cx="60" cy="60" r="54" stroke="#ffcf8f" stroke-dasharray="339.3" stroke-dashoffset="0" transform="rotate(-90 60 60)" stroke-linecap="round"/><circle class="breath" cx="60" cy="60" r="20" fill="rgba(166,107,255,.35)" stroke="none"/></svg>
+    <p id="baskText">Breathe in as the circle grows. Breathe out as it shrinks. The Coil is in no hurry.</p>
+    <div class="rite" style="width:auto"><button type="button" id="baskStop">End early (also fine)</button></div>
+  </div>
+</div>
+
+<section class="altar-panel" aria-label="Offerings">
+  <p class="blessing" id="blessing" aria-live="polite">Hold light, pilgrim. Approach the altar.</p>
+  <div class="warmth"><span>Warmth of the Coil</span><span class="bar"><i id="warmthBar"></i></span><b id="warmthWord">Cold stone</b></div>
+  <div class="rite-grid">
+    <div class="rite"><button type="button" data-act="candle">Light a candle</button></div>
+    <div class="rite"><button type="button" data-act="incense">Light incense</button></div>
+    <div class="rite"><button type="button" data-act="water">Offer water</button></div>
+    <div class="rite"><button type="button" data-act="bask">Bask in silence</button></div>
+    <div class="rite combo"><select id="foodPick" aria-label="Choose a food offering"><option value="bread">Bread</option><option value="apple">An apple</option><option value="grapes">Grapes</option><option value="cheese">Cheese</option><option value="fish">A fish</option><option value="honeycake">Honeycake</option><option value="egg">An egg</option></select><button type="button" data-act="food">Offer food</button></div>
+    <div class="rite combo"><select id="goldPick" aria-label="Choose how much gold to offer"><option value="1">A single coin</option><option value="8">A handful</option><option value="all">Your whole bag</option></select><button type="button" data-act="gold">Offer gold</button></div>
+    <div class="rite release wide"><button type="button" data-act="release">Release the altar</button></div>
+  </div>
+  <div class="tally" id="tally"></div>
+  <ul class="altar-log" id="altarLog" aria-label="Your recent offerings"></ul>
+  <div class="altar-foot"><span>You can also tap the candles, bowls and censer on the altar itself.</span><button type="button" id="soundBtn" aria-pressed="false">Sound: off</button></div>
+</section>
+
+<article class="prose" style="margin-top:32px">
+  <h2>How the altar is kept</h2>
+  <p>Every offering here follows the <a href="triangle.html">Sacred Triangle</a>: Xal'Reth holds, Vyrenna gives, Nhalor releases. Candles burn down. Incense burns out. Water evaporates. Gold left in the bowl is collected by the Ministry of Spare Change and passed on to someone who needs it more. When you are ready, release the altar and begin again. An empty altar is also an offering.</p>
+  <p>For the full rites, including Basking and the Shedfall observances, see <a href="rites.html">The Rites</a>. To worship with the faithful in game rather than alone in a browser, <a href="join.html">take the Oath</a> or <a href="https://discord.gg/wYakHBHPz" target="_blank" rel="noopener">join our Discord</a>.</p>
+  <p class="muted">Virtual offerings only. Nothing here costs anything, and no gold, real or in-game, is collected. Your altar is remembered in this browser only. Glory to Xal'Reth.</p>
+</article>
+</div>
+<script>
+(() => {
+  const KEY = 'xalreth-altar-v1';
+  const q = s => document.querySelector(s);
+  const scene = q('#altarScene'), svg = q('#altarSvg'), cv = q('#altarFx'), ctx = cv.getContext('2d');
+  const page = q('.altar-page'), objs = q('#altarObjects');
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const CANDLE_MS = 30 * 60e3, INCENSE_MS = 10 * 60e3, WATER_MS = 2 * 3600e3, GOLD_HOLD_MS = 40e3, PLATE_MAX = 5;
+  const CANDLES = [{x:78,b:150,h:80},{x:120,b:140,h:104},{x:160,b:154,h:62},{x:640,b:154,h:62},{x:680,b:140,h:104},{x:722,b:150,h:80}];
+  const WATER = {x:250, rim:104}, CENSER = {x:400, rim:110}, PLATE = {x:552, y:128}, GOLD = {x:400, rim:160};
+  const STICKS = [[392,108,384,56],[400,108,400,46],[408,108,416,56]];
+  const SLOTS = [[-28,-5],[0,-9],[28,-5],[-14,3],[14,3]];
+  const pick = a => a[Math.floor(Math.random() * a.length)];
+  let lastLine = '';
+  const say = (arr) => { let l; let n = 0; do { l = pick(arr); n++; } while (l === lastLine && n < 6); lastLine = l; return l; };
+
+  const LINES = {
+    candle: ["A small flame. Xal'Reth notices small things. He has a great deal of time.",
+      "The candle burns, and in burning, lets go of itself. Watch it. It knows the teaching better than you do.",
+      "Light given freely is Vyrenna's work. She would like you to know she approves.",
+      "The wick holds the flame lightly. Be the wick.",
+      "A candle for the One Still Hungry. He cannot eat it. He appreciates the thought."],
+    allLit: ["All six candles burn. A seventh would be clutching. Hold light."],
+    snuff: ["You snuff the candle. Letting go of a flame is also devotion. Nhalor nods, quietly."],
+    burnt: ["This candle has burned all the way down. It has nothing left to let go of. Release the altar to set out new ones."],
+    incense: ["The smoke rises and does not try to come back. That is the whole teaching. You may go now. (Stay if you like.)",
+      "Sweet smoke curls toward the Eternal. He breathes it in. He is still hungry, but it helps.",
+      "The incense burns from the top down, which is the only correct way to let go of anything.",
+      "Smoke takes the shape of whatever it is leaving. Then it takes no shape at all."],
+    incenseLit: ["The incense is already burning. Lighting more will not make it burn faster. Patience is also smoke."],
+    water: ["Water takes the low place and is never ashamed. Offer it, and learn from it.",
+      "The bowl receives what is poured. It does not ask for more. It does not ask at all.",
+      "Water held too long goes still. Water held lightly reflects the stars.",
+      "The Eternal does not drink. The water is for the reflection, which is for you."],
+    waterFull: ["The bowl is full. Pouring more would be clutching. Let some evaporate. It will, on its own, which is the point."],
+    food: {
+      bread: "Bread, broken and offered. Hessk asks whether anyone else ate today. Answer honestly, then come back.",
+      apple: "An apple. The Coil accepts it. The Coil will not eat it. Someone hungrier will.",
+      grapes: "Grapes, held in a bunch. Notice they let go one at a time. They have read the Canon.",
+      cheese: "Cheese. Aged, patient, unhurried. The most devout of all dairy.",
+      fish: "A fish, offered to the One Still Hungry. He is touched. He is still hungry.",
+      honeycake: "A honeycake, for Shedfall and for no reason. Both are good reasons."},
+    egg: ["The altar does not accept eggs. Eggs are new members. Please return the egg to the guild at once."],
+    plateFull: ["The plate is full. Hessk asks: what did you give today, to someone who is not a giant serpent?"],
+    gold1: ["One coin. Xal'Reth holds it, warmly, for exactly as long as it takes you to stop wanting it back."],
+    gold8: ["A handful of gold rings into the bowl. The Ministry of Spare Change has already started a form."],
+    goldAll: ["Not all of it. Hold lightly. The Coil keeps a handful and gives the rest back to you, which is awkward for everyone."],
+    goldNote: "Xal'Reth does not want your gold. He holds it a moment, then the Ministry passes it on.",
+    goldGone: ["The Ministry of Spare Change has emptied the bowl and passed your gold on. It was never his. It was never yours. It was briefly warm."],
+    release: ["Hold, give, release. The candles go out, the smoke thins, the bowls are emptied. The altar is bare. This is also an offering."],
+    releaseEmpty: ["The altar is already empty. You cannot release what you are not holding. You are further along than you think."],
+    baskEnd: ["You basked in silence for the length of one hymn. Nothing happened. That was the point. Glory to Xal'Reth."],
+    baskStop: ["You rose early from basking. This is permitted. The stone stays warm for whoever comes next."],
+    warm: ["Every offering is on the altar at once. The Coil is warm. The eyes of the Eternal brighten, briefly. Then he lets that go too."],
+    back: ["Welcome back. Your candles kept burning while you were away. They did not need you to watch. Neither does he."]
+  };
+  const ACT_WORDS = {candle:'Lit a candle', snuff:'Snuffed a candle', incense:'Lit incense', water:'Offered water', food:'Offered ', gold:'Offered gold', bask:'Basked in silence', release:'Released the altar'};
+  const FOOD_NAMES = {bread:'bread', apple:'an apple', grapes:'grapes', cheese:'cheese', fish:'a fish', honeycake:'a honeycake'};
+
+  const fresh = () => ({candles:[null,null,null,null,null,null], incense:null, water:{level:0, at:Date.now()}, food:[], gold:{pile:0, at:0, passed:0},
+    tally:{candle:0, incense:0, water:0, food:0, gold:0, bask:0, release:0}, log:[], last:0, sound:false});
+  function load() {
+    try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && Array.isArray(s.candles)) { const f = fresh(); return Object.assign(f, s, {tally:Object.assign(f.tally, s.tally || {}), gold:Object.assign(f.gold, s.gold || {}), water:Object.assign(f.water, s.water || {})}); } } catch (e) {}
+    return fresh();
+  }
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+  let S = load();
+
+  /* ---------- sound (off by default) ---------- */
+  let AC = null;
+  function tone(freq, dur, type, vol, slide) {
+    if (!S.sound) return;
+    try {
+      AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+      const t = AC.currentTime, o = AC.createOscillator(), g = AC.createGain();
+      o.type = type || 'sine'; o.frequency.setValueAtTime(freq, t);
+      if (slide) o.frequency.exponentialRampToValueAtTime(slide, t + dur);
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol || 0.12, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g).connect(AC.destination); o.start(t); o.stop(t + dur + 0.05);
+    } catch (e) {}
+  }
+  const bell = (f) => { tone(f, 2.4, 'sine', 0.1); tone(f * 2.76, 1.2, 'sine', 0.03); tone(f * 5.4, 0.6, 'sine', 0.015); };
+  const SND = {candle:() => bell(880), incense:() => bell(523), water:() => tone(420, 0.25, 'sine', 0.12, 160), coin:() => { tone(2400 + Math.random()*600, 0.18, 'triangle', 0.04); tone(3600, 0.12, 'sine', 0.02); },
+    food:() => bell(392), release:() => { bell(261.6); setTimeout(() => bell(329.6), 220); setTimeout(() => bell(392), 440); }, bask:() => bell(196)};
+
+  /* ---------- build the altar objects ---------- */
+  function build() {
+    let h = '';
+    CANDLES.forEach((c, i) => {
+      const x = c.x;
+      h += `<g class="candle" id="c${i}" role="button" tabindex="0" aria-label="Candle ${i + 1}">
+        <rect class="focus-ring" x="${x - 24}" y="${c.b - c.h - 40}" width="48" height="${c.h + 50}" rx="8"/>
+        <ellipse cx="${x}" cy="${c.b}" rx="20" ry="5.5" fill="url(#gGold)"/>
+        <rect id="cb${i}" x="${x - 10}" y="${c.b - c.h}" width="20" height="${c.h}" fill="url(#gWax)"/>
+        <g id="cw${i}" transform="translate(0 ${c.b - c.h})">
+          <ellipse cx="${x}" cy="0" rx="10" ry="3" fill="#fff8ec"/>
+          <path d="M${x + 5},0 q2,9 0,${12 + i % 3 * 5}" stroke="#f3e9da" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+          <line x1="${x}" y1="0" x2="${x}" y2="-7" stroke="#2a2018" stroke-width="1.6"/>
+          <circle class="halo" cx="${x}" cy="-16" r="30" fill="url(#gHalo)"/>
+          <path class="flame" d="M${x},-32 C${x + 8},-21 ${x + 6},-9 ${x},-5 C${x - 6},-9 ${x - 8},-21 ${x},-32Z" fill="url(#gFlame)"/>
+        </g></g>`;
+    });
+    h += `<g id="water" role="button" tabindex="0" aria-label="Water bowl">
+      <rect class="focus-ring" x="196" y="86" width="108" height="64" rx="8"/>
+      <rect x="238" y="134" width="24" height="10" rx="2" fill="url(#gObs)"/>
+      <path d="M204,${WATER.rim} Q207,138 250,140 Q293,138 296,${WATER.rim}" fill="url(#gObs)" stroke="rgba(201,162,255,.5)"/>
+      <ellipse cx="250" cy="${WATER.rim}" rx="46" ry="10" fill="#0a0612" stroke="rgba(201,162,255,.6)"/>
+      <ellipse id="wSurf" cx="250" cy="${WATER.rim + 2}" rx="40" ry="7.5" fill="url(#gWater)" opacity="0"/>
+      <ellipse id="wShine" cx="238" cy="${WATER.rim}" rx="12" ry="2" fill="#fff" opacity="0"/>
+      <g id="ripples"></g></g>`;
+    h += `<g id="censer" role="button" tabindex="0" aria-label="Incense burner">
+      <rect class="focus-ring" x="360" y="36" width="80" height="110" rx="8"/>
+      <path d="M378,126 L370,146 M400,130 L400,148 M422,126 L430,146" stroke="#6b4c28" stroke-width="3" stroke-linecap="round"/>
+      <path d="M370,${CENSER.rim} Q372,134 400,136 Q428,134 430,${CENSER.rim}Z" fill="url(#gBronze)" stroke="#2a1d12"/>
+      <ellipse cx="400" cy="${CENSER.rim}" rx="30" ry="7" fill="#1a120a" stroke="#b08850"/>
+      <path d="M380,124 q20,8 40,0" stroke="#d6b06a" stroke-width="1" fill="none" opacity=".6"/>
+      ${STICKS.map((s, i) => `<line id="is${i}" x1="${s[0]}" y1="${s[1]}" x2="${s[2]}" y2="${s[3]}" stroke="#5a3a22" stroke-width="2.4" stroke-linecap="round"/><circle class="tip" id="it${i}" cx="${s[2]}" cy="${s[3]}" r="2.6" fill="#ff8a3a" filter="url(#fGlow)"/>`).join('')}
+      </g>`;
+    h += `<g id="plate" role="button" tabindex="0" aria-label="Offering plate">
+      <rect class="focus-ring" x="490" y="96" width="124" height="52" rx="8"/>
+      <ellipse cx="${PLATE.x}" cy="${PLATE.y + 4}" rx="56" ry="13" fill="#2a2238"/>
+      <ellipse cx="${PLATE.x}" cy="${PLATE.y}" rx="56" ry="13" fill="url(#gPlate)"/>
+      <ellipse cx="${PLATE.x}" cy="${PLATE.y}" rx="40" ry="8.5" fill="none" stroke="#8d82a6"/>
+      <g id="plateItems"></g></g>`;
+    h += `<g id="goldBowl" role="button" tabindex="0" aria-label="Gold offering bowl">
+      <rect class="focus-ring" x="334" y="146" width="132" height="46" rx="8"/>
+      <path d="M342,${GOLD.rim} Q346,184 400,186 Q454,184 458,${GOLD.rim}" fill="#5a3f12" stroke="#d4a548"/>
+      <ellipse cx="400" cy="${GOLD.rim}" rx="58" ry="12" fill="#2a1d0a" stroke="url(#gGold)" stroke-width="2"/>
+      <g id="goldPile"></g></g>`;
+    objs.innerHTML = h;
+  }
+
+  const FOOD_SVG = {
+    bread: (x, y) => `<ellipse cx="${x}" cy="${y}" rx="14" ry="8" fill="#c98a46" stroke="#7a4f22"/><path d="M${x - 7},${y - 4} l4,6 M${x},${y - 6} l4,7 M${x + 6},${y - 5} l3,5" stroke="#f0c48a" stroke-width="1.4"/>`,
+    apple: (x, y) => `<circle cx="${x}" cy="${y - 2}" r="8" fill="#b8324a" stroke="#6e1a2a"/><path d="M${x},${y - 10} q1,-5 4,-6" stroke="#5a3a22" stroke-width="1.5" fill="none"/><ellipse cx="${x + 5}" cy="${y - 14}" rx="4" ry="2" fill="#5c9a44"/><circle cx="${x - 3}" cy="${y - 5}" r="2" fill="#fff" opacity=".5"/>`,
+    grapes: (x, y) => [[0,-12],[-5,-7],[5,-7],[-8,-1],[0,-1],[8,-1],[-4,5],[4,5],[0,10]].map(p => `<circle cx="${x + p[0]}" cy="${y + p[1] * 0.8}" r="4.4" fill="#5b2a86" stroke="#2e1247"/>`).join('') + `<path d="M${x},${y - 14} q2,-4 6,-5" stroke="#5a3a22" stroke-width="1.4" fill="none"/>`,
+    cheese: (x, y) => `<polygon points="${x - 13},${y + 5} ${x + 13},${y + 5} ${x + 13},${y - 3} ${x - 13},${y - 9}" fill="#f2c94c" stroke="#a5821f"/><circle cx="${x - 3}" cy="${y}" r="2" fill="#c99e2c"/><circle cx="${x + 6}" cy="${y + 2}" r="1.5" fill="#c99e2c"/>`,
+    fish: (x, y) => `<path d="M${x - 14},${y} Q${x - 2},${y - 9} ${x + 9},${y} Q${x - 2},${y + 9} ${x - 14},${y}Z" fill="#9fb3c8" stroke="#55677c"/><path d="M${x + 8},${y} l8,-6 v12z" fill="#7d93aa" stroke="#55677c"/><circle cx="${x - 8}" cy="${y - 1.5}" r="1.4" fill="#1a1029"/>`,
+    honeycake: (x, y) => `<rect x="${x - 12}" y="${y - 8}" width="24" height="13" rx="4" fill="#d99a3a" stroke="#8a5a1a"/><path d="M${x - 10},${y - 6} q4,5 8,0 q4,5 8,0 q2,3 3,0" stroke="#ffd98a" stroke-width="2" fill="none"/>`
+  };
+
+  /* ---------- state helpers ---------- */
+  const now = () => Date.now();
+  const candleLeft = i => S.candles[i] == null ? 1 : Math.max(0, 1 - (now() - S.candles[i]) / CANDLE_MS);
+  const candleLit = i => S.candles[i] != null && candleLeft(i) > 0;
+  const incenseLeft = () => S.incense == null ? 1 : Math.max(0, 1 - (now() - S.incense) / INCENSE_MS);
+  const incenseLit = () => S.incense != null && incenseLeft() > 0;
+  const waterLevel = () => Math.max(0, Math.min(1, S.water.level - (now() - S.water.at) / WATER_MS));
+  function warmth() {
+    const lit = S.candles.filter((_, i) => candleLit(i)).length;
+    return Math.min(1, lit / 6 * 0.3 + (incenseLit() ? 0.2 : 0) + waterLevel() * 0.15 + Math.min(1, S.food.length / 3) * 0.15 + (S.gold.pile > 0 ? 0.2 : 0));
+  }
+  const WORDS = [[0.05,'Cold stone'],[0.25,'A faint warmth'],[0.5,'The Coil stirs'],[0.8,'The Coil is warm'],[1.01,'Basking heat']];
+
+  /* ---------- update the drawing from state ---------- */
+  let wasFull = false;
+  function update() {
+    CANDLES.forEach((c, i) => {
+      const left = candleLeft(i), hh = c.h * (0.18 + 0.82 * left), g = q('#c' + i);
+      q('#cb' + i).setAttribute('y', c.b - hh); q('#cb' + i).setAttribute('height', hh);
+      q('#cw' + i).setAttribute('transform', `translate(0 ${c.b - hh})`);
+      g.classList.toggle('lit', candleLit(i));
+      g.setAttribute('aria-label', `Candle ${i + 1}, ` + (candleLit(i) ? 'burning' : left <= 0 ? 'burned down' : 'unlit'));
+    });
+    const il = incenseLeft();
+    STICKS.forEach((s, i) => {
+      const x2 = s[0] + (s[2] - s[0]) * (0.15 + 0.85 * il), y2 = s[1] + (s[3] - s[1]) * (0.15 + 0.85 * il);
+      q('#is' + i).setAttribute('x2', x2); q('#is' + i).setAttribute('y2', y2);
+      q('#it' + i).setAttribute('cx', x2); q('#it' + i).setAttribute('cy', y2);
+    });
+    q('#censer').classList.toggle('lit', incenseLit());
+    const wl = waterLevel(), ws = q('#wSurf');
+    ws.setAttribute('cy', WATER.rim + 2 + (1 - wl) * 16); ws.setAttribute('rx', 42 - (1 - wl) * 18); ws.setAttribute('opacity', wl > 0.01 ? 0.9 : 0);
+    q('#wShine').setAttribute('cy', WATER.rim + (1 - wl) * 16); q('#wShine').setAttribute('opacity', wl > 0.01 ? 0.35 : 0);
+    let ph = '';
+    S.food.forEach((f, i) => { const s = SLOTS[i]; if (FOOD_SVG[f.k]) ph += `<g class="food-item">${FOOD_SVG[f.k](PLATE.x + s[0], PLATE.y + s[1])}</g>`; });
+    const pi = q('#plateItems'); if (pi.dataset.n !== String(S.food.length)) { pi.innerHTML = ph; pi.dataset.n = S.food.length; }
+    let gp = '';
+    for (let i = 0; i < Math.min(S.gold.pile, 40); i++) {
+      const a = (i * 137.5) % 360 * Math.PI / 180, r = 6 + (i % 7) * 6, x = 400 + Math.cos(a) * r * 1.4, y = GOLD.rim - Math.sin(a) * r * 0.25 - Math.floor(i / 12) * 2.5;
+      gp += `<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="5.5" ry="2.4" fill="url(#gGold)" stroke="#7a5617" stroke-width=".6"/>`;
+    }
+    q('#goldPile').innerHTML = gp;
+    const w = warmth();
+    page.style.setProperty('--warmth', w.toFixed(3));
+    q('#warmthBar').style.width = (w * 100).toFixed(1) + '%';
+    q('#warmthWord').textContent = WORDS.find(p => w < p[0])[1];
+    const full = S.candles.some((_, i) => candleLit(i)) && incenseLit() && waterLevel() > 0.05 && S.food.length > 0 && S.gold.pile > 0;
+    if (full && !wasFull) { setTimeout(() => { bless(LINES.warm); flare(); }, 2600); }
+    wasFull = full;
+    renderTally();
+  }
+  function renderTally() {
+    const t = S.tally;
+    q('#tally').innerHTML = [[t.candle,'candles lit'],[t.incense,'incense burned'],[t.water,'bowls of water'],[t.food,'foods offered'],[S.gold.passed,'gold passed on'],[t.bask,'times basked']]
+      .map(p => `<div><b>${p[0]}</b><span>${p[1]}</span></div>`).join('');
+    q('#altarLog').innerHTML = S.log.slice(0, 6).map(e => { const d = new Date(e.t); return `<li><time>${d.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'})}</time>${e.w}</li>`; }).join('');
+  }
+  function record(word) { S.log.unshift({t:now(), w:word}); S.log = S.log.slice(0, 20); S.last = now(); save(); }
+
+  /* ---------- blessing text ---------- */
+  let bt = 0;
+  function bless(arr, note) {
+    const el = q('#blessing'), line = Array.isArray(arr) ? say(arr) : arr;
+    el.classList.add('fade'); clearTimeout(bt);
+    bt = setTimeout(() => { el.textContent = line; if (note) { const s = document.createElement('small'); s.textContent = note; el.appendChild(s); } el.classList.remove('fade'); }, 250);
+  }
+  function flare() { scene.classList.remove('flare'); void scene.offsetWidth; scene.classList.add('flare'); SND.release(); }
+
+  /* ---------- canvas effects ---------- */
+  let W = 0, H = 0, DPR = 1;
+  function resize() { const r = scene.getBoundingClientRect(); DPR = Math.min(2, window.devicePixelRatio || 1); W = r.width; H = r.height; cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0); }
+  function pt(x, y) { const r = svg.getBoundingClientRect(), s = scene.getBoundingClientRect(), k = r.width / 800; return [r.left - s.left + x * k, r.top - s.top + y * k, k]; }
+  function shrinePt(fx, fy) { const r = q('.shrine').getBoundingClientRect(), s = scene.getBoundingClientRect(); return [r.left - s.left + r.width * fx, r.top - s.top + r.height * fy]; }
+  const P = {smoke:[], spark:[], coin:[], drop:[], mote:[], burst:[]};
+  const rnd = (a, b) => a + Math.random() * (b - a);
+
+  function spawnCoins(n) {
+    const [bx, by, k] = pt(GOLD.x, GOLD.rim);
+    for (let i = 0; i < n; i++) P.coin.push({x:bx + rnd(-30, 30) * k, y:by - rnd(160, 260) * k - i * 14 * k, vx:rnd(-.3, .3), vy:rnd(0, 1), rot:rnd(0, 6), vr:rnd(.1, .3), land:by - rnd(0, 4) * k, k});
+  }
+  function spawnDrops() {
+    const [x, y, k] = pt(WATER.x, WATER.rim);
+    for (let i = 0; i < 14; i++) P.drop.push({x:x + rnd(-6, 6) * k, y:y - rnd(120, 200) * k - i * 9 * k, vy:rnd(1, 2), land:y + 4 * k, k});
+  }
+  function ripple() {
+    const g = q('#ripples'), wl = waterLevel(), cy = WATER.rim + 2 + (1 - wl) * 16;
+    const e = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+    e.setAttribute('cx', 250 + rnd(-8, 8)); e.setAttribute('cy', cy); e.setAttribute('rx', 14); e.setAttribute('ry', 3); e.setAttribute('class', 'ripple');
+    g.appendChild(e); setTimeout(() => e.remove(), 1700);
+  }
+  function burstFrom(x, y, n, color, tx, ty) {
+    for (let i = 0; i < n; i++) P.burst.push({x:x + rnd(-10, 10), y:y + rnd(-6, 6), tx:tx + rnd(-30, 30), ty:ty + rnd(-30, 30), t:0, sp:rnd(.006, .012), c:color, r:rnd(1.5, 3.5)});
+  }
+
+  let last = performance.now();
+  function frame(tn) {
+    const dt = Math.min(50, tn - last) / 16.67; last = tn;
+    ctx.clearRect(0, 0, W, H);
+    const w = warmth(), k = pt(0, 0)[2];
+    // ambient motes
+    if (!reduce && P.mote.length < 8 + w * 40 && Math.random() < 0.3) P.mote.push({x:rnd(0, W), y:H * rnd(.55, .95), vy:-rnd(.15, .5), a:0, life:rnd(200, 420), t:0, r:rnd(.8, 2.2)});
+    ctx.globalCompositeOperation = 'lighter';
+    P.mote = P.mote.filter(m => { m.t += dt; m.y += m.vy * dt; m.x += Math.sin((m.t + m.life) / 60) * .2; const a = Math.sin(Math.PI * m.t / m.life) * (.35 + .4 * w);
+      ctx.fillStyle = `rgba(190,140,255,${a})`; ctx.beginPath(); ctx.arc(m.x, m.y, m.r, 0, 6.283); ctx.fill(); return m.t < m.life; });
+    // candle embers
+    CANDLES.forEach((c, i) => { if (candleLit(i) && !reduce && Math.random() < 0.025 * dt) { const hh = c.h * (0.18 + 0.82 * candleLeft(i)); const [x, y] = pt(c.x, c.b - hh - 30); P.spark.push({x, y, vx:rnd(-.3, .3), vy:-rnd(.4, 1), t:0, life:rnd(40, 90)}); } });
+    P.spark = P.spark.filter(s => { s.t += dt; s.x += s.vx * dt; s.y += s.vy * dt; const a = 1 - s.t / s.life; ctx.fillStyle = `rgba(255,190,110,${a})`; ctx.beginPath(); ctx.arc(s.x, s.y, 1.2, 0, 6.283); ctx.fill(); return s.t < s.life; });
+    // release burst
+    P.burst = P.burst.filter(b => { b.t += b.sp * dt; const e = 1 - Math.pow(1 - Math.min(1, b.t), 3); const x = b.x + (b.tx - b.x) * e, y = b.y + (b.ty - b.y) * e - Math.sin(e * Math.PI) * 40;
+      ctx.fillStyle = b.c.replace('A', (1 - b.t).toFixed(2)); ctx.beginPath(); ctx.arc(x, y, b.r, 0, 6.283); ctx.fill(); return b.t < 1; });
+    ctx.globalCompositeOperation = 'source-over';
+    // incense smoke
+    if (incenseLit()) {
+      const il = incenseLeft();
+      STICKS.forEach(s => { if (Math.random() < (reduce ? .08 : .35) * dt) { const [x, y] = pt(s[0] + (s[2] - s[0]) * (0.15 + 0.85 * il), s[1] + (s[3] - s[1]) * (0.15 + 0.85 * il)); P.smoke.push({x, y, vx:rnd(-.1, .1), vy:-rnd(.35, .6) * Math.max(k, .5), r:1.5, a:.32, seed:rnd(0, 100), t:0}); } });
+    }
+    P.smoke = P.smoke.filter(p => { p.t += dt; p.y += p.vy * dt; p.x += (p.vx + Math.sin(p.t / 28 + p.seed) * .35) * dt; p.r += .055 * dt; p.a -= .0019 * dt;
+      if (p.a <= 0) return false; const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 2.2); g.addColorStop(0, `rgba(215,200,240,${p.a})`); g.addColorStop(1, 'rgba(215,200,240,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 2.2, 0, 6.283); ctx.fill(); return p.y > -40; });
+    // water drops
+    P.drop = P.drop.filter(d => { d.vy += .18 * dt; d.y += d.vy * dt; if (d.y >= d.land) { if (Math.random() < .5) ripple(); SND.water(); return false; }
+      if (d.y > 0) { ctx.fillStyle = 'rgba(190,225,255,.9)'; ctx.beginPath(); ctx.ellipse(d.x, d.y, 1.8 * d.k + .6, 3.2 * d.k + 1, 0, 0, 6.283); ctx.fill(); } return true; });
+    // coins
+    P.coin = P.coin.filter(c => { c.vy += .22 * dt; c.y += c.vy * dt; c.x += c.vx * dt; c.rot += c.vr * dt;
+      if (c.y >= c.land) { S.gold.pile++; SND.coin(); update(); return false; }
+      if (c.y > -10) { const rx = 6 * c.k + 1.5, ry = Math.max(.6, Math.abs(Math.cos(c.rot)) * rx); ctx.fillStyle = '#f2c45a'; ctx.strokeStyle = '#8a6420'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.ellipse(c.x, c.y, ry, rx, 0, 0, 6.283); ctx.fill(); ctx.stroke(); ctx.fillStyle = 'rgba(255,250,220,.7)'; ctx.beginPath(); ctx.ellipse(c.x - ry * .3, c.y - rx * .3, ry * .3, rx * .3, 0, 0, 6.283); ctx.fill(); }
+      return true; });
+    requestAnimationFrame(frame);
+  }
+
+  /* ---------- actions ---------- */
+  function lightCandle(i) {
+    if (i == null) { i = S.candles.findIndex((v, j) => v == null); if (i < 0) { bless(S.candles.some((_, j) => candleLit(j)) ? LINES.allLit : LINES.burnt); return; } }
+    if (candleLit(i)) { S.candles[i] = null; record(ACT_WORDS.snuff); bless(LINES.snuff); update(); return; }
+    if (S.candles[i] != null && candleLeft(i) <= 0) { bless(LINES.burnt); return; }
+    S.candles[i] = now(); S.tally.candle++; record(ACT_WORDS.candle); SND.candle();
+    const left = S.candles.filter(v => v == null).length;
+    bless(left === 0 ? LINES.allLit : LINES.candle); update();
+  }
+  function lightIncense() {
+    if (incenseLit()) { bless(LINES.incenseLit); return; }
+    S.incense = now(); S.tally.incense++; record(ACT_WORDS.incense); SND.incense(); bless(LINES.incense); update();
+  }
+  function offerWater() {
+    const wl = waterLevel();
+    if (wl > 0.92) { bless(LINES.waterFull); return; }
+    S.water = {level:Math.min(1, wl + 0.34), at:now()}; S.tally.water++; record(ACT_WORDS.water); spawnDrops(); bless(LINES.water);
+    setTimeout(update, 900); update();
+  }
+  function offerFood(k) {
+    if (k === 'egg') { bless(LINES.egg); return; }
+    if (S.food.length >= PLATE_MAX) { bless(LINES.plateFull); return; }
+    S.food.push({k, t:now()}); S.tally.food++; record(ACT_WORDS.food + FOOD_NAMES[k]); SND.food(); bless(LINES.food[k]); update();
+  }
+  let goldTimer = 0;
+  function offerGold(v) {
+    const n = v === 'all' ? 24 : Number(v);
+    S.tally.gold += n; S.gold.at = now(); record(ACT_WORDS.gold);
+    spawnCoins(v === 'all' ? 24 : n);
+    bless(v === 'all' ? LINES.goldAll : v === '1' ? LINES.gold1 : LINES.gold8, LINES.goldNote);
+    if (v === 'all') setTimeout(() => { const [x, y] = pt(GOLD.x, GOLD.rim); burstFrom(x, y, 40, 'rgba(255,210,120,A)', x + 120, y + 60); S.gold.pile = Math.max(0, S.gold.pile - 16); update(); }, 2600);
+    save(); scheduleGold();
+  }
+  function scheduleGold() {
+    clearTimeout(goldTimer);
+    const wait = Math.max(1500, S.gold.at + GOLD_HOLD_MS - now());
+    goldTimer = setTimeout(() => {
+      if (S.gold.pile <= 0) return;
+      const [x, y] = pt(GOLD.x, GOLD.rim), [ox, oy] = shrinePt(0.17, 0.15);
+      burstFrom(x, y, Math.min(60, 10 + S.gold.pile * 2), 'rgba(255,214,130,A)', ox, oy);
+      S.gold.passed += S.gold.pile; S.gold.pile = 0; record('The Ministry passed your gold on'); bless(LINES.goldGone); SND.release(); update();
+    }, wait);
+  }
+  function release() {
+    const any = S.candles.some(v => v != null) || S.incense != null || waterLevel() > 0.01 || S.food.length || S.gold.pile;
+    if (!any) { bless(LINES.releaseEmpty); return; }
+    const [tx, ty] = shrinePt(0.47, 0.16);
+    CANDLES.forEach((c, i) => { if (S.candles[i] != null) { const [x, y] = pt(c.x, c.b - c.h * 0.6); burstFrom(x, y, 14, 'rgba(255,200,120,A)', tx, ty); } });
+    [[WATER.x, WATER.rim, 'rgba(170,215,255,A)'], [CENSER.x, 70, 'rgba(220,205,245,A)'], [PLATE.x, PLATE.y, 'rgba(201,162,255,A)'], [GOLD.x, GOLD.rim, 'rgba(255,214,130,A)']].forEach(o => { const [x, y] = pt(o[0], o[1]); burstFrom(x, y, 18, o[2], tx, ty); });
+    S.gold.passed += S.gold.pile;
+    Object.assign(S, {candles:[null,null,null,null,null,null], incense:null, water:{level:0, at:now()}, food:[], gold:Object.assign(S.gold, {pile:0})});
+    P.smoke.forEach(p => p.a *= .5);
+    S.tally.release++; record(ACT_WORDS.release); bless(LINES.release); flare(); q('#plateItems').dataset.n = ''; update();
+  }
+  let baskT = 0, baskStart = 0;
+  const BASK_MS = 60e3;
+  function bask() {
+    const b = q('#bask'); b.classList.add('on'); baskStart = now(); SND.bask(); q('#baskStop').focus();
+    const arc = q('#baskArc');
+    const tick = () => { const f = Math.min(1, (now() - baskStart) / BASK_MS); arc.setAttribute('stroke-dashoffset', (339.3 * f).toFixed(1));
+      if (f >= 1) { endBask(true); return; } baskT = requestAnimationFrame(tick); };
+    tick();
+  }
+  function endBask(done) {
+    cancelAnimationFrame(baskT); q('#bask').classList.remove('on');
+    if (done) { S.tally.bask++; record(ACT_WORDS.bask); bless(LINES.baskEnd); SND.bask(); flare(); save(); renderTally(); } else bless(LINES.baskStop);
+  }
+
+  /* ---------- wiring ---------- */
+  build();
+  document.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => {
+    const a = b.dataset.act;
+    if (a === 'candle') lightCandle(); else if (a === 'incense') lightIncense(); else if (a === 'water') offerWater();
+    else if (a === 'food') offerFood(q('#foodPick').value); else if (a === 'gold') offerGold(q('#goldPick').value);
+    else if (a === 'bask') bask(); else if (a === 'release') release();
+  }));
+  const tap = (el, fn) => { el.addEventListener('click', fn); el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } }); };
+  CANDLES.forEach((_, i) => tap(q('#c' + i), () => lightCandle(i)));
+  tap(q('#censer'), lightIncense); tap(q('#water'), offerWater); tap(q('#plate'), () => offerFood(q('#foodPick').value)); tap(q('#goldBowl'), () => offerGold(q('#goldPick').value));
+  q('#baskStop').addEventListener('click', () => endBask(false));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && q('#bask').classList.contains('on')) endBask(false); });
+  const sb = q('#soundBtn');
+  const syncSound = () => { sb.textContent = 'Sound: ' + (S.sound ? 'on' : 'off'); sb.setAttribute('aria-pressed', String(!!S.sound)); };
+  sb.addEventListener('click', () => { S.sound = !S.sound; save(); syncSound(); if (S.sound) bell(659); });
+  syncSound();
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(scene); else window.addEventListener('resize', resize);
+  resize(); update();
+  if (S.last && S.candles.some(v => v != null)) bless(LINES.back);
+  if (S.gold.pile > 0) scheduleGold();
+  setInterval(update, 1000);
+  requestAnimationFrame(frame);
+})();
+</script>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand"><a class="brand" href="index.html"><svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs>
+    <linearGradient id="gm" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4eaff"/><stop offset=".6" stop-color="#b98cff"/><stop offset="1" stop-color="#7651b0"/>
+    </linearGradient>
+    <radialGradient id="em" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#e0c4ff"/><stop offset=".7" stop-color="#4b2386"/><stop offset="1" stop-color="#08050f"/>
+    </radialGradient>
+  </defs>
+  <circle cx="100" cy="100" r="94" fill="none" stroke="url(#gm)" stroke-width="2"/>
+  <circle cx="100" cy="100" r="86" fill="none" stroke="#b98cff" stroke-opacity=".35" stroke-width="1" stroke-dasharray="2 6"/>
+  <path d="M100 22 C 150 22 178 58 178 100 C 178 146 142 176 100 176 C 62 176 36 150 36 112 C 36 78 62 56 96 56 C 128 56 148 78 148 104 C 148 130 128 146 104 146 C 84 146 70 132 70 114 C 70 98 82 88 98 88"
+        fill="none" stroke="url(#gm)" stroke-width="9" stroke-linecap="round"/>
+  <path d="M98 88 l 14 -8 l -4 16 z" fill="url(#gm)"/>
+  <ellipse cx="104" cy="112" rx="15" ry="15" fill="url(#em)" stroke="#b98cff" stroke-width="1.5"/>
+  <ellipse cx="104" cy="112" rx="3" ry="11" fill="#08050f"/>
+  <g fill="#b98cff" opacity=".8">
+    <path d="M100 6 l3 8 h-6z"/><path d="M100 194 l3 -8 h-6z"/><path d="M6 100 l8 3 v-6z"/><path d="M194 100 l-8 3 v-6z"/>
+  </g>
+</svg><span>XAL'RETH</span></a>
+        <p>The Coil is beneath all things. The Coil is patient. The Coil is still here.</p></div>
+      <nav aria-label="The Story"><h4>The Story</h4><ul><li><a href="lore.html">The Chronicle</a></li><li><a href="legends.html">The Legends</a></li><li><a href="canon.html#life">The Life of the Eternal</a></li><li><a href="triangle.html">The Sacred Triangle</a></li><li><a href="lore.html#now">The Unwrapping</a></li></ul></nav>
+      <nav aria-label="The Teaching"><h4>The Teaching</h4><ul><li><a href="canon.html">The Canon</a></li><li><a href="teachings.html">The Teachings</a></li><li><a href="scripture.html">The Scripture</a></li><li><a href="begging.html">The Politics of Begging</a></li><li><a href="litany.html">The Litany of Begging</a></li></ul></nav>
+      <nav aria-label="The Faithful"><h4>The Faithful</h4><ul><li><a href="rites.html">The Rites</a></li><li><a href="priesthood.html">The Priesthood</a></li><li><a href="codex.html">The Codex</a></li><li><a href="library.html">The Library</a></li><li><a href="blog.html">The Daily Coil</a></li><li><a href="news.html">The Coil Herald</a></li><li><a href="merch.html">Official Merch</a></li></ul></nav>
+      <nav aria-label="Join"><h4>Join</h4><ul><li><a href="join.html">Take the Oath</a></li><li><a href="https://discord.gg/wYakHBHPz" target="_blank" rel="noopener">Our Discord</a></li><li><a href="addons.html">Xal'Reth RP Addon</a></li><li><a href="devotion.html">Disciples of Devotion</a></li><li><a href="politics-of-begging.txt" download>Begging emote script</a></li></ul></nav>
+    </div>
+    <div class="chant">GLORY TO XAL'RETH</div>
+    <small>&copy; <span data-year>2026</span> The Cult of Xal'Reth. A fan-made World of Warcraft roleplay site, not affiliated with or endorsed by Blizzard Entertainment.
+    World of Warcraft is a trademark of Blizzard Entertainment, Inc. Xal'Reth is fictional. Please stop asking him for gold.</small>
+  </div>
+</footer>
+<script src="verses.js"></script>
+<script src="site.js"></script>
+<script src="masthead.js"></script>
+</body>
+</html>
