@@ -994,3 +994,8 @@ a.card:hover, .card.addon:hover { border-color: rgba(201,162,255,.6); box-shadow
 @keyframes mh-slither { 0%,100% { transform: translateX(-30px); } 50% { transform: translateX(-20px) translateY(10px); } }
 @media (max-width: 600px) { .page-head.mh { padding: 72px 16px 48px; } }
 @media (prefers-reduced-motion: reduce) { .mh-fx *, .mh-layer, .mh-layer * { animation: none !important; } }
+/* Discord */
+.discord-cta { max-width: 760px; margin: 24px auto; padding: 28px 24px; border: 1px solid rgba(124,140,255,.5); border-radius: 8px; background: linear-gradient(160deg, rgba(60,50,140,.35), rgba(15,8,30,.6)); box-shadow: 0 0 40px rgba(110,120,255,.2); }
+.discord-cta h2 { margin-top: 0; }
+.btn.discord-btn { background: #5865f2; border-color: #7983ff; color: #fff; }
+.btn.discord-btn:hover { background: #6d78ff; color: #fff; box-shadow: 0 6px 24px rgba(88,101,242,.45); }
