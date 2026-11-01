@@ -780,3 +780,14 @@ a.card:hover, .card.addon:hover { border-color: rgba(201,162,255,.6); box-shadow
 .byline { margin-bottom: 24px; }
 .article blockquote { margin: 24px 0; padding: 16px 22px; border-left: 3px solid var(--violet-hot); background: rgba(166,107,255,.07); font-style: italic; font-size: 1.25rem; }
 .article blockquote cite { display: block; font-style: normal; font-family: var(--serif-display); font-size: .75rem; letter-spacing: .18em; color: var(--gold-dim); margin-top: 8px; }
+
+/* ===== Sacred Triangle ===== */
+.tri-figure { display: flex; justify-content: center; margin: 0 auto 8px; }
+.tri-svg { width: min(560px, 100%); height: auto; filter: drop-shadow(0 0 30px rgba(138,77,255,.35)); }
+.tri-card { border-top-width: 3px; }
+.tri-card.gold { border-top-color: #f1c35c; box-shadow: inset 0 40px 60px -40px rgba(241,195,92,.25); }
+.tri-card.gold h3 { color: #f6d27a; }
+.tri-card.silver { border-top-color: #d8d2ea; box-shadow: inset 0 40px 60px -40px rgba(216,210,234,.18); }
+.tri-card.silver h3 { color: #ece6f5; }
+.tri-card.violet { border-top-color: var(--violet-hot); box-shadow: inset 0 40px 60px -40px rgba(166,107,255,.3); }
+.tri-cards { margin-bottom: 28px; }
