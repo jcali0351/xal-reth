@@ -1,0 +1,42 @@
+[
+  {
+    "date": "2026-11-01",
+    "time": "01:15",
+    "category": "Site News",
+    "title": "The Coil Herald Opens: News Ten Times a Day",
+    "body": "The Sanctum now has a news page. Ten dispatches arrive every day from the desks of the faithful: the Accusers' Docket, the Ministry of Spare Change, the Nest Watch, the Basking Report, Salamander Sightings and more. Official announcements like this one appear here at the top.",
+    "link": "news.html"
+  },
+  {
+    "date": "2026-11-01",
+    "time": "00:50",
+    "category": "Lore",
+    "title": "New on the Blog: Who Is Xal'Reth?",
+    "body": "An 800-word introduction to the Eternal: the Restless Serpent, the Four Sights, the Night of Stillness and the First Vow.",
+    "link": "post-who-is-xalreth.html"
+  },
+  {
+    "date": "2026-11-01",
+    "time": "00:41",
+    "category": "Revelation",
+    "title": "The Sacred Triangle Revealed: Vyrenna and Nhalor",
+    "body": "The High Priestess has dreamed the two powers who stand upon Xal'Reth: Vyrenna the Ember-Scale, who gives, and Nhalor the Hollow Wing, who releases. Hold, give, release.",
+    "link": "triangle.html"
+  },
+  {
+    "date": "2026-11-01",
+    "time": "00:05",
+    "category": "Addons",
+    "title": "Disciples of Devotion Released for Midnight",
+    "body": "The scripture of Xal'Reth, read aloud as emotes: 100 chapters, 100 custom icons, a Verse of the Day and a live reader on the website. Free download.",
+    "link": "devotion.html"
+  },
+  {
+    "date": "2026-10-31",
+    "time": "23:35",
+    "category": "Addons",
+    "title": "The Litany of Begging Released (Please Read the Warning)",
+    "body": "Ten thousand lines of the most boring text ever written in the name of the Coil, now performable line by line in game.",
+    "link": "litany.html"
+  }
+]
