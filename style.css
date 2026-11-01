@@ -857,3 +857,8 @@ a.card:hover, .card.addon:hover { border-color: rgba(201,162,255,.6); box-shadow
 .news-meta time { color: var(--bone); }
 .news-filter { justify-content: center; max-width: 860px; margin: 0 auto 18px; }
 .yesterday .news-item { opacity: .85; }
+/* Release post distress warning */
+.post-warning { border: 1px solid rgba(255,170,90,.55); border-left: 4px solid #ffb35c; background: rgba(60,30,10,.35); padding: 20px 22px; margin: 0 0 32px; border-radius: 6px; }
+.post-warning h2 { margin-top: 0; color: #ffcf8f; font-size: 1.15rem; }
+.post-warning p { margin: 0 0 12px; }
+.post-warning p:last-child { margin-bottom: 0; }
