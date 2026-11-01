@@ -132,7 +132,7 @@
   const off = document.getElementById("official-news");
   if (off) fetch("news.json", { cache: "no-store" }).then(r => r.json()).then(list => {
     list.sort((a, b) => (b.date + (b.time || "")).localeCompare(a.date + (a.time || "")));
-    off.innerHTML = list.map(n => `<article class="news-item official"><div class="news-meta"><span class="desk">${esc(n.category || "Official")}</span><time datetime="${esc(n.date)}">${esc(new Date(n.date + "T" + (n.time || "12:00")).toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" }))}${n.time ? " · " + esc(n.time) : ""}</time></div>
-      <h3>${n.link ? `<a href="${esc(n.link)}">${esc(n.title)}</a>` : esc(n.title)}</h3><p>${esc(n.body)}</p></article>`).join("");
+    off.innerHTML = list.slice(0, 12).map(n => `<article class="news-item official"><div class="news-meta"><span class="desk">${esc(n.category || "Official")}</span><time datetime="${esc(n.date)}">${esc(new Date(n.date + "T" + (n.time || "12:00")).toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" }))}${n.time ? " · " + esc(n.time) : ""}</time></div>
+      <h3>${n.link ? `<a href="${esc(n.link)}">${esc(n.title)}</a>` : esc(n.title)}</h3><p>${esc(n.body)}</p></article>`).join("") + (list.length > 12 ? '<p class="center"><a class="btn ghost" href="herald.html">See every post in the Herald Archive</a></p>' : "");
   }).catch(() => { off.innerHTML = '<p class="muted">Official news could not be loaded right now.</p>'; });
 })();
