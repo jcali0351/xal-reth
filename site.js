@@ -112,3 +112,11 @@ const VERSES = window.VERSES || [["The Book of Shedding 1:1", "In the beginning 
   };
   tick();
 })();
+
+// Litany warning gate
+document.querySelectorAll("[data-reveal]").forEach((b) => {
+  b.addEventListener("click", () => {
+    const el = document.getElementById(b.getAttribute("data-reveal"));
+    if (el) { el.hidden = false; el.scrollIntoView({ behavior: "smooth", block: "start" }); }
+  });
+});
