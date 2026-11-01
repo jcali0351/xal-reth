@@ -827,3 +827,4 @@ a.card:hover, .card.addon:hover { border-color: rgba(201,162,255,.6); box-shadow
 .blog-hero .post-card.big p.muted { font-size: 1.1rem; }
 .blog-hero .post-card.big .read { align-self: end; }
 @media (max-width: 760px) { .blog-hero .post-card.big { max-height: none; grid-template-rows: none; } .blog-hero .post-card.big img { height: 220px; grid-row: auto; } }
+.hero .seo-line { font-family: var(--serif-display); font-size: .78rem; letter-spacing: .18em; text-transform: uppercase; color: var(--bone-dim); margin: -8px auto 14px; max-width: 640px; }
