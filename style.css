@@ -999,3 +999,4 @@ a.card:hover, .card.addon:hover { border-color: rgba(201,162,255,.6); box-shadow
 .discord-cta h2 { margin-top: 0; }
 .btn.discord-btn { background: #5865f2; border-color: #7983ff; color: #fff; }
 .btn.discord-btn:hover { background: #6d78ff; color: #fff; box-shadow: 0 6px 24px rgba(88,101,242,.45); }
+.prose code, .cmds code { overflow-wrap: anywhere; }
