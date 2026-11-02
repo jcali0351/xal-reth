@@ -170,14 +170,14 @@
         <div>
           <p class="kicker">WoW Addon · New Release · Read the disclaimer</p>
           <h2 class="mt-0">Drama Queen</h2>
-          <div class="meta"><span class="tag green">Version 2.1</span><span class="tag">Retail · Midnight</span><span class="tag">Free</span><span class="tag">New</span><span class="tag">Use at your own risk</span></div>
-          <p>Every five minutes, Drama Queen posts a piece of deadpan, real-sounding personal drama to guild chat under your name. No lizard jokes, no game jokes: pregnancy scares, arrests, a second phone found in the car, eviction notices, an ex marrying your best friend. It reads like news. That is the point, and also the problem.</p>
-          <p class="muted">6,000 one-off updates that never repeat until every one has been used, plus storylines that play out over consecutive posts (the pregnancy test, the second phone, the eviction, "Kevin Gym"). It never names real people, never asks anyone for gold, money or help, and leaves out self-harm, suicide and abuse. Only one copy per guild posts, it pauses in combat and boss-fight chat lockdowns, and you can change the interval from 1 to 60 minutes. <strong>Read the disclaimer below before you install it.</strong></p>
+          <div class="meta"><span class="tag green">Version 2.5</span><span class="tag">Retail · Midnight</span><span class="tag">Free</span><span class="tag">New</span><span class="tag">Use at your own risk</span></div>
+          <p>Every five minutes, Drama Queen posts a piece of deadpan, real-sounding personal drama to guild chat under your name, acts it out as an emote (<em>stares at their phone. "I think I'm pregnant."</em>) and says it out loud in /say. No lizard jokes, no game jokes: pregnancy scares, arrests, a second phone found in the car, eviction notices, an ex marrying your best friend. It reads like news. That is the point, and also the problem.</p>
+          <p class="muted">6,000 one-off updates that never repeat until every one has been used, plus storylines that play out over consecutive posts (the pregnancy test, the second phone, the eviction, "Kevin Gym"). It never names real people, never asks anyone for gold, money or help, and leaves out self-harm, suicide and abuse. /say is automatic inside dungeons and raids; out in the world Blizzard requires a key press, so a glowing "Say it" button (or a key binding) delivers the line with one click. Only one copy per guild posts, it pauses in combat and boss-fight chat lockdowns, and you can change the interval from 1 to 60 minutes. <strong>Read the disclaimer below before you install it.</strong></p>
           <div class="actions"><a class="btn big" href="DramaQueen.zip" download>Download Drama Queen</a><a class="btn ghost" href="#dramaqueen-disclaimer">Disclaimer</a><a class="btn ghost" href="#dramaqueen-commands">Commands</a></div>
         </div>
         <div class="stat-col">
           <div class="stat"><b>6,000</b><span>dramatic updates</span></div>
-          <div class="stat"><b>5 min</b><span>between posts</span></div>
+          <div class="stat"><b>3</b><span>guild, emote and say</span></div>
           <div class="stat"><b>/dq</b><span>to open the panel</span></div>
         </div>
       </div>
@@ -227,12 +227,12 @@
 
   <section class="prose" id="dramaqueen-commands">
     <h2 class="center">Drama Queen commands</h2>
-    <table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/dq</code> or <code>/drama</code></td><td>Show or hide the Drama Queen panel</td></tr><tr><td><code>/dq now</code></td><td>Post one piece of drama right now</td></tr><tr><td><code>/dq on · off</code></td><td>Start or stop the automatic posts</td></tr><tr><td><code>/dq every 10</code></td><td>Minutes between posts (1 to 60, default 5)</td></tr><tr><td><code>/dq main</code></td><td>Make this character the one that posts, if several copies are running</td></tr><tr><td><code>/dq status</code></td><td>Show the timer, post count and which character is posting</td></tr></tbody></table>
-    <p class="muted center">Install it like the others: extract the zip and move the <code>DramaQueen</code> folder into <code>World of Warcraft\_retail_\Interface\AddOns\</code>, then fully restart the game. You should see "Drama Queen 2.1 (real drama) loaded" in your chat window.</p>
+    <table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/dq</code> or <code>/drama</code></td><td>Show or hide the Drama Queen panel</td></tr><tr><td><code>/dq now</code></td><td>Post one piece of drama right now</td></tr><tr><td><code>/dq say</code></td><td>Say the waiting line in /say (or click the glowing "Say it" button, or bind a key under Key Bindings &gt; AddOns)</td></tr><tr><td><code>/dq guild · emote · saymode</code></td><td>Turn guild chat, the emote or /say on or off</td></tr><tr><td><code>/dq on · off</code></td><td>Start or stop the automatic posts</td></tr><tr><td><code>/dq every 10</code></td><td>Minutes between posts (1 to 60, default 5)</td></tr><tr><td><code>/dq main</code></td><td>Make this character the one that posts, if several copies are running</td></tr><tr><td><code>/dq status</code></td><td>Show the timer, post count and which character is posting</td></tr></tbody></table>
+    <p class="muted center">Install it like the others: extract the zip and move the <code>DramaQueen</code> folder into <code>World of Warcraft\_retail_\Interface\AddOns\</code>, then fully restart the game. You should see "Drama Queen 2.5 (guild, emote and say) loaded" in your chat window.</p>
   </section>
 
   <section class="warning" id="dramaqueen-disclaimer" aria-labelledby="dq-warn-h">
-    <p class="kicker">Drama Queen 2.1</p>
+    <p class="kicker">Drama Queen 2.5</p>
     <h2 id="dq-warn-h">Disclaimer: Use at Your Own Risk</h2>
     <p>Drama Queen is a prank addon. It automatically posts fictional personal drama to guild chat, under your character's name, on a timer, with nothing to tell readers it is fake. By downloading, installing or running it, you accept everything below. If any of it gives you pause, do not use it.</p>
 
@@ -262,7 +262,8 @@
     <ul>
       <li>Do not edit the addon to name real players, real people or real places, to reveal anyone's private information, or to target anyone. That turns a prank into harassment.</li>
       <li>Do not add lines about self-harm, suicide, abuse or violence. People rightly treat those as emergencies.</li>
-      <li>Never run it anywhere outside your own guild, and never aim it at strangers.</li>
+      <li>Version 2.5 also posts in /emote and /say, which <strong>everyone near you can see, including strangers and players outside your guild</strong>. Turn those off with <code>/dq emote</code> and <code>/dq saymode</code> in busy cities, in groups with people you don't know, and anywhere you would not want an audience.</li>
+      <li>Public /say and /emote drama is far more likely to be reported than guild chat. Never aim it at strangers, and stop at once if anyone nearby objects.</li>
     </ul>
 
     <h3>5. When to switch it off</h3>
