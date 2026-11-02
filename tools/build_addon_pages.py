@@ -23,6 +23,7 @@ def grab(pattern):
 TABLE_XRP = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/xrp</code>.*?</table>')
 TABLE_PARA = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/para</code>.*?</table>')
 TABLE_ROT = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/rot</code>.*?</table>')
+TABLE_EDGE = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/edge</code>.*?</table>')
 TABLE_DQ = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/dq</code>.*?</table>')
 DISCLAIMER = grab(r'<section class="warning" id="dramaqueen-disclaimer".*?</section>').replace(' id="dramaqueen-disclaimer"', ' id="disclaimer"')
 
@@ -147,6 +148,25 @@ ADDONS = [
   faq=[("Why do I have to click for /say?", "World of Warcraft only lets addons speak in /say outside instances when you press a key or click. The SAY button (or a key binding) delivers the waiting line with one click."),
        ("Can I see the lines without posting them?", "Yes. Set the channel to your own chat window and the rot stays between you and the Coil.")]),
 
+ dict(slug="addon-edgelord-pro.html", name="Edgelord Pro", folder="EdgelordPro", zip="EdgelordPro.zip", version="1.0", game="Retail · Midnight",
+  slash="/edge", short="Edgy PC-mastery gamer emotes that get more annoying over time",
+  tagline="Nobody understands you. Your frame rate, your RGB, your pain. Now everyone nearby gets to hear about it.",
+  desc="Edgelord Pro is a free WoW roleplay addon with 1,574 edgy PC-mastery gamer emotes in ten categories, aimed at your target, group or guild, with auto-edge, Escalation, poses and keyboard-clack sounds.",
+  lede="The brooding cousin of Brain Rotter Pro. Every line is an edgy PC-gamer emote with a matching pose, and your rival's name is filled in for you: <em>sighs darkly: \"Anything under 144 frames is a slideshow, and I didn't come here for a PowerPoint.\"</em> Case fans, frame rates, RGB, mechanical keyboards, energy drinks, damage meters and a tragic backstory nobody asked for. It is charming for about ten minutes. Then it is not. That is the point.",
+  stats=[("1,574", "edgy lines"), ("10", "categories"), ("/edge", "to open the panel")],
+  features=[
+   ("Ten Categories", "From PC Mastery to Final Boss Energy", "<p>PC Mastery, Frame Rate Supremacy, RGB Is a Lifestyle, Mechanical Keyboard Liturgy, Brooding in the Shadows, Nobody Understands Me, Gamer Fuel, Meter Supremacy, Console Peasantry and Final Boss Energy. Every line is unique, and each category plays through before it repeats.</p>"),
+   ("Auto-edge", "A line every 20 seconds, forever", "<p>A speed slider from 1 second (unbearable) to 60 (brooding), with Chaos Mode for a random category every line. Auto-edge runs in emote, party, raid and guild chat, and pauses in combat and boss chat lockdowns.</p>"),
+   ("Escalation", "It gets worse on purpose", "<p>Tick <strong>Escalation</strong> and each auto line comes one second sooner than the last, down to the channel's minimum (3 seconds in emote, 10 in guild chat). Your guild will notice. That is the feature.</p>"),
+   ("The Panel", "Hooded, headset on, RGB ring", "<p>A brooding hooded gamer whose headset ring cycles through every RGB color, with glowing eyes that blink when nobody is looking. Dramatic poses (kneel, roar, flex, salute, glare) every few lines, keyboard-clack and bass-drop sounds, and key bindings for instant edge.</p>")],
+  commands=TABLE_EDGE.replace("</table>", "</table>") + '<p class="muted center">/say needs a click outside dungeons and raids (Blizzard rule), so on Say the SAY button glows with the waiting line. Inside instances it is automatic.</p>',
+  install_extra=[], restart="<strong>Fully restart World of Warcraft</strong> so the portrait and icons load.",
+  last="Type <code>/edge</code>, pick a category, and press EDGE. Please edge responsibly: aim it at willing guildmates, and switch it off when someone asks.",
+  note='<div class="notice"><strong>Etiquette of the Coil:</strong> the teasing is about frame rates, keyboards and consoles, never the person. Auto-edge with Escalation in guild chat is a lot. Ask your guild first, and stop the moment anyone asks.</div>',
+  faq=[("Is this related to Brain Rotter Pro?", "It is built on the same engine, so it works the same way: categories down the left, a preview of the next line, EDGE, SAY, auto and Chaos. The lines, art, sounds and Escalation are all new."),
+       ("How annoying does it get?", "With Escalation on and the speed at 20 seconds, it reaches one line every 3 seconds in emote after about two minutes. We recommend not finding out in a raid."),
+       ("Can I keep it to myself?", "Yes. Set the channel to Local and the edge stays in your own chat window, where nobody can understand you.")]),
+
  dict(slug="addon-drama-queen-pro.html", name="Drama Queen Pro", folder="DramaQueen", zip="DramaQueen.zip", version="3.3", game="Retail · Midnight",
   slash="/dq", short="Deadpan fake personal drama every five minutes (use at your own risk)",
   tagline="Every five minutes, a piece of deadpan, real-sounding personal drama, under your name. Read the disclaimer first.",
@@ -184,6 +204,27 @@ ADDONS = [
   faq=[("Will people think I mean it?", "Yes. Full Support sounds sincere, because that is the joke, and the person you are \"supporting\" may not have agreed to the bit. Ask first, tell your guild, and switch it off the moment anyone asks."),
        ("Does it reply to real problems?", "No. It only answers posts carrying Drama Queen's hidden signal. If a guildmate shares something real, answer them yourself.")]),
 ]
+
+# Panel previews (img/shots/<name>.jpg), recreated from each addon's code. slug -> (image, alt text)
+SHOTS = {
+    "addon-xalreth-rp.html": ("xalreth-rp.jpg", "Xal'Reth RP panel: the glowing gold frame, a rite in progress and the emotes it produces"),
+    "addon-disciples-of-devotion.html": ("disciples-of-devotion.jpg", "Disciples of Devotion: the chapter list with medallion icons and the verse reader"),
+    "addon-litany-of-begging.html": ("litany-of-begging.jpg", "The Litany of Begging panel performing line 4817, with the Perform Entire Litany progress bar"),
+    "addon-paranoid-rp.html": ("paranoid-rp.jpg", "Paranoid RP panel watching a target in Act III, The Theory"),
+    "addon-brain-rotter-pro.html": ("brain-rotter-pro.jpg", "Brain Rotter Pro panel with categories, the next brain rot line and the SAY IT button"),
+    "addon-edgelord-pro.html": ("edgelord-pro.jpg", "Edgelord Pro panel with the ten categories, the hooded RGB portrait, the next edgy thought and the chat it produces"),
+    "addon-drama-queen-pro.html": ("drama-queen-pro.jpg", "Drama Queen Pro panel with the two drama switches, the Say it button with the Queen and the resulting chat"),
+    "addon-full-support.html": ("full-support.jpg", "Guild chat showing Drama Queen posts answered by Full Support",
+                                "Chat preview: Drama Queen posts and Full Support's replies, recreated from the addons' code."),
+}
+
+def shot_html(slug):
+    if slug not in SHOTS: return ""
+    img, alt, *cap = SHOTS[slug]
+    cap = cap[0] if cap else "Panel preview, recreated from the addon's code. In game it uses your own character, target and guild."
+    return ('\n  <div class="divider"><span>SCREENSHOTS</span></div>\n'
+            f'  <section id="screenshots"><figure class="addon-shot"><a href="img/shots/{img}" target="_blank" rel="noopener"><img src="img/shots/{img}" alt="{alt.replace('"', '&quot;')}" loading="lazy"></a>'
+            f"<figcaption>{cap}</figcaption></figure></section>")
 
 def shell(a, main_html, ld):
     t = SRC
@@ -234,7 +275,7 @@ def build(a, others):
         <div class="stat-col">{stats}{slash_stat}</div>
       </div>
     </article>
-  </section>
+  </section>{shot_html(a["slug"])}
   {a.get("note", "")}
   <div class="divider"><span>WHAT IT DOES</span></div>
   <section class="grid two">{feats}</section>
