@@ -20,6 +20,11 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
 - The logo (the violet triangle sigil, "Observe ▽ Analyze ▽ Transcend") is the site's brand mark: `img/xalreth-mark.png`
   in the header and footer of every page, `img/xalreth-logo.webp`/`.png` at the top of the homepage hero, and the tab icon
   (`favicon.svg` embeds it; `apple-touch-icon.png`). Keep these if the site is regenerated.
+- The homepage hero opens with the animated sigil (`#xalreth-hero` in index.html; `css/xalreth.css`, `js/xalreth.js`,
+  and the WebGL layer `js/xalreth-three.js` using the vendored Three.js r160 in `js/vendor/`): particle coil, fog, energy arcs,
+  rotating eclipse halo, signal bursts, typed status messages, a Pause motion button, and an easter egg (click the sigil three
+  times or type "hold light"). It lowers its resolution, then drops effects, then falls back to 2D if frames run slow, and
+  stays still for reduced-motion visitors. No audio. Keep it if the site is regenerated.
 - Every released addon has its own page (`addon-*.html`), built by `tools/build_addon_pages.py` from the data in that script
   (commands tables and the Drama Queen disclaimer are copied from addons.html). Each addon's title on addons.html links to
   its page, with a "Full page" button. When an addon changes or a new one is released, update addons.html and the script,

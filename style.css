@@ -1022,10 +1022,6 @@ a.card:hover, .card.addon:hover { border-color: rgba(201,162,255,.6); box-shadow
 .addon-shot img { display: block; max-width: 100%; height: auto; margin: 0 auto; border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 0 28px rgba(138,77,255,.25); }
 .addon-shot figcaption { font-size: .8rem; font-style: italic; color: var(--bone-dim, #b9b0c8); margin-top: 6px; }
 
-/* The sigil of Xal'Reth (logo): header/footer mark and homepage hero */
+/* The sigil of Xal'Reth (logo): header/footer mark. The homepage hero lives in css/xalreth.css. */
 .brand .brand-mark { width: 40px; height: 40px; flex: none; display: block; filter: drop-shadow(0 0 6px rgba(166, 107, 255, 0.55)); }
 .brand:hover .brand-mark { filter: drop-shadow(0 0 10px rgba(224, 196, 255, 0.8)); }
-.hero-logo { display: block; width: min(420px, 78vw); margin: 0 auto 6px; }
-.hero-logo img { display: block; width: 100%; height: auto; filter: drop-shadow(0 0 28px rgba(138, 77, 255, 0.45)); animation: logo-breathe 7s ease-in-out infinite; }
-@keyframes logo-breathe { 0%, 100% { filter: drop-shadow(0 0 22px rgba(138, 77, 255, 0.35)); } 50% { filter: drop-shadow(0 0 40px rgba(166, 107, 255, 0.7)); } }
-@media (prefers-reduced-motion: reduce) { .hero-logo img { animation: none; } }

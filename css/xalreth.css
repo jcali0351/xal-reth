@@ -1,0 +1,187 @@
+/* Xal'Reth animated hero: the sigil with an eclipse, particles, energy pulses, signal bursts,
+   rotating status messages and a hidden easter egg. Markup lives in index.html (#xalreth-hero),
+   behaviour in js/xalreth.js. Everything here is scoped to #xalreth-hero. */
+
+#xalreth-hero {
+  --xr-size: min(440px, 82vw);
+  position: relative;
+  width: var(--xr-size);
+  margin: 0 auto 10px;
+  isolation: isolate;
+}
+#xalreth-hero .xr-stage { position: relative; width: 100%; aspect-ratio: 1 / 1; }
+
+/* particles fill a wider halo around the sigil */
+#xalreth-hero .xr-particles {
+  position: absolute; left: -30%; top: -22%; width: 160%; height: 144%;
+  z-index: -2; pointer-events: none;
+  -webkit-mask-image: radial-gradient(closest-side, #000 55%, transparent 100%);
+          mask-image: radial-gradient(closest-side, #000 55%, transparent 100%);
+}
+
+/* the WebGL layer (js/xalreth-three.js): a wide scene behind the sigil, clipped by .hero */
+#xalreth-hero .xr-webgl {
+  position: absolute; left: 50%; top: 50%; width: 100vw; height: 170%;
+  transform: translate(-50%, -50%); z-index: -3; pointer-events: none; opacity: 0;
+  transition: opacity 1.6s ease;
+  -webkit-mask-image: radial-gradient(ellipse 60% 55% at 50% 50%, #000 45%, transparent 100%);
+          mask-image: radial-gradient(ellipse 60% 55% at 50% 50%, #000 45%, transparent 100%);
+}
+#xalreth-hero.xr-gl .xr-webgl { opacity: 1; }
+#xalreth-hero.xr-gl .xr-particles { display: none; }
+
+/* rotating eclipse halo: two counter-turning rings of light around the eclipse */
+#xalreth-hero .xr-halo {
+  position: absolute; left: 50%; top: 47%; width: 86%; aspect-ratio: 1 / 1; border-radius: 50%;
+  transform: translate(-50%, -50%); z-index: -1; pointer-events: none;
+  background: conic-gradient(from 0deg, transparent 0 8%, rgba(224, 196, 255, 0.75) 10%, transparent 14% 30%,
+    rgba(166, 107, 255, 0.6) 33%, transparent 37% 58%, rgba(224, 196, 255, 0.7) 61%, transparent 65% 82%, rgba(166, 107, 255, 0.55) 85%, transparent 89%);
+  -webkit-mask: radial-gradient(closest-side, transparent 90%, #000 92%, #000 96%, transparent 98%);
+          mask: radial-gradient(closest-side, transparent 90%, #000 92%, #000 96%, transparent 98%);
+  filter: drop-shadow(0 0 8px rgba(166, 107, 255, 0.9));
+  animation: xr-spin 36s linear infinite; will-change: transform;
+}
+#xalreth-hero .xr-halo.inner {
+  width: 72%; opacity: 0.7; animation-duration: 24s; animation-direction: reverse;
+  background: repeating-conic-gradient(rgba(224, 196, 255, 0.75) 0 1.2deg, transparent 1.2deg 7.5deg);
+  -webkit-mask: radial-gradient(closest-side, transparent 94%, #000 95%, #000 98%, transparent 99%);
+          mask: radial-gradient(closest-side, transparent 94%, #000 95%, #000 98%, transparent 99%);
+}
+@keyframes xr-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+/* the eclipse: a violet corona behind the sigil, slowly crossed by a dark moon */
+#xalreth-hero .xr-eclipse {
+  position: absolute; left: 50%; top: 47%; width: 64%; aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%); z-index: -1; pointer-events: none;
+}
+#xalreth-hero .xr-corona {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(circle, rgba(224, 196, 255, 0.55) 0 38%, rgba(166, 107, 255, 0.35) 46%, rgba(117, 60, 220, 0.12) 60%, transparent 72%);
+  filter: blur(2px);
+  animation: xr-corona 14s ease-in-out infinite;
+}
+#xalreth-hero .xr-moon {
+  position: absolute; top: 12%; left: 12%; width: 76%; height: 76%; border-radius: 50%;
+  background: radial-gradient(circle at 40% 38%, #1a1029 0%, #08050f 70%);
+  box-shadow: 0 0 18px 4px rgba(8, 5, 15, 0.9) inset;
+  animation: xr-moon 14s ease-in-out infinite;
+}
+@keyframes xr-moon {
+  0%   { transform: translateX(-95%); opacity: 0.0; }
+  12%  { opacity: 1; }
+  45%, 58% { transform: translateX(0); }
+  88%  { opacity: 1; }
+  100% { transform: translateX(95%); opacity: 0.0; }
+}
+@keyframes xr-corona {
+  0%, 100% { opacity: 0.55; transform: scale(0.96); }
+  45%, 58% { opacity: 1; transform: scale(1.08); }
+}
+
+/* purple energy pulses: rings that leave the centre of the sigil */
+#xalreth-hero .xr-pulse {
+  position: absolute; left: 50%; top: 52%; width: 30%; aspect-ratio: 1 / 1;
+  border-radius: 50%; border: 2px solid rgba(190, 140, 255, 0.85);
+  box-shadow: 0 0 22px rgba(166, 107, 255, 0.7), inset 0 0 14px rgba(166, 107, 255, 0.5);
+  transform: translate(-50%, -50%) scale(0.2); opacity: 0;
+  pointer-events: none; z-index: 1;
+  animation: xr-pulse 5.2s cubic-bezier(.2, .7, .3, 1) infinite;
+}
+#xalreth-hero .xr-pulse.d2 { animation-delay: 2.6s; }
+@keyframes xr-pulse {
+  0%   { transform: translate(-50%, -50%) scale(0.2); opacity: 0; }
+  10%  { opacity: 0.9; }
+  100% { transform: translate(-50%, -50%) scale(3.4); opacity: 0; }
+}
+
+/* the sigil itself */
+#xalreth-hero .xr-logo {
+  position: absolute; inset: 0; display: block; padding: 0; margin: 0;
+  background: none; border: 0; cursor: pointer; border-radius: 12px;
+  -webkit-tap-highlight-color: transparent;
+}
+#xalreth-hero .xr-logo:focus-visible { outline: 2px solid var(--venom, #e0c4ff); outline-offset: 6px; }
+#xalreth-hero .xr-logo img {
+  display: block; width: 100%; height: auto;
+  position: relative; z-index: 1;
+  filter: drop-shadow(0 0 18px rgba(138, 77, 255, 0.45));
+  animation: xr-breathe 7s ease-in-out infinite; will-change: transform;
+}
+#xalreth-hero.xr-surge .xr-logo img { animation: xr-surge 0.9s ease-out; }
+@keyframes xr-breathe {                       /* transform only, so it stays on the compositor */
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.015); }
+}
+/* the breathing glow is a soft light behind the sigil whose opacity pulses */
+#xalreth-hero .xr-stage::before {
+  content: ""; position: absolute; left: 12%; top: 14%; width: 76%; height: 76%; border-radius: 50%; z-index: 0; pointer-events: none;
+  background: radial-gradient(circle, rgba(166, 107, 255, 0.55), rgba(166, 107, 255, 0) 68%);
+  animation: xr-glow 7s ease-in-out infinite;
+}
+@keyframes xr-glow { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.85; } }
+@keyframes xr-surge {
+  0%   { filter: drop-shadow(0 0 30px rgba(224, 196, 255, 0.9)) brightness(1.5); transform: scale(1.04); }
+  100% { filter: drop-shadow(0 0 22px rgba(138, 77, 255, 0.45)) brightness(1); transform: scale(1); }
+}
+
+/* signal bursts: thin beams that flicker out from the centre at random angles */
+#xalreth-hero .xr-signals { position: absolute; left: 50%; top: 52%; width: 0; height: 0; z-index: 2; pointer-events: none; }
+#xalreth-hero .xr-beam {
+  position: absolute; left: 0; top: -1px; height: 2px; width: calc(var(--xr-size) * 0.62);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, rgba(224, 196, 255, 0) 0%, rgba(224, 196, 255, 0.95) 35%, rgba(166, 107, 255, 0) 100%);
+  filter: drop-shadow(0 0 6px rgba(166, 107, 255, 0.9));
+  animation: xr-beam 0.9s ease-out forwards;
+}
+#xalreth-hero .xr-beam::after {
+  content: ""; position: absolute; right: 18%; top: -3px; width: 8px; height: 8px; border-radius: 50%;
+  background: #f4eaff; box-shadow: 0 0 10px #b98cff;
+}
+@keyframes xr-beam {
+  0%   { opacity: 0; clip-path: inset(0 100% 0 0); }
+  25%  { opacity: 1; }
+  60%  { clip-path: inset(0 0 0 0); }
+  100% { opacity: 0; clip-path: inset(0 0 0 60%); }
+}
+
+/* dynamic status line */
+#xalreth-hero .xr-status {
+  margin: 10px auto 0; min-height: 2.6em; max-width: 34em; text-align: center;
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 0.82rem; line-height: 1.4;
+  letter-spacing: 0.06em; color: var(--bone-dim, #b0a6c4);
+}
+#xalreth-hero .xr-phase { color: var(--venom, #e0c4ff); letter-spacing: 0.22em; text-shadow: 0 0 10px rgba(166, 107, 255, 0.8); }
+#xalreth-hero .xr-caret { display: inline-block; width: 0.55em; height: 1em; margin-left: 2px; vertical-align: -0.12em; background: rgba(224, 196, 255, 0.8); animation: xr-caret 1s steps(1) infinite; }
+@keyframes xr-caret { 50% { opacity: 0; } }
+
+/* the easter egg: the Unwrapping (click the sigil three times) */
+#xalreth-hero .xr-unwrap {
+  position: absolute; left: 50%; top: 52%; width: 34%; aspect-ratio: 1 / 1; border-radius: 50%;
+  border: 3px solid rgba(244, 234, 255, 0.95); box-shadow: 0 0 40px rgba(224, 196, 255, 0.9);
+  transform: translate(-50%, -50%) scale(0.3); opacity: 0; pointer-events: none; z-index: 3;
+  animation: xr-unwrap 1.8s ease-out forwards;
+}
+@keyframes xr-unwrap {
+  0%   { opacity: 1; transform: translate(-50%, -50%) scale(0.3); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(5); }
+}
+#xalreth-hero.xr-unwrapped .xr-moon { animation-duration: 2.4s; }
+#xalreth-hero.xr-unwrapped .xr-corona { animation-duration: 2.4s; }
+
+/* pause control (WCAG 2.2.2: moving content can be paused) */
+#xalreth-hero .xr-motion {
+  display: block; margin: 8px auto 0; padding: 4px 12px; background: transparent; cursor: pointer;
+  border: 1px solid rgba(185, 140, 255, 0.35); border-radius: 3px; color: var(--bone-dim, #b0a6c4);
+  font-family: var(--serif-display, Georgia, serif); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase;
+}
+#xalreth-hero .xr-motion:hover, #xalreth-hero .xr-motion:focus-visible { color: var(--venom, #e0c4ff); border-color: var(--venom, #e0c4ff); outline: none; }
+#xalreth-hero.xr-still *, #xalreth-hero.xr-still *::after { animation-play-state: paused !important; }
+#xalreth-hero.xr-still .xr-beam { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  #xalreth-hero .xr-halo { animation: none; }
+  #xalreth-hero .xr-moon, #xalreth-hero .xr-corona, #xalreth-hero .xr-pulse,
+  #xalreth-hero .xr-logo img, #xalreth-hero .xr-caret, #xalreth-hero .xr-stage::before { animation: none; }
+  #xalreth-hero .xr-moon { transform: translateX(-38%); }
+  #xalreth-hero .xr-pulse { display: none; }
+}
