@@ -13,6 +13,10 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   "Approach the Altar" call to action. Keep both if the site is regenerated.
 - The main menu has a Testimonials link (`testimonials.html`) after Altar, and the footer links Testimonials (after The Priesthood)
   and the Encyclopedia (`wiki.html`, after The Sacred Triangle). Keep these if the site is regenerated.
+- The main menu ends with a Sitemap link (`sitemap.xml`, after Join), and the footer's Join column ends with Sitemap.
+  Keep both if the site is regenerated. `sitemap.xml` is rebuilt from every page by `tools/build_sitemap.py`
+  (new_post.py runs it); don't hand-edit it. `sitemap.css` styles it for people (CSS, not XSLT: Chrome drops XSLT in Nov 2026).
+  The menu switches to the Menu button up to 1330px wide because 14 links don't fit on one line below that.
 
 ## Hourly Coil Herald post (scheduled task)
 1. `git pull --ff-only origin main`
@@ -23,7 +27,7 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
 4. Write ONE new post, 250-450 words, as JSON: title, category, summary, body_html (<p>, <h2>, <blockquote>, <ul>).
    It should feel new and specific: a fresh hymn stanza, a new minor saint, an invented-but-consistent detail.
    Stay consistent with the established lore. Link one or two relevant pages (canon.html, legends.html, etc.).
-5. `python3 tools/new_post.py /tmp/post.json` (writes the page, news.json, herald.html, sitemap.xml).
+5. `python3 tools/new_post.py /tmp/post.json` (writes the page, news.json, herald.html, and rebuilds sitemap.xml).
 6. `git add -A && git commit -m "Coil Herald: <title>" && git push origin main`. If the push is rejected, pull --rebase and push again.
 
 ## Lore sources in this repo (read for material)

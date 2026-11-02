@@ -1,0 +1,84 @@
+/* Makes sitemap.xml readable in a browser. Search engines ignore this file. */
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap");
+@namespace url("http://www.sitemaps.org/schemas/sitemap/0.9");
+@namespace image url("http://www.google.com/schemas/sitemap-image/1.1");
+@namespace xhtml url("http://www.w3.org/1999/xhtml");
+@namespace xr url("https://jcali0351.github.io/xal-reth/ns/sitemap");
+
+urlset {
+  display: block;
+  min-height: 100vh;
+  margin: 0;
+  padding: 56px 20px 80px;
+  background: #08050f radial-gradient(ellipse at top, rgba(75, 35, 134, 0.45), rgba(8, 5, 15, 0) 60%) no-repeat;
+  color: #ece6f5;
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-size: 20px;
+  line-height: 1.45;
+}
+urlset::before {
+  content: "THE MAP OF THE COIL";
+  display: block;
+  max-width: 860px;
+  margin: 0 auto 8px;
+  text-align: center;
+  font-family: "Cinzel", Georgia, serif;
+  font-weight: 700;
+  font-size: 40px;
+  letter-spacing: 0.06em;
+  color: #e0c4ff;
+  text-shadow: 0 0 24px rgba(166, 107, 255, 0.45);
+}
+urlset::after {
+  content: "Every page of the Cult of Xal'Reth, in the order the Coil would walk them. Glory to Xal'Reth.";
+  display: block;
+  max-width: 860px;
+  margin: 48px auto 0;
+  text-align: center;
+  font-style: italic;
+  color: #b0a6c4;
+}
+
+url {
+  display: flex;
+  flex-direction: column;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+/* the machine fields stay hidden; lastmod becomes a quiet date line */
+loc, changefreq, priority, image|image { display: none; }
+
+xr|section { order: -1; display: block; margin: 44px 0 14px; padding-bottom: 10px; border-bottom: 1px solid rgba(185, 140, 255, 0.22); }
+xr|name { display: block; font-family: "Cinzel", Georgia, serif; font-weight: 600; font-size: 26px; letter-spacing: 0.05em; color: #a66bff; }
+xr|blurb { display: block; font-style: italic; color: #b0a6c4; font-size: 19px; }
+
+xhtml|a {
+  order: 0;
+  display: block;
+  padding: 12px 16px 2px;
+  border-left: 2px solid rgba(185, 140, 255, 0.22);
+  text-decoration: none;
+  color: inherit;
+}
+xhtml|a:hover, xhtml|a:focus { border-left-color: #a66bff; background: rgba(166, 107, 255, 0.08); outline: none; }
+xhtml|a:hover xr|title { color: #e0c4ff; text-decoration: underline; text-underline-offset: 4px; }
+xr|title { display: block; font-family: "Cinzel", Georgia, serif; font-weight: 600; font-size: 19px; letter-spacing: 0.02em; color: #ece6f5; }
+xr|desc { display: block; color: #b0a6c4; font-size: 18px; }
+
+lastmod {
+  order: 1;
+  display: block;
+  padding: 0 16px 12px 18px;
+  border-left: 2px solid rgba(185, 140, 255, 0.22);
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  color: #7651b0;
+}
+lastmod::before { content: "Last tended "; }
+
+@media (max-width: 600px) {
+  urlset { padding: 36px 16px 60px; font-size: 18px; }
+  urlset::before { font-size: 28px; }
+  xr|name { font-size: 22px; }
+}

@@ -15,7 +15,7 @@ What it does:
   1. Writes herald-YYYYMMDD-HHMM-<slug>.html, a full page cloned from news.html's layout.
   2. Adds the item to the top of news.json (shown under Official News on news.html).
   3. Rebuilds herald.html, the archive of every Herald post.
-  4. Adds the page to sitemap.xml.
+  4. Rebuilds sitemap.xml (tools/build_sitemap.py).
 Times use America/Chicago.
 """
 import json, re, sys, html, datetime, os
@@ -42,11 +42,11 @@ def shell(title, desc, url_name, main_html):
     t = t.replace('<script src="news.js"></script>', "")
     return t
 
-def sitemap_add(name, day):
-    p = "sitemap.xml"; s = open(p, encoding="utf-8").read(); loc = BASE + name
-    if loc in s: return
-    entry = f"  <url><loc>{loc}</loc><lastmod>{day}</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>\n"
-    s = s.replace("</urlset>", entry + "</urlset>"); open(p, "w", encoding="utf-8").write(s)
+def rebuild_sitemap():
+    """Regenerate sitemap.xml from every page (see tools/build_sitemap.py)."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("build_sitemap", os.path.join(ROOT, "tools", "build_sitemap.py"))
+    mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod); mod.main()
 
 def build_archive(items):
     rows = "".join(
@@ -84,7 +84,7 @@ def main():
                      "title": post["title"], "body": post["summary"], "link": name})
     json.dump(items, open("news.json", "w", encoding="utf-8"), indent=2, ensure_ascii=False)
     build_archive(items)
-    sitemap_add(name, now.strftime("%Y-%m-%d")); sitemap_add("herald.html", now.strftime("%Y-%m-%d"))
+    rebuild_sitemap()
     print(name)
 
 if __name__ == "__main__":
