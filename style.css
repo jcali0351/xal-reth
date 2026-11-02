@@ -1016,3 +1016,8 @@ a.card:hover, .card.addon:hover { border-color: rgba(201,162,255,.6); box-shadow
   .site-nav ul { gap: 0; }
   .site-nav a { padding: 8px 7px; letter-spacing: 0.08em; font-size: 0.78rem; }
 }
+
+/* Addon panel previews */
+.addon-shot { margin: 18px 0 0; text-align: center; clear: both; }
+.addon-shot img { display: block; max-width: 100%; height: auto; margin: 0 auto; border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 0 28px rgba(138,77,255,.25); }
+.addon-shot figcaption { font-size: .8rem; font-style: italic; color: var(--bone-dim, #b9b0c8); margin-top: 6px; }
