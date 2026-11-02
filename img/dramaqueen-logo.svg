@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-labelledby="t">
+  <title id="t">Drama Queen Pro</title>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="42%" r="60%">
+      <stop offset="0" stop-color="#4a1240"/><stop offset=".65" stop-color="#22071d"/><stop offset="1" stop-color="#12030f"/>
+    </radialGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff8cc6"/><stop offset=".5" stop-color="#ff4fa3"/><stop offset="1" stop-color="#b8226e"/>
+    </linearGradient>
+    <linearGradient id="hair" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7a1d5e"/><stop offset=".55" stop-color="#4d1040"/><stop offset="1" stop-color="#2c0826"/>
+    </linearGradient>
+    <linearGradient id="hairhi" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ff7fbf" stop-opacity="0"/><stop offset=".5" stop-color="#ff9fd0" stop-opacity=".55"/><stop offset="1" stop-color="#ff7fbf" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="skin" cx="45%" cy="38%" r="65%">
+      <stop offset="0" stop-color="#ffe2d4"/><stop offset=".7" stop-color="#f2bfa8"/><stop offset="1" stop-color="#d99a83"/>
+    </radialGradient>
+    <linearGradient id="top" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff5cab"/><stop offset="1" stop-color="#b21f69"/>
+    </linearGradient>
+    <linearGradient id="tiara" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#ffd6ec"/><stop offset="1" stop-color="#e58ab8"/>
+    </linearGradient>
+    <linearGradient id="phone" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3a3a48"/><stop offset="1" stop-color="#15151c"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a1030"/><stop offset="1" stop-color="#4a1648"/>
+    </linearGradient>
+    <radialGradient id="tear" cx="35%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#bfe8ff"/><stop offset="1" stop-color="#6fb8e8"/>
+    </radialGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="soft"><feGaussianBlur stdDeviation="1.2"/></filter>
+    <clipPath id="badge"><circle cx="256" cy="256" r="226"/></clipPath>
+    <path id="arcTop" d="M 60 256 A 196 196 0 0 1 452 256"/>
+    <path id="arcBot" d="M 96 300 A 168 168 0 0 0 416 300"/>
+  </defs>
+
+  <!-- badge -->
+  <circle cx="256" cy="256" r="246" fill="#12030f"/>
+  <circle cx="256" cy="256" r="236" fill="url(#bg)" stroke="url(#ring)" stroke-width="12"/>
+  <g fill="#ffd6ec">
+    <circle cx="256" cy="24" r="4"/><circle cx="372" cy="55" r="3.4"/><circle cx="457" cy="140" r="3.4"/><circle cx="488" cy="256" r="4"/>
+    <circle cx="457" cy="372" r="3.4"/><circle cx="372" cy="457" r="3.4"/><circle cx="256" cy="488" r="4"/><circle cx="140" cy="457" r="3.4"/>
+    <circle cx="55" cy="372" r="3.4"/><circle cx="24" cy="256" r="4"/><circle cx="55" cy="140" r="3.4"/><circle cx="140" cy="55" r="3.4"/>
+  </g>
+  <circle cx="256" cy="256" r="222" fill="none" stroke="#ff9fd0" stroke-opacity=".35" stroke-width="2" stroke-dasharray="2 9"/>
+
+  <g clip-path="url(#badge)"><g transform="translate(25.6 46) scale(.9)">
+    <!-- spotlight -->
+    <ellipse cx="256" cy="250" rx="170" ry="190" fill="#ff4fa3" opacity=".12" filter="url(#glow)"/>
+    <!-- sparkles -->
+    <g fill="#ffd6ec" opacity=".9">
+      <path d="M118 150 l4 12 12 4 -12 4 -4 12 -4 -12 -12 -4 12 -4z"/>
+      <path d="M398 170 l3 9 9 3 -9 3 -3 9 -3 -9 -9 -3 9 -3z"/>
+      <path d="M380 92 l2.5 7 7 2.5 -7 2.5 -2.5 7 -2.5 -7 -7 -2.5 7 -2.5z"/>
+      <path d="M140 300 l2.5 7 7 2.5 -7 2.5 -2.5 7 -2.5 -7 -7 -2.5 7 -2.5z"/>
+    </g>
+
+    <!-- hair, back volume -->
+    <path d="M256 92 C176 92 128 150 132 226 C134 280 116 318 100 352 C140 372 176 362 196 350 L316 350 C336 362 372 372 412 352 C396 318 378 280 380 226 C384 150 336 92 256 92 Z" fill="url(#hair)"/>
+    <!-- shoulders and off-shoulder top -->
+    <path d="M118 512 C120 430 164 392 214 380 L298 380 C348 392 392 430 394 512 Z" fill="url(#skin)"/>
+    <path d="M122 512 C130 462 156 436 194 424 C226 440 286 440 318 424 C356 436 382 462 390 512 Z" fill="url(#top)"/>
+    <path d="M194 424 C226 440 286 440 318 424" fill="none" stroke="#ffd6ec" stroke-width="3" stroke-dasharray="1 7" stroke-linecap="round"/>
+    <!-- neck -->
+    <path d="M226 318 L226 372 C236 388 276 388 286 372 L286 318 Z" fill="#e8af97"/>
+    <!-- necklace -->
+    <path d="M214 384 C232 404 280 404 298 384" fill="none" stroke="#ffd6ec" stroke-width="3"/>
+    <path d="M256 400 l7 10 -7 10 -7 -10z" fill="#ff4fa3" stroke="#fff" stroke-width="1.5"/>
+
+    <!-- face -->
+    <path d="M256 134 C204 134 182 176 184 228 C186 286 216 330 256 334 C296 330 326 286 328 228 C330 176 308 134 256 134 Z" fill="url(#skin)"/>
+    <!-- blush -->
+    <ellipse cx="212" cy="262" rx="20" ry="11" fill="#ff6fa8" opacity=".35" filter="url(#soft)"/>
+    <ellipse cx="300" cy="262" rx="20" ry="11" fill="#ff6fa8" opacity=".35" filter="url(#soft)"/>
+    <!-- brows: one arched in disbelief -->
+    <path d="M196 200 C210 186 230 184 244 192" fill="none" stroke="#3a0b30" stroke-width="6" stroke-linecap="round"/>
+    <path d="M268 194 C284 182 304 182 318 194" fill="none" stroke="#3a0b30" stroke-width="6" stroke-linecap="round"/>
+    <!-- eyes: heavy lids, winged liner, lashes -->
+    <path d="M200 230 C210 218 234 218 244 230 C234 238 210 238 200 230 Z" fill="#fff"/>
+    <circle cx="223" cy="229" r="7.5" fill="#5a1446"/><circle cx="223" cy="229" r="3.5" fill="#12030f"/><circle cx="226" cy="226" r="2" fill="#fff"/>
+    <path d="M246 228 C236 214 212 212 200 226 L186 216" fill="none" stroke="#12030f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M268 230 C278 218 302 218 312 230 C302 238 278 238 268 230 Z" fill="#fff"/>
+    <circle cx="289" cy="229" r="7.5" fill="#5a1446"/><circle cx="289" cy="229" r="3.5" fill="#12030f"/><circle cx="292" cy="226" r="2" fill="#fff"/>
+    <path d="M266 228 C276 214 300 212 312 226 L326 216" fill="none" stroke="#12030f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <g stroke="#12030f" stroke-width="2.5" stroke-linecap="round">
+      <path d="M204 219 l-5 -7"/><path d="M212 215 l-3 -8"/><path d="M308 219 l5 -7"/><path d="M300 215 l3 -8"/>
+    </g>
+    <!-- eyeshadow -->
+    <path d="M198 222 C212 206 236 206 246 222" fill="none" stroke="#c43a8c" stroke-width="7" opacity=".45" stroke-linecap="round"/>
+    <path d="M266 222 C276 206 300 206 314 222" fill="none" stroke="#c43a8c" stroke-width="7" opacity=".45" stroke-linecap="round"/>
+    <!-- mascara-streaked tear -->
+    <path d="M226 238 C224 252 228 262 224 278" fill="none" stroke="#3a0b30" stroke-width="2.5" opacity=".55" stroke-linecap="round"/>
+    <path d="M224 270 C218 282 218 292 224 296 C230 292 230 282 224 270 Z" fill="url(#tear)" stroke="#6fb8e8" stroke-width="1"/>
+    <!-- nose -->
+    <path d="M257 250 C255 262 250 268 252 272 C256 275 262 275 265 272" fill="none" stroke="#c98a74" stroke-width="3" stroke-linecap="round"/>
+    <!-- lips: pouting -->
+    <path d="M228 300 C238 290 250 292 256 296 C262 292 274 290 284 300 C274 314 238 314 228 300 Z" fill="#e8336f"/>
+    <path d="M228 300 C246 304 266 304 284 300" fill="none" stroke="#9e1446" stroke-width="2.5"/>
+    <path d="M244 296 C248 294 252 295 254 297" fill="none" stroke="#ff9fc4" stroke-width="2" stroke-linecap="round"/>
+    <!-- beauty mark -->
+    <circle cx="292" cy="286" r="2.5" fill="#3a0b30"/>
+    <!-- hoop earrings -->
+    <circle cx="186" cy="272" r="14" fill="none" stroke="#ffd6ec" stroke-width="4"/>
+    <circle cx="326" cy="272" r="14" fill="none" stroke="#ffd6ec" stroke-width="4"/>
+
+    <!-- hair, front swoops -->
+    <path d="M256 104 C206 104 176 134 172 176 C190 150 220 142 246 150 C232 132 244 114 256 104 Z" fill="url(#hair)"/>
+    <path d="M256 104 C306 104 340 136 342 190 C328 160 300 148 272 152 C290 140 280 116 256 104 Z" fill="url(#hair)"/>
+    <path d="M182 168 C160 220 168 290 150 340" fill="none" stroke="url(#hair)" stroke-width="22" stroke-linecap="round"/>
+    <path d="M330 168 C352 220 344 290 362 340" fill="none" stroke="url(#hair)" stroke-width="22" stroke-linecap="round"/>
+    <path d="M196 132 C230 112 290 112 320 136" fill="none" stroke="url(#hairhi)" stroke-width="8" stroke-linecap="round"/>
+    <path d="M150 230 C146 270 140 300 126 330" fill="none" stroke="#ff9fd0" stroke-opacity=".3" stroke-width="4" stroke-linecap="round"/>
+    <path d="M362 230 C366 270 372 300 386 330" fill="none" stroke="#ff9fd0" stroke-opacity=".3" stroke-width="4" stroke-linecap="round"/>
+
+    <!-- rhinestone tiara with a heart -->
+    <g filter="url(#glow)">
+      <path d="M184 128 C204 112 230 104 256 104 C282 104 308 112 328 128 L318 138 C298 126 278 120 256 120 C234 120 214 126 194 138 Z" fill="url(#tiara)" stroke="#fff" stroke-width="1.5"/>
+      <path d="M204 122 L212 98 L222 116 Z M290 116 L300 98 L308 122 Z" fill="url(#tiara)" stroke="#fff" stroke-width="1.2"/>
+      <path d="M232 112 L240 92 L248 108 Z M264 108 L272 92 L280 112 Z" fill="url(#tiara)" stroke="#fff" stroke-width="1.2"/>
+      <path d="M256 104 C248 92 232 92 232 76 C232 64 248 60 256 72 C264 60 280 64 280 76 C280 92 264 92 256 104 Z" fill="#ff4fa3" stroke="#fff" stroke-width="2.5"/>
+      <path d="M244 72 C246 68 250 68 252 72" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+      <g fill="#fff"><circle cx="212" cy="100" r="3"/><circle cx="300" cy="100" r="3"/><circle cx="240" cy="94" r="2.6"/><circle cx="272" cy="94" r="2.6"/>
+        <circle cx="200" cy="128" r="2.2"/><circle cx="222" cy="120" r="2.2"/><circle cx="290" cy="120" r="2.2"/><circle cx="312" cy="128" r="2.2"/></g>
+    </g>
+
+    <!-- hand holding a cracked phone full of "!!!" -->
+    <g transform="rotate(-12 372 330)">
+      <rect x="338" y="262" width="74" height="132" rx="12" fill="url(#phone)" stroke="#ff9fd0" stroke-width="2.5"/>
+      <rect x="345" y="274" width="60" height="106" rx="5" fill="url(#screen)"/>
+      <rect x="351" y="282" width="40" height="15" rx="7" fill="#ff4fa3"/><text x="371" y="294" font-family="Arial Black, Arial, sans-serif" font-size="12" fill="#fff" text-anchor="middle">!!!</text>
+      <rect x="361" y="303" width="38" height="15" rx="7" fill="#7d4dff"/><text x="380" y="315" font-family="Arial Black, Arial, sans-serif" font-size="11" fill="#fff" text-anchor="middle">omg</text>
+      <rect x="351" y="324" width="44" height="15" rx="7" fill="#ff4fa3"/><text x="373" y="336" font-family="Arial Black, Arial, sans-serif" font-size="11" fill="#fff" text-anchor="middle">HIM?!</text>
+      <rect x="361" y="345" width="34" height="15" rx="7" fill="#7d4dff"/><text x="378" y="357" font-family="Arial Black, Arial, sans-serif" font-size="12" fill="#fff" text-anchor="middle">...</text>
+      <path d="M352 372 L366 352 L362 340 L378 324 L374 308 L392 296" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="1.6"/>
+      <path d="M366 352 L384 360 M374 308 L360 300" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.2"/>
+      <path d="M330 360 C328 340 340 330 352 336 L360 372 C364 392 352 404 336 398 C326 394 330 376 330 360 Z" fill="url(#skin)"/>
+      <path d="M346 344 C352 340 360 342 360 350 M344 360 C350 356 358 358 358 366" fill="none" stroke="#c98a74" stroke-width="2"/>
+      <path d="M352 336 l4 -6 M352 336" fill="none"/>
+      <ellipse cx="358" cy="338" rx="5" ry="3.5" fill="#ff4fa3" transform="rotate(-30 358 338)"/>
+    </g>
+  </g></g>
+
+  <!-- lettering -->
+  <text font-family="Georgia, 'Times New Roman', serif" font-size="38" font-weight="bold" letter-spacing="6" fill="#ffd6ec" stroke="#12030f" stroke-width="7" paint-order="stroke">
+    <textPath href="#arcTop" startOffset="50%" text-anchor="middle">DRAMA QUEEN</textPath>
+  </text>
+  <!-- PRO ribbon -->
+  <g>
+    <path d="M150 432 L176 418 L336 418 L362 432 L336 446 L176 446 Z" fill="#12030f" opacity=".6" transform="translate(0 4)"/>
+    <path d="M138 422 L170 410 L170 452 L138 440 L150 431 Z" fill="#b21f69"/>
+    <path d="M374 422 L342 410 L342 452 L374 440 L362 431 Z" fill="#b21f69"/>
+    <rect x="166" y="404" width="180" height="44" rx="6" fill="url(#ring)" stroke="#fff" stroke-width="2.5"/>
+    <text x="256" y="437" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-weight="bold" letter-spacing="10" fill="#fff" text-anchor="middle">PRO</text>
+  </g>
+</svg>
