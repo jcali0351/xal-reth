@@ -42,6 +42,6 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   ("What did you give today?"), Khaedara the Accuser (Tribunal of Accusation), the Ministry of Spare Change,
   eggs (new members), the Wardens of the Void, Grippers (Bestiary creatures that feed on clutching), Shedfall (autumn holy season),
   basking, the Warm Ridge, the Ledger. Greeting: "Hold light." Reply: "And let go well." Sign-off: "Glory to Xal'Reth."
-- Addons: Xal'Reth RP, Disciples of Devotion, Paranoid RP (/para; target someone, 103 escalating paranoid thoughts as emotes ending in light trash talk), Litany of Begging (the Litany is deliberately the most boring text ever written;
+- Addons: Xal'Reth RP, Disciples of Devotion, Brain Rotter Pro (/rot; 10,000 lines of brain rot), Drama Queen 2.1 (/dq; deadpan real-sounding personal drama in guild chat every 5 minutes; always point readers to its use-at-your-own-risk disclaimer at addons.html#dramaqueen-disclaimer), Paranoid RP (/para; target someone, 103 escalating paranoid thoughts as emotes ending in light trash talk), Litany of Begging (the Litany is deliberately the most boring text ever written;
   it carries a distress warning, so never encourage reading it all).
 - Discord: https://discord.gg/wYakHBHPz
