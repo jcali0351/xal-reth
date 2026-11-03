@@ -201,3 +201,8 @@
 .st-turn-text p.st-stage { min-height: 0; }
 .st-verb { text-shadow: 0 1px 10px #000, 0 0 2px #000; }
 .st-panel::after { background: linear-gradient(to bottom, rgba(5,3,10,.7) 0%, rgba(5,3,10,.1) 14%, transparent 30%, rgba(5,3,10,.25) 52%, rgba(5,3,10,.92) 78%, #05030a 100%); }
+
+/* call to action: the Teachings of the Sacred Triangle (teachings-of-the-triangle.html) */
+.st-cta { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 22px 0 6px; }
+.st-cta .btn { box-shadow: 0 0 26px rgba(166, 107, 255, 0.45); }
+.st-cta-note { font-family: var(--serif-display); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bone-dim); }

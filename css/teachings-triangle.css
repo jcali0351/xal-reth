@@ -1,0 +1,74 @@
+/* Teachings of the Sacred Triangle (teachings-of-the-triangle.html), built by tools/build_triangle_canon.py.
+   Deity colors match css/triangle.css: Vyrenna moon-silver and gold, Xal'Reth gold and emerald on violet, Nhalor violet and silver. */
+.tt-head h1 { max-width: 16ch; margin-left: auto; margin-right: auto; }
+.tt-stats { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px 40px; list-style: none; margin: 18px 0 8px; padding: 0; text-align: center; }
+.tt-stats b { display: block; font-family: var(--serif-display); font-size: 1.8rem; color: var(--venom); font-weight: 600; }
+.tt-stats span { color: var(--bone-dim); font-size: 0.95rem; }
+.tt-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 18px 0 28px; }
+
+/* the three book cards */
+.tt-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 0 0 30px; }
+@media (max-width: 760px) { .tt-cards { grid-template-columns: 1fr; } }
+.tt-card { --c: var(--venom); --d: var(--scale); position: relative; display: flex; flex-direction: column; gap: 4px; padding: 22px 20px 18px;
+  border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); border-radius: 8px; text-decoration: none; color: var(--bone);
+  background: radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--d) 30%, transparent), rgba(8, 5, 15, 0.85) 70%);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; overflow: hidden; }
+.tt-card:hover, .tt-card:focus-visible { transform: translateY(-3px); border-color: var(--c); box-shadow: 0 10px 34px color-mix(in srgb, var(--d) 45%, transparent); outline: none; }
+.tt-card svg { width: 38px; height: 38px; margin-bottom: 6px; fill: var(--c); stroke: var(--c); filter: drop-shadow(0 0 8px color-mix(in srgb, var(--c) 70%, transparent)); }
+.tt-card-k { font-family: var(--serif-display); font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--c); }
+.tt-card b { font-family: var(--serif-display); font-weight: 600; font-size: 1.25rem; letter-spacing: 0.03em; }
+.tt-card-s { font-style: italic; color: var(--bone-dim); }
+.tt-card-n { margin-top: 8px; font-size: 0.9rem; color: var(--bone-dim); }
+
+.bk-vyrenna { --c: #e9e2ff; --d: #b9a6f2; --a: #e7c873; }
+.bk-xalreth { --c: #e7c873; --d: #7a3fd1; --a: #46c08a; }
+.bk-nhalor  { --c: #a98bff; --d: #5b3fb0; --a: #cfd6e6; }
+.bk-front, .bk-turning { --c: var(--venom); --d: var(--scale); --a: var(--gold); }
+
+/* search */
+.tt-search { max-width: 560px; margin: 0 auto 34px; text-align: center; }
+.tt-search label { display: block; margin-bottom: 8px; font-family: var(--serif-display); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bone-dim); }
+.tt-search input { width: 100%; box-sizing: border-box; padding: 12px 16px; font: inherit; font-size: 1.05rem; color: var(--bone);
+  background: rgba(8, 5, 15, 0.75); border: 1px solid var(--line); border-radius: 999px; }
+.tt-search input:focus { outline: none; border-color: var(--scale-bright); box-shadow: 0 0 0 3px rgba(166, 107, 255, 0.22); }
+.tt-search-n { min-height: 1.2em; margin: 8px 0 0; font-size: 0.95rem; color: var(--bone-dim); }
+.tt-hit { background: rgba(231, 200, 115, 0.28); color: #fff; border-radius: 2px; padding: 0 1px; }
+.tt-searching .tt-ch.tt-miss, .tt-searching .tt-book.tt-miss { display: none; }
+.tt-searching .tt-v.tt-miss { opacity: 0.35; }
+.tt-searching .tt-toc { display: none; }
+
+/* books */
+.tt-book { position: relative; margin: 0 0 48px; padding-top: 10px; scroll-margin-top: 80px; }
+.tt-book-head { text-align: center; padding: 34px 16px 22px; margin-bottom: 18px; border-top: 1px solid color-mix(in srgb, var(--c) 30%, transparent);
+  background: radial-gradient(60% 100% at 50% 0%, color-mix(in srgb, var(--d) 22%, transparent), transparent 75%); }
+.tt-book-head svg { width: 46px; height: 46px; fill: var(--c); stroke: var(--c); filter: drop-shadow(0 0 10px color-mix(in srgb, var(--c) 70%, transparent)); }
+.tt-book-k { margin: 8px 0 4px; font-family: var(--serif-display); font-size: 0.75rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--c); }
+.tt-book-head h2 { margin: 0; font-size: clamp(1.7rem, 4.5vw, 2.6rem); color: var(--c); }
+.tt-book-s { margin: 4px 0 10px; font-style: italic; color: var(--a); }
+.tt-book-blurb { max-width: 60ch; margin: 0 auto; color: var(--bone-dim); }
+
+.tt-toc { max-width: 760px; margin: 0 auto 26px; border: 1px solid var(--line); border-radius: 6px; background: rgba(8, 5, 15, 0.55); }
+.tt-toc summary { cursor: pointer; padding: 12px 18px; font-family: var(--serif-display); font-size: 0.82rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c); list-style: none; }
+.tt-toc summary::-webkit-details-marker { display: none; }
+.tt-toc summary::after { content: "+"; float: right; color: var(--bone-dim); }
+.tt-toc[open] summary::after { content: "–"; }
+.tt-toc ol { columns: 2; column-gap: 28px; margin: 0; padding: 4px 18px 16px; list-style: none; }
+@media (max-width: 640px) { .tt-toc ol { columns: 1; } }
+.tt-toc li { break-inside: avoid; }
+.tt-toc a { display: flex; gap: 10px; padding: 5px 0; color: var(--bone); text-decoration: none; }
+.tt-toc a span { min-width: 1.8em; font-family: var(--serif-display); color: var(--c); text-align: right; }
+.tt-toc a:hover { color: var(--c); }
+
+/* chapters and verses */
+.tt-ch { max-width: 760px; margin: 0 auto 30px; padding: 0 0 22px; border-bottom: 1px solid rgba(185, 140, 255, 0.1); scroll-margin-top: 80px; }
+.tt-ch header { margin-bottom: 10px; }
+.tt-ch-k { margin: 0; font-family: var(--serif-display); font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--c); opacity: 0.85; }
+.tt-ch h3 { margin: 2px 0 0; font-size: 1.45rem; color: var(--bone); }
+.tt-v { position: relative; margin: 0 0 10px; padding-left: 2.2em; font-size: 1.14rem; line-height: 1.65; scroll-margin-top: 90px; }
+.tt-vn { position: absolute; left: 0; top: 0.15em; width: 1.7em; text-align: right; font-family: var(--serif-display); font-size: 0.75rem; color: var(--c);
+  text-decoration: none; opacity: 0.75; }
+.tt-vn:hover { opacity: 1; }
+.tt-v:target { background: color-mix(in srgb, var(--d) 25%, transparent); border-radius: 4px; }
+.tt-ch:first-of-type .tt-v:first-of-type::first-letter { font-family: var(--serif-display); font-size: 2.3em; float: left; line-height: 0.9; margin: 0.08em 0.08em 0 0; color: var(--c); }
+.tt-up { display: inline-block; margin-top: 4px; font-size: 0.9rem; color: var(--bone-dim); }
+.tt-end { margin: 10px 0 40px; }
