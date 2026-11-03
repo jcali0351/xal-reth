@@ -118,7 +118,7 @@ img, svg { max-width: 100%; }
   border-bottom-color: var(--gold);
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 860px) {
   .nav-toggle { display: block; }
   .site-nav {
     display: none;
@@ -580,7 +580,7 @@ a.card:hover, .card.addon:hover { border-color: rgba(201,162,255,.6); box-shadow
 
 .site-nav ul { flex-wrap: nowrap; gap: 0; }
 .site-nav a { padding: 8px 10px; letter-spacing: .1em; }
-@media (max-width: 1100px) { .site-nav ul { flex-wrap: wrap; } }
+@media (max-width: 860px) { .site-nav ul { flex-wrap: wrap; } }
 
 /* Featured addon */
 .addon.featured { padding: 32px; border-color: rgba(201,162,255,.5); box-shadow: 0 0 40px rgba(138,77,255,.25); }
@@ -1036,12 +1036,12 @@ a.card:hover, .card.addon:hover { border-color: rgba(201,162,255,.6); box-shadow
 }
 .site-nav ul.sub::before { content: ""; position: absolute; left: 0; right: 0; top: -8px; height: 8px; }   /* hover bridge */
 .site-nav .has-sub.open > ul.sub { display: flex; }
-@media (hover: hover) and (min-width: 1101px) { .site-nav .has-sub:hover > ul.sub { display: flex; } }
+@media (hover: hover) and (min-width: 861px) { .site-nav .has-sub:hover > ul.sub { display: flex; } }
 .site-nav ul.sub a { display: block; padding: 9px 18px; white-space: nowrap; border-bottom: 0; letter-spacing: 0.08em; }
 .site-nav ul.sub a:hover, .site-nav ul.sub a[aria-current="page"] { background: rgba(166, 107, 255, 0.12); }
 
 /* in the Menu-button layout the submenu opens in place, indented */
-@media (max-width: 1100px) {
+@media (max-width: 860px) {
   .site-nav .sub-toggle { width: 100%; justify-content: space-between; padding: 12px 8px; border-bottom: 1px solid rgba(185,140,255,0.08); }
   .site-nav ul.sub { position: static; min-width: 0; padding: 0 0 6px 14px; background: none; border: 0; box-shadow: none; }
   .site-nav ul.sub a { padding: 10px 4px; border-bottom: 1px solid rgba(185,140,255,0.06); }
