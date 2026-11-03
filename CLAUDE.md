@@ -38,7 +38,7 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   by `tools/build_triangle_canon.py` from `canon/triangle/*.txt` (a preface; Book I Vyrenna, the Radiant Scroll; Book II
   Xal'Reth, the Low Scroll; Book III Nhalor, the Veiled Scroll, 24 chapters each; Book IV the Turning). Edit the source
   files, never the built page, then run the builder and `tools/build_sitemap.py`. triangle.html links to it with the
-  "Read the Teachings of the Sacred Triangle" button under its title. Herald posts may quote it as "the Teachings".
+  "Read the Teachings of the Sacred Triangle" button just below the image panels, above the intro text. Herald posts may quote it as "the Teachings".
 - Every released addon has its own page (`addon-*.html`), built by `tools/build_addon_pages.py` from the data in that script
   (commands tables and the Drama Queen disclaimer are copied from addons.html). Each addon's title on addons.html links to
   its page, with a "Full page" button. When an addon changes or a new one is released, update addons.html and the script,
