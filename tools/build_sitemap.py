@@ -20,7 +20,7 @@ BASE = "https://jcali0351.github.io/xal-reth/"
 
 # (section heading, blurb, pages in order). Pages not listed fall into the blog or Herald by prefix.
 SECTIONS = [
-    ("The Sanctum", "Where every egg begins.", ["index.html", "join.html"]),
+    ("The Sanctum", "Where every egg begins.", ["index.html", "join.html", "contact.html"]),
     ("The Story", "How the Coil came to hold the world.", ["lore.html", "legends.html", "triangle.html", "wiki.html"]),
     ("The Teaching", "The Canon, and what to do with it.", ["canon.html", "teachings.html", "scripture.html", "begging.html", "litany.html"]),
     ("The Faithful", "Rites, relics of devotion and the people who keep them.",

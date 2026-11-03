@@ -12,12 +12,13 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
 - The footer includes an Altar link (`altar.html`, the interactive altar) and the homepage has an "Approach the Altar"
   call to action. The footer links Testimonials (after The Priesthood) and the Encyclopedia (`wiki.html`, after The Sacred
   Triangle). Keep these if the site is regenerated.
-- The main menu ends with a Sitemap link (`sitemap.xml`, after Join), and the footer's Join column ends with Sitemap.
+- The main menu ends with Sitemap (`sitemap.xml`) then Contact (`contact.html`), and the footer's Join column ends with
+  Contact us then Sitemap.
   Keep both if the site is regenerated. `sitemap.xml` is rebuilt from every page by `tools/build_sitemap.py`
   (new_post.py runs it); don't hand-edit it. `sitemap.css` styles it for people (CSS, not XSLT: Chrome drops XSLT in Nov 2026).
 - The main menu is written into every page by `tools/build_nav.py` (edit MENU there, then run it):
   Home · About (The Sacred Triangle, The Chronicle, The Canon, The Legends, The Library) · Community (News, Blog, Testimonials, Merch) ·
-  Faith (Devotion, The Altar) · Addons · Join · Sitemap. Submenus open on hover on wide screens and on click or tap
+  Faith (Devotion, The Altar) · Addons · Join · Sitemap · Contact. Submenus open on hover on wide screens and on click or tap
   everywhere (script in site.js, styles at the end of style.css); the one holding the current page is highlighted.
   The full menu shows above 860px; at 860px and below it folds into the Menu button. Keep it if the site is regenerated.
 - The logo (the violet triangle sigil, "Observe ▽ Analyze ▽ Transcend") is the site's brand mark: `img/xalreth-mark.png`
@@ -28,6 +29,9 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   rotating eclipse halo, signal bursts, typed status messages, a Pause motion button, and an easter egg (click the sigil three
   times or type "hold light"). It lowers its resolution, then drops effects, then falls back to 2D if frames run slow, and
   stays still for reduced-motion visitors. No audio. Keep it if the site is regenerated.
+- The Contact page (`contact.html`, `css/contact.css`, `js/contact.js`) is a form for bug reports, addon help, website
+  issues and messages to the author. Until `CONTACT.endpoint` in js/contact.js is set (a FormSubmit address for the
+  author's email), Send opens a pre-filled GitHub issue on this repo; Copy message works for pasting into Discord.
 - Every released addon has its own page (`addon-*.html`), built by `tools/build_addon_pages.py` from the data in that script
   (commands tables and the Drama Queen disclaimer are copied from addons.html). Each addon's title on addons.html links to
   its page, with a "Full page" button. When an addon changes or a new one is released, update addons.html and the script,

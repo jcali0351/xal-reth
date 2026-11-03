@@ -23,6 +23,7 @@ MENU = [
     ("Addons", "addons.html"),
     ("Join", "join.html"),
     ("Sitemap", "sitemap.xml"),
+    ("Contact", "contact.html"),
 ]
 
 def build(current, prefix):

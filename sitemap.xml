@@ -24,6 +24,14 @@
     <xhtml:a href="https://jcali0351.github.io/xal-reth/join.html"><xr:title>Join the Coil</xr:title><xr:desc>Join the Cult of Xal'Reth. Find a faithful, take the Oath of the Coil, and receive your First Scale.</xr:desc></xhtml:a>
   </url>
   <url>
+    <loc>https://jcali0351.github.io/xal-reth/contact.html</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://jcali0351.github.io/xal-reth/xalreth-og.jpg</image:loc></image:image>
+    <xhtml:a href="https://jcali0351.github.io/xal-reth/contact.html"><xr:title>Contact the Coil</xr:title><xr:desc>Contact the Cult of Xal'Reth: report a bug in a WoW addon, get addon help, flag a problem with the website, or get in touch with the author and developer.</xr:desc></xhtml:a>
+  </url>
+  <url>
     <loc>https://jcali0351.github.io/xal-reth/lore.html</loc>
     <lastmod>2026-11-01</lastmod>
     <changefreq>monthly</changefreq>
