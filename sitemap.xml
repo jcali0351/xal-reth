@@ -179,6 +179,14 @@
     <xhtml:a href="https://jcali0351.github.io/xal-reth/addon-xalreth-rp.html"><xr:title>Xal'Reth RP</xr:title><xr:desc>Xal'Reth RP is a free World of Warcraft roleplay addon for Midnight: 10,100 rites of Xal'Reth performed as /emotes on a timer, a glowing panel, a searchable Book and your own custom rites.</xr:desc></xhtml:a>
   </url>
   <url>
+    <loc>https://jcali0351.github.io/xal-reth/addon-vyrenna-rp.html</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://jcali0351.github.io/xal-reth/xalreth-og.jpg</image:loc></image:image>
+    <xhtml:a href="https://jcali0351.github.io/xal-reth/addon-vyrenna-rp.html"><xr:title>Vyrenna RP</xr:title><xr:desc>Vyrenna RP is a free World of Warcraft roleplay addon for Midnight that reads the Teachings of the Sacred Triangle aloud as /emotes: 5 books, 77 chapters, 509 verses, a green and gold panel, search, uploads and Vyrenna's radiant form.</xr:desc></xhtml:a>
+  </url>
+  <url>
     <loc>https://jcali0351.github.io/xal-reth/addon-disciples-of-devotion.html</loc>
     <lastmod>2026-11-02</lastmod>
     <changefreq>monthly</changefreq>
@@ -379,6 +387,14 @@
     <priority>0.6</priority>
     <image:image><image:loc>https://jcali0351.github.io/xal-reth/xalreth-og.jpg</image:loc></image:image>
     <xhtml:a href="https://jcali0351.github.io/xal-reth/herald.html"><xr:title>The Herald Archive</xr:title><xr:desc>Every official post of the Coil Herald, the news page of the Cult of Xal'Reth, a World of Warcraft roleplay guild.</xr:desc></xhtml:a>
+  </url>
+  <url>
+    <loc>https://jcali0351.github.io/xal-reth/herald-20261102-2244-vyrenna-rp-release.html</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+    <image:image><image:loc>https://jcali0351.github.io/xal-reth/xalreth-og.jpg</image:loc></image:image>
+    <xhtml:a href="https://jcali0351.github.io/xal-reth/herald-20261102-2244-vyrenna-rp-release.html"><xr:title>New Relic Released: Vyrenna RP</xr:title><xr:desc>Vyrenna gets a relic of her own: the Teachings of the Sacred Triangle, all 509 verses, read aloud as emotes on a green and gold panel.</xr:desc></xhtml:a>
   </url>
   <url>
     <loc>https://jcali0351.github.io/xal-reth/herald-20261102-1947-canon-commentary-the-hollow-within-the-egg-book.html</loc>

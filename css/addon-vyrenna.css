@@ -1,0 +1,72 @@
+/* Vyrenna RP addon page (addon-vyrenna-rp.html, built by tools/build_addon_pages.py).
+   Vyrenna's relic in green and gold: the page keeps the site's header and footer and recolors what is inside main. */
+body.vyrenna {
+  background:
+    radial-gradient(1100px 620px at 50% -8%, rgba(36, 132, 82, 0.34), transparent 62%),
+    radial-gradient(800px 500px at 100% 100%, rgba(231, 200, 115, 0.07), transparent 60%),
+    #050c08;
+  background-attachment: fixed;
+}
+body.vyrenna main {
+  --scale: #1f6a44;
+  --scale-bright: #5fd28e;
+  --venom: #d4f5df;
+  --gold: #e7c873;
+  --gold-dim: #8f7a3c;
+  --bone-dim: #a9c2b2;
+  --line: rgba(120, 220, 160, 0.22);
+  --glow: 0 0 24px rgba(95, 210, 142, 0.22);
+}
+body.vyrenna main .page-head h1 { color: var(--gold); text-shadow: 0 0 28px rgba(231, 200, 115, 0.35); }
+body.vyrenna main .btn { color: #07160d; background: linear-gradient(180deg, #f2dc97, #d4ab4e); border-color: #f2dc97; box-shadow: 0 0 18px rgba(231, 200, 115, 0.3); }
+body.vyrenna main .btn:hover { color: #07160d; box-shadow: 0 0 30px rgba(95, 210, 142, 0.55); }
+body.vyrenna main .btn.ghost { background: transparent; color: var(--gold); border-color: rgba(231, 200, 115, 0.5); box-shadow: none; }
+body.vyrenna main .btn.ghost:hover { color: var(--venom); border-color: var(--scale-bright); }
+body.vyrenna main .card { border-color: var(--line); background: linear-gradient(180deg, rgba(14, 40, 26, 0.72), rgba(5, 14, 9, 0.85)); }
+body.vyrenna main .tag.green { border-color: rgba(95, 210, 142, 0.5); color: var(--scale-bright); }
+body.vyrenna main .addon-shot img { border-color: rgba(231, 200, 115, 0.35); box-shadow: 0 0 34px rgba(95, 210, 142, 0.22); }
+body.vyrenna main .canon-portrait { box-shadow: 0 0 30px rgba(95, 210, 142, 0.35); }
+body.vyrenna main a:not(.btn):hover { color: var(--scale-bright); }
+
+/* the banner: the painting beside the Four Lights */
+.vy-banner { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 34px; align-items: center; margin: 6px 0 34px; }
+.vy-art { position: relative; margin: 0; border-radius: 10px; overflow: hidden; border: 1px solid rgba(231, 200, 115, 0.45);
+  box-shadow: 0 0 0 4px rgba(5, 14, 9, 0.9), 0 0 0 5px rgba(231, 200, 115, 0.28), 0 18px 60px rgba(31, 106, 68, 0.45); }
+.vy-art img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: cover; }
+.vy-art::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(60% 30% at 50% 12%, rgba(255, 236, 170, 0.22), transparent 70%); animation: vy-breathe 9s ease-in-out infinite; }
+@keyframes vy-breathe { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .vy-art::after { animation: none; } }
+.vy-k { margin: 0 0 10px; font-family: var(--serif-display); font-size: 0.75rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--scale-bright); }
+.vy-words blockquote { margin: 0; padding: 0 0 0 20px; border-left: 2px solid var(--gold); }
+.vy-words blockquote p { margin: 0 0 8px; font-size: clamp(1.3rem, 2.6vw, 1.7rem); line-height: 1.45; font-style: italic; color: var(--venom); }
+.vy-words cite { font-style: normal; font-size: 0.95rem; color: var(--bone-dim); }
+.vy-lights { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 22px 0 16px; padding: 0; }
+.vy-lights li { padding: 6px 14px; border: 1px solid rgba(231, 200, 115, 0.45); border-radius: 999px; font-family: var(--serif-display);
+  font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); background: rgba(31, 106, 68, 0.18); }
+.vy-note { margin: 0; color: var(--bone-dim); }
+@media (max-width: 760px) {
+  .vy-banner { grid-template-columns: 1fr; gap: 22px; }
+  .vy-art { max-width: 360px; margin: 0 auto; }
+}
+
+/* the five books */
+.vy-books { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin: 0 0 14px; }
+@media (max-width: 900px) { .vy-books { grid-template-columns: repeat(2, minmax(0, 1fr)); } .vy-books .vy-1 { grid-column: 1 / -1; } }
+.vy-book { display: flex; flex-direction: column; gap: 2px; padding: 18px 14px 16px; text-align: center; text-decoration: none; color: var(--bone);
+  border: 1px solid var(--line); border-radius: 8px; background: radial-gradient(120% 90% at 50% 0%, rgba(31, 106, 68, 0.35), rgba(5, 14, 9, 0.85) 70%);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; }
+.vy-book:hover, .vy-book:focus-visible { transform: translateY(-3px); border-color: var(--gold); box-shadow: 0 10px 30px rgba(31, 106, 68, 0.45); outline: none; }
+.vy-book b { font-family: var(--serif-display); font-size: 1.6rem; font-weight: 600; color: var(--gold); }
+.vy-book span { font-family: var(--serif-display); font-size: 0.95rem; letter-spacing: 0.04em; }
+.vy-book i { font-size: 0.9rem; color: var(--bone-dim); }
+.vy-book.vy-1 { border-color: rgba(231, 200, 115, 0.55); background: radial-gradient(120% 90% at 50% 0%, rgba(95, 210, 142, 0.32), rgba(5, 14, 9, 0.85) 70%); }
+
+/* featured card and stats, which the site paints violet */
+body.vyrenna main .addon.featured { border-color: rgba(231, 200, 115, 0.45); box-shadow: 0 0 40px rgba(31, 132, 82, 0.28); }
+body.vyrenna main .stat { background: rgba(5, 14, 9, 0.55); }
+body.vyrenna main .stat b { color: var(--gold); text-shadow: 0 0 16px rgba(231, 200, 115, 0.45); }
+body.vyrenna main .page-head h1 { background: linear-gradient(100deg, #fff6d8 0%, #e7c873 30%, #ffffff 45%, #5fd28e 60%, #fff6d8 100%); background-size: 250% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent; }
+body.vyrenna main section h2 { color: var(--gold); }
+body.vyrenna main code { color: #9fe8bb; }

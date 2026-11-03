@@ -33,6 +33,7 @@
     triangle:  { hue: 270, mode: "orbit", layers: [[poly("200,30 347,285 53,285"), "spin-slow"], [poly("200,370 53,115 347,115", "l gold"), "spin-rev"], [`<circle cx="200" cy="30" r="12" class="orb v"/><circle cx="347" cy="285" r="12" class="orb e"/><circle cx="53" cy="285" r="12" class="orb w"/>`, "spin-slow"]] },
     begging:   { hue: 45, mode: "coins", layers: [[`<path d="M80 250 Q200 360 320 250 Z" class="bowl"/><ellipse cx="200" cy="250" rx="120" ry="16" class="l gold"/>`, "pulse"]] },
     litany:    { hue: 250, mode: "drone", layers: [[`<path d="${spiral(7, 190)}" class="l thin"/>`, "spin-drone"], [ring(195, "l d"), "spin-rev"]] },
+    "addon-vyrenna-rp": { hue: 145, mode: "fireflies", layers: [[`<circle cx="200" cy="200" r="70" class="moon"/><circle cx="232" cy="185" r="66" class="shadow"/>` + ring(150, "l thin"), "pulse"], [ring(185, "l d") + spokes(12, 160, 172, "l gold"), "spin-slow"]] },
     "404":     { hue: 280, mode: "fireflies", layers: [[`<circle cx="200" cy="200" r="150" class="l broken"/>`, "spin-slow"]] },
     post:      { hue: 275, mode: "fireflies", layers: [[`<path d="M0 200 C50 140 100 140 150 200 S250 260 300 200 S400 140 450 200" class="serp wave"/>`, "slither"], [ring(170, "l thin d"), "spin-slow"]] }
   };

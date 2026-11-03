@@ -21,6 +21,7 @@ def grab(pattern):
     return m.group(0)
 
 TABLE_XRP = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/xrp</code>.*?</table>')
+TABLE_VRP = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/vrp</code>.*?</table>')
 TABLE_PARA = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/para</code>.*?</table>')
 TABLE_ROT = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/rot</code>.*?</table>')
 TABLE_EDGE = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/edge</code>.*?</table>')
@@ -69,7 +70,39 @@ ADDONS = [
   last="Type <code>/xrp</code> to summon the panel. Say <em>Glory to Xal'Reth</em>. This step is technically optional.",
   art='<img class="canon-portrait" src="xalreth-og.jpg" alt="Xal\'Reth the Eternal, a vast violet serpent-lord among drifting stones" width="300" height="450" loading="lazy">',
   faq=[("Do I need to know the rite numbers?", "No. Browse the Book by Order and Aspect, search by word, or press the dice for a random rite. Numbers are there so a guild can agree on one."),
-       ("Does it work with the other relics?", "Yes. Every addon has its own commands: <code>/xrp</code>, <code>/dod</code>, <code>/litany</code>, <code>/para</code>, <code>/rot</code>, <code>/dq</code> and <code>/fs</code>.")]),
+       ("Does it work with the other relics?", "Yes. Every addon has its own commands: <code>/xrp</code>, <code>/vrp</code>, <code>/dod</code>, <code>/litany</code>, <code>/para</code>, <code>/rot</code>, <code>/dq</code> and <code>/fs</code>.")]),
+
+ dict(slug="addon-vyrenna-rp.html", name="Vyrenna RP", folder="VyrennaRP", zip="VyrennaRP.zip", version="1.0.0", game="Retail · Midnight 12.1",
+  slash="/vrp", short="The Teachings of the Sacred Triangle, read aloud as emotes, in green and gold",
+  tagline="Through endless light. The Teachings of the Sacred Triangle, read aloud verse by verse, while Vyrenna the Radiant shines.",
+  desc="Vyrenna RP is a free World of Warcraft roleplay addon for Midnight that reads the Teachings of the Sacred Triangle aloud as /emotes: 5 books, 77 chapters, 509 verses, a green and gold panel, search, uploads and Vyrenna's radiant form.",
+  lede="Everything <a href=\"addon-xalreth-rp.html\">Xal'Reth RP</a> does, in Vyrenna's green and gold. Choose a chapter of the <a href=\"teachings-of-the-triangle.html\">Teachings of the Sacred Triangle</a>, press Play, and your character reads it to the faithful one verse at a time, while Vyrenna the Radiant pours light across a glowing panel. One verse, one chapter, one book, or all of it.",
+  stats=[("509", "verses as emotes"), ("77", "chapters, each with its own icon"), ("5", "books of the Teachings")],
+  theme="vyrenna", css="css/addon-vyrenna.css",
+  banner='<section class="vy-banner" aria-label="Vyrenna the Radiant"><figure class="vy-art"><img src="img/vyrenna-rp.webp" alt="Vyrenna the Radiant, painted in green and silver, arms open among floating gardens, waterfalls and white lilies" width="600" height="900"></figure>'
+         '<div class="vy-words"><p class="vy-k">Book I · The Radiant Scroll · Noon</p><blockquote><p>"Wisdom is knowing what to give. Balance is knowing how much. Compassion is knowing why. Guidance is knowing where."</p><cite>The Teachings, I.4, The Four Lights</cite></blockquote>'
+         '<ul class="vy-lights" aria-label="The Four Lights"><li>Wisdom</li><li>Balance</li><li>Compassion</li><li>Guidance</li></ul>'
+         '<p class="vy-note">Vyrenna gives. This is her relic: green for the young world she warmed, gold for the light she never keeps.</p></div></section>',
+  features=[
+   ("The Teachings", "Five books, 77 chapters, 509 verses", "<p>The whole Canon of the Three is inside: the Preface, the <strong>Radiant Scroll</strong> of Vyrenna, the <strong>Low Scroll</strong> of Xal'Reth, the <strong>Veiled Scroll</strong> of Nhalor and the <strong>Turning</strong>. Each chapter opens with its title and closes with its book's own blessing: <em>Through endless light. Beyond all things. In all things ends renewal.</em></p><p>Long verses carry on over a second emote, so nothing is ever cut off mid-sentence.</p>"),
+   ("The Panel", "Vyrenna, radiant", "<p>Vyrenna sits within a turning ring of golden crescents. With every verse she erupts in light: a halo, turning rays, shockwave rings, sparkles and a flaring border, with a soft synth pad behind it. Every fifteen seconds she slowly takes her <strong>radiant form</strong>, a crown of gold opening behind her, and returns.</p><p>Play, pause, next and stop; a 5 to 60 second timer; dice for random timing; loop, test and shuffle.</p>"),
+   ("The Book", "Browse, search, begin", "<p>Open the Teachings to browse by book and chapter. Every chapter has its own numbered medallion in its book's colors. Pick a whole book, a whole chapter, or any single verse. Search by reference (<code>1.4.2</code>) or by any word in any verse. Left-click to choose, right-click to begin at once.</p>"),
+   ("Your Own Readings", "Upload your own", "<p>Name a reading, paste in your own emotes one per line and save it. Vyrenna RP strips \"/e\" and numbering, splits lines too long for chat, and fills in <code>{target}</code> with your target's name. Readings pause in combat and resume on the same verse.</p>")],
+  more=('<div class="divider"><span>THE FIVE BOOKS</span></div><section class="vy-books">'
+        '<a class="vy-book" href="teachings-of-the-triangle.html#preface"><b>0</b><span>The Preface</span><i>2 chapters</i></a>'
+        '<a class="vy-book vy-1" href="teachings-of-the-triangle.html#vyrenna"><b>I</b><span>The Radiant Scroll</span><i>Vyrenna · 24 chapters</i></a>'
+        '<a class="vy-book" href="teachings-of-the-triangle.html#xalreth"><b>II</b><span>The Low Scroll</span><i>Xal\'Reth · 24 chapters</i></a>'
+        '<a class="vy-book" href="teachings-of-the-triangle.html#nhalor"><b>III</b><span>The Veiled Scroll</span><i>Nhalor · 24 chapters</i></a>'
+        '<a class="vy-book" href="teachings-of-the-triangle.html#turning"><b>IV</b><span>The Turning</span><i>The Three Together · 3 chapters</i></a></section>'
+        '<p class="center muted">In game, <code>/vrp start 3.7</code> reads Book III, chapter 7. Read along on the <a href="teachings-of-the-triangle.html">Teachings page</a>, or <a href="sacred-triangle-canon.txt" download>download the text</a>.</p>'),
+  commands=TABLE_VRP + '<p class="muted center">You can also open the panel from the addon compartment button on your minimap. Vyrenna RP and Xal\'Reth RP run side by side with separate settings.</p>',
+  install_extra=[],
+  restart="<strong>Fully restart World of Warcraft.</strong> The art only loads on a full restart, not a /reload.",
+  last="Type <code>/vrp</code> to summon the panel. Say <em>Hold light</em>. The faithful will answer <em>And let go well</em>.",
+  art='<img class="canon-portrait" src="img/vyrenna-rp.webp" alt="Vyrenna the Radiant in green and silver" width="300" height="450" loading="lazy">',
+  faq=[("Do I need to know the chapter numbers?", "No. Browse the Teachings by book and chapter, search for any word, or press Random and let Vyrenna choose. Numbers are there so a guild can agree on a reading: <em>\"Tonight, I.4.\"</em>"),
+       ("Is Xal'Reth in it?", "His book is, because the Teachings are the scripture of all three, and Book II is the Low Scroll. The art and colors belong to Vyrenna alone."),
+       ("Can I run it with Xal'Reth RP?", "Yes. It uses <code>/vrp</code> and keeps its own settings, so the two panels never argue. They are, after all, two corners of the same triangle.")]),
 
  dict(slug="addon-disciples-of-devotion.html", name="Disciples of Devotion", folder="DisciplesOfDevotion", zip="DisciplesOfDevotion.zip", version="2.0.0",
   game="Retail · Midnight 12.1", slash="/dod", short="A million verses of scripture, read aloud as emotes",
@@ -208,6 +241,8 @@ ADDONS = [
 
 # Panel previews (img/shots/<name>.jpg), recreated from each addon's code. slug -> (image, alt text)
 SHOTS = {
+    "addon-vyrenna-rp.html": ("vyrenna-rp.jpg", "Vyrenna RP panel in green and gold: Vyrenna in a ring of crescents, chapter I.4 The Four Lights being read, and the emotes it produces",
+                              "Panel preview, recreated from the addon's own textures. In game it uses your own character, target and guild."),
     "addon-xalreth-rp.html": ("xalreth-rp.jpg", "Xal'Reth RP panel: the glowing gold frame, a rite in progress and the emotes it produces"),
     "addon-disciples-of-devotion.html": ("disciples-of-devotion.jpg", "Disciples of Devotion: the chapter list with medallion icons and the verse reader"),
     "addon-litany-of-begging.html": ("litany-of-begging.jpg", "The Litany of Begging panel performing line 4817, with the Perform Entire Litany progress bar"),
@@ -242,6 +277,9 @@ def shell(a, main_html, ld):
     t = re.sub(r'(<meta property="og:url" content=")[^"]*(")', lambda m: m.group(1) + url + m.group(2), t, count=1)
     t = t.replace('<link rel="sitemap"', "".join(f'<script type="application/ld+json">{json.dumps(x)}</script>\n' for x in ld) + '<link rel="sitemap"', 1)
     t = re.sub(r"<main>.*?</main>", lambda m: "<main>\n" + main_html + "\n</main>", t, count=1, flags=re.S)
+    if a.get("css"):  # an addon page with its own look (e.g. Vyrenna RP in green and gold)
+        t = t.replace('<link rel="stylesheet" href="style.css">', f'<link rel="stylesheet" href="style.css">\n<link rel="stylesheet" href="{a["css"]}">', 1)
+        t = t.replace("<body>", f'<body class="{a["theme"]}">', 1)
     return t
 
 def build(a, others):
@@ -261,7 +299,7 @@ def build(a, others):
     risk_note = ('<p class="muted"><strong>Use at your own risk.</strong> Read the <a href="#disclaimer">disclaimer</a> before you install it.</p>' if a.get("disclaimer") else "")
     main = f'''<header class="page-head"><p class="eyebrow"><a href="addons.html">Relics of the Coil</a> · World of Warcraft Addon</p><h1>{esc(a["name"])}</h1><p>{esc(a["tagline"])}</p></header>
 <div class="wrap">
-  {a.get("warn", "")}
+  {a.get("warn", "")}{a.get("banner", "")}
   <section>
     <article class="card addon featured" id="{a["folder"]}">
       <div class="featured-grid">
