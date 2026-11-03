@@ -120,3 +120,30 @@ document.querySelectorAll("[data-reveal]").forEach((b) => {
     if (el) { el.hidden = false; el.scrollIntoView({ behavior: "smooth", block: "start" }); }
   });
 });
+
+// About submenu: click or tap to open, Escape or a click elsewhere to close; hover also opens it on wide screens (CSS).
+(function () {
+  const subs = document.querySelectorAll(".site-nav .has-sub");
+  if (!subs.length) return;
+  const closeAll = (except) => subs.forEach((li) => {
+    if (li === except) return;
+    li.classList.remove("open");
+    const b = li.querySelector(".sub-toggle"); if (b) b.setAttribute("aria-expanded", "false");
+  });
+  subs.forEach((li) => {
+    const btn = li.querySelector(".sub-toggle");
+    if (!btn) return;
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const open = !li.classList.contains("open");
+      closeAll(li);
+      li.classList.toggle("open", open);
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    li.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && li.classList.contains("open")) { closeAll(); btn.focus(); }
+    });
+    li.addEventListener("focusout", (e) => { if (!li.contains(e.relatedTarget)) { li.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); } });
+  });
+  document.addEventListener("click", (e) => { if (!e.target.closest(".site-nav .has-sub")) closeAll(); });
+})();

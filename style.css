@@ -1003,19 +1003,6 @@ a.card:hover, .card.addon:hover { border-color: rgba(201,162,255,.6); box-shadow
 .dq-logo { float: right; width: 120px; height: 120px; margin: 0 0 12px 16px; filter: drop-shadow(0 0 18px rgba(255,79,163,.55)); }
 @media (max-width: 600px) { .dq-logo { float: none; display: block; margin: 0 auto 12px; } }
 
-/* The Sitemap link makes the menu row 14 links long: use the menu button up to 1330px,
-   and tighten the spacing a little on screens just wider than that so it stays on one line. */
-@media (min-width: 1101px) and (max-width: 1330px) {
-  .nav-toggle { display: block; }
-  .site-nav { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--void-2); border-bottom: 1px solid var(--line); }
-  .site-nav.open { display: block; }
-  .site-nav ul { flex-direction: column; padding: 8px 16px 16px; }
-  .site-nav a { padding: 12px 4px; border-bottom: 1px solid rgba(185,140,255,0.08); }
-}
-@media (min-width: 1331px) and (max-width: 1480px) {
-  .site-nav ul { gap: 0; }
-  .site-nav a { padding: 8px 7px; letter-spacing: 0.08em; font-size: 0.78rem; }
-}
 
 /* Addon panel previews */
 .addon-shot { margin: 18px 0 0; text-align: center; clear: both; }
@@ -1025,3 +1012,37 @@ a.card:hover, .card.addon:hover { border-color: rgba(201,162,255,.6); box-shadow
 /* The sigil of Xal'Reth (logo): header/footer mark. The homepage hero lives in css/xalreth.css. */
 .brand .brand-mark { width: 40px; height: 40px; flex: none; display: block; filter: drop-shadow(0 0 6px rgba(166, 107, 255, 0.55)); }
 .brand:hover .brand-mark { filter: drop-shadow(0 0 10px rgba(224, 196, 255, 0.8)); }
+
+/* ---------- About submenu (Chronicle, Canon, Legends, Library) ---------- */
+.site-nav .has-sub { position: relative; }
+.site-nav .sub-toggle {
+  display: flex; align-items: center; gap: 6px; background: none; border: 0; border-bottom: 1px solid transparent; cursor: pointer;
+  padding: 8px 10px; font-family: var(--serif-display); font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--bone-dim);
+}
+.site-nav .sub-toggle::after {
+  content: ""; width: 6px; height: 6px; margin-top: -3px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg); transition: transform 0.2s ease;
+}
+.site-nav .has-sub.open .sub-toggle::after { transform: rotate(-135deg); margin-top: 3px; }
+.site-nav .sub-toggle:hover, .site-nav .sub-toggle:focus-visible, .site-nav .has-sub.open .sub-toggle, .site-nav .sub-toggle.current {
+  color: var(--gold); border-bottom-color: var(--gold); outline: none; text-shadow: 0 0 12px rgba(166, 107, 255, 0.8);
+}
+.site-nav ul.sub {
+  display: none; position: absolute; top: calc(100% + 6px); left: -6px; z-index: 60; min-width: 210px;
+  flex-direction: column; flex-wrap: nowrap; gap: 0; margin: 0; padding: 8px 0; list-style: none;
+  background: rgba(17, 10, 29, 0.97); border: 1px solid var(--line); border-radius: 4px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55), 0 0 24px rgba(166, 107, 255, 0.18);
+}
+.site-nav ul.sub::before { content: ""; position: absolute; left: 0; right: 0; top: -8px; height: 8px; }   /* hover bridge */
+.site-nav .has-sub.open > ul.sub { display: flex; }
+@media (hover: hover) and (min-width: 1101px) { .site-nav .has-sub:hover > ul.sub { display: flex; } }
+.site-nav ul.sub a { display: block; padding: 9px 18px; white-space: nowrap; border-bottom: 0; letter-spacing: 0.08em; }
+.site-nav ul.sub a:hover, .site-nav ul.sub a[aria-current="page"] { background: rgba(166, 107, 255, 0.12); }
+
+/* in the Menu-button layout the submenu opens in place, indented */
+@media (max-width: 1100px) {
+  .site-nav .sub-toggle { width: 100%; justify-content: space-between; padding: 12px 8px; border-bottom: 1px solid rgba(185,140,255,0.08); }
+  .site-nav ul.sub { position: static; min-width: 0; padding: 0 0 6px 14px; background: none; border: 0; box-shadow: none; }
+  .site-nav ul.sub a { padding: 10px 4px; border-bottom: 1px solid rgba(185,140,255,0.06); }
+}
