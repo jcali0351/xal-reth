@@ -4,8 +4,15 @@
    "Copy message" always works, for pasting into Discord. */
 (function () {
   "use strict";
+  // The inbox address is stored scrambled (reversed base64) so address-harvesting bots can't read it.
+  // After the first message, FormSubmit sends the owner a random alias: put it in ALIAS and the address
+  // no longer appears in this file at all.
+  var ALIAS = "";
+  var SCRAMBLED = "==QbvNmLslWYtdGQxUzMwkGbhNma";
+  function inbox() { try { return ALIAS || atob(SCRAMBLED.split("").reverse().join("")); } catch (e) { return ""; } }
   var CONTACT = {
-    endpoint: "",                                   // e.g. "https://formsubmit.co/ajax/<alias-or-email>"
+    endpoint: inbox() ? "https://formsubmit.co/ajax/" + inbox() : "",
+    subject: "Xal'Reth Website Submission",
     github: "https://github.com/jcali0351/xal-reth/issues/new",
     discord: "https://discord.gg/wYakHBHPz"
   };
@@ -76,6 +83,21 @@
     return { title: title, body: lines.join("\n") };
   }
 
+  // the fields as they appear in the email (FormSubmit lays them out as a table)
+  function fields(m) {
+    var t = topic(), reply = val("ct-reply"), f = {
+      _subject: CONTACT.subject, _template: "table", _captcha: "false", _honey: val("ct-honey"),
+      "Topic": LABEL[t], "Title": val("ct-subject")
+    };
+    if (t === "bug" || t === "help") { f["Addon"] = val("ct-addon"); f["Addon version"] = val("ct-version") || "-"; f["Game version"] = val("ct-game") || "-"; }
+    f["Message"] = val("ct-message");
+    if (t === "bug" && val("ct-steps")) f["Steps to reproduce"] = val("ct-steps");
+    f["Name or character"] = val("ct-name") || "Anonymous egg"; f["Realm"] = val("ct-realm") || "-"; f["Reply to"] = reply || "-";
+    if (/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(reply)) f["_replyto"] = reply;   // so pressing Reply in the inbox answers them
+    f["Sent from"] = location.href;
+    return f;
+  }
+
   function showDone(html) { done.innerHTML = html; done.classList.add("show"); done.focus(); }
 
   form.addEventListener("submit", function (e) {
@@ -86,8 +108,15 @@
       sendBtn.disabled = true; sendBtn.textContent = "Sending…";
       fetch(CONTACT.endpoint, {
         method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify({ _subject: m.title, message: m.body, name: val("ct-name") || "Anonymous egg", _template: "box", _captcha: "false", _honey: val("ct-honey") })
-      }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function () {
+        body: JSON.stringify(fields(m))
+      }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (data) {
+        if (data && (data.success === false || data.success === "false")) {
+          if (/activat/i.test(data.message || "")) {           // the owner hasn't confirmed the form yet
+            showDone("<strong>ALMOST CONSECRATED.</strong> The contact form is waiting for the author to confirm it. Please use <b>Copy message</b> and paste it in our <a href=\"" + CONTACT.discord + "\" target=\"_blank\" rel=\"noopener\">Discord</a> for now.");
+            return;
+          }
+          throw new Error(data.message || "not sent");
+        }
         form.reset(); syncTopic(); syncCount();
         showDone("<strong>MESSAGE RECEIVED.</strong> The Inner Scale has your words. A reply will slither your way as soon as someone finishes basking.");
       }).catch(function () {

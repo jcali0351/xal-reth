@@ -30,8 +30,10 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   times or type "hold light"). It lowers its resolution, then drops effects, then falls back to 2D if frames run slow, and
   stays still for reduced-motion visitors. No audio. Keep it if the site is regenerated.
 - The Contact page (`contact.html`, `css/contact.css`, `js/contact.js`) is a form for bug reports, addon help, website
-  issues and messages to the author. Until `CONTACT.endpoint` in js/contact.js is set (a FormSubmit address for the
-  author's email), Send opens a pre-filled GitHub issue on this repo; Copy message works for pasting into Discord.
+  issues and messages to the author. Send posts it through FormSubmit to the author's inbox with the subject
+  "Xal'Reth Website Submission". The address is stored scrambled in js/contact.js; once the author has activated the
+  form, put FormSubmit's random alias in ALIAS there so the address leaves the site entirely. Never write the address
+  in plain text anywhere on the site. Copy message works for pasting into Discord.
 - Every released addon has its own page (`addon-*.html`), built by `tools/build_addon_pages.py` from the data in that script
   (commands tables and the Drama Queen disclaimer are copied from addons.html). Each addon's title on addons.html links to
   its page, with a "Full page" button. When an addon changes or a new one is released, update addons.html and the script,
