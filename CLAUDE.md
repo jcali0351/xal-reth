@@ -57,6 +57,11 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   The Unwrapping is the gentle end of days. He has NO wings (the Featherist Heresy says he does).
 - Loosely Buddhist/Taoist: holding lightly, letting go, patience, the low place, water, the middle path.
 - Sacred Triangle: Xal'Reth holds, Vyrenna the Ember-Scale gives, Nhalor the Hollow Wing releases. "Hold, give, release."
+  Since Nov 2026 they are painted in the Icon of the Three (triangle.html, art in img/triangle/): Vyrenna the Radiant
+  (moon-silver and gold, lilies, crescent sigil; Wisdom, Balance, Compassion, Guidance; "Through endless light"),
+  Xal'Reth the Eternal (violet, gold triangle, emerald; Transformation, Power, Evolution, Dominion, meaning dominion over
+  his own claw; "Beyond all things"), Nhalor the Veiled (hooded, eclipse, empty-circle sigil, hollow wings folded inside
+  his cloak; Secrets, Destiny, Silence, Knowledge; "In all things ends renewal"). Old titles still stand alongside.
 - People and places: High Priestess Xalrathiel (Dream Pages), the Inner Scale (ruling circle), Hessk the Beggar King
   ("What did you give today?"), Khaedara the Accuser (Tribunal of Accusation), the Ministry of Spare Change,
   eggs (new members), the Wardens of the Void, Grippers (Bestiary creatures that feed on clutching), Shedfall (autumn holy season),
