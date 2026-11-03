@@ -15,7 +15,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # (label, href) for a plain link, or (label, id, [(label, href), ...]) for a submenu
 MENU = [
     ("Home", "index.html"),
-    ("About", "sub-about", [("The Chronicle", "lore.html"), ("The Canon", "canon.html"),
+    ("About", "sub-about", [("The Sacred Triangle", "triangle.html"), ("The Chronicle", "lore.html"), ("The Canon", "canon.html"),
                             ("The Legends", "legends.html"), ("The Library", "library.html")]),
     ("Community", "sub-community", [("News", "news.html"), ("Blog", "blog.html"),
                                     ("Testimonials", "testimonials.html"), ("Merch", "merch.html")]),

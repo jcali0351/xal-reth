@@ -16,7 +16,7 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   Keep both if the site is regenerated. `sitemap.xml` is rebuilt from every page by `tools/build_sitemap.py`
   (new_post.py runs it); don't hand-edit it. `sitemap.css` styles it for people (CSS, not XSLT: Chrome drops XSLT in Nov 2026).
 - The main menu is written into every page by `tools/build_nav.py` (edit MENU there, then run it):
-  Home · About (The Chronicle, The Canon, The Legends, The Library) · Community (News, Blog, Testimonials, Merch) ·
+  Home · About (The Sacred Triangle, The Chronicle, The Canon, The Legends, The Library) · Community (News, Blog, Testimonials, Merch) ·
   Faith (Devotion, The Altar) · Addons · Join · Sitemap. Submenus open on hover on wide screens and on click or tap
   everywhere (script in site.js, styles at the end of style.css); the one holding the current page is highlighted.
   The full menu shows above 860px; at 860px and below it folds into the Menu button. Keep it if the site is regenerated.
