@@ -26,6 +26,7 @@ TABLE_PARA = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>Wha
 TABLE_ROT = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/rot</code>.*?</table>')
 TABLE_EDGE = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/edge</code>.*?</table>')
 TABLE_DQ = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/dq</code>.*?</table>')
+TABLE_MBF = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/mbf</code>.*?</table>')
 TABLE_MBP = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/mbp</code>.*?</table>')
 DISCLAIMER = grab(r'<section class="warning" id="dramaqueen-disclaimer".*?</section>').replace(' id="dramaqueen-disclaimer"', ' id="disclaimer"')
 
@@ -227,6 +228,27 @@ ADDONS = [
        ("Who is on the leaderboard?", "Everyone running Master Baiter Pro that your game can reach: players on your realm and its connected realms, plus your guild. Blizzard gives addons no way to talk across every realm at once, so someone on a distant realm won't show up. Numbers are reported by each player's own addon."),
        ("I had Coil Angler. Do my records carry over?", "No. Master Baiter Pro starts a fresh record book. Delete the old CoilAngler folder so the two do not fight over your key.")]),
 
+ dict(slug="addon-master-bait-forever.html", name="Master Bait Forever", folder="MasterBaitForever", zip="MasterBaitForever.zip", version="1.0", game="WoW Forever",
+  client="_forever_", slash="/mbf", short="Master Baiter Pro, rebuilt for World of Warcraft: Forever",
+  tagline="One key casts, the same key hooks, and every fish tells you what it is worth, now in World of Warcraft: Forever.",
+  desc="Master Bait Forever is a free fishing addon for World of Warcraft: Forever (interface 16001): one-key cast and hook, auction house prices for every catch, top five catch icons, a live leaderboard, jackpot alerts and records.",
+  lede="Master Bait Forever is Master Baiter Pro rebuilt for World of Warcraft: Forever. Press one key to cast, press it again on the splash, and every catch pops up with its icon and auction price while the haul counter rolls up. It is a helper, not a bot: you press every key.",
+  stats=[("1", "key to cast and hook"), ("16001", "Forever interface"), ("Live", "leaderboard of Forever anglers")],
+  features=[
+   ("Built for Forever", "Same addon, new world", "<p>It loads in the Forever client (interface 16001), recognises the original Fishing spell and its ranks, and scales everything to Forever's leaner economy: the haul shows silver until you are into real gold, the jackpot starts at 5 gold, and the gold achievements are 100 and 1,000 gold.</p>"),
+   ("Auction House Prices", "Either kind of auction house", "<p>Open the auction house and it prices every fish you have caught. It understands both the modern item-key auction house and the original browse-and-page one, so it works whichever Forever uses, and it reads Auctionator's Forever prices between visits. Vendor value fills in until then.</p>"),
+   ("The One Key", "Cast, hook, repeat", "<p>Your chosen key (F by default) casts Fishing while you are idle and becomes Interact while your line is in the water, reaching the bobber through soft interact. Loud splash mode turns effects up and music down, and gives everything back when you stop.</p>"),
+   ("Top Five and the Leaderboard", "Icons, prices, rivals", "<p>Your five most valuable catches sit on the panel as their item icons with prices on hover. The leaderboard finds every other Master Bait Forever angler your game can reach, shows how many are online, and ranks them by fish caught, best catch or this week. It runs on its own Forever network, separate from Master Baiter Pro.</p>")],
+  more=('<div class="divider"><span>A NOTE ON FAIR PLAY</span></div>'
+        '<section class="prose"><h2>One key, never zero</h2><p>Every action still starts with your own key press, exactly like Master Baiter Pro. It never presses anything for you. An auto-clicker or a weighted key is botting, and that is what gets accounts banned.</p></section>'),
+  commands=TABLE_MBF + '<p class="muted center">Bind <em>Begin or end a fishing session</em> under Key Bindings &gt; AddOns &gt; Master Bait Forever.</p>',
+  install_extra=["This is the Forever version. For Midnight, get <a href=\"addon-master-baiter-pro.html\">Master Baiter Pro</a> instead; you can run each in its own game."],
+  restart="Restart World of Warcraft: Forever or type <code>/reload</code>.",
+  last="Type <code>/mbf</code>, walk to some water and press <strong>F</strong>. Visit the auction house once so it can price your fish.",
+  faq=[("Is this different from Master Baiter Pro?", "Same features, tuned for Forever: interface 16001, the original Fishing spell, both kinds of auction house, a smaller gold scale and its own leaderboard network."),
+       ("It says out of date.", "Make sure you put it in the <code>_forever_</code> folder, not <code>_retail_</code> or <code>_classic_era_</code>. If a Forever patch raises the interface number, tick <em>Load out of date AddOns</em> on the character screen until we update it."),
+       ("Why do my fish show vendor prices?", "It has not seen them on the auction house yet. Open the auction house once, or install Auctionator's Forever version."),
+       ("Will it get me banned?", "It does nothing without your key press, like established fishing addons. Never put a clicker or a weight on the key.")]),
  dict(slug="addon-drama-queen-pro.html", name="Drama Queen Pro", folder="DramaQueen", zip="DramaQueen.zip", version="3.3", game="Retail · Midnight",
   slash="/dq", short="Deadpan fake personal drama every five minutes (use at your own risk)",
   tagline="Every five minutes, a piece of deadpan, real-sounding personal drama, under your name. Read the disclaimer first.",
@@ -318,7 +340,7 @@ def build(a, others):
     size = os.path.getsize(a["zip"]); size = f"{size/1048576:.1f} MB" if size > 1048576 else f"{max(1, round(size/1024))} KB"
     feats = "".join(f'<article class="card"><p class="kicker">{esc(k)}</p><h3>{esc(h)}</h3>{body}</article>' for k, h, body in a["features"])
     steps = [f'<a href="{a["zip"]}" download>Download {a["zip"]}</a> ({size}).'] + a["install_extra"] + [
-        f'Extract the zip. Move the <code>{a["folder"]}</code> folder into <code>World of Warcraft\\_retail_\\Interface\\AddOns\\</code>. On Windows this is usually <code>C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns</code>.',
+        f'Extract the zip. Move the <code>{a["folder"]}</code> folder into <code>World of Warcraft\\{a.get("client", "_retail_")}\\Interface\\AddOns\\</code>. On Windows this is usually <code>C:\\Program Files (x86)\\World of Warcraft\\{a.get("client", "_retail_")}\\Interface\\AddOns</code>.',
         "Make sure the folder sits directly inside <code>AddOns</code>, not in a folder inside a folder.", a["restart"], a["last"]]
     faq = "".join(f"<details><summary>{esc(q)}</summary><p>{ans}</p></details>" for q, ans in a.get("faq", []))
     rel = "".join(f'<article class="card"><p class="kicker">{esc(o["slash"])}</p><h3><a href="{o["slug"]}">{esc(o["name"])}</a></h3><p class="muted">{esc(o["short"])}.</p></article>' for o in others)
