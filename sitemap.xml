@@ -113,12 +113,20 @@
     <xhtml:a href="https://jcali0351.github.io/xal-reth/litany.html"><xr:title>The Litany of Begging</xr:title><xr:desc>The Litany of Begging: 10,000 lines on alms, humility and the complicated generosity of Xal'Reth. The most boring text of the Coil. Read the warning first. Includes a World of Warcraft addon.</xr:desc></xhtml:a>
   </url>
   <url>
+    <loc>https://jcali0351.github.io/xal-reth/guild-roster.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://jcali0351.github.io/xal-reth/xalreth-og.jpg</image:loc></image:image>
+    <xr:section><xr:name>The Faithful</xr:name><xr:blurb>Rites, relics of devotion and the people who keep them.</xr:blurb></xr:section>
+    <xhtml:a href="https://jcali0351.github.io/xal-reth/guild-roster.html"><xr:title>Guild Roster</xr:title><xr:desc>The live guild roster of the Cult of Xal'Reth: every faithful servant of Xal'Reth the Eternal, with class, spec, item level and achievements, synced hourly from the World of Warcraft Armory.</xr:desc></xhtml:a>
+  </url>
+  <url>
     <loc>https://jcali0351.github.io/xal-reth/rites.html</loc>
     <lastmod>2026-11-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://jcali0351.github.io/xal-reth/xalreth-og.jpg</image:loc></image:image>
-    <xr:section><xr:name>The Faithful</xr:name><xr:blurb>Rites, relics of devotion and the people who keep them.</xr:blurb></xr:section>
     <xhtml:a href="https://jcali0351.github.io/xal-reth/rites.html"><xr:title>The Rites of the Coil</xr:title><xr:desc>The ceremonies of the Cult of Xal'Reth: initiation, Shedding, the Chant, the Tribunal of Accusation, Banishment to the Void, and the Holy Calendar.</xr:desc></xhtml:a>
   </url>
   <url>
@@ -162,12 +170,12 @@
     <xhtml:a href="https://jcali0351.github.io/xal-reth/library.html"><xr:title>The Library of the Coil</xr:title><xr:desc>The Library of the Cult of Xal'Reth: the Canon, the Chronicle, the Legends, the Teachings, the Rites, the Scripture, the Politics of Begging, the Priesthood and the Codex.</xr:desc></xhtml:a>
   </url>
   <url>
-    <loc>https://jcali0351.github.io/xal-reth/addon-coil-angler.html</loc>
+    <loc>https://jcali0351.github.io/xal-reth/addon-master-baiter-pro.html</loc>
     <lastmod>2026-11-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://jcali0351.github.io/xal-reth/xalreth-og.jpg</image:loc></image:image>
-    <xhtml:a href="https://jcali0351.github.io/xal-reth/addon-coil-angler.html"><xr:title>Coil Angler</xr:title><xr:desc>Coil Angler is a free World of Warcraft fishing addon for Midnight: one key casts Fishing and hooks the bobber, loud splash mode, gold per hour with Auctionator or TSM prices, records, achievements and a guild board.</xr:desc></xhtml:a>
+    <xhtml:a href="https://jcali0351.github.io/xal-reth/addon-master-baiter-pro.html"><xr:title>Master Baiter Pro</xr:title><xr:desc>Master Baiter Pro is a free World of Warcraft fishing addon for Midnight: one key casts and hooks, live auction house prices for every catch, your top five catches as icons, gold per hour, jackpot alerts and records.</xr:desc></xhtml:a>
   </url>
   <url>
     <loc>https://jcali0351.github.io/xal-reth/addons.html</loc>
@@ -176,7 +184,7 @@
     <priority>0.9</priority>
     <image:image><image:loc>https://jcali0351.github.io/xal-reth/xalreth-og.jpg</image:loc></image:image>
     <xr:section><xr:name>Relics and Addons</xr:name><xr:blurb>Free roleplay addons for the guild, and merch that is coming soon.</xr:blurb></xr:section>
-    <xhtml:a href="https://jcali0351.github.io/xal-reth/addons.html"><xr:title>Free World of Warcraft RP Addons</xr:title><xr:desc>Free World of Warcraft roleplay addons for Midnight: Xal'Reth RP (10,100 emote rites), Disciples of Devotion (scripture read aloud as emotes), the Litany of Begging, Paranoid RP and Coil Angler (one-key fishing). Download and install guide.</xr:desc></xhtml:a>
+    <xhtml:a href="https://jcali0351.github.io/xal-reth/addons.html"><xr:title>Free World of Warcraft RP Addons</xr:title><xr:desc>Free World of Warcraft roleplay addons for Midnight: Xal'Reth RP (10,100 emote rites), Disciples of Devotion (scripture read aloud as emotes), the Litany of Begging, Paranoid RP and Master Baiter Pro (one-key fishing with auction prices). Download and install guide.</xr:desc></xhtml:a>
   </url>
   <url>
     <loc>https://jcali0351.github.io/xal-reth/addon-xalreth-rp.html</loc>
@@ -395,6 +403,14 @@
     <priority>0.6</priority>
     <image:image><image:loc>https://jcali0351.github.io/xal-reth/xalreth-og.jpg</image:loc></image:image>
     <xhtml:a href="https://jcali0351.github.io/xal-reth/herald.html"><xr:title>The Herald Archive</xr:title><xr:desc>Every official post of the Coil Herald, the news page of the Cult of Xal'Reth, a World of Warcraft roleplay guild.</xr:desc></xhtml:a>
+  </url>
+  <url>
+    <loc>https://jcali0351.github.io/xal-reth/herald-20261106-1346-master-baiter-pro-2-0.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+    <image:image><image:loc>https://jcali0351.github.io/xal-reth/xalreth-og.jpg</image:loc></image:image>
+    <xhtml:a href="https://jcali0351.github.io/xal-reth/herald-20261106-1346-master-baiter-pro-2-0.html"><xr:title>Coil Angler Is Now Master Baiter Pro, With Auction Prices for Every Fish</xr:title><xr:desc>Our one-key fishing addon gets a new name, a new deep-water panel and live auction house prices for every catch, with your top five catches shown as icons. Free for every player, guild or not.</xr:desc></xhtml:a>
   </url>
   <url>
     <loc>https://jcali0351.github.io/xal-reth/herald-20261106-1039-new-relic-released-coil-angler.html</loc>
