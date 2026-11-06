@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roster Settings · Cult of Xal'Reth</title>
+<meta name="description" content="Settings for the Cult of Xal'Reth guild roster sync.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#08050f">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/guild-roster.css">
+<style>
+  .ra { max-width: 860px; margin: 0 auto; display: grid; gap: 22px; padding-bottom: 48px; }
+  .ra .panel { background: var(--rr-glass); backdrop-filter: blur(10px); border: 1px solid var(--line); border-radius: var(--rr-radius); padding: 22px; }
+  .ra h2 { margin: 0 0 6px; font-size: 1.35rem; color: var(--rr-gold); }
+  .ra .hint { color: var(--bone-dim); font-size: 1rem; margin: 0 0 14px; }
+  .ra .fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .ra .fields .full { grid-column: 1 / -1; }
+  .ra label > span { display: block; font-family: var(--serif-display); font-size: .66rem; letter-spacing: .2em; text-transform: uppercase; color: var(--bone-dim); margin-bottom: 5px; }
+  .ra input, .ra select, .ra textarea { width: 100%; background: rgba(8,5,15,.75); color: var(--bone); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; font: 1.05rem var(--serif-body); min-height: 44px; }
+  .ra textarea { min-height: 70px; resize: vertical; }
+  .ra input:focus, .ra select:focus, .ra textarea:focus { outline: 2px solid var(--rr-gold); outline-offset: 1px; border-color: transparent; }
+  .ra small { display: block; color: var(--bone-dim); font-size: .9rem; margin-top: 4px; }
+  .ra .ranks { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+  .ra .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 16px; }
+  .ra .btn { padding: 11px 18px; font-size: .74rem; cursor: pointer; }
+  .ra .btn[disabled] { opacity: .45; cursor: not-allowed; }
+  .ra .msg { margin: 10px 0 0; font-size: 1rem; min-height: 1.4em; }
+  .ra .msg.ok { color: #7fe39a; } .ra .msg.err { color: #ff9a9a; }
+  .ra dl.status { display: grid; grid-template-columns: max-content 1fr; gap: 6px 18px; margin: 0; }
+  .ra dl.status dt { font-family: var(--serif-display); font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: var(--bone-dim); padding-top: 3px; }
+  .ra dl.status dd { margin: 0; }
+  .ra .runs { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 6px; font-size: 1rem; }
+  .ra .runs li { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid rgba(185,140,255,.1); padding-bottom: 6px; }
+  .ra .pill { font-family: var(--serif-display); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; padding: 2px 8px; border-radius: 20px; border: 1px solid var(--line); white-space: nowrap; }
+  .ra .pill.success { color: #7fe39a; border-color: rgba(127,227,154,.4); } .ra .pill.failure { color: #ff9a9a; border-color: rgba(255,154,154,.4); }
+  .ra .pill.running { color: var(--rr-gold); border-color: var(--rr-gold-dim); }
+  .ra .locked { opacity: .55; pointer-events: none; }
+  @media (max-width: 640px) { .ra .fields { grid-template-columns: 1fr; } .ra .ranks { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img class="brand-mark" src="img/xalreth-mark.png" width="40" height="40" alt=""><span>XAL'RETH</span></a>
+    <a class="btn ghost" href="guild-roster.html" style="padding:9px 14px;font-size:.7rem">View the roster</a>
+  </div>
+</header>
+<main>
+<header class="page-head"><p class="eyebrow">The Inner Scale only</p><h1>Roster Settings</h1><p>Configure the hourly sync with the Blizzard Armory. Nothing here is visible to the faithful.</p></header>
+<div class="wrap">
+<div class="ra">
+
+  <section class="panel" aria-labelledby="h-status">
+    <h2 id="h-status">Sync status</h2>
+    <dl class="status" data-status>
+      <dt>Last successful sync</dt><dd data-s="success">—</dd>
+      <dt>Last attempt</dt><dd data-s="attempt">—</dd>
+      <dt>Result</dt><dd data-s="message">—</dd>
+      <dt>Characters</dt><dd data-s="members">—</dd>
+      <dt>Blizzard secrets</dt><dd data-s="secrets">Connect to check</dd>
+    </dl>
+    <ul class="runs" data-runs aria-live="polite"></ul>
+    <div class="row">
+      <button class="btn" type="button" data-sync disabled>Manual sync now</button>
+      <button class="btn ghost" type="button" data-test disabled>Test connection</button>
+    </div>
+    <p class="msg" data-run-msg role="status"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="h-gh">
+    <h2 id="h-gh">1 · Connect to GitHub</h2>
+    <p class="hint">This site is static, so settings are saved to the repository and the sync runs in GitHub Actions. Paste a
+      <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">fine-grained personal access token</a>
+      limited to <b>jcali0351/xal-reth</b> with <b>Contents</b>, <b>Actions</b> and <b>Secrets</b> set to <i>Read and write</i>.
+      It stays in this browser tab only and is forgotten when you close it.</p>
+    <form data-connect class="fields" autocomplete="off">
+      <label class="full"><span>GitHub token</span><input type="password" name="token" placeholder="github_pat_…" spellcheck="false" autocomplete="off" required></label>
+    </form>
+    <div class="row"><button class="btn" type="button" data-connect-btn>Connect</button><button class="btn ghost" type="button" data-forget hidden>Forget token</button></div>
+    <p class="msg" data-connect-msg role="status"></p>
+  </section>
+
+  <section class="panel locked" aria-labelledby="h-guild" data-needs-token>
+    <h2 id="h-guild">2 · Guild</h2>
+    <p class="hint">Saved to <code>data/roster-config.json</code>. The next sync uses the new values.</p>
+    <form data-config class="fields" autocomplete="off">
+      <label><span>Guild name</span><input name="guildName" required placeholder="Exactly as in game"></label>
+      <label><span>Realm</span><input name="realm" required placeholder="e.g. Moon Guard"></label>
+      <label><span>Region</span><select name="region"><option value="us">Americas &amp; Oceania (US)</option><option value="eu">Europe (EU)</option><option value="kr">Korea (KR)</option><option value="tw">Taiwan (TW)</option></select></label>
+      <label><span>Sync frequency</span><select name="syncEveryMinutes"><option value="60">Every hour</option><option value="120">Every 2 hours</option><option value="180">Every 3 hours</option><option value="360">Every 6 hours</option><option value="720">Every 12 hours</option><option value="1440">Once a day</option></select></label>
+      <label><span>Realm slug (optional)</span><input name="realmSlug" placeholder="Found automatically"><small>Only if the realm is not found by name.</small></label>
+      <label><span>Minimum level</span><input name="minLevel" type="number" min="1" max="90" value="1"><small>Hide alts below this level.</small></label>
+      <div class="full"><span style="display:block;font-family:var(--serif-display);font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--bone-dim);margin-bottom:5px">Rank names (0 is the Guild Master)</span>
+        <div class="ranks" data-ranks></div><small>The Blizzard API only gives rank numbers, so name them here as they appear in game.</small></div>
+      <label class="full"><span>Hidden characters</span><textarea name="hiddenCharacters" placeholder="One name per line"></textarea><small>Characters who asked not to appear on the roster.</small></label>
+    </form>
+    <div class="row"><button class="btn" type="button" data-save-config>Save guild settings</button></div>
+    <p class="msg" data-config-msg role="status"></p>
+  </section>
+
+  <section class="panel locked" aria-labelledby="h-api" data-needs-token>
+    <h2 id="h-api">3 · Blizzard API credentials</h2>
+    <p class="hint">Create a client at <a href="https://develop.battle.net/access/clients" target="_blank" rel="noopener">develop.battle.net</a>.
+      They are encrypted in this browser and stored as GitHub repository secrets, which nobody can read back, including this page. Leave both empty to keep the current ones.</p>
+    <form data-secrets class="fields" autocomplete="off">
+      <label><span>API Client ID</span><input name="id" spellcheck="false" autocomplete="off"></label>
+      <label><span>API Secret</span><input name="secret" type="password" spellcheck="false" autocomplete="off"></label>
+    </form>
+    <div class="row"><button class="btn" type="button" data-save-secrets>Save credentials</button></div>
+    <p class="msg" data-secrets-msg role="status"></p>
+  </section>
+
+</div>
+</div>
+</main>
+<script src="js/roster-admin.js"></script>
+</body>
+</html>

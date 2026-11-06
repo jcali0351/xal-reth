@@ -18,7 +18,7 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   (new_post.py runs it); don't hand-edit it. `sitemap.css` styles it for people (CSS, not XSLT: Chrome drops XSLT in Nov 2026).
 - The main menu is written into every page by `tools/build_nav.py` (edit MENU there, then run it):
   Home · About (The Sacred Triangle, The Chronicle, The Canon, The Legends, The Library) · Community (News, Blog, Testimonials, Merch) ·
-  Faith (Devotion, The Altar) · Addons · Join · Sitemap · Contact. Submenus open on hover on wide screens and on click or tap
+  Faith (Devotion, The Altar) · Addons · Guild Roster · Join · Sitemap · Contact. Submenus open on hover on wide screens and on click or tap
   everywhere (script in site.js, styles at the end of style.css); the one holding the current page is highlighted.
   The full menu shows above 860px; at 860px and below it folds into the Menu button. Keep it if the site is regenerated.
 - The logo (the violet triangle sigil, "Observe ▽ Analyze ▽ Transcend") is the site's brand mark: `img/xalreth-mark.png`
@@ -43,6 +43,16 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   (commands tables and the Drama Queen disclaimer are copied from addons.html). Each addon's title on addons.html links to
   its page, with a "Full page" button. When an addon changes or a new one is released, update addons.html and the script,
   run `python3 tools/build_addon_pages.py` and then `python3 tools/build_sitemap.py`. Coming-soon addons get no page yet.
+
+- The Guild Roster (`guild-roster.html`, `css/guild-roster.css`, `js/guild-roster.js`) shows the live guild from the
+  Blizzard WoW API. The page only reads `data/roster.json` and `data/sync-status.json`; it never calls Blizzard. Those files
+  are written by `tools/sync_roster.mjs` (Node 20, no packages), run hourly by `.github/workflows/roster-sync.yml`, which
+  commits them as "Guild roster sync …". Never hand-edit `data/roster.json`, `data/sync-status.json` or
+  `data/roster-cache.json`. Settings are `data/roster-config.json` (guild, realm, region, sync frequency, rank names,
+  hidden characters), edited from `roster-admin.html` (noindex, not in the menu or sitemap), which also stores the
+  `BLIZZARD_CLIENT_ID`/`BLIZZARD_CLIENT_SECRET` repository secrets and starts manual syncs and connection tests through the
+  GitHub API with the admin's own token (kept in sessionStorage only). Never put Blizzard credentials or tokens in any file.
+  Keep it if the site is regenerated.
 
 ## Hourly Coil Herald post (scheduled task)
 1. `git pull --ff-only origin main`

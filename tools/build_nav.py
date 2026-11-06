@@ -21,6 +21,7 @@ MENU = [
                                     ("Testimonials", "testimonials.html"), ("Merch", "merch.html")]),
     ("Faith", "sub-faith", [("Devotion", "devotion.html"), ("The Altar", "altar.html")]),
     ("Addons", "addons.html"),
+    ("Guild Roster", "guild-roster.html"),
     ("Join", "join.html"),
     ("Sitemap", "sitemap.xml"),
     ("Contact", "contact.html"),

@@ -1,0 +1,13 @@
+{
+  "guildName": "",
+  "realm": "",
+  "realmSlug": "",
+  "region": "us",
+  "locale": "en_US",
+  "syncEveryMinutes": 60,
+  "minLevel": 1,
+  "rankNames": {
+    "0": "Guild Master"
+  },
+  "hiddenCharacters": []
+}

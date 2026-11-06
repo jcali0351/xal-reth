@@ -24,7 +24,7 @@ SECTIONS = [
     ("The Story", "How the Coil came to hold the world.", ["lore.html", "legends.html", "triangle.html", "teachings-of-the-triangle.html", "wiki.html"]),
     ("The Teaching", "The Canon, and what to do with it.", ["canon.html", "teachings.html", "scripture.html", "begging.html", "litany.html"]),
     ("The Faithful", "Rites, relics of devotion and the people who keep them.",
-     ["rites.html", "altar.html", "priesthood.html", "testimonials.html", "codex.html", "library.html"]),
+     ["guild-roster.html", "rites.html", "altar.html", "priesthood.html", "testimonials.html", "codex.html", "library.html"]),
     ("Relics and Addons", "Free roleplay addons for the guild, and merch that is coming soon.", ["addons.html", "addon-xalreth-rp.html", "addon-vyrenna-rp.html", "addon-disciples-of-devotion.html", "devotion.html", "addon-litany-of-begging.html",
       "addon-paranoid-rp.html", "addon-brain-rotter-pro.html", "addon-edgelord-pro.html", "addon-drama-queen-pro.html", "addon-full-support.html", "merch.html"]),
     ("The Daily Coil", "Long-form posts from the Wardens of the Void.", ["blog.html"]),
@@ -32,8 +32,8 @@ SECTIONS = [
 ]
 PRIORITY = {"index.html": "1.0", "join.html": "0.9", "lore.html": "0.9", "canon.html": "0.9", "addons.html": "0.9",
             "blog.html": "0.7", "addon-xalreth-rp.html": "0.9", "addon-vyrenna-rp.html": "0.8", "addon-disciples-of-devotion.html": "0.8", "addon-litany-of-begging.html": "0.8", "addon-paranoid-rp.html": "0.8", "addon-brain-rotter-pro.html": "0.8", "addon-edgelord-pro.html": "0.8", "addon-drama-queen-pro.html": "0.8", "addon-full-support.html": "0.8", "news.html": "0.7", "herald.html": "0.6"}
-CHANGEFREQ = {"news.html": "daily", "herald.html": "daily", "blog.html": "weekly", "index.html": "weekly", "addons.html": "weekly"}
-SKIP = {"404.html"}
+CHANGEFREQ = {"guild-roster.html": "hourly", "news.html": "daily", "herald.html": "daily", "blog.html": "weekly", "index.html": "weekly", "addons.html": "weekly"}
+SKIP = {"404.html", "roster-admin.html"}
 TITLES = {"wiki.html": "The Encyclopedia of the Coil", "merch.html": "Official Merch (Coming Soon)", "addons.html": "Free World of Warcraft RP Addons", "devotion.html": "Disciples of Devotion: the Live Reader"}
 
 def esc(s): return html.escape(s, quote=False)
