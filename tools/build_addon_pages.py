@@ -26,6 +26,7 @@ TABLE_PARA = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>Wha
 TABLE_ROT = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/rot</code>.*?</table>')
 TABLE_EDGE = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/edge</code>.*?</table>')
 TABLE_DQ = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/dq</code>.*?</table>')
+TABLE_ANG = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/angler</code>.*?</table>')
 DISCLAIMER = grab(r'<section class="warning" id="dramaqueen-disclaimer".*?</section>').replace(' id="dramaqueen-disclaimer"', ' id="disclaimer"')
 
 def table(rows):
@@ -200,6 +201,28 @@ ADDONS = [
   faq=[("Is this related to Brain Rotter Pro?", "It is built on the same engine, so it works the same way: categories down the left, a preview of the next line, EDGE, SAY, auto and Chaos. The lines, art, sounds and Escalation are all new."),
        ("How annoying does it get?", "With Escalation on and the speed at 20 seconds, it reaches one line every 3 seconds in emote after about two minutes. We recommend not finding out in a raid."),
        ("Can I keep it to myself?", "Yes. Set the channel to Local and the edge stays in your own chat window, where nobody can understand you.")]),
+
+ dict(slug="addon-coil-angler.html", name="Coil Angler", folder="CoilAngler", zip="CoilAngler.zip", version="1.0.0", game="Retail · Midnight",
+  slash="/angler", short="One-key fishing: one key casts and hooks, and every catch is an offering",
+  tagline="Patience, made convenient. One key casts, the same key hooks, and the water gives what it does not need.",
+  desc="Coil Angler is a free World of Warcraft fishing addon for Midnight: one key casts Fishing and hooks the bobber, loud splash mode, gold per hour with Auctionator or TSM prices, records, achievements and a guild board.",
+  lede="The Coil teaches holding lightly, and nothing teaches it like a fishing line. Coil Angler turns fishing into one key: press it to cast, press it again when the bobber splashes, and the key quietly turns back into a cast. Every catch is announced as an offering to the Coil, counted in gold, and written into the Ledger of your records. It is a helper, not a bot: you press every key, so it plays by Blizzard's rules.",
+  stats=[("1", "key to cast and hook"), ("13", "achievements"), ("0", "keys pressed for you")],
+  features=[
+   ("The One Key", "Cast, hook, repeat", "<p>While a session runs, your chosen key (F by default) casts Fishing when you are idle. The moment your line is in the water, the same key becomes Interact, which reaches the bobber through the game's soft-interact targeting, so there is nothing to aim. Loot it and the key turns back into a cast. Outside a session your key is exactly what it always was.</p><p>Sessions begin when you press Begin, type <code>/angler start</code>, or simply cast Fishing.</p>"),
+   ("Loud Splash Mode", "The splash is the loudest thing in Azeroth", "<p>While you fish, Coil Angler turns sound effects up and music and ambience off, switches on auto loot and soft interact, and hands every setting back exactly as it was when the session ends, even after a crash or disconnect. Each of these can be turned off.</p>"),
+   ("The Ledger", "Gold per hour that means something", "<p>A violet panel shows a cast timer, time at the water, casts, catches, landing rate, gold per hour and your streak. Catches are valued with <strong>Auctionator</strong> or <strong>TSM</strong> prices when you have either installed, and vendor value when you do not. When you finish, a summary card counts the offering: time, catches, gold, finest catch and what the water gave.</p>"),
+   ("The Faithful Angler", "Records, achievements and the guild board", "<p>Personal records for most fish in a session, longest streak, best gold per hour and rarest offering. Thirteen achievements, from <em>First Offering</em> to <em>Wrapped Three Times</em> (5,000 fish) and <em>Every Water Is the Same Water</em>. A weekly board shows which guildmates are fishing hardest, and an optional brag announces rare catches in guild chat.</p>")],
+  more=('<div class="divider"><span>A NOTE FROM THE INNER SCALE</span></div>'
+        '<section class="prose"><h2>Why one key and not none</h2><p>Blizzard lets an addon decide what a button does, but every action has to start with a real key press from a real faithful. Coil Angler lives entirely inside that rule. It never presses anything for you, never moves your character and never reads the game\'s memory. Fishing addons that work this way have been used for years.</p>'
+        '<p>What gets anglers banned is everything around it: an auto-clicker, a macro keyboard or a weight left on a key. Do not do that. Sit at the water, listen for the splash, press the key. That is the whole rite. The Coil waited at the Open Door through the whole Night of Stillness; you can wait twenty seconds for a fish.</p></section>'),
+  commands=TABLE_ANG + '<p class="muted center">Bind <em>Begin or end a fishing session</em> under Key Bindings &gt; AddOns &gt; Coil Angler. The session pauses in combat, and ends when you mount up or stay idle (3 minutes by default).</p>',
+  install_extra=[], restart="Restart World of Warcraft or type <code>/reload</code>.",
+  last="Type <code>/angler</code>, walk to some water and press <strong>F</strong>. Hold light.",
+  faq=[("Will it get me banned?", "It does nothing without your key press, the same way established fishing addons work. Using an auto-clicker, a macro keyboard or a weighted key to press it for you is botting, and that is what gets caught."),
+       ("The key does not loot the bobber.", "Make sure soft interact is on (<code>/angler soft on</code>) and face the water you cast into. If you already use F for something else, pick another key with <code>/angler key G</code>."),
+       ("Does it know when the fish bites?", "No, and that is the point: the splash is yours to hear. Loud splash mode makes sure you do."),
+       ("Why is my gold per hour so low?", "Without Auctionator or TSM it counts vendor value. Install either one and scan the auction house, and catches are valued at market price.")]),
 
  dict(slug="addon-drama-queen-pro.html", name="Drama Queen Pro", folder="DramaQueen", zip="DramaQueen.zip", version="3.3", game="Retail · Midnight",
   slash="/dq", short="Deadpan fake personal drama every five minutes (use at your own risk)",
