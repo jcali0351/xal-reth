@@ -202,7 +202,7 @@ ADDONS = [
        ("How annoying does it get?", "With Escalation on and the speed at 20 seconds, it reaches one line every 3 seconds in emote after about two minutes. We recommend not finding out in a raid."),
        ("Can I keep it to myself?", "Yes. Set the channel to Local and the edge stays in your own chat window, where nobody can understand you.")]),
 
- dict(slug="addon-coil-angler.html", name="Coil Angler", folder="CoilAngler", zip="CoilAngler.zip", version="1.0.0", game="Retail · Midnight",
+ dict(slug="addon-coil-angler.html", name="Coil Angler", folder="CoilAngler", zip="CoilAngler.zip", version="1.0.1", game="Retail · Midnight",
   slash="/angler", short="One-key fishing: one key casts and hooks, and every catch is an offering",
   tagline="Patience, made convenient. One key casts, the same key hooks, and the water gives what it does not need.",
   desc="Coil Angler is a free World of Warcraft fishing addon for Midnight: one key casts Fishing and hooks the bobber, loud splash mode, gold per hour with Auctionator or TSM prices, records, achievements and a guild board.",
