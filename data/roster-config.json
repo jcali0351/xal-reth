@@ -1,13 +1,22 @@
 {
-  "guildName": "",
-  "realm": "",
+  "guildName": "Cult of Xal Reth",
+  "realm": "Moon Guard",
   "realmSlug": "",
   "region": "us",
   "locale": "en_US",
   "syncEveryMinutes": 60,
   "minLevel": 1,
   "rankNames": {
-    "0": "Guild Master"
+    "0": "High Priestess",
+    "1": "Unpaid Intern",
+    "2": "Hand of Xal",
+    "3": "Inner Scale",
+    "4": "Scale Keeper",
+    "5": "Venomblade",
+    "6": "Coilborn",
+    "7": "Scaled Disciple",
+    "8": "Hatchling",
+    "9": "Egg"
   },
   "hiddenCharacters": []
 }
