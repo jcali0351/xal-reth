@@ -71,7 +71,9 @@
     }
     // Blizzard's media API stopped listing the "inset" render, but it still exists next to the avatar
     const inset = (md) => md?.inset || (md?.avatar ? md.avatar.replace(/-avatar\.jpg(\?.*)?$/, "-inset.jpg") : null);
-    members = (roster.members || []).map((m) => ({ ...m, media: { ...m.media, inset: inset(m.media) }, _class: className(m), _key: keyOf(m) }));
+    // Older syncs stored the realm slug ("moon-guard") for characters without a profile; show the name instead
+    const realmName = (m) => (m.realm === m.realmSlug && m.realmSlug === roster.guild?.realmSlug ? roster.guild.realm : m.realm);
+    members = (roster.members || []).map((m) => ({ ...m, realm: realmName(m), media: { ...m.media, inset: inset(m.media) }, _class: className(m), _key: keyOf(m) }));
     rankNames = roster.rankNames || {};
     el.initiates.textContent = members.length ? num(members.length) : "0";
     renderSynced();
@@ -178,7 +180,7 @@
     li.className = "rr-card" + (m.available ? "" : " private");
     li.style.setProperty("--cc", cc); li.style.setProperty("--i", i);
     const fac = (m.faction || "").toLowerCase();
-    const spec = m.available ? `${esc(m.spec || "")} ${esc(m._class)}${m.role ? `<span class="role">${esc(m.role)}</span>` : ""}` : `${esc(m._class)} <span class="muted">· profile hidden</span>`;
+    const spec = m.available ? `${esc(m.spec || "")} ${esc(m._class)}${m.role ? `<span class="role">${esc(m.role)}</span>` : ""}` : `${esc(m._class)} <span class="muted">· ${m.level < 10 ? "on the Armory from level 10" : "Armory profile unavailable"}</span>`;
     li.innerHTML = `<button type="button" aria-haspopup="dialog" aria-label="${esc(m.name)}, level ${m.level} ${esc(m.race || "")} ${esc(m.spec || "")} ${esc(m._class)}, ${esc(rankName(m.rank))}. Open profile.">
       <div class="rr-banner">${m.media?.inset ? `<img src="${esc(m.media.inset)}" alt="" loading="lazy" decoding="async" width="460" height="128">` : ""}
         ${fac ? `<span class="rr-faction ${esc(fac)}">${esc(m.faction)}</span>` : ""}<span class="rr-lvl">LVL ${num(m.level)}</span></div>
@@ -253,7 +255,9 @@
     $('[data-m="recent"]', d).innerHTML = (m.lastLogin || recent.length) ? `<h3>Recent Activity</h3><ul>
       ${m.lastLogin ? `<li><span>Last seen in Azeroth</span><time datetime="${new Date(m.lastLogin).toISOString()}" title="${esc(fullDate(m.lastLogin))}">${esc(ago(m.lastLogin))}</time></li>` : ""}
       ${recent.map((r) => `<li><span>Earned <em>${esc(r.name)}</em></span><time datetime="${new Date(r.ts).toISOString()}" title="${esc(fullDate(r.ts))}">${esc(ago(r.ts))}</time></li>`).join("")}</ul>`
-      : (m.available ? "" : `<p class="muted">This character's Armory profile is private or has not been seen in a while, so only the guild roster's record is shown.</p>`);
+      : (m.available ? "" : `<p class="muted">${m.level < 10
+          ? "Blizzard adds characters to the Armory at level 10, so until then only the guild roster's record is shown. Every scale starts small."
+          : "Blizzard is not sharing this character's Armory profile right now (usually because they have not logged in for a while), so only the guild roster's record is shown."}</p>`);
     const region = (roster.guild?.region || "us").toLowerCase(), realm = encodeURIComponent(m.realmSlug), name = encodeURIComponent(m.name.toLowerCase());
     const loc = region === "eu" ? "en-gb" : region === "kr" ? "ko-kr" : region === "tw" ? "zh-tw" : "en-us";
     const link = (href, label) => `<a href="${href}" target="_blank" rel="noopener">${label}<span class="sr-only"> (opens in a new tab)</span></a>`;
