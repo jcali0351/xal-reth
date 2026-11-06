@@ -193,7 +193,8 @@ async function fetchCharacter(api, member, prev, cacheEntry, refreshCollections)
       mounts: mounts.data?.mounts?.length ?? null,
       pets: pets.data?.pets?.length ?? null,
       recent: (ach.data?.recent_events || []).slice(0, 5).map((e) => ({ name: e.achievement?.name, ts: e.timestamp })),
-      media: { avatar: asset("avatar"), inset: asset("inset"), main: asset("main-raw") || asset("main") },
+      // The API no longer lists "inset", but the render server still has it beside the avatar
+      media: { avatar: asset("avatar"), inset: asset("inset") || asset("avatar")?.replace(/-avatar\.jpg(\?.*)?$/, "-inset.jpg") || null, main: asset("main-raw") || asset("main") },
       available: true,
       updatedAt: new Date().toISOString(),
     },
@@ -284,7 +285,8 @@ async function main() {
       if (r.m) return { ...r.m, rank: mm.rank };
       // Profile not available (private, inactive or transferred): keep what the roster itself says
       return {
-        id: mm.character.id, name: mm.character.name, realm: prev?.realm || mm.character.realm.slug, realmSlug: mm.character.realm.slug,
+        id: mm.character.id, name: mm.character.name,
+        realm: (prev?.realm !== mm.character.realm.slug && prev?.realm) || (mm.character.realm.slug === realmSlug && guild.data.realm?.name) || mm.character.realm.slug, realmSlug: mm.character.realm.slug,
         level: mm.character.level, classId: mm.character.playable_class?.id || null, class: className[mm.character.playable_class?.id] || null,
         race: raceName[mm.character.playable_race?.id] || null, spec: null, specId: null, role: null,
         faction: guild.data.faction?.name || null, rank: mm.rank, title: null, ilvl: null, avgIlvl: null, achievementPoints: null,

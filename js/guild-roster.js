@@ -69,7 +69,9 @@
       setStats(null);
       return;
     }
-    members = (roster.members || []).map((m) => ({ ...m, _class: className(m), _key: keyOf(m) }));
+    // Blizzard's media API stopped listing the "inset" render, but it still exists next to the avatar
+    const inset = (md) => md?.inset || (md?.avatar ? md.avatar.replace(/-avatar\.jpg(\?.*)?$/, "-inset.jpg") : null);
+    members = (roster.members || []).map((m) => ({ ...m, media: { ...m.media, inset: inset(m.media) }, _class: className(m), _key: keyOf(m) }));
     rankNames = roster.rankNames || {};
     el.initiates.textContent = members.length ? num(members.length) : "0";
     renderSynced();
