@@ -1,0 +1,67 @@
+/* THE SERPENT SPEAKS — latest post from @xalrethrp (homepage, js/latest-tweet.js) */
+.xcard {
+  position: relative; display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); gap: 32px; align-items: center;
+  margin: 8px 0 44px; padding: 30px; border-radius: 22px; overflow: hidden;
+  background:
+    radial-gradient(600px 300px at 0% 0%, rgba(166, 107, 255, 0.18), transparent 70%),
+    linear-gradient(160deg, rgba(26, 16, 41, 0.92), rgba(10, 6, 19, 0.95));
+  border: 1px solid rgba(185, 140, 255, 0.3);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+.xcard::before {
+  content: ""; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; pointer-events: none;
+  background: conic-gradient(from var(--xa, 0deg), transparent 0 70%, rgba(224, 196, 255, 0.75) 80%, transparent 90%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: xcard-orbit 9s linear infinite;
+}
+@property --xa { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@keyframes xcard-orbit { to { --xa: 360deg; } }
+.xcard .eyebrow { margin: 0 0 6px; text-align: left; }
+.xcard h2 { margin: 0 0 14px; text-align: left; }
+.xcard-side > p { color: var(--bone-dim); margin: 14px 0 18px; }
+.xcard .btn-row { justify-content: flex-start; margin: 0; }
+.xcard-who { display: flex; align-items: center; gap: 12px; }
+.xcard-avatar { position: relative; width: 56px; height: 56px; flex: none; border-radius: 50%; display: grid; place-items: center;
+  background: radial-gradient(circle, #2a1746, #0d0818); border: 1px solid rgba(185, 140, 255, 0.5); }
+.xcard-avatar img { width: 40px; height: 40px; filter: drop-shadow(0 0 6px rgba(166, 107, 255, 0.6)); }
+.xcard-avatar::after { content: ""; position: absolute; inset: -6px; border-radius: 50%; border: 1px solid rgba(185, 140, 255, 0.5); animation: xcard-ring 2.6s ease-out infinite; }
+@keyframes xcard-ring { from { transform: scale(.85); opacity: .9; } to { transform: scale(1.25); opacity: 0; } }
+.xcard-who b { display: block; font-family: var(--serif-display); letter-spacing: .05em; font-weight: 600; }
+.xcard-who span span, .xcard-who .handle { color: var(--gold); font-size: 1rem; }
+.xcard-live { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font-family: var(--serif-display); font-size: .62rem; letter-spacing: .2em; text-transform: uppercase; color: #9cf0c0; }
+.xcard-live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #5cff8c; box-shadow: 0 0 10px #5cff8c; animation: xcard-blink 1.8s ease-in-out infinite; }
+@keyframes xcard-blink { 50% { opacity: .3; } }
+
+.xcard-post { position: relative; min-height: 220px; display: grid; align-items: center; }
+.xpost-slot { position: relative; }
+.xpost-embed .twitter-tweet, .xpost-embed iframe { margin: 0 auto !important; }
+.xcard.is-embedded .xpost-fallback { display: none; }
+.xcard:not(.is-embedded) .xpost-embed { position: absolute; left: 0; right: 0; top: 0; opacity: 0; pointer-events: none; }
+
+.xpost-fallback {
+  display: block; padding: 20px 22px; border-radius: 16px; text-decoration: none; color: var(--bone);
+  background: rgba(8, 5, 15, 0.7); border: 1px solid var(--line);
+  transition: border-color .2s, transform .2s, box-shadow .2s; animation: xpost-in .4s ease-out both;
+}
+.xpost-fallback:hover { color: var(--bone); border-color: rgba(185, 140, 255, 0.6); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 24px rgba(166, 107, 255, 0.2); }
+@keyframes xpost-in { from { opacity: 0; transform: translateY(8px); } }
+.xpost-head { display: flex; align-items: center; gap: 10px; }
+.xpost-head img { width: 40px; height: 40px; border-radius: 50%; background: #120a1f; padding: 4px; border: 1px solid var(--line); }
+.xpost-head b { display: block; font-family: var(--serif-display); font-size: .92rem; letter-spacing: .04em; }
+.xpost-head i { font-style: normal; color: var(--bone-dim); font-size: .95rem; }
+.xpost-x { width: 20px; height: 20px; margin-left: auto; color: var(--bone); }
+.xpost-text { margin: 14px 0 12px; font-size: 1.2rem; line-height: 1.55; white-space: pre-line; }
+.xpost-text.muted { color: var(--bone-dim); font-style: italic; }
+.xpost-foot { font-family: var(--serif-display); font-size: .66rem; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+
+.xpost-skel { height: 200px; border-radius: 16px; border: 1px solid var(--line);
+  background: linear-gradient(100deg, rgba(166, 107, 255, 0.05) 30%, rgba(166, 107, 255, 0.14) 50%, rgba(166, 107, 255, 0.05) 70%) 0 0 / 300% 100%;
+  animation: xpost-shimmer 1.6s linear infinite; }
+@keyframes xpost-shimmer { to { background-position: -150% 0; } }
+
+@media (max-width: 860px) {
+  .xcard { grid-template-columns: 1fr; padding: 22px 18px; gap: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .xcard::before, .xcard-avatar::after, .xcard-live::before, .xpost-fallback, .xpost-skel { animation: none; }
+}

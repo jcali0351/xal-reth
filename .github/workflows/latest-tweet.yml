@@ -1,0 +1,51 @@
+# Latest post from @xalrethrp for the homepage card (data/latest-tweet.json, shown by js/latest-tweet.js).
+# By hand (free): Actions > "Latest post from X" > Run workflow, and paste the post's link.
+# Automatically (optional): add the repository secret X_BEARER_TOKEN (X API pay-per-use). It checks hourly
+# for posts newer than the one shown, and X bills only for posts returned, so quiet hours cost nothing.
+name: Latest post from X
+run-name: ${{ github.event_name == 'workflow_dispatch' && 'Latest post (set by hand)' || 'Latest post (hourly check)' }}
+
+on:
+  schedule:
+    - cron: "41 * * * *"
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "Link to the post to show, like https://x.com/xalrethrp/status/1234567890 (leave empty to check X automatically)"
+        type: string
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: latest-tweet
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Find the latest post
+        env:
+          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+          POST_URL: ${{ inputs.url }}
+        run: |
+          if [ -n "$POST_URL" ]; then node tools/sync_tweet.mjs --url "$POST_URL"; else node tools/sync_tweet.mjs; fi
+      - name: Commit
+        run: |
+          git config user.name "xalreth-x-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/latest-tweet.json
+          if git diff --cached --quiet; then echo "Nothing changed."; exit 0; fi
+          git commit -m "Latest post from @xalrethrp"
+          for i in 1 2 3 4; do
+            git push origin HEAD:main && exit 0
+            git pull --rebase origin main; sleep 5
+          done
+          exit 1
