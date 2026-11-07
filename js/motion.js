@@ -197,6 +197,52 @@
   });
   doc.body.insertBefore(deep, doc.body.firstChild);
 
+  /* ---- the night sky: shooting stars and comets falling diagonally, with a glow (styles: .coil-sky) ---- */
+  (function () {
+    var cv = doc.createElement("canvas"); cv.className = "coil-sky"; deep.insertBefore(cv, deep.firstChild);
+    var cx = cv.getContext("2d"), W = 0, H = 0, D = 1, list = [], on = false, nextStar = 0, nextComet = 0;
+    function size() { D = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * D; cv.height = H * D; cx.setTransform(D, 0, 0, D, 0, 0); }
+    size(); addEventListener("resize", size);
+    function spawn(comet) {
+      var ang = (Math.PI / 180) * (128 + Math.random() * 14);           // down and to the left
+      var sp = comet ? 2.2 + Math.random() * 1.4 : 9 + Math.random() * 9;
+      list.push({ x: W * (0.25 + Math.random() * 0.9), y: -40 - Math.random() * H * 0.2, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp,
+        len: comet ? 260 + Math.random() * 180 : 120 + Math.random() * 160, r: comet ? 3.2 + Math.random() * 1.6 : 1.3 + Math.random() * 0.9,
+        hue: comet ? (Math.random() < 0.5 ? 270 : 190) : 260 + Math.random() * 40, comet: comet, life: 0, sparks: [] });
+    }
+    function tick(t) {
+      if (doc.hidden) { on = false; return; }
+      if (t > nextStar) { spawn(false); nextStar = t + 1400 + Math.random() * 3200; }
+      if (t > nextComet) { if (nextComet) spawn(true); nextComet = t + 9000 + Math.random() * 12000; }
+      cx.clearRect(0, 0, W, H); cx.globalCompositeOperation = "lighter";
+      for (var i = list.length - 1; i >= 0; i--) {
+        var m = list[i]; m.x += m.vx; m.y += m.vy; m.life++;
+        var v = Math.hypot(m.vx, m.vy), tx = m.x - m.vx / v * m.len, ty = m.y - m.vy / v * m.len;
+        var fade = Math.min(1, m.life / 12);
+        var g = cx.createLinearGradient(m.x, m.y, tx, ty);
+        g.addColorStop(0, "hsla(" + m.hue + ",100%,92%," + 0.95 * fade + ")");
+        g.addColorStop(0.25, "hsla(" + m.hue + ",95%,72%," + 0.45 * fade + ")");
+        g.addColorStop(1, "hsla(" + m.hue + ",90%,60%,0)");
+        cx.strokeStyle = g; cx.lineCap = "round"; cx.lineWidth = m.r * (m.comet ? 2.4 : 1.4);
+        cx.shadowColor = "hsla(" + m.hue + ",100%,70%,.9)"; cx.shadowBlur = m.comet ? 24 : 12;
+        cx.beginPath(); cx.moveTo(m.x, m.y); cx.lineTo(tx, ty); cx.stroke();
+        var hg = cx.createRadialGradient(m.x, m.y, 0, m.x, m.y, m.r * (m.comet ? 9 : 5));      // the glowing head
+        hg.addColorStop(0, "rgba(255,255,255," + fade + ")"); hg.addColorStop(0.3, "hsla(" + m.hue + ",100%,80%," + 0.6 * fade + ")"); hg.addColorStop(1, "hsla(" + m.hue + ",100%,60%,0)");
+        cx.shadowBlur = 0; cx.fillStyle = hg; cx.beginPath(); cx.arc(m.x, m.y, m.r * (m.comet ? 9 : 5), 0, 6.283); cx.fill();
+        if (m.comet && Math.random() < 0.6) m.sparks.push({ x: m.x, y: m.y, vx: (Math.random() - .5) * .6, vy: (Math.random() - .5) * .6, a: 1 });
+        for (var s = m.sparks.length - 1; s >= 0; s--) {
+          var p = m.sparks[s]; p.x += p.vx; p.y += p.vy; p.a -= 0.018;
+          if (p.a <= 0) { m.sparks.splice(s, 1); continue; }
+          cx.fillStyle = "hsla(" + m.hue + ",100%,85%," + p.a * 0.8 + ")"; cx.fillRect(p.x, p.y, 1.6, 1.6);
+        }
+        if (m.x < -m.len - 50 || m.y > H + m.len + 50) list.splice(i, 1);
+      }
+      requestAnimationFrame(tick);
+    }
+    function start() { if (!on && !doc.hidden) { on = true; requestAnimationFrame(tick); } }
+    doc.addEventListener("visibilitychange", start); start();
+  })();
+
   /* ---------------------------------------------------------------- 4. the Coil gauge */
   var gauge = doc.createElement("div");
   gauge.className = "coil-gauge"; gauge.setAttribute("aria-hidden", "true");

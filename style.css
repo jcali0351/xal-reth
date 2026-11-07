@@ -1469,3 +1469,42 @@ html.nav-intro .site-header { animation: glass-bar-in 1.6s ease-out both; }
   filter: drop-shadow(0 0 5px #8a4dff) drop-shadow(0 0 12px rgba(138, 77, 255, .6)); }
 .coil-gauge .cg-head { position: absolute; left: 6px; top: -7px; width: 14px; height: 16px; background: linear-gradient(180deg, #f4eaff, #a66bff);
   clip-path: polygon(50% 100%, 0 20%, 50% 0, 100% 20%); filter: drop-shadow(0 0 6px #b98cff); }
+
+/* ==========================================================
+   FROSTED GLASS BOXES — every content box is frosted glass, with a slow shimmer of light passing across it.
+   (The roster cards, the Triangle page panels and the menu have their own glass.) Shooting stars and comets
+   cross the background behind them (js/motion.js, "the night sky").
+   ========================================================== */
+.card, .story-step, .oracle, .toc, .stat, .ct-form, .st-saying {
+  background:
+    linear-gradient(155deg, rgba(255, 255, 255, .085) 0%, rgba(255, 255, 255, .025) 38%, rgba(255, 255, 255, 0) 60%, rgba(166, 107, 255, .07) 100%),
+    rgba(20, 12, 36, .58);
+  border-color: rgba(228, 212, 255, .17);
+}
+.card, .story-step, .oracle, .toc, .stat, .ct-form, .st-saying, .merch-cta, .notice, .chapter blockquote {
+  -webkit-backdrop-filter: blur(12px) saturate(1.5); backdrop-filter: blur(12px) saturate(1.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .13), inset 0 0 0 1px rgba(255, 255, 255, .025), inset 0 -18px 30px -24px rgba(166, 107, 255, .35), 0 14px 34px -16px rgba(0, 0, 0, .75);
+}
+.merch-cta { border-color: rgba(228, 212, 255, .28); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16), inset 0 0 30px rgba(166, 107, 255, .12), 0 0 50px rgba(138, 77, 255, .22); }
+a.card:hover, .card.addon:hover, .story-step:hover { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), inset 0 -18px 30px -20px rgba(166, 107, 255, .5), 0 0 34px rgba(138, 77, 255, .35), 0 18px 40px -16px rgba(0, 0, 0, .8); }
+
+/* the shimmer: a soft band of light drifts across each pane now and then (each at its own pace) */
+.oracle, .toc, .stat, .notice, .merch-cta, .ct-form, .st-saying, .chapter blockquote { position: relative; }
+.card::after, .story-step::after, .oracle::after, .toc::after, .stat::after, .notice::after, .merch-cta::after, .ct-form::after, .st-saying::after, .chapter blockquote::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; mix-blend-mode: screen;
+  background: linear-gradient(115deg, transparent 32%, rgba(255, 255, 255, .05) 42%, rgba(236, 222, 255, .16) 49%, rgba(255, 255, 255, .22) 50%, rgba(201, 162, 255, .1) 54%, transparent 64%) 150% 0 / 280% 100% no-repeat;
+  animation: box-shimmer 9s cubic-bezier(.45, 0, .25, 1) infinite;
+}
+@keyframes box-shimmer { 0%, 55% { background-position: 150% 0; } 100% { background-position: -50% 0; } }
+:is(.card, .story-step, .stat, .post-card):nth-child(3n + 2)::after { animation-duration: 11s; animation-delay: -3.5s; }
+:is(.card, .story-step, .stat, .post-card):nth-child(3n + 3)::after { animation-duration: 13s; animation-delay: -7s; }
+:is(.card, .story-step, .stat, .post-card):nth-child(5n + 4)::after { animation-delay: -1.8s; }
+/* hovering a card sends a brighter glint across it at once */
+a.card:hover::after, .card.addon:hover::after, .story-step:hover::after { animation: box-glint .9s cubic-bezier(.3, 0, .2, 1) 1; }
+@keyframes box-glint { from { background-position: 150% 0; } to { background-position: -50% 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .card::after, .story-step::after, .oracle::after, .toc::after, .stat::after, .notice::after, .merch-cta::after, .ct-form::after, .st-saying::after, .chapter blockquote::after { animation: none; background: none; }
+}
+
+/* THE NIGHT SKY: shooting stars and comets falling diagonally behind the page (drawn by js/motion.js) */
+.coil-sky { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
