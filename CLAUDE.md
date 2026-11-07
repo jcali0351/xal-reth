@@ -25,10 +25,15 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   between items, dropdowns swing out in 3D and unblur with a shimmering top edge, a cursor spotlight and items fading in one by
   one; the phone menu unfurls and its submenus slide open; reduced-motion visitors get it still.
   It is frosted reflective glass ("THE FROSTED GLASS MENU" in style.css): a glass header bar with frost grain, the menu in a
-  glowing glass capsule with a curved highlight and a passing reflection, a glass bead for the gliding light, frosted
+  glowing glass capsule with a curved highlight and a passing reflection, a bright block for the gliding light, frosted
   dropdowns and a glass Menu button; about 15% larger than before (the text scales with the window so it stays on one line;
   from 861 to 1060px the header shows the sigil without the wordmark). On every page load the glass condenses out of a blur,
-  a flash of light crosses it and the items glow in one by one. Keep it if the site is regenerated.
+  a flash of light crosses it and the items glow in one by one.
+  John wants the highlight rectilinear and bright, not a pill ("THE BRIGHT BLOCK MENU" at the end of style.css): the hover,
+  focus and current-page highlight is a bright square-cornered block of violet light with white corner brackets and a
+  passing sheen, the bar and dropdowns are squared, dropdown items light up as bright bars, and star sprites burst from the
+  block and from dropdown items on hover and focus (spark() in Menu FX, site.js); on phones the current page is a bright
+  squared strip; reduced motion: still, no sprites. Keep it if the site is regenerated.
 - The logo (the violet triangle sigil, "Observe ▽ Analyze ▽ Transcend") is the site's brand mark: `img/xalreth-mark.png`
   in the header and footer of every page, `img/xalreth-logo.webp`/`.png` at the top of the homepage hero, and the tab icon
   (`favicon.svg` embeds it; `apple-touch-icon.png`). Keep these if the site is regenerated.

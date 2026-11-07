@@ -241,11 +241,46 @@ document.querySelectorAll("[data-reveal]").forEach((b) => {
     const cur = items.find((li) => li.querySelector(':scope > a[aria-current="page"], :scope > .sub-toggle.current'));
     place(cur || null);
   }
+  // star sprites that burst from the bright block on hover and focus ("THE BRIGHT BLOCK MENU" in style.css)
+  const calm = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const SPARK = ["#ffffff", "#f3e8ff", "#e0c4ff", "#c9a2ff", "#ffe9b0"];
+  function spark(host, n, spread) {
+    if (calm.matches || !wide.matches || !host) return;
+    const w = host.offsetWidth, h = host.offsetHeight;
+    for (let k = 0; k < n; k++) {
+      const s = document.createElement(host === glow ? "i" : "span");
+      s.className = "nav-spark" + (Math.random() < .3 ? " dot" : ""); s.setAttribute("aria-hidden", "true");
+      const edge = Math.random() < .55;   // most hug the block's edges, a few land inside it
+      const x = edge ? (Math.random() < .5 ? -spread * Math.random() : w + spread * Math.random()) : Math.random() * w;
+      const y = edge ? Math.random() * h : (Math.random() < .5 ? -spread * .6 * Math.random() : h + spread * .6 * Math.random());
+      s.style.left = x + "px"; s.style.top = y + "px";
+      s.style.setProperty("--s", (.45 + Math.random() * .95).toFixed(2));
+      s.style.setProperty("--dx", ((x < w / 2 ? -1 : 1) * (6 + Math.random() * 16)).toFixed(1) + "px");
+      s.style.setProperty("--dy", ((Math.random() - .5) * 26).toFixed(1) + "px");
+      s.style.setProperty("--t", (.65 + Math.random() * .6).toFixed(2) + "s");
+      s.style.setProperty("--c", SPARK[(Math.random() * SPARK.length) | 0]);
+      s.style.animationDelay = (Math.random() * .18).toFixed(2) + "s";
+      s.addEventListener("animationend", () => s.remove());
+      host.appendChild(s);
+    }
+  }
+  let dazzle = null;
+  function startDazzle() {
+    clearInterval(dazzle);
+    // let the block glide into place, then keep it sparkling while the pointer stays
+    setTimeout(() => spark(glow, 9, 14), 140);
+    dazzle = setInterval(() => { if (glow.childElementCount < 26) spark(glow, 2, 14); }, 170);
+  }
+  function stopDazzle() { clearInterval(dazzle); dazzle = null; }
   items.forEach((li) => {
-    li.addEventListener("pointerenter", () => place(li));
-    li.addEventListener("focusin", () => place(li));
+    li.addEventListener("pointerenter", () => { place(li); startDazzle(); });
+    li.addEventListener("focusin", () => { place(li); setTimeout(() => spark(glow, 8, 12), 140); });
   });
-  top.addEventListener("pointerleave", rest);
+  top.addEventListener("pointerleave", () => { stopDazzle(); rest(); });
+  nav.querySelectorAll("ul.sub a").forEach((a) => {
+    a.addEventListener("pointerenter", () => spark(a, 5, 8));
+    a.addEventListener("focus", () => spark(a, 4, 8));
+  });
   nav.addEventListener("focusout", (e) => { if (!nav.contains(e.relatedTarget)) rest(); });
   window.addEventListener("resize", rest);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(rest);

@@ -1659,3 +1659,78 @@ svg text[font-family*="Cinzel"] { font-family: var(--serif-display); font-weight
 
 /* the drifting layers and glows may reach past the edge; never let them make the page scroll sideways */
 html, body { overflow-x: clip; }
+
+/* =====================================================================
+   THE BRIGHT BLOCK MENU: the hover / focus / current-page highlight is a bright, square-cornered block of violet light
+   with white corner brackets and a passing sheen, the menu bar is squared to match, and star sprites burst from the
+   block on hover and focus (site.js: Menu FX). Reduced motion: still, no sprites.
+   ===================================================================== */
+@keyframes block-sheen { 0% { background-position: -120% 0, 0 0; } 55%, 100% { background-position: 220% 0, 0 0; } }
+@keyframes block-brackets { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-2px, -2px); } }
+@keyframes block-brackets-2 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(2px, 2px); } }
+@keyframes nav-spark {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); }
+  22% { opacity: 1; transform: translate(-50%, -50%) scale(var(--s, 1)) rotate(45deg); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px))) scale(0) rotate(200deg); }
+}
+@media (min-width: 861px) {
+  /* the bar: squared glass instead of a capsule */
+  .site-nav > ul { border-radius: 4px; padding: 5px; }
+  .site-nav > ul::after { left: 6px; right: 6px; border-radius: 2px; }
+
+  /* the block of light */
+  .site-nav .nav-glow {
+    top: 0; bottom: 0; border-radius: 2px; border: 1px solid rgba(255, 255, 255, .85);
+    background:
+      linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, .55) 48%, rgba(255, 255, 255, .15) 54%, transparent 64%) -120% 0 / 60% 100% no-repeat,
+      linear-gradient(180deg, #f3e8ff 0%, #cfa6ff 14%, #a466ff 46%, #7b34f0 78%, #5a1cc8 100%);
+    box-shadow: inset 0 1px 0 #fff, inset 0 -8px 14px rgba(46, 6, 110, .45), 0 0 0 1px rgba(150, 90, 255, .6),
+      0 0 16px rgba(190, 140, 255, .95), 0 0 36px rgba(150, 80, 255, .75), 0 0 70px rgba(138, 77, 255, .4);
+    animation: block-sheen 3.2s cubic-bezier(.45, 0, .3, 1) infinite;
+  }
+  /* white brackets at two corners, breathing outward */
+  .site-nav .nav-glow::before, .site-nav .nav-glow::after {
+    content: ""; position: absolute; width: 10px; height: 10px; pointer-events: none; border: 2px solid #fff;
+    filter: drop-shadow(0 0 3px #fff) drop-shadow(0 0 7px #c9a2ff);
+  }
+  .site-nav .nav-glow::before { top: -5px; left: -5px; border-right: 0; border-bottom: 0; animation: block-brackets 2.4s ease-in-out infinite; }
+  .site-nav .nav-glow::after { bottom: -5px; right: -5px; border-left: 0; border-top: 0; animation: block-brackets-2 2.4s ease-in-out infinite; }
+
+  /* text on the bright block: crisp white with a dark edge so it reads */
+  .site-nav > ul > li > a:hover, .site-nav > ul > li > a:focus-visible, .site-nav .sub-toggle:hover, .site-nav .has-sub:hover .sub-toggle,
+  .site-nav .has-sub.open .sub-toggle, .site-nav .sub-toggle:focus-visible, .site-nav > ul > li > a[aria-current="page"], .site-nav .sub-toggle.current {
+    color: #fff; text-shadow: 0 1px 0 rgba(40, 4, 90, .85), 0 0 2px rgba(40, 4, 90, .7), 0 0 14px rgba(255, 255, 255, .45);
+  }
+  .site-nav > ul > li > a:focus-visible, .site-nav .sub-toggle:focus-visible { outline: none; }
+  /* the old underline beam would sit on top of the block: retire it */
+  .site-nav > ul > li > a::before, .site-nav .sub-toggle::before { display: none; }
+
+  /* dropdown items: squared, bright bars */
+  .site-nav ul.sub a { border-radius: 2px; }
+  .site-nav ul.sub a::before { border-radius: 0; width: 3px; background: #fff; box-shadow: 0 0 8px #fff, 0 0 16px #a66bff; }
+  .site-nav ul.sub { border-radius: 4px; }
+  .site-nav ul.sub a:hover, .site-nav ul.sub a:focus-visible {
+    color: #fff; background: linear-gradient(180deg, #e9d8ff 0%, #b98aff 16%, #9450ff 55%, #6a26dc 100%);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .8), inset 0 -6px 12px rgba(46, 6, 110, .4), 0 0 14px rgba(190, 140, 255, .9), 0 0 32px rgba(150, 80, 255, .55);
+    text-shadow: 0 1px 0 rgba(40, 4, 90, .85), 0 0 2px rgba(40, 4, 90, .7);
+  }
+  .site-nav ul.sub a[aria-current="page"] { color: #fff; background: linear-gradient(90deg, rgba(166, 107, 255, .38), rgba(166, 107, 255, .06)); box-shadow: inset 0 0 0 1px rgba(232, 218, 255, .3); }
+}
+
+/* the star sprites (made by site.js; never for reduced motion) */
+.site-nav .nav-spark { position: absolute; width: 12px; height: 12px; z-index: 3; pointer-events: none; list-style: none;
+  filter: drop-shadow(0 0 3px var(--c, #fff)) drop-shadow(0 0 7px #a66bff);
+  animation: nav-spark var(--t, .9s) cubic-bezier(.2, .8, .3, 1) both; }
+.site-nav .nav-spark::before { content: ""; position: absolute; inset: 0; background: var(--c, #fff);
+  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%); }
+.site-nav .nav-spark.dot::before { inset: 4px; border-radius: 50%; clip-path: none; }
+
+/* phones: the current page is a bright squared strip */
+@media (max-width: 860px) {
+  .site-nav a[aria-current="page"] { border-radius: 2px; background: linear-gradient(90deg, rgba(196, 150, 255, .4), rgba(138, 77, 255, .08) 80%);
+    box-shadow: inset 3px 0 0 #fff, inset 0 0 0 1px rgba(232, 218, 255, .25); padding-left: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-nav .nav-glow, .site-nav .nav-glow::before, .site-nav .nav-glow::after { animation: none; }
+  .site-nav .nav-spark { display: none; }
+}
