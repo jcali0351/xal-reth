@@ -50,8 +50,12 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   `tools/build_search.py` from every page and each heading with an id (addon results carry their .zip for a Download
   button). new_post.py and build_addon_pages.py rebuild it; run it by hand after other page changes. Never hand-edit
   search-index.json. Keep all of this if the site is regenerated.
+- "For the Alliance" banner on the homepage, right after the hero (`.allegiance`, `css/alliance.css`, `js/alliance.js`):
+  John's Alliance crest image recolored violet (`img/alliance-crest-purple.webp`/`.png`, transparent), floating with a glow,
+  and the words "For the Alliance" playing in letter by letter when it scrolls into view. Keep it if the site is regenerated.
 - Vessk, the AI herald chat: `js/chat.js` + `css/chat.css`, loaded on every page by the loader at the top of `site.js`
-  (bright purple "Ask Vessk" pill bottom right, a one-time "Hold light" hello, panel full screen on phones; the homepage
+  (bright purple "Ask Vessk" pill bottom right with Vessk's face, `img/vessk-face.jpg`, and a portrait card `img/vessk.jpg`
+  that opens each chat; Vessk is drawn from John's own character, a one-time "Hold light" hello, panel full screen on phones; the homepage
   hero's "Speak to an Agent" button opens it via `data-open-chat`). Vessk says plainly he is an AI. Without CHAT.endpoint he
   answers from search-index.json plus a few fixed answers (who is Xal'Reth, wings, joining, installing, addons, Discord, X);
   with CHAT.endpoint set to the Cloudflare Worker in `tools/chat-worker/` (worker.js + README.md; the Claude API key is a
