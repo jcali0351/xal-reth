@@ -117,6 +117,7 @@
     var t0 = pts[0].t, t1 = pts[pts.length - 1].t || t0 + 1;
     var max = Math.max.apply(null, pts.map(function (p) { return p.gold; })) || 1, min = Math.min.apply(null, pts.map(function (p) { return p.gold; }));
     var lo = Math.max(0, min - (max - min) * 0.25), hi = max + (max - lo) * 0.12 || 1;
+    if (hi - lo < max * 0.05) { lo = Math.max(0, min * 0.8); hi = max * 1.2 || 1; }   // a flat hoard sits in the middle, not on the floor
     var x = function (t) { return P.l + (t - t0) / Math.max(1, t1 - t0) * (W - P.l - P.r); };
     var y = function (g) { return P.t + (1 - (g - lo) / Math.max(1, hi - lo)) * (H - P.t - P.b); };
     var line = pts.map(function (p, i) { return (i ? "L" : "M") + x(p.t).toFixed(1) + " " + y(p.gold).toFixed(1); }).join(" ");
