@@ -1,38 +1,23 @@
 {
   "typeSpeedMs": 28,
-  "holdSeconds": 4.2,
+  "holdSeconds": 4,
   "phases": [
     {
-      "label": "OBSERVE",
+      "label": "HAIL",
       "messages": [
-        "Watching the guild bank. Nobody has touched slot 97 since Shedfall.",
-        "The Unblinking Eye sees your nameplates are off. It is not angry. It is patient.",
-        "Three eggs are hatching in Goldshire. One of them is a warlock.",
-        "Monitoring the Warm Ridge. Basking levels: nominal.",
-        "Counting the coils beneath the world. Still three.",
-        "A Gripper has been sighted near the auction house. Hold your gold lightly."
+        "Glory to Xal'Reth the Eternal One."
       ]
     },
     {
-      "label": "ANALYZE",
+      "label": "NEWS UPDATE",
       "messages": [
-        "Your rotation has been analyzed. It is a journey.",
-        "Cross-referencing the Ledger. Hessk asks: what did you give today?",
-        "Scanning for wings. None found. The Featherist Heresy remains false.",
-        "Comparing your patience to a sleeping lizard. The lizard is winning.",
-        "Reading the Litany of Begging. Do not wait up.",
-        "Calculating the weight of the world. Rounding down, for mercy."
+        "Player database added and updated. AI chatbot added to the website and more."
       ]
     },
     {
-      "label": "TRANSCEND",
+      "label": "IN DEVELOPMENT",
       "messages": [
-        "Transcendence pending. Please hold light.",
-        "Letting go of 4% of all grudges. Please wait.",
-        "The Open Door is open. Xal'Reth is still choosing to stay.",
-        "Uploading your worries to the Void. Upload speed: unhurried.",
-        "Shedding complete. Your old skin has been placed in the Hall of Shed Skins.",
-        "Ascension queued behind the current Mythic+ group. Estimated wait: ten thousand years."
+        "New addons sent to the repository . Please check addons page for more details. Nemesis Pro addon in production and more."
       ]
     }
   ],
