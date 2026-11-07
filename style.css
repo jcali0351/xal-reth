@@ -1536,7 +1536,7 @@ a.card:hover::after, .card.addon:hover::after, .story-step:hover::after { animat
 .crowned > .gframe::before { content: ""; position: absolute; left: 1.2%; right: 1.2%; bottom: 2%; height: 34%; z-index: -1;      /* the bar's own glow */
   background: radial-gradient(50% 120% at 50% 100%, rgba(212, 59, 214, .28), transparent 70%); }
 .crowned > .gframe .gf-crest { position: absolute; left: 50%; top: 34%; width: calc(var(--frame-h) * .84); translate: -50% 0; aspect-ratio: 200 / 240;
-  background: url("img/crest/xalreth-crest.svg") center / contain no-repeat; filter: drop-shadow(0 5px 8px rgba(0, 0, 0, .7)) drop-shadow(0 0 10px rgba(212, 59, 214, .45));
+  background: url("img/crest/xalreth-crest.svg?v=2") center / contain no-repeat; filter: drop-shadow(0 5px 8px rgba(0, 0, 0, .7)) drop-shadow(0 0 10px rgba(212, 59, 214, .45));
   animation: gf-sway 6s ease-in-out infinite; transform-origin: 50% 0; }
 @keyframes gf-sway { 0%, 100% { rotate: -1.2deg; } 50% { rotate: 1.2deg; } }
 @media (max-width: 760px) {

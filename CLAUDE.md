@@ -116,8 +116,10 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   The same sync saves the guild crest (the tabard): `data/guild-crest.json` (faction, background colour, emblem and border
   ids and colours) and the guild's emblem and border pictures in `img/crest/`; and the guild's achievements in
   `data/guild-achievements.json` (points, completed with dates, descriptions and icons, and progress). Never hand-edit them.
-  The guild crest shown on the site is `img/crest/xalreth-crest.svg`, a sharp flat redraw of the tabard (dark banner on a
-  gold rod, magenta beaded trim, the Coil: a magenta serpent ringed round, two heads with fangs meeting at the top).
+  The guild crest shown on the site is `img/crest/xalreth-crest.svg`: the tabard (dark banner on a gold rod, magenta
+  beaded trim) bearing the guild's real in-game emblem, Blizzard emblem 37 (a slender serpent ringed round in mesh
+  scales, two open-jawed heads rearing at the top), embedded as a picture and tinted bright magenta. Don't redraw the
+  serpent by hand. When the crest changes, bump `?v=` on it in js/crest.js and style.css.
   `js/crest.js` puts it into any `<div class="crest" data-crest>` (Ranks and Achievements heroes).
   The guild frame (`class="crowned"` on a section, with `<div class="gframe" aria-hidden="true"><span class="gf-crest"></span></div>`
   as its first child; styles "THE GUILD FRAME" in style.css): the gold filigree bar cut from the game's guild window
