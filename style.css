@@ -17,8 +17,11 @@
   --blood: #b23a3a;
   --line: rgba(185, 140, 255, 0.22);
   --glow: 0 0 24px rgba(166, 107, 255, 0.25);
-  --serif-display: "Cinzel", "Trajan Pro", Georgia, serif;
-  --serif-body: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  /* Type: Abril Fatface for the big voice (h1, h2, drop caps, wordmark), Lato for everything else.
+     --serif-display (labels, nav, buttons, small caps) and --serif-body keep their old names; see "THE FAT AND THE FINE". */
+  --fat: "Abril Fatface", "Bodoni Moda", Didot, Georgia, serif;
+  --serif-display: "Lato", "Segoe UI", Helvetica, Arial, sans-serif;
+  --serif-body: "Lato", "Segoe UI", Helvetica, Arial, sans-serif;
   --max: 1080px;
 }
 
@@ -1450,7 +1453,7 @@ html.nav-intro .site-header { animation: glass-bar-in 1.6s ease-out both; }
 .coil-glyph .g-l { fill: none; stroke: currentColor; stroke-width: 1.6; }
 .coil-glyph .g-thin { stroke-width: .8; }
 .coil-glyph .g-dash { stroke-dasharray: 3 7; }
-.coil-glyph .g-rune { font: 600 64px Cinzel, Georgia, serif; fill: currentColor; }
+.coil-glyph .g-rune { font: 400 64px "Abril Fatface", Georgia, serif; fill: currentColor; }
 .coil-glyph.g-eye { opacity: calc(var(--g-o, .15) * 1.6); }
 .coil-glyph .g-iris { fill: rgba(166, 107, 255, .35); stroke: currentColor; stroke-width: 1.2; }
 .coil-glyph .g-slit { fill: #08050f; }
@@ -1541,3 +1544,41 @@ a.card:hover::after, .card.addon:hover::after, .story-step:hover::after { animat
   .crowned > .gframe { left: -6px; right: -6px; background-image: url("img/crest/frame-center-sm.png"), url("img/crest/frame-cap-l.png"), url("img/crest/frame-cap-r.png"), url("img/crest/frame-bar.png"); }
 }
 @media (prefers-reduced-motion: reduce) { .crowned > .gframe .gf-crest { animation: none; } }
+
+/* ==========================================================
+   THE FAT AND THE FINE: Abril Fatface + Lato
+   The big voice is Abril Fatface, a fat, high-contrast display face: page titles, section headings, drop caps, big
+   numbers and the wordmark. Everything that whispers is Lato: body text in its regular weight, labels in heavy capitals
+   spaced wide, lead lines and quotes in its hairline italic. The fun is in the contrast: a fat title under a thin,
+   airy label, and a fat violet quote mark over a light italic verse. Fonts load from Google Fonts in every page's head.
+   ========================================================== */
+body { font-size: 1.08rem; line-height: 1.72; }
+
+/* the fat */
+h1, h2 { font-family: var(--fat); font-weight: 400; letter-spacing: .01em; line-height: 1.12; padding-bottom: .06em; text-wrap: balance; }
+.page-head h1 { font-size: clamp(2.4rem, 7vw, 4.2rem); letter-spacing: 0; margin: 6px 0 12px; }
+.hero h1 { font-size: clamp(2.7rem, 9vw, 5.8rem); letter-spacing: 0; line-height: 1.04; }
+section h2 { font-size: clamp(1.75rem, 4.2vw, 2.6rem); }
+.brand { font-family: var(--fat); letter-spacing: .08em; }
+.gb-gold, .ac-stat b, .ac-shield b, .vy-book b, .tally b, .stat-strip b, .t-stats b { font-family: var(--fat) !important; font-weight: 400 !important; letter-spacing: .01em; }
+.dropcap::first-letter { font-family: var(--fat); font-weight: 400; font-size: 4.4em; line-height: .78; padding: 10px 12px 0 0; color: var(--scale-bright);
+  text-shadow: 0 0 24px rgba(166, 107, 255, .55); }
+
+/* the fine */
+h3, h4 { font-family: var(--serif-display); font-weight: 900; letter-spacing: .02em; line-height: 1.3; }
+.eyebrow, .kicker, .divider span, .chapter .num, .hero .epithet, .toc p, .btn, .site-nav a, .nav-toggle { font-weight: 900; }
+.eyebrow { letter-spacing: .44em; font-size: .7rem; }
+.page-head > .eyebrow { display: inline-flex; align-items: center; gap: 14px; }                   /* a hairline either side */
+.page-head > .eyebrow::before, .page-head > .eyebrow::after { content: ""; width: clamp(18px, 6vw, 46px); height: 1px; background: linear-gradient(90deg, transparent, currentColor); }
+.page-head > .eyebrow::after { transform: scaleX(-1); margin-left: -.44em; }                         /* the spacing after the last letter */
+.page-head > p:not([class]), .hero .tagline, .lede { font-weight: 300; }
+.page-head > p:not([class]) { font-size: 1.14rem; letter-spacing: .01em; }
+
+/* a light italic verse under a fat violet quote mark */
+.chapter blockquote { font-family: var(--serif-body); font-weight: 300; font-size: 1.22rem; padding-left: 66px; position: relative; }
+.chapter blockquote::before { content: "\201C"; position: absolute; left: 12px; top: 2px; font: 400 4.4rem/1 var(--fat); font-style: normal;
+  color: var(--scale-bright); text-shadow: 0 0 18px rgba(166, 107, 255, .6); pointer-events: none; }
+.chapter blockquote cite { font-weight: 900; font-style: normal; }
+
+/* drawings that named the old font */
+svg text[font-family*="Cinzel"] { font-family: var(--serif-display); font-weight: 900; }

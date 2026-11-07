@@ -55,7 +55,7 @@
     a.href = (window.COIL_BASE || "") + "admin.html#edit=" + encodeURIComponent(file);
     a.textContent = "\u270E Edit this page";
     a.setAttribute("style", "position:fixed;left:16px;bottom:16px;z-index:9998;padding:10px 16px;border-radius:999px;" +
-      "background:#120a20;color:#e0c4ff;border:1px solid #8a4dff;font:600 12px Cinzel,Georgia,serif;letter-spacing:.12em;" +
+      "background:#120a20;color:#e0c4ff;border:1px solid #8a4dff;font:700 12px Lato,Arial,sans-serif;letter-spacing:.12em;" +
       "text-transform:uppercase;text-decoration:none;box-shadow:0 0 22px rgba(138,77,255,.45)");
     document.body.appendChild(a);
   }

@@ -1,5 +1,5 @@
 /* Makes sitemap.xml readable in a browser. Search engines ignore this file. */
-@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400&display=swap");
 @namespace url("http://www.sitemaps.org/schemas/sitemap/0.9");
 @namespace image url("http://www.google.com/schemas/sitemap-image/1.1");
 @namespace xhtml url("http://www.w3.org/1999/xhtml");
@@ -12,7 +12,7 @@ urlset {
   padding: 56px 20px 80px;
   background: #08050f radial-gradient(ellipse at top, rgba(75, 35, 134, 0.45), rgba(8, 5, 15, 0) 60%) no-repeat;
   color: #ece6f5;
-  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-family: "Lato", "Segoe UI", Helvetica, Arial, sans-serif;
   font-size: 20px;
   line-height: 1.45;
 }
@@ -22,7 +22,7 @@ urlset::before {
   max-width: 860px;
   margin: 0 auto 8px;
   text-align: center;
-  font-family: "Cinzel", Georgia, serif;
+  font-family: "Abril Fatface", Georgia, serif;
   font-weight: 700;
   font-size: 40px;
   letter-spacing: 0.06em;
@@ -50,7 +50,7 @@ url {
 loc, changefreq, priority, image|image { display: none; }
 
 xr|section { order: -1; display: block; margin: 44px 0 14px; padding-bottom: 10px; border-bottom: 1px solid rgba(185, 140, 255, 0.22); }
-xr|name { display: block; font-family: "Cinzel", Georgia, serif; font-weight: 600; font-size: 26px; letter-spacing: 0.05em; color: #a66bff; }
+xr|name { display: block; font-family: "Abril Fatface", Georgia, serif; font-weight: 400; font-size: 26px; letter-spacing: 0.05em; color: #a66bff; }
 xr|blurb { display: block; font-style: italic; color: #b0a6c4; font-size: 19px; }
 
 xhtml|a {
@@ -63,7 +63,7 @@ xhtml|a {
 }
 xhtml|a:hover, xhtml|a:focus { border-left-color: #a66bff; background: rgba(166, 107, 255, 0.08); outline: none; }
 xhtml|a:hover xr|title { color: #e0c4ff; text-decoration: underline; text-underline-offset: 4px; }
-xr|title { display: block; font-family: "Cinzel", Georgia, serif; font-weight: 600; font-size: 19px; letter-spacing: 0.02em; color: #ece6f5; }
+xr|title { display: block; font-family: "Abril Fatface", Georgia, serif; font-weight: 400; font-size: 19px; letter-spacing: 0.02em; color: #ece6f5; }
 xr|desc { display: block; color: #b0a6c4; font-size: 18px; }
 
 lastmod {
