@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sanctum Editor · Cult of Xal'Reth</title>
+<meta name="description" content="The site editor for the Cult of Xal'Reth.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#08050f">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/cms.css">
+</head>
+<body class="cms">
+
+<header class="cms-bar">
+  <a class="brand" href="index.html"><img class="brand-mark" src="img/xalreth-mark.png" width="34" height="34" alt=""><span>SANCTUM EDITOR</span></a>
+  <div class="cms-who" hidden><span class="cms-user"></span><button class="cms-btn ghost small" type="button" data-signout>Sign out</button></div>
+</header>
+
+<!-- ============ SIGN IN ============ -->
+<main id="cms-login" class="cms-login" hidden>
+  <section class="cms-card">
+    <p class="eyebrow">Keepers only</p>
+    <h1>Sign in to edit the site</h1>
+    <p class="cms-hint">The site lives on GitHub, so your GitHub key is your login. Every change you save goes straight to the live site (it shows up in about a minute).</p>
+    <form id="cms-login-form" autocomplete="off">
+      <label class="cms-field"><span>GitHub key</span>
+        <input type="password" id="cms-token" placeholder="github_pat_…" autocomplete="off" spellcheck="false" required></label>
+      <label class="cms-check"><input type="checkbox" id="cms-remember"> Keep me signed in on this device <small>(only on your own phone or computer)</small></label>
+      <button class="cms-btn" type="submit">Sign in</button>
+      <p class="cms-msg" id="cms-login-msg" role="status"></p>
+    </form>
+    <details class="cms-help">
+      <summary>How do I get a key? (one time, 2 minutes)</summary>
+      <ol>
+        <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub › Settings › Fine-grained tokens › Generate new token</a>.</li>
+        <li>Name it <b>Sanctum Editor</b> and pick an expiration (a year is fine).</li>
+        <li>Under <b>Repository access</b> choose <b>Only select repositories</b> and pick <b>xal-reth</b>.</li>
+        <li>Under <b>Permissions › Repository permissions</b> set <b>Contents</b> to <b>Read and write</b>. Nothing else is needed.</li>
+        <li>Press <b>Generate token</b>, copy it, and paste it above.</li>
+      </ol>
+      <p>The key only works on this one site and can be deleted on GitHub at any time. It is never saved in the site's files.</p>
+    </details>
+  </section>
+</main>
+
+<!-- ============ DASHBOARD ============ -->
+<main id="cms-app" class="cms-app" hidden>
+  <nav class="cms-tabs" role="tablist" aria-label="Editor sections">
+    <button role="tab" data-tab="pages" aria-selected="true">Pages</button>
+    <button role="tab" data-tab="blog" aria-selected="false">Blog</button>
+    <button role="tab" data-tab="images" aria-selected="false">Images</button>
+    <button role="tab" data-tab="hero" aria-selected="false">Homepage animations</button>
+  </nav>
+
+  <section class="cms-panel" data-panel="pages">
+    <div class="cms-panel-head">
+      <div><h2>Pages</h2><p class="cms-hint">Pick a page, then tap any text to change it or any picture to replace it.</p></div>
+      <input type="search" class="cms-search" id="pages-search" placeholder="Find a page…" aria-label="Find a page">
+    </div>
+    <div id="pages-list" class="cms-list"><p class="cms-hint">Loading…</p></div>
+  </section>
+
+  <section class="cms-panel" data-panel="blog" hidden>
+    <div class="cms-panel-head">
+      <div><h2>The Daily Coil (blog)</h2><p class="cms-hint">Write a new post, or change any post's words, picture, category and tags.</p></div>
+      <button class="cms-btn" type="button" data-new-post>+ New post</button>
+    </div>
+    <div id="blog-list" class="cms-list"><p class="cms-hint">Loading…</p></div>
+  </section>
+
+  <section class="cms-panel" data-panel="images" hidden>
+    <div class="cms-panel-head">
+      <div><h2>Images</h2><p class="cms-hint">Replace any image on the site, including backgrounds and the logo. The new picture keeps the old name, so it changes everywhere it's used.</p></div>
+      <input type="search" class="cms-search" id="images-search" placeholder="Find an image…" aria-label="Find an image">
+    </div>
+    <div id="images-grid" class="cms-images"><p class="cms-hint">Loading…</p></div>
+  </section>
+
+  <section class="cms-panel" data-panel="hero" hidden>
+    <div class="cms-panel-head">
+      <div><h2>Homepage animations</h2><p class="cms-hint">The messages that type themselves under the sigil, the secret Unwrapping message, and the “For the Alliance” banner.</p></div>
+      <button class="cms-btn" type="button" id="hero-save" disabled>Save &amp; publish</button>
+    </div>
+    <div class="hero-preview" aria-live="off"><span class="hp-label">Preview</span><p class="xr-status hp-status"></p></div>
+    <form id="hero-form" class="hero-form">
+      <div id="hero-phases"></div>
+      <button class="cms-btn ghost small" type="button" id="hero-add-phase">+ Add a group</button>
+      <fieldset class="cms-fieldset">
+        <legend>Timing</legend>
+        <label class="cms-field inline"><span>Typing speed</span><input type="range" min="10" max="90" step="1" id="hero-speed"><output id="hero-speed-out"></output></label>
+        <label class="cms-field inline"><span>Pause on each line</span><input type="range" min="2" max="12" step="0.5" id="hero-hold"><output id="hero-hold-out"></output></label>
+      </fieldset>
+      <fieldset class="cms-fieldset">
+        <legend>The Unwrapping (secret: tap the sigil 3 times or type “hold light”)</legend>
+        <label class="cms-field"><span>Heading</span><input id="hero-unwrap-label"></label>
+        <label class="cms-field"><span>Message</span><textarea id="hero-unwrap-text" rows="2"></textarea></label>
+      </fieldset>
+      <fieldset class="cms-fieldset">
+        <legend>“For the Alliance” banner (plays in letter by letter)</legend>
+        <label class="cms-field"><span>Battle cry</span><input id="hero-cry"></label>
+        <label class="cms-field"><span>Line underneath</span><input id="hero-cry-sub"></label>
+      </fieldset>
+      <p class="cms-hint">Everything else on the homepage (headings, buttons, the welcome text) is edited on the page itself: <button type="button" class="cms-link" data-edit-page="index.html">open the homepage editor</button>.</p>
+    </form>
+  </section>
+</main>
+
+<!-- ============ VISUAL PAGE EDITOR ============ -->
+<div id="cms-editor" class="cms-editor" hidden>
+  <div class="ed-bar" role="toolbar" aria-label="Editor">
+    <button class="cms-btn ghost small" type="button" data-ed-close>‹ Back</button>
+    <b class="ed-file"></b>
+    <span class="ed-tools">
+      <button type="button" class="ed-tool" data-cmd="bold" title="Bold"><b>B</b></button>
+      <button type="button" class="ed-tool" data-cmd="italic" title="Italic"><i>I</i></button>
+      <button type="button" class="ed-tool" data-cmd="link" title="Add or change a link">Link</button>
+      <button type="button" class="ed-tool" data-cmd="unlink" title="Remove link">Unlink</button>
+      <button type="button" class="ed-tool" data-cmd="undo" title="Undo">↶</button>
+    </span>
+    <span class="ed-right">
+      <button class="cms-btn ghost small" type="button" data-ed-settings>Page title</button>
+      <button class="cms-btn ghost small" type="button" data-ed-code>HTML</button>
+      <a class="cms-btn ghost small" data-ed-live target="_blank" rel="noopener">View live</a>
+      <button class="cms-btn small" type="button" data-ed-save disabled>Save</button>
+    </span>
+  </div>
+  <p class="ed-tip">Tap any text to edit it. Tap a picture to replace it. Press Save when you're done.</p>
+  <iframe class="ed-frame" title="Page being edited"></iframe>
+</div>
+
+<!-- ============ BLOG POST EDITOR ============ -->
+<div id="cms-post" class="cms-editor post-editor" hidden>
+  <div class="ed-bar">
+    <button class="cms-btn ghost small" type="button" data-post-close>‹ Back</button>
+    <b class="ed-file" id="post-file"></b>
+    <span class="ed-right">
+      <button class="cms-btn ghost small" type="button" data-post-visual hidden>Edit on the page</button>
+      <button class="cms-btn small" type="button" data-post-save>Publish</button>
+    </span>
+  </div>
+  <form class="post-form" id="post-form" autocomplete="off">
+    <label class="cms-field"><span>Title</span><input id="pf-title" required maxlength="140"></label>
+    <label class="cms-field"><span>Summary (one or two sentences, shown on the blog page and in link previews)</span><textarea id="pf-summary" rows="2" required></textarea></label>
+    <div class="pf-row">
+      <label class="cms-field"><span>Category</span><select id="pf-cat"></select></label>
+      <label class="cms-field"><span>Date</span><input type="date" id="pf-date" required></label>
+      <label class="cms-field"><span>Coil date (optional)</span><input id="pf-coil" placeholder="the 6th day of Small Portions, Year 2 of the Restoration"></label>
+    </div>
+    <div class="pf-image">
+      <figure><img id="pf-img" alt=""></figure>
+      <div>
+        <span class="cms-label">Header picture</span>
+        <label class="cms-btn ghost small file-btn">Choose a picture…<input type="file" id="pf-img-file" accept="image/*"></label>
+        <label class="cms-field inline"><span>Focus (top ↔ bottom)</span><input type="range" min="0" max="100" id="pf-focus"></label>
+      </div>
+    </div>
+    <div class="cms-field"><span>Post</span>
+      <div class="rt-bar" role="toolbar" aria-label="Formatting">
+        <button type="button" data-rt="p">Text</button>
+        <button type="button" data-rt="h2">Heading</button>
+        <button type="button" data-rt="h3">Small heading</button>
+        <button type="button" data-rt="blockquote">Quote</button>
+        <button type="button" data-rt="ul">• List</button>
+        <button type="button" data-rt="ol">1. List</button>
+        <button type="button" data-rt="bold"><b>B</b></button>
+        <button type="button" data-rt="italic"><i>I</i></button>
+        <button type="button" data-rt="link">Link</button>
+        <button type="button" data-rt="unlink">Unlink</button>
+        <label class="rt-file">Picture<input type="file" id="pf-body-img" accept="image/*"></label>
+        <button type="button" data-rt="html">HTML</button>
+      </div>
+      <div id="pf-body" class="prose article rt-body" contenteditable="true" aria-label="Post text"></div>
+      <textarea id="pf-body-html" class="rt-html" hidden spellcheck="false" aria-label="Post HTML"></textarea>
+    </div>
+    <label class="cms-field"><span>Tags (separate with commas)</span><input id="pf-tags" placeholder="Shedfall, Holy Days, Nhalor"></label>
+    <label class="cms-check" id="pf-feature-wrap"><input type="checkbox" id="pf-feature" checked> Feature it as the big post at the top of the blog</label>
+    <div class="pf-danger" id="pf-danger" hidden><button type="button" class="cms-btn danger small" data-post-delete>Delete this post</button></div>
+  </form>
+</div>
+
+<!-- ============ DIALOGS ============ -->
+<dialog id="dlg-image" class="cms-dialog">
+  <form method="dialog">
+    <h3>Replace picture</h3>
+    <div class="dlg-img-compare"><figure><img id="di-old" alt=""><figcaption>Now</figcaption></figure><figure><img id="di-new" alt=""><figcaption>New</figcaption></figure></div>
+    <label class="cms-btn ghost small file-btn">Choose a picture…<input type="file" id="di-file" accept="image/*"></label>
+    <label class="cms-field" id="di-alt-wrap"><span>Description for screen readers (alt text)</span><input id="di-alt"></label>
+    <label class="cms-check" id="di-twin-wrap" hidden><input type="checkbox" id="di-twin" checked> <span id="di-twin-text"></span></label>
+    <p class="cms-hint" id="di-note"></p>
+    <div class="dlg-actions"><button class="cms-btn ghost small" value="cancel">Cancel</button><button class="cms-btn small" value="ok" id="di-ok" disabled>Use this picture</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlg-settings" class="cms-dialog">
+  <form method="dialog">
+    <h3>Page title &amp; description</h3>
+    <p class="cms-hint">What shows in the browser tab, in Google, and in link previews on Discord and X.</p>
+    <label class="cms-field"><span>Title</span><input id="ds-title"></label>
+    <label class="cms-field"><span>Description</span><textarea id="ds-desc" rows="3"></textarea></label>
+    <div class="dlg-actions"><button class="cms-btn ghost small" value="cancel">Cancel</button><button class="cms-btn small" value="ok">Done</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlg-code" class="cms-dialog wide">
+  <form method="dialog">
+    <h3>Edit the HTML</h3>
+    <p class="cms-hint">For anything the click-to-edit view can't reach. Saving here publishes the file exactly as written.</p>
+    <textarea id="dc-code" spellcheck="false" aria-label="Page HTML"></textarea>
+    <div class="dlg-actions"><button class="cms-btn ghost small" value="cancel">Cancel</button><button class="cms-btn small" value="ok">Save &amp; publish</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlg-link" class="cms-dialog">
+  <form method="dialog">
+    <h3>Link</h3>
+    <label class="cms-field"><span>Where it goes (a page like <code>canon.html</code> or a full web address)</span><input id="dl-href" placeholder="https://…"></label>
+    <div class="dlg-actions"><button class="cms-btn ghost small" value="cancel">Cancel</button><button class="cms-btn small" value="ok">Done</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlg-confirm" class="cms-dialog">
+  <form method="dialog">
+    <h3 id="dcf-title"></h3>
+    <p id="dcf-text"></p>
+    <div class="dlg-actions"><button class="cms-btn ghost small" value="cancel">Cancel</button><button class="cms-btn small" value="ok" id="dcf-ok">OK</button></div>
+  </form>
+</dialog>
+
+<div class="cms-toast" id="cms-toast" role="status" aria-live="polite"></div>
+
+<script src="js/cms.js"></script>
+</body>
+</html>

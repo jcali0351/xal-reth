@@ -84,6 +84,18 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   `BLIZZARD_CLIENT_ID`/`BLIZZARD_CLIENT_SECRET` repository secrets and starts manual syncs and connection tests through the
   GitHub API with the admin's own token (kept in sessionStorage only). Never put Blizzard credentials or tokens in any file.
   Keep it if the site is regenerated.
+- The Sanctum Editor (`admin.html`, `css/cms.css`, `js/cms.js`; noindex, not in the menu, sitemap or search) is John's CMS.
+  He signs in with a fine-grained GitHub token (xal-reth only, Contents: read and write) kept in his browser only
+  (sessionStorage, or localStorage if "keep me signed in"); never put a token in a file. Saves are commits through the
+  GitHub API whose messages start with "CMS:". Tabs: Pages (tap any text to edit, tap a picture to replace it, page title
+  and description, raw HTML), Blog (new post / edit / delete: writes the post-*.html page from the newest post's layout,
+  its card and category counts in blog.html, and the older/newer links), Images (replace any image file under its own
+  name, plus its .webp/.png twin), Homepage animations (the typed status lines, timing and the Unwrapping message in
+  `data/hero-text.json`, read by js/xalreth.js with its built-in lines as a fallback; the "For the Alliance" banner text in
+  index.html). Uploaded pictures go to `img/uploads/`. `.github/workflows/cms-rebuild.yml` rebuilds sitemap.xml and
+  search-index.json after each "CMS:" commit. When signed in, site.js shows an "Edit this page" button bottom left.
+  John's CMS edits live in the committed pages, so if the site is ever regenerated, start from the current files
+  (or his edits are lost), and keep all of this.
 
 ## Hourly Coil Herald post (scheduled task)
 1. `git pull --ff-only origin main`

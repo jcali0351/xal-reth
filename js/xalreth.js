@@ -112,7 +112,22 @@
     ]
   };
   var PHASES = ["OBSERVE", "ANALYZE", "TRANSCEND"];
+  var UNWRAP = { label: "THE UNWRAPPING", text: "Not yet. He is still holding the world, and you, a little more lightly. Glory to Xal'Reth." };
+  var TYPE_MS = 28, HOLD_MS = 4200;
   var phase = 0, typing = null, egg = false;
+  // The words are editable in the site editor (admin.html), which saves them to data/hero-text.json.
+  // The lines above are the fallback if that file can't be read.
+  function applyHeroText(d) {
+    if (!d || typeof d !== "object") return;
+    var ph = (d.phases || []).filter(function (p) { return p && p.label && p.messages && p.messages.filter(Boolean).length; });
+    if (ph.length) {
+      MESSAGES = {}; PHASES = [];
+      ph.forEach(function (p) { var l = String(p.label); PHASES.push(l); MESSAGES[l] = p.messages.filter(Boolean).map(String); });
+    }
+    if (d.unwrapping && d.unwrapping.text) UNWRAP = { label: String(d.unwrapping.label || UNWRAP.label), text: String(d.unwrapping.text) };
+    if (+d.typeSpeedMs >= 5 && +d.typeSpeedMs <= 400) TYPE_MS = +d.typeSpeedMs;
+    if (+d.holdSeconds >= 1 && +d.holdSeconds <= 60) HOLD_MS = +d.holdSeconds * 1000;
+  }
   function pick(list) { return list[Math.floor(Math.random() * list.length)]; }
   function show(label, text, done) {
     if (!statusEl) return;
@@ -123,17 +138,25 @@
     typing = setInterval(function () {
       i++;
       statusEl.innerHTML = head + escapeHtml(text.slice(0, i)) + '<span class="xr-caret"></span>';
-      if (i >= text.length) { clearInterval(typing); if (done) setTimeout(done, 4200); }
-    }, 28);
+      if (i >= text.length) { clearInterval(typing); if (done) setTimeout(done, HOLD_MS); }
+    }, TYPE_MS);
   }
   function escapeHtml(s) { return s.replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function nextStatus() {
     if (egg) return;
     if (!running() && !reduce) { setTimeout(nextStatus, 1500); return; }
+    phase = phase % PHASES.length;
     var label = PHASES[phase]; phase = (phase + 1) % PHASES.length;
     show(label, pick(MESSAGES[label]), nextStatus);
   }
-  nextStatus();
+  var started = false;
+  function startStatus() { if (!started) { started = true; nextStatus(); } }
+  try {
+    var textUrl = SCRIPT_URL.replace(/js\/xalreth\.js.*$/, "") + "data/hero-text.json";
+    fetch(textUrl, { cache: "no-cache" }).then(function (r) { return r.ok ? r.json() : null; })
+      .then(applyHeroText).catch(function () {}).then(startStatus);
+  } catch (e) {}
+  setTimeout(startStatus, 1500);
 
   /* ------------------------------------------------------------ the hidden easter egg */
   var logo = hero.querySelector(".xr-logo"), clicks = [];
@@ -151,7 +174,7 @@
       hero.querySelector(".xr-stage").appendChild(ring);
       setTimeout(function (el) { return function () { el.remove(); }; }(ring), 2600 + k * 350);
     }
-    show("THE UNWRAPPING", "Not yet. He is still holding the world, and you, a little more lightly. Glory to Xal'Reth.", function () {
+    show(UNWRAP.label, UNWRAP.text, function () {
       hero.classList.remove("xr-unwrapped"); egg = false; nextStatus();
     });
     try { console.log("%cHold light. And let go well.", "color:#b98cff;font:16px serif"); } catch (e) {}

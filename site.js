@@ -23,6 +23,25 @@
   }
 })();
 
+// Sanctum Editor: when you're signed in to admin.html on this device, every page gets an "Edit this page" button.
+(function () {
+  var t = "";
+  try { t = sessionStorage.getItem("xr-cms-token") || localStorage.getItem("xr-cms-token") || ""; } catch (e) {}
+  if (!t || /admin\.html$/.test(location.pathname)) return;
+  function add() {
+    var file = location.pathname.split("/").pop() || "index.html";
+    if (!/\.html$/.test(file)) file += ".html";
+    var a = document.createElement("a");
+    a.href = (window.COIL_BASE || "") + "admin.html#edit=" + encodeURIComponent(file);
+    a.textContent = "\u270E Edit this page";
+    a.setAttribute("style", "position:fixed;left:16px;bottom:16px;z-index:9998;padding:10px 16px;border-radius:999px;" +
+      "background:#120a20;color:#e0c4ff;border:1px solid #8a4dff;font:600 12px Cinzel,Georgia,serif;letter-spacing:.12em;" +
+      "text-transform:uppercase;text-decoration:none;box-shadow:0 0 22px rgba(138,77,255,.45)");
+    document.body.appendChild(a);
+  }
+  if (document.body) add(); else document.addEventListener("DOMContentLoaded", add);
+})();
+
 // Where the addon downloads live. Each addon's .zip is attached to a
 // GitHub Release in this repo. Set `ready: true` once its zip is uploaded.
 const COIL = {

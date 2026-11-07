@@ -12,7 +12,7 @@ import glob, html, json, os, re
 from html.parser import HTMLParser
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SKIP = {"404.html", "roster-admin.html", "addon-coil-angler.html"}
+SKIP = {"404.html", "roster-admin.html", "admin.html", "addon-coil-angler.html"}
 PAGE_TEXT = 1400       # characters of body text kept per page
 SECTION_TEXT = 420     # characters kept per section
 MAX_SECTIONS = 60      # per page
