@@ -49,6 +49,9 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   subjects "Xal'Reth Guild Application" and "Xal'Reth Officer Application", using the same scrambled address as js/contact.js
   (update ALIAS in contact.js, chat.js and recruit.js together), and "Copy for Discord" always works. Every field with
   data-label becomes a row of the email. Don't invent raid schedules or requirements on the page. Keep it if the site is regenerated.
+- The Join page (`join.html`, `css/join.css`) opens with a "Now recruiting" call to action (`.rcta`, data-no-motion): a running
+  border of light, a pulsing badge, "The Coil Wants You", a bright squared "Request to join" button to recruit.html#apply and a
+  link to recruit.html#officers, two plates fanned on the right and twinkling stars; still for reduced motion. Keep it.
 - The Contact page (`contact.html`, `css/contact.css`, `js/contact.js`) is a form for bug reports, addon help, website
   issues and messages to the author. Send posts it through FormSubmit to the author's inbox with the subject
   "Xal'Reth Website Submission". The address is stored scrambled in js/contact.js; once the author has activated the
