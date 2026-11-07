@@ -44,6 +44,12 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   its page, with a "Full page" button. When an addon changes or a new one is released, update addons.html and the script,
   run `python3 tools/build_addon_pages.py` and then `python3 tools/build_sitemap.py`. Coming-soon addons get no page yet.
 
+- Site-wide search, "the Seeking Glass": `js/search.js` + `css/search.css`, loaded on every page by a small loader at the top
+  of `site.js`. It adds a search button to every page header, opens with / or Ctrl+K (Cmd+K), and the homepage has a search
+  bar (`.ss-hero`, `data-search-hero`) with "Try" chips just above the animated sigil. It reads `search-index.json`, built by
+  `tools/build_search.py` from every page and each heading with an id (addon results carry their .zip for a Download
+  button). new_post.py and build_addon_pages.py rebuild it; run it by hand after other page changes. Never hand-edit
+  search-index.json. Keep all of this if the site is regenerated.
 - The Guild Roster (`guild-roster.html`, `css/guild-roster.css`, `js/guild-roster.js`) shows the live guild from the
   Blizzard WoW API. The page only reads `data/roster.json` and `data/sync-status.json`; it never calls Blizzard. Those files
   are written by `tools/sync_roster.mjs` (Node 20, no packages), run hourly by `.github/workflows/roster-sync.yml`, which

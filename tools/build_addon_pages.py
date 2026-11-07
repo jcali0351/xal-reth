@@ -396,3 +396,5 @@ if __name__ == "__main__":
     for a in ADDONS:
         build(a, [o for o in ADDONS if o is not a])
         print(a["slug"])
+    import subprocess, sys
+    subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "build_search.py")], check=False)

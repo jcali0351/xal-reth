@@ -2,6 +2,19 @@
    THE COIL OF XAL'RETH — sanctum scripts
    ========================================================== */
 
+// The Seeking Glass (site-wide search): load its style and script on every page that loads site.js.
+(function () {
+  var me = document.currentScript;
+  var base = me && me.src ? me.src.replace(/site\.js(\?.*)?$/, "") : "";
+  window.COIL_BASE = base;
+  if (!document.querySelector('link[href$="css/search.css"]')) {
+    var l = document.createElement("link"); l.rel = "stylesheet"; l.href = base + "css/search.css"; document.head.appendChild(l);
+  }
+  if (!document.querySelector('script[src$="js/search.js"]')) {
+    var sc = document.createElement("script"); sc.src = base + "js/search.js"; sc.defer = true; document.head.appendChild(sc);
+  }
+})();
+
 // Where the addon downloads live. Each addon's .zip is attached to a
 // GitHub Release in this repo. Set `ready: true` once its zip is uploaded.
 const COIL = {

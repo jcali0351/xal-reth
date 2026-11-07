@@ -15,7 +15,7 @@ What it does:
   1. Writes herald-YYYYMMDD-HHMM-<slug>.html, a full page cloned from news.html's layout.
   2. Adds the item to the top of news.json (shown under Official News on news.html).
   3. Rebuilds herald.html, the archive of every Herald post.
-  4. Rebuilds sitemap.xml (tools/build_sitemap.py).
+  4. Rebuilds sitemap.xml (tools/build_sitemap.py) and search-index.json (tools/build_search.py).
 Times use America/Chicago.
 """
 import json, re, sys, html, datetime, os
@@ -46,6 +46,9 @@ def rebuild_sitemap():
     """Regenerate sitemap.xml from every page (see tools/build_sitemap.py)."""
     import importlib.util
     spec = importlib.util.spec_from_file_location("build_sitemap", os.path.join(ROOT, "tools", "build_sitemap.py"))
+    mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod); mod.main()
+    # and the site-wide search index, so the new post is searchable at once
+    spec = importlib.util.spec_from_file_location("build_search", os.path.join(ROOT, "tools", "build_search.py"))
     mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod); mod.main()
 
 def build_archive(items):
