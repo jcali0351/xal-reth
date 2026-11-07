@@ -1046,3 +1046,160 @@ a.card:hover, .card.addon:hover { border-color: rgba(201,162,255,.6); box-shadow
   .site-nav ul.sub { position: static; min-width: 0; padding: 0 0 6px 14px; background: none; border: 0; box-shadow: none; }
   .site-nav ul.sub a { padding: 10px 4px; border-bottom: 1px solid rgba(185,140,255,0.06); }
 }
+
+/* =====================================================================
+   THE GLOWING MENU — fly-out dropdowns, a gliding light, staggered fades.
+   Script: the "Menu FX" block in site.js (sets --i, the glow and the spotlight).
+   ===================================================================== */
+@keyframes nav-in { from { opacity: 0; transform: translateY(-12px); filter: blur(6px); } }
+@keyframes nav-sweep { from { background-position: -40% 0; } to { background-position: 140% 0; } }
+@keyframes nav-edge { from { background-position: 0% 0; } to { background-position: 200% 0; } }
+@keyframes mark-breathe { 50% { filter: drop-shadow(0 0 14px rgba(224, 196, 255, 0.95)) drop-shadow(0 0 28px rgba(138, 77, 255, 0.6)); } }
+
+/* a thread of light runs along the bottom of the header */
+.site-header::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(224, 196, 255, 0.9), transparent) no-repeat;
+  background-size: 35% 100%; animation: nav-sweep 7s linear infinite; opacity: .7;
+}
+.brand .brand-mark { animation: mark-breathe 4.5s ease-in-out infinite; }
+
+/* ---------- wide screens ---------- */
+@media (min-width: 861px) {
+  .site-nav > ul { position: relative; }
+  .site-nav > ul > li { position: relative; z-index: 1; }
+  .site-nav > ul > li.has-sub:hover, .site-nav > ul > li.has-sub.open { z-index: 3; }
+  html.nav-intro .site-nav > ul > li:not(.nav-glow) { animation: nav-in .7s cubic-bezier(.2, .9, .3, 1) both; animation-delay: calc(var(--i, 0) * 65ms + 120ms); }
+
+  .site-nav > ul > li > a, .site-nav .sub-toggle {
+    position: relative; border-bottom-color: transparent !important;
+    transition: color .3s ease, text-shadow .3s ease, letter-spacing .4s ease;
+  }
+  /* the beam under each item, opening from the middle */
+  .site-nav > ul > li > a::before, .site-nav .sub-toggle::before {
+    content: ""; position: absolute; left: 50%; right: 50%; bottom: 3px; height: 2px; border-radius: 2px; pointer-events: none;
+    background: linear-gradient(90deg, transparent, #e0c4ff, #b98cff, #e0c4ff, transparent);
+    box-shadow: 0 0 10px #a66bff, 0 0 22px rgba(166, 107, 255, .7); opacity: 0;
+    transition: left .45s cubic-bezier(.2, .9, .3, 1.3), right .45s cubic-bezier(.2, .9, .3, 1.3), opacity .3s;
+  }
+  .site-nav > ul > li > a:hover::before, .site-nav > ul > li > a:focus-visible::before, .site-nav > ul > li > a[aria-current="page"]::before,
+  .site-nav .sub-toggle:hover::before, .site-nav .sub-toggle:focus-visible::before, .site-nav .has-sub.open .sub-toggle::before,
+  .site-nav .has-sub:hover .sub-toggle::before, .site-nav .sub-toggle.current::before { left: 12%; right: 12%; opacity: 1; }
+  .site-nav > ul > li > a:hover, .site-nav > ul > li > a:focus-visible, .site-nav .sub-toggle:hover, .site-nav .has-sub:hover .sub-toggle,
+  .site-nav .has-sub.open .sub-toggle, .site-nav .sub-toggle:focus-visible {
+    color: #fff; text-shadow: 0 0 8px rgba(224, 196, 255, .95), 0 0 22px rgba(166, 107, 255, .85), 0 0 40px rgba(138, 77, 255, .5);
+  }
+  .site-nav .sub-toggle::after { transition: transform .45s cubic-bezier(.2, 1.4, .4, 1), margin .3s; }
+  .site-nav .has-sub:hover .sub-toggle::after { transform: rotate(-135deg); margin-top: 3px; }
+
+  /* the soft light that glides from item to item */
+  .site-nav .nav-glow {
+    position: absolute; top: 3px; bottom: 3px; left: 0; width: 0; z-index: 0; pointer-events: none; list-style: none; opacity: 0;
+    border-radius: 999px;
+    background: radial-gradient(ellipse at 50% 60%, rgba(166, 107, 255, .32), rgba(138, 77, 255, .1) 55%, transparent 75%);
+    box-shadow: inset 0 0 0 1px rgba(201, 162, 255, .16), 0 0 26px rgba(138, 77, 255, .3);
+  }
+  .site-nav .nav-glow.ready { transition: transform .5s cubic-bezier(.2, .9, .25, 1.12), width .5s cubic-bezier(.2, .9, .25, 1.12), opacity .35s ease; }
+
+  /* ---- the dropdown: swings out of the menu bar in 3D, unblurring as it comes ---- */
+  .site-nav .has-sub { perspective: 900px; }
+  .site-nav ul.sub {
+    display: flex !important; visibility: hidden; opacity: 0; pointer-events: none;
+    top: calc(100% + 10px); left: -10px; min-width: 250px; padding: 10px; border-radius: 14px;
+    transform-origin: 34px 0; transform: translateY(-16px) rotateX(-32deg) scale(.88); filter: blur(8px);
+    background:
+      radial-gradient(200px circle at var(--mx, 50%) var(--my, -60%), rgba(166, 107, 255, .26), transparent 65%),
+      linear-gradient(165deg, rgba(34, 18, 60, .97), rgba(12, 7, 22, .97));
+    -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4);
+    border: 1px solid rgba(201, 162, 255, .3);
+    box-shadow: 0 26px 60px rgba(0, 0, 0, .65), 0 0 0 1px rgba(138, 77, 255, .12), 0 0 46px rgba(138, 77, 255, .38), inset 0 1px 0 rgba(255, 255, 255, .08);
+    transition: opacity .22s ease, transform .3s cubic-bezier(.4, 0, .6, 1), filter .25s ease, visibility 0s linear .3s;
+  }
+  .site-nav ul.sub::before { top: -12px; height: 12px; }   /* wider hover bridge for the wider gap */
+  /* a shimmer runs along the top edge of the open panel */
+  .site-nav ul.sub::after {
+    content: ""; position: absolute; left: 14px; right: 14px; top: -1px; height: 1px; pointer-events: none;
+    background: linear-gradient(90deg, transparent, #fff, #c9a2ff, transparent, transparent) 0 0 / 200% 100%;
+    animation: nav-edge 2.6s linear infinite; box-shadow: 0 0 12px rgba(201, 162, 255, .9);
+  }
+  .site-nav .has-sub.open > ul.sub { visibility: visible; opacity: 1; pointer-events: auto; transform: none; filter: none;
+    transition: opacity .3s ease, transform .6s cubic-bezier(.16, 1.3, .3, 1), filter .4s ease, visibility 0s; }
+  /* the little pointer that joins the panel to its menu item */
+  .site-nav .has-sub::after {
+    content: ""; position: absolute; left: 24px; top: calc(100% + 5px); width: 11px; height: 11px; z-index: 61; pointer-events: none;
+    background: rgba(34, 18, 60, .98); border-left: 1px solid rgba(201, 162, 255, .3); border-top: 1px solid rgba(201, 162, 255, .3);
+    transform: translateY(-8px) rotate(45deg); opacity: 0; transition: opacity .2s, transform .3s;
+  }
+  .site-nav .has-sub.open::after { opacity: 1; transform: rotate(45deg); transition: opacity .3s .1s, transform .5s cubic-bezier(.2, 1.3, .3, 1) .05s; }
+
+  /* items drift in one by one */
+  .site-nav ul.sub li { opacity: 0; transform: translateX(-14px); filter: blur(4px); transition: opacity .15s, transform .15s, filter .15s; }
+  .site-nav .has-sub.open > ul.sub li { opacity: 1; transform: none; filter: none;
+    transition: opacity .45s ease calc(.1s + var(--i, 0) * 55ms), transform .6s cubic-bezier(.2, 1.25, .3, 1) calc(.1s + var(--i, 0) * 55ms), filter .45s ease calc(.1s + var(--i, 0) * 55ms); }
+  @media (hover: hover) {
+    .site-nav .has-sub:hover > ul.sub { visibility: visible; opacity: 1; pointer-events: auto; transform: none; filter: none;
+      transition: opacity .3s ease, transform .6s cubic-bezier(.16, 1.3, .3, 1), filter .4s ease, visibility 0s; }
+    .site-nav .has-sub:hover::after { opacity: 1; transform: rotate(45deg); transition: opacity .3s .1s, transform .5s cubic-bezier(.2, 1.3, .3, 1) .05s; }
+    .site-nav .has-sub:hover > ul.sub li { opacity: 1; transform: none; filter: none;
+      transition: opacity .45s ease calc(.1s + var(--i, 0) * 55ms), transform .6s cubic-bezier(.2, 1.25, .3, 1) calc(.1s + var(--i, 0) * 55ms), filter .45s ease calc(.1s + var(--i, 0) * 55ms); }
+  }
+
+  .site-nav ul.sub a {
+    position: relative; border-radius: 9px; padding: 11px 16px 11px 22px; color: var(--bone);
+    transition: color .25s, background .3s, padding-left .35s cubic-bezier(.2, 1.3, .4, 1), text-shadow .3s;
+  }
+  .site-nav ul.sub a::before {
+    content: ""; position: absolute; left: 9px; top: 50%; width: 3px; height: 0; border-radius: 3px; transform: translateY(-50%);
+    background: linear-gradient(180deg, #fff, #b98cff); box-shadow: 0 0 10px #a66bff, 0 0 18px rgba(166, 107, 255, .8);
+    transition: height .35s cubic-bezier(.2, 1.3, .4, 1);
+  }
+  .site-nav ul.sub a:hover, .site-nav ul.sub a:focus-visible {
+    padding-left: 28px; color: #fff; outline: none;
+    background: linear-gradient(90deg, rgba(166, 107, 255, .26), rgba(166, 107, 255, .04) 80%);
+    text-shadow: 0 0 8px rgba(224, 196, 255, .9), 0 0 20px rgba(166, 107, 255, .7);
+  }
+  .site-nav ul.sub a:hover::before, .site-nav ul.sub a:focus-visible::before { height: 58%; }
+  .site-nav ul.sub a[aria-current="page"] { color: var(--venom); background: rgba(166, 107, 255, .12); }
+  .site-nav ul.sub a[aria-current="page"]::before { height: 40%; }
+}
+
+/* ---------- the Menu button layout (phones and small windows) ---------- */
+@media (max-width: 860px) {
+  .nav-toggle {
+    border-color: rgba(201, 162, 255, .45); color: var(--venom); border-radius: 999px; padding: 8px 16px;
+    box-shadow: 0 0 16px rgba(138, 77, 255, .35); transition: box-shadow .3s, background .3s, color .3s;
+  }
+  .nav-toggle[aria-expanded="true"] { background: rgba(138, 77, 255, .25); color: #fff; box-shadow: 0 0 26px rgba(166, 107, 255, .75); text-shadow: 0 0 10px #c9a2ff; }
+
+  /* the panel unfurls downward like a scroll */
+  .site-nav {
+    display: block !important; visibility: hidden; opacity: 0; clip-path: inset(0 0 100% 0);
+    max-height: calc(100vh - 64px); overflow-y: auto; overscroll-behavior: contain;
+    background: linear-gradient(180deg, rgba(26, 14, 46, .98), rgba(10, 6, 18, .98));
+    box-shadow: 0 30px 60px rgba(0, 0, 0, .6), 0 0 40px rgba(138, 77, 255, .25);
+    transition: clip-path .4s cubic-bezier(.4, 0, .6, 1), opacity .3s, visibility 0s linear .4s;
+  }
+  .site-nav.open { visibility: visible; opacity: 1; clip-path: inset(0 0 0 0); transition: clip-path .6s cubic-bezier(.2, .9, .25, 1), opacity .3s, visibility 0s; }
+  .site-nav > ul > li { opacity: 0; transform: translateY(-10px); filter: blur(4px); transition: opacity .2s, transform .2s, filter .2s; }
+  .site-nav.open > ul > li { opacity: 1; transform: none; filter: none;
+    transition: opacity .45s ease calc(.08s + var(--i, 0) * 45ms), transform .55s cubic-bezier(.2, 1.2, .3, 1) calc(.08s + var(--i, 0) * 45ms), filter .45s calc(.08s + var(--i, 0) * 45ms); }
+  .site-nav > ul > li > a, .site-nav .sub-toggle { transition: color .25s, text-shadow .25s, padding-left .3s; }
+  .site-nav > ul > li > a:active, .site-nav .sub-toggle:active, .site-nav ul.sub a:active { color: #fff; text-shadow: 0 0 10px #c9a2ff, 0 0 22px #8a4dff; }
+  .site-nav a[aria-current="page"] { color: #fff; text-shadow: 0 0 10px rgba(201, 162, 255, .9); }
+
+  /* submenus slide open in place */
+  .site-nav li.has-sub { display: grid; grid-template-rows: auto 0fr; transition: grid-template-rows .45s cubic-bezier(.2, .9, .25, 1); }
+  .site-nav li.has-sub.open { grid-template-rows: auto 1fr; }
+  .site-nav ul.sub { display: block !important; min-height: 0; overflow: hidden; padding: 0 0 0 14px; visibility: hidden; transition: visibility 0s linear .45s; }
+  .site-nav li.has-sub.open > ul.sub { visibility: visible; transition: visibility 0s; border-left: 1px solid rgba(166, 107, 255, .35); box-shadow: -8px 0 16px -12px #a66bff; }
+  .site-nav ul.sub li { opacity: 0; transform: translateX(-10px); transition: opacity .2s, transform .2s; }
+  .site-nav li.has-sub.open ul.sub li { opacity: 1; transform: none; transition: opacity .4s ease calc(.1s + var(--i, 0) * 50ms), transform .5s cubic-bezier(.2, 1.2, .3, 1) calc(.1s + var(--i, 0) * 50ms); }
+  .site-nav .nav-glow { display: none; }
+}
+
+/* for visitors who asked their device for less motion: keep the glow, drop the movement */
+@media (prefers-reduced-motion: reduce) {
+  .site-header::after, .brand .brand-mark, .site-nav ul.sub::after { animation: none !important; }
+  .site-nav, .site-nav *, .site-nav *::before, .site-nav *::after { transition-duration: .01s !important; transition-delay: 0s !important; animation: none !important; }
+  .site-nav ul.sub, .site-nav ul.sub li, .site-nav > ul > li { transform: none !important; filter: none !important; }
+}

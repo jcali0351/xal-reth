@@ -187,3 +187,52 @@ document.querySelectorAll("[data-reveal]").forEach((b) => {
   });
   document.addEventListener("click", (e) => { if (!e.target.closest(".site-nav .has-sub")) closeAll(); });
 })();
+
+// Menu FX: the gliding light behind the menu, stagger order for the fly-out items, the cursor spotlight in each
+// dropdown, and a one-time fade-in of the menu on the first page of a visit. Styles: "THE GLOWING MENU" in style.css.
+(function () {
+  const nav = document.querySelector(".site-nav");
+  const top = nav && nav.querySelector(":scope > ul");
+  if (!top) return;
+  Array.from(top.children).forEach((li, i) => li.style.setProperty("--i", i));
+  nav.querySelectorAll("ul.sub").forEach((ul) => {
+    Array.from(ul.children).forEach((li, i) => li.style.setProperty("--i", i));
+    ul.addEventListener("pointermove", (e) => {
+      const r = ul.getBoundingClientRect();
+      ul.style.setProperty("--mx", (e.clientX - r.left) + "px"); ul.style.setProperty("--my", (e.clientY - r.top) + "px");
+    });
+    ul.addEventListener("pointerleave", () => { ul.style.removeProperty("--mx"); ul.style.removeProperty("--my"); });
+  });
+  try {
+    if (!sessionStorage.getItem("xr-nav-in")) {
+      sessionStorage.setItem("xr-nav-in", "1");
+      document.documentElement.classList.add("nav-intro");
+      setTimeout(() => document.documentElement.classList.remove("nav-intro"), 2200);
+    }
+  } catch (e) {}
+
+  const glow = document.createElement("li");
+  glow.className = "nav-glow"; glow.setAttribute("aria-hidden", "true"); glow.setAttribute("role", "presentation");
+  top.appendChild(glow);
+  const wide = window.matchMedia("(min-width: 861px)");
+  const items = Array.from(top.children).filter((li) => li !== glow);
+  function place(li) {
+    if (!wide.matches || !li) { glow.style.opacity = "0"; return; }
+    const r = li.getBoundingClientRect(), p = top.getBoundingClientRect();
+    glow.style.width = r.width + "px"; glow.style.transform = "translateX(" + (r.left - p.left) + "px)"; glow.style.opacity = "1";
+  }
+  function rest() {
+    const cur = items.find((li) => li.querySelector(':scope > a[aria-current="page"], :scope > .sub-toggle.current'));
+    place(cur || null);
+  }
+  items.forEach((li) => {
+    li.addEventListener("pointerenter", () => place(li));
+    li.addEventListener("focusin", () => place(li));
+  });
+  top.addEventListener("pointerleave", rest);
+  nav.addEventListener("focusout", (e) => { if (!nav.contains(e.relatedTarget)) rest(); });
+  window.addEventListener("resize", rest);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(rest);
+  rest();
+  requestAnimationFrame(() => requestAnimationFrame(() => glow.classList.add("ready")));
+})();
