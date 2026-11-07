@@ -10,6 +10,9 @@
  *      It asks only for posts newer than the one already shown (since_id), and X bills per post
  *      returned, so an hour with no new post costs nothing. Without the secret it does nothing.
  *
+ * Only @xalrethrp's own posts are ever shown: links from other accounts are refused, and the
+ * automatic check skips replies and reposts.
+ *
  * Node 20+, no packages.
  */
 import { readFile, writeFile } from "node:fs/promises";
@@ -45,7 +48,8 @@ async function main() {
     if (!raw) { await save({ handle: HANDLE, userId: cur.userId, updated: new Date().toISOString(), source: "cleared" }); return; }
     const p = idFromUrl(raw);
     if (!p) { console.error("That doesn't look like a post link. Use one like https://x.com/xalrethrp/status/1234567890"); process.exit(1); }
-    await save({ handle: p.handle, userId: cur.userId, id: p.id, url: `https://x.com/${p.handle}/status/${p.id}`,
+    if (p.handle.toLowerCase() !== HANDLE) { console.error(`Only posts from @${HANDLE} can be shown. That link is from @${p.handle}.`); process.exit(1); }
+    await save({ handle: HANDLE, userId: cur.userId, id: p.id, url: `https://x.com/${HANDLE}/status/${p.id}`,
       updated: new Date().toISOString(), source: "manual" });
     return;
   }

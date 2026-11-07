@@ -9,7 +9,8 @@
   var card = document.querySelector("[data-x-card]");
   if (!card) return;
   var slot = card.querySelector(".xpost-slot");
-  var handle = card.getAttribute("data-handle") || "xalrethrp";
+  var HANDLE = "xalrethrp";   // only this account's posts are ever shown
+  var handle = HANDLE;
   var started = false;
 
   function esc(s) { return String(s || "").replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
@@ -63,7 +64,10 @@
       .then(function (r) { return r.ok ? r.json() : {}; })
       .catch(function () { return {}; })
       .then(function (post) {
-        if (post.handle) handle = post.handle;
+        // anything not posted by @xalrethrp is ignored
+        var mine = post && post.id && String(post.handle || "").toLowerCase() === HANDLE &&
+          (!post.url || new RegExp("^https://(x|twitter)\\.com/" + HANDLE + "/status/\\d+$", "i").test(post.url));
+        if (!mine) post = {};
         fallback(post);
         if (!post.id) { card.classList.remove("is-loading"); return; }
         var holder = document.createElement("div");
