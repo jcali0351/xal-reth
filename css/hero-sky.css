@@ -1,11 +1,17 @@
 /* THE SANCTUM SKY — the homepage backdrop behind the header and the sigil (js/hero-sky.js) */
 .hero-sky { position: absolute; left: 0; right: 0; top: 0; height: min(1180px, 135vh); z-index: 0; overflow: hidden; pointer-events: none;
   -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 55%, transparent 100%); mask-image: linear-gradient(180deg, #000 0%, #000 55%, transparent 100%); }
+/* The sky can be changed in the Sanctum Editor (admin.html › Homepage sky). It writes a small
+   <style id="hero-sky-pics"> just before .hero-sky in index.html with the chosen picture(s) (paths in a page's own
+   <style> resolve from the page), and these settings onto .hero-sky itself: --sky-pos, --sky-pos-m (phones),
+   --sky-bright, --sky-sat, and data-swirl="off" / data-eye="off". Without them the original sanctum shows. */
 .hero-sky-img { position: absolute; inset: -6% -4%; background: url("../img/hero-sanctum.jpg") 58% 32% / cover no-repeat;
   background-image: image-set(url("../img/hero-sanctum.webp") type("image/webp"), url("../img/hero-sanctum.jpg") type("image/jpeg"));
-  filter: saturate(1.15) brightness(.82); transform: translate3d(0, 0, 0) scale(1.08); will-change: transform;
+  background-position: var(--sky-pos, 58% 32%);
+  filter: saturate(var(--sky-sat, 1.15)) brightness(var(--sky-bright, .82)); transform: translate3d(0, 0, 0) scale(1.08); will-change: transform;
   opacity: 0; animation: sky-in 1.6s ease-out .1s forwards; }
-@keyframes sky-in { from { opacity: 0; filter: saturate(1.15) brightness(.4) blur(6px); } to { opacity: 1; } }
+@keyframes sky-in { from { opacity: 0; filter: saturate(var(--sky-sat, 1.15)) brightness(calc(var(--sky-bright, .82) * .5)) blur(6px); } to { opacity: 1; } }
+.hero-sky[data-swirl="off"] .hero-sky-swirl, .hero-sky[data-eye="off"] .hero-sky-eye { display: none; }
 /* the swirl in the sky turns, very slowly, as if the Void is breathing */
 .hero-sky-swirl { position: absolute; left: 22%; top: -8%; width: 46%; aspect-ratio: 1; border-radius: 50%;
   background: radial-gradient(closest-side, rgba(190, 150, 255, 0.28), rgba(120, 70, 230, 0.12) 55%, transparent 72%);
@@ -27,7 +33,7 @@
 
 @media (max-width: 700px) {
   .hero-sky { height: min(980px, 120vh); }
-  .hero-sky-img { background-image: url("../img/hero-sanctum-mobile.webp"); background-position: 50% 30%; inset: -4%; }
+  .hero-sky-img { background-image: url("../img/hero-sanctum-mobile.webp"); background-position: var(--sky-pos-m, 50% 30%); inset: -4%; }
   .hero-sky-swirl { left: 5%; width: 90%; }
   .hero-sky-eye { left: 50%; width: 30%; }
 }

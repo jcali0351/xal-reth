@@ -57,7 +57,19 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
 - The homepage sky (`.hero-sky` right after <body>, `css/hero-sky.css`, `js/hero-sky.js`, `img/hero-sanctum.*`, a phone crop
   `img/hero-sanctum-mobile.webp`): a violet sanctum under a swirling sky behind the header and the animated sigil, with
   parallax on scroll, a gentle lean toward the mouse, a breathing swirl and a pulsing eye; the header is see-through at the
-  very top of the homepage and solid once you scroll. Keep it if the site is regenerated.
+  very top of the homepage and solid once you scroll. John changes the picture in the Sanctum Editor's "Homepage sky" tab,
+  which writes a `<style id="hero-sky-pics">` just before `.hero-sky` (the picture paths; they must live in the page, since
+  a url() in a CSS variable resolves from css/) and `--sky-pos`, `--sky-pos-m`, `--sky-bright`, `--sky-sat`,
+  `data-swirl="off"`, `data-eye="off"` on the `.hero-sky` tag. Uploaded skies are `img/uploads/*-sky-*`. Keep it if the site is regenerated.
+- The Coil in motion (`js/motion.js`, loaded by the loader at the top of `site.js`; styles at the end of `style.css`), on every
+  page with site.js: every heading, paragraph, list, picture, card and button fades in on its own as it scrolls into view
+  (headings written out of mist, text rising out of blur, pictures opening like an eye, cards tumbling up, list items and
+  buttons following one another; long lists and grids enter card by card). Sections float at their own depths and trail a
+  little behind fast scrolling; a fixed layer of faint sigils, runes, scales and eyes that follow the pointer and blink
+  drifts behind the page; a serpent gauge on the right edge grows as you read (wide screens only); the homepage hero
+  spreads apart and page headers sink and fade as you scroll. Reduced-motion visitors see everything at once with no
+  movement. Skip an element with `data-no-motion`. Bump the `?v=` on motion.js in site.js when it changes. Keep it if
+  the site is regenerated.
 - "For the Alliance" banner on the homepage, right after the hero (`.allegiance`, `css/alliance.css`, `js/alliance.js`):
   John's Alliance crest image recolored violet (`img/alliance-crest-purple.webp`/`.png`, transparent), floating with a glow,
   and the words "For the Alliance" playing in letter by letter when it scrolls into view. Keep it if the site is regenerated.
@@ -96,7 +108,8 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   its card and category counts in blog.html, and the older/newer links), Images (replace any image file under its own
   name, plus its .webp/.png twin), Homepage animations (the typed status lines, timing and the Unwrapping message in
   `data/hero-text.json`, read by js/xalreth.js with its built-in lines as a fallback; the "For the Alliance" banner text in
-  index.html). Uploaded pictures go to `img/uploads/`. `.github/workflows/cms-rebuild.yml` rebuilds sitemap.xml and
+  index.html), Homepage sky (choose, upload or restore the picture behind the header and sigil, its focus point on
+  computers and phones, brightness, colour strength, the glow and the eye; see the homepage sky above). Uploaded pictures go to `img/uploads/`. `.github/workflows/cms-rebuild.yml` rebuilds sitemap.xml and
   search-index.json after each "CMS:" commit. When signed in, site.js shows an "Edit this page" button bottom left.
   John's CMS edits live in the committed pages, so if the site is ever regenerated, start from the current files
   (or his edits are lost), and keep all of this.

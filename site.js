@@ -21,6 +21,10 @@
   if (!document.querySelector('script[src*="js/chat.js"]')) {
     var cs = document.createElement("script"); cs.src = base + "js/chat.js" + v; cs.defer = true; document.head.appendChild(cs);
   }
+  // The Coil in motion: scroll entrances and parallax (js/motion.js; its styles are at the end of style.css)
+  if (!document.querySelector('script[src*="js/motion.js"]')) {
+    var mo = document.createElement("script"); mo.src = base + "js/motion.js?v=20261107a"; document.head.appendChild(mo);
+  }
 })();
 
 // Sanctum Editor: when you're signed in to admin.html on this device, every page gets an "Edit this page" button.

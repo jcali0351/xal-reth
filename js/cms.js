@@ -240,7 +240,7 @@
       .then(function (list) { list.forEach(function (it) { if (it.u && it.u.indexOf("#") < 0) titles[it.u] = it.t; }); })
       .catch(function () {}).then(renderPages);
     return loadTree().then(function () {
-      renderPages(); renderImages(); renderBlog(); loadHero();
+      renderPages(); renderImages(); renderBlog(); loadHero(); loadSky();
       route();
     }).catch(function (e) { toast(e.message, true); });
   }
@@ -254,6 +254,7 @@
     if (name === "blog") renderBlog();
     if (name === "images") renderImages();
     if (name === "hero" && !(hero && hero.dirty)) loadHero();
+    if (name === "sky" && !(sky && sky.dirty)) loadSky();
   }
   function route() {
     var h = decodeURIComponent(location.hash.slice(1));
@@ -642,7 +643,7 @@
   }
   $("[data-ed-close]").addEventListener("click", function () { closeEditor(false); });
 
-  function dirtyAnywhere() { return changeCount() > 0 || (post && post.dirty) || (hero && hero.dirty); }
+  function dirtyAnywhere() { return changeCount() > 0 || (post && post.dirty) || (hero && hero.dirty) || (sky && sky.dirty); }
   window.addEventListener("beforeunload", function (e) { if (dirtyAnywhere()) { e.preventDefault(); e.returnValue = ""; } });
 
   /* ================================================================ IMAGES (replace a file in place) */
@@ -1199,6 +1200,157 @@
       busy(btn, false); hero.dirty = false; published("Homepage animations");
       loadHero();
     }).catch(function (e) { busy(btn, false); toast(e.message, true); });
+  });
+
+  /* ================================================================ HOMEPAGE SKY
+     The picture behind the header and sigil on the homepage. Its settings live on the .hero-sky element
+     in index.html (CSS custom properties read by css/hero-sky.css), so the page shows the right sky
+     straight away with nothing extra to download. Uploaded skies are kept in img/uploads/ (named …-sky-…). */
+  var sky = null;
+  // the picture(s) go in a <style> just before the sky (so paths resolve from the page); the rest sits on the sky's own tag
+  var SKY_TAG = /(?:<style id="hero-sky-pics">[\s\S]*?<\/style>\s*)?<div class="hero-sky"[^>]*>/;
+  var SKY_DEF = { img: null, imgM: null, pos: [58, 32], posM: [50, 30], bright: 0.82, sat: 1.15, swirl: true, eye: true };
+  var SKY_ORIG = "img/hero-sanctum.webp", SKY_ORIG_M = "img/hero-sanctum-mobile.webp";
+  function parseSky(html) {
+    var m = html.match(SKY_TAG); if (!m) return null;
+    var pics = (m[0].match(/<style id="hero-sky-pics">([\s\S]*?)<\/style>/) || [, ""])[1];
+    var urls = []; pics.replace(/url\(\s*['"]?([^'")]+)['"]?\s*\)/g, function (a, p) { urls.push(p); });
+    var tag = m[0].match(/<div class="hero-sky"[^>]*>/)[0], st = (tag.match(/style="([^"]*)"/) || [, ""])[1];
+    var v = function (n) { var x = st.match(new RegExp("--" + n + ":\\s*([^;]+)")); return x ? x[1].trim() : null; };
+    var pos = function (s, d) { var x = (s || "").match(/(-?[\d.]+)%\s+(-?[\d.]+)%/); return x ? [+x[1], +x[2]] : d.slice(); };
+    var num = function (s, d) { return s != null && !isNaN(+s) ? +s : d; };
+    if (/^\s*@media/.test(pics)) urls.unshift(null);    // a phone-only picture: computers keep the original
+    return { img: urls[0] || null, imgM: urls[1] && urls[1] !== urls[0] ? urls[1] : null, pos: pos(v("sky-pos"), SKY_DEF.pos), posM: pos(v("sky-pos-m"), SKY_DEF.posM),
+      bright: num(v("sky-bright"), SKY_DEF.bright), sat: num(v("sky-sat"), SKY_DEF.sat),
+      swirl: !/data-swirl="off"/.test(tag), eye: !/data-eye="off"/.test(tag) };
+  }
+  function skyTag(s) {
+    var st = [], same = function (a, b) { return a[0] === b[0] && a[1] === b[1]; }, pics = "";
+    var bg = function (p) { return ".hero-sky .hero-sky-img{background-image:url('" + p + "')}"; };
+    if (s.img || s.imgM) {
+      pics = (s.img ? bg(s.img) : "") + "@media (max-width:700px){" + bg(s.imgM || s.img) + "}";
+      pics = '<style id="hero-sky-pics">' + pics + "</style>\n";
+    }
+    if (s.img || !same(s.pos, SKY_DEF.pos)) st.push("--sky-pos:" + s.pos[0] + "% " + s.pos[1] + "%");
+    if (s.img || s.imgM || !same(s.posM, SKY_DEF.posM)) st.push("--sky-pos-m:" + s.posM[0] + "% " + s.posM[1] + "%");
+    if (s.bright !== SKY_DEF.bright) st.push("--sky-bright:" + s.bright);
+    if (s.sat !== SKY_DEF.sat) st.push("--sky-sat:" + s.sat);
+    return pics + '<div class="hero-sky" aria-hidden="true"' + (st.length ? ' style="' + st.join(";") + '"' : "") +
+      (s.swirl ? "" : ' data-swirl="off"') + (s.eye ? "" : ' data-eye="off"') + ">";
+  }
+  function skySrc(path) {
+    if (sky.pending[path]) return sky.pending[path].url;
+    var it = tree.get(path); return SITE + path + (it ? "?v=" + it.sha.slice(0, 7) : "");
+  }
+  function loadSky() {
+    return readText("index.html").then(function (r) {
+      var s = parseSky(r.text);
+      if (!s) { $("#sky-gallery").innerHTML = '<p class="cms-hint">The homepage has no sky section (.hero-sky) to change.</p>'; return; }
+      var keep = sky ? sky.pending : {};
+      sky = { saved: s, sel: JSON.parse(JSON.stringify(s)), pending: keep, dirty: false };
+      renderSky();
+    }).catch(function (e) { toast(e.message, true); });
+  }
+  function skyList() {
+    var list = [null];   // null = the original sanctum
+    Array.from(tree.keys()).concat(Object.keys(sky.pending)).forEach(function (p) {
+      if (/^img\/uploads\/.*sky.*\.(webp|jpe?g|png|avif)$/i.test(p) && !/sky-phone/i.test(p) && list.indexOf(p) < 0) list.push(p);
+    });
+    if (sky.sel.img && list.indexOf(sky.sel.img) < 0) list.push(sky.sel.img);
+    if (sky.saved.img && list.indexOf(sky.saved.img) < 0) list.push(sky.saved.img);
+    return [null].concat(list.slice(1).sort().reverse());   // newest uploads first
+  }
+  function renderSky() {
+    var s = sky.sel;
+    $("#sky-gallery").innerHTML = skyList().map(function (p) {
+      var on = (p || null) === (s.img || null), live = (p || null) === (sky.saved.img || null);
+      var name = p ? p.replace(/^img\/uploads\//, "").replace(/\.[^.]+$/, "") : "The original sanctum";
+      return '<button type="button" class="sky-pick' + (on ? " on" : "") + '" data-sky="' + esc(p || "") + '" aria-pressed="' + on + '">' +
+        '<img src="' + esc(skySrc(p || SKY_ORIG)) + '" alt="" loading="lazy"><span>' + esc(name) + (live ? ' <b>live now</b>' : "") + (sky.pending[p] ? ' <b>not saved yet</b>' : "") + "</span></button>";
+    }).join("");
+    $("#sky-bright").value = s.bright; $("#sky-sat").value = s.sat;
+    $("#sky-swirl").checked = s.swirl; $("#sky-eye").checked = s.eye;
+    $("#sky-m-clear").hidden = !s.imgM;
+    $("#sky-phone-note").textContent = s.imgM ? "Phones show their own picture (" + s.imgM.replace(/^img\/uploads\//, "") + ")." :
+      s.img ? "Phones show the same picture, cropped tall. Tap the phone preview to choose which part stays in view." :
+      "Phones show the original sanctum's own tall crop.";
+    skyPreview();
+  }
+  function skyPreview() {
+    var s = sky.sel;
+    var paint = function (frame, src, pos) {
+      frame.style.backgroundImage = "url('" + src + "')";
+      frame.style.backgroundPosition = pos[0] + "% " + pos[1] + "%";
+      frame.style.filter = "saturate(" + s.sat + ") brightness(" + s.bright + ")";
+      var dot = frame.querySelector(".sky-dot"); dot.style.left = pos[0] + "%"; dot.style.top = pos[1] + "%";
+    };
+    paint($("#sky-pv-wide"), skySrc(s.img || SKY_ORIG), s.pos);
+    paint($("#sky-pv-phone"), skySrc(s.imgM || s.img || SKY_ORIG_M), s.posM);
+    $("#sky-bright-out").textContent = Math.round(s.bright * 100) + "%";
+    $("#sky-sat-out").textContent = Math.round(s.sat * 100) + "%";
+    $("#sky-save").disabled = !sky.dirty;
+  }
+  function skyChanged() { sky.dirty = true; renderSky(); }
+  $("#sky-gallery").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-sky]"); if (!b || !sky) return;
+    var p = b.dataset.sky || null;
+    sky.sel.img = p;
+    if (!p) { sky.sel.imgM = null; sky.sel.pos = SKY_DEF.pos.slice(); sky.sel.posM = SKY_DEF.posM.slice(); sky.sel.eye = true; }
+    else if (p !== sky.saved.img) { sky.sel.pos = [50, 40]; sky.sel.posM = [50, 35]; sky.sel.eye = false; } // the spire glow only fits the original
+    skyChanged();
+  });
+  [["#sky-pv-wide", "pos"], ["#sky-pv-phone", "posM"]].forEach(function (f) {
+    $(f[0]).addEventListener("click", function (e) {
+      if (!sky) return;
+      var r = this.getBoundingClientRect();
+      sky.sel[f[1]] = [Math.round((e.clientX - r.left) / r.width * 100), Math.round((e.clientY - r.top) / r.height * 100)];
+      skyChanged();
+    });
+  });
+  $("#sky-form").addEventListener("input", function () {
+    if (!sky) return;
+    sky.sel.bright = +$("#sky-bright").value; sky.sel.sat = +$("#sky-sat").value;
+    sky.sel.swirl = $("#sky-swirl").checked; sky.sel.eye = $("#sky-eye").checked;
+    sky.dirty = true; skyPreview();
+  });
+  function skyUpload(input, phone) {
+    var file = input.files && input.files[0]; input.value = "";
+    if (!file || !sky) return;
+    toast("Preparing the picture…");
+    prepImage(file, "image/webp", phone ? 1600 : 2560).then(function (pp) {
+      var path = uploadPath((phone ? "sky-phone-" : "sky-") + file.name, pp.ext);
+      sky.pending[path] = { blob: pp.blob, url: URL.createObjectURL(pp.blob) };
+      if (phone) { sky.sel.imgM = path; sky.sel.posM = [50, 40]; }
+      else { sky.sel.img = path; sky.sel.pos = [50, 40]; sky.sel.eye = false; if (pp.width && pp.width < 1600) toast("This picture is only " + pp.width + " pixels wide, so it may look soft on big screens."); }
+      skyChanged();
+      if (!pp.width || pp.width >= 1600) toast("Looks good. Press Save & publish to put it live.");
+    }).catch(function (e) { toast(e.message, true); });
+  }
+  $("#sky-file").addEventListener("change", function () { skyUpload(this, false); });
+  $("#sky-file-m").addEventListener("change", function () { skyUpload(this, true); });
+  $("#sky-m-clear").addEventListener("click", function () { if (sky) { sky.sel.imgM = null; skyChanged(); } });
+  $("#sky-restore").addEventListener("click", function () {
+    if (!sky) return;
+    sky.sel = JSON.parse(JSON.stringify(SKY_DEF)); skyChanged();
+    toast("The original sky is chosen. Press Save & publish to put it back.");
+  });
+  $("#sky-save").addEventListener("click", function () {
+    var btn = this, s = sky.sel;
+    var uploads = [s.img, s.imgM].filter(function (p) { return p && sky.pending[p]; });
+    busy(btn, true);
+    Promise.all(uploads.map(function (p) { return blobToB64(sky.pending[p].blob).then(function (b) { return { path: p, base64: b }; }); }))
+      .then(function (changes) {
+        // only the sky's own tag changes, so it's applied to the newest index.html
+        return loadTree().then(function () { return readText("index.html"); }).then(function (fresh) {
+          if (!SKY_TAG.test(fresh.text)) throw new Error("The homepage has no sky section (.hero-sky) to change.");
+          changes.push({ path: "index.html", text: fresh.text.replace(SKY_TAG, skyTag(s)), base: fresh.sha });
+          return commit(changes, "CMS: Homepage sky" + (s.img ? " (" + s.img.replace(/^img\/uploads\//, "") + ")" : " (the original sanctum)"));
+        });
+      }).then(function () {
+        uploads.forEach(function (p) { URL.revokeObjectURL(sky.pending[p].url); delete sky.pending[p]; });
+        busy(btn, false); sky.dirty = false; published("The homepage sky");
+        loadSky();
+      }).catch(function (e) { busy(btn, false); toast(e.message, true); });
   });
 
   /* ================================================================ go */

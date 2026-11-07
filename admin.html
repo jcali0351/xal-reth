@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=71b85f6e">
+<link rel="stylesheet" href="style.css?v=5d18d384">
 <link rel="stylesheet" href="css/cms.css">
 </head>
 <body class="cms">
@@ -57,6 +57,7 @@
     <button role="tab" data-tab="blog" aria-selected="false">Blog</button>
     <button role="tab" data-tab="images" aria-selected="false">Images</button>
     <button role="tab" data-tab="hero" aria-selected="false">Homepage animations</button>
+    <button role="tab" data-tab="sky" aria-selected="false">Homepage sky</button>
   </nav>
 
   <section class="cms-panel" data-panel="pages">
@@ -108,6 +109,41 @@
         <label class="cms-field"><span>Line underneath</span><input id="hero-cry-sub"></label>
       </fieldset>
       <p class="cms-hint">Everything else on the homepage (headings, buttons, the welcome text) is edited on the page itself: <button type="button" class="cms-link" data-edit-page="index.html">open the homepage editor</button>.</p>
+    </form>
+  </section>
+
+  <section class="cms-panel" data-panel="sky" hidden>
+    <div class="cms-panel-head">
+      <div><h2>Homepage sky</h2><p class="cms-hint">The big picture behind the header and the sigil at the top of the homepage. Pick one, or upload a new one, then press Save. Every sky you upload stays here, so you can switch back any time.</p></div>
+      <button class="cms-btn" type="button" id="sky-save" disabled>Save &amp; publish</button>
+    </div>
+    <div class="sky-previews">
+      <figure class="sky-pv wide"><div class="sky-frame" id="sky-pv-wide" title="Tap to choose the part of the picture that stays in view"><span class="sky-sigil" aria-hidden="true"></span><i class="sky-dot" aria-hidden="true"></i></div><figcaption>Computer · tap the picture to choose what stays in view</figcaption></figure>
+      <figure class="sky-pv phone"><div class="sky-frame" id="sky-pv-phone" title="Tap to choose the part of the picture that stays in view on phones"><span class="sky-sigil" aria-hidden="true"></span><i class="sky-dot" aria-hidden="true"></i></div><figcaption>Phone</figcaption></figure>
+    </div>
+    <span class="cms-label">Choose a sky</span>
+    <div id="sky-gallery" class="sky-gallery"><p class="cms-hint">Loading…</p></div>
+    <div class="sky-actions">
+      <label class="cms-btn small file-btn">Upload a new sky…<input type="file" id="sky-file" accept="image/*"></label>
+      <span class="cms-hint">Wide pictures work best (at least 1920 pixels across). They're resized and saved in img/uploads/.</span>
+    </div>
+    <form id="sky-form" class="hero-form" autocomplete="off">
+      <fieldset class="cms-fieldset">
+        <legend>Look</legend>
+        <label class="cms-field inline"><span>Brightness</span><input type="range" min="0.3" max="1.3" step="0.01" id="sky-bright"><output id="sky-bright-out"></output></label>
+        <label class="cms-field inline"><span>Colour strength</span><input type="range" min="0" max="2" step="0.05" id="sky-sat"><output id="sky-sat-out"></output></label>
+        <label class="cms-check"><input type="checkbox" id="sky-swirl"> Breathing violet glow at the top of the sky</label>
+        <label class="cms-check"><input type="checkbox" id="sky-eye"> Pulsing light in the middle (made for the original sanctum's spire)</label>
+      </fieldset>
+      <fieldset class="cms-fieldset">
+        <legend>Phones</legend>
+        <p class="cms-hint" id="sky-phone-note"></p>
+        <div class="sky-actions">
+          <label class="cms-btn ghost small file-btn">Use a different picture on phones…<input type="file" id="sky-file-m" accept="image/*"></label>
+          <button class="cms-btn ghost small" type="button" id="sky-m-clear" hidden>Use the same picture as computers</button>
+        </div>
+      </fieldset>
+      <p class="cms-hint"><button type="button" class="cms-link" id="sky-restore">Put back the original sanctum sky</button> · <a class="cms-link" href="index.html" target="_blank" rel="noopener">View the homepage</a></p>
     </form>
   </section>
 </main>

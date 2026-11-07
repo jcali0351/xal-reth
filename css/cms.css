@@ -153,3 +153,28 @@ body.cms { min-height: 100vh; overflow-x: hidden; background: radial-gradient(el
 .hero-preview .xr-phase { color: var(--venom); letter-spacing: 0.22em; text-shadow: 0 0 10px rgba(166,107,255,.8); }
 .hero-preview .xr-caret { display: inline-block; width: .55em; height: 1em; margin-left: 2px; vertical-align: -.12em; background: rgba(224,196,255,.8); animation: cms-caret 1s steps(1) infinite; }
 @keyframes cms-caret { 50% { opacity: 0; } }
+
+/* Homepage sky */
+.sky-previews { display: flex; gap: 14px; align-items: flex-end; margin-bottom: 18px; }
+.sky-pv { margin: 0; color: var(--bone-dim); font-size: .9rem; }
+.sky-pv.wide { flex: 1; min-width: 0; }
+.sky-pv.phone { width: 150px; flex: none; }
+.sky-frame { position: relative; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: #08050f center / cover no-repeat; cursor: crosshair; margin-bottom: 6px; }
+.sky-pv.wide .sky-frame { aspect-ratio: 16 / 9; }
+.sky-pv.phone .sky-frame { aspect-ratio: 9 / 18; }
+.sky-frame::after { content: ""; position: absolute; inset: 0; pointer-events: none;   /* the same veil the homepage lays over the sky */
+  background: radial-gradient(60% 45% at 50% 52%, rgba(8,5,15,.55), transparent 75%), linear-gradient(180deg, rgba(8,5,15,.35) 0%, rgba(8,5,15,.05) 30%, rgba(8,5,15,.25) 60%, rgba(8,5,15,.9) 100%); }
+.sky-sigil { position: absolute; left: 50%; top: 46%; width: 28%; aspect-ratio: 1; translate: -50% -50%; z-index: 1; pointer-events: none;
+  background: url("../img/xalreth-logo.webp") center / contain no-repeat; opacity: .85; filter: drop-shadow(0 0 10px rgba(138,77,255,.6)); }
+.sky-pv.phone .sky-sigil { width: 70%; top: 30%; }
+.sky-dot { position: absolute; z-index: 2; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 2px #8a4dff, 0 0 12px #b98cff; pointer-events: none; }
+.sky-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; margin: 6px 0 14px; }
+.sky-pick { background: rgba(17,10,29,.75); border: 1px solid var(--line); border-radius: 10px; padding: 6px; cursor: pointer; text-align: left; color: var(--bone-dim); font-size: .85rem; }
+.sky-pick:hover { border-color: var(--violet-hot); }
+.sky-pick.on { border-color: var(--violet-hot); box-shadow: 0 0 0 2px var(--violet), 0 0 20px rgba(138,77,255,.45); color: var(--bone); }
+.sky-pick img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; margin-bottom: 6px; }
+.sky-pick span { display: block; overflow-wrap: anywhere; }
+.sky-pick b { display: inline-block; margin-left: 4px; padding: 1px 6px; border-radius: 999px; background: #2a1450; color: var(--venom); font: 600 .58rem var(--serif-display); letter-spacing: .12em; text-transform: uppercase; }
+.sky-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 18px; }
+.sky-actions .cms-hint { margin: 0; }
+@media (max-width: 600px) { .sky-pv.phone { width: 96px; } }

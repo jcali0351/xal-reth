@@ -1203,3 +1203,71 @@ a.card:hover, .card.addon:hover { border-color: rgba(201,162,255,.6); box-shadow
   .site-nav, .site-nav *, .site-nav *::before, .site-nav *::after { transition-duration: .01s !important; transition-delay: 0s !important; animation: none !important; }
   .site-nav ul.sub, .site-nav ul.sub li, .site-nav > ul > li { transform: none !important; filter: none !important; }
 }
+
+/* ==========================================================
+   SCROLL ENTRANCES + PARALLAX (js/motion.js, loaded by site.js)
+   Only active once motion.js adds .rv-on to <html>, so without it (or with reduced motion) everything just shows.
+   ========================================================== */
+.rv-on .rv {
+  --rv-ease: cubic-bezier(.16, .84, .22, 1);
+  transition: opacity 1.05s cubic-bezier(.2, .65, .2, 1) var(--rv-d, 0s), transform 1.25s var(--rv-ease) var(--rv-d, 0s),
+              filter 1.15s ease var(--rv-d, 0s), clip-path 1.35s cubic-bezier(.65, 0, .2, 1) var(--rv-d, 0s);
+}
+.rv-on .rv:not(.rv-in) { opacity: 0; }
+/* text rises out of a blur */
+.rv-on .rv-rise:not(.rv-in) { transform: translateY(36px); filter: blur(10px); }
+/* headings are written out of violet mist, left to right */
+.rv-on .rv-mist { transform-origin: 50% 70%; }
+/* (hidden clips always leave a sliver: the scroll watcher counts an element's own clip, and a zero-size one is never "seen") */
+.rv-on .rv-mist:not(.rv-in) { transform: translateY(22px) scale(1.1); filter: blur(16px) drop-shadow(0 0 26px #a66bff); clip-path: inset(-30% 94% -30% -8%); }
+.rv-on .rv-mist.rv-in { clip-path: inset(-30% -8% -30% -8%); }
+/* pictures open like an eye, washed in light, then settle */
+.rv-on .rv-eye:not(.rv-in) { transform: scale(1.12); filter: brightness(2.2) saturate(.2) hue-rotate(40deg); clip-path: ellipse(50% 4% at 50% 50%); }
+.rv-on .rv-eye.rv-in { clip-path: ellipse(80% 80% at 50% 50%); }
+/* quotes are breathed in from the left */
+.rv-on .rv-breath { transform-origin: 0 50%; }
+.rv-on .rv-breath:not(.rv-in) { transform: translateX(-46px) scale(.95); filter: blur(8px); }
+/* cards tumble up out of the floor, each at its own small tilt */
+.rv-on .rv-tumble { transform-origin: 50% 100%; }
+.rv-on .rv-tumble:not(.rv-in) { transform: perspective(1100px) translateY(80px) rotateX(26deg) rotate(var(--rv-tilt, 0deg)) scale(.94); filter: blur(5px) brightness(1.7); }
+/* dividers unseal from the middle outward */
+.rv-on .rv-veil:not(.rv-in) { clip-path: inset(0 46% 0 46%); filter: brightness(2.4); }
+.rv-on .rv-veil.rv-in { clip-path: inset(0 0 0 0); }
+/* lists, button rows and steps: the items follow one after another with a little spring */
+.rv-on .rv-chain { transition-duration: .5s; }
+.rv-on .rv-chain > .rv-kid {
+  transition: opacity .75s ease calc(var(--rv-d, 0s) + var(--rv-k, 0s)), transform .95s cubic-bezier(.34, 1.56, .64, 1) calc(var(--rv-d, 0s) + var(--rv-k, 0s)),
+              filter .8s ease calc(var(--rv-d, 0s) + var(--rv-k, 0s));
+}
+.rv-on .rv-chain:not(.rv-in) > .rv-kid { opacity: 0; transform: translateY(22px) scale(.82); filter: blur(6px); }
+@media print { .rv-on .rv, .rv-on .rv-kid { opacity: 1 !important; transform: none !important; filter: none !important; clip-path: none !important; } }
+
+/* THE DEEP: faint sigils, scales, runes and eyes drifting behind the page at their own depths */
+.coil-deep { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; contain: strict; }
+.coil-glyph { position: absolute; top: 0; display: block; opacity: var(--g-o, .15); color: #a66bff; will-change: transform;
+  filter: drop-shadow(0 0 6px rgba(166, 107, 255, .7)); }
+.coil-glyph.g-warm { color: #e0c4ff; }
+.coil-glyph svg { display: block; width: 100%; height: auto; overflow: visible; animation: g-float 11s ease-in-out infinite; }
+@keyframes g-float { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 33% { transform: translate(8px, -14px) rotate(4deg); } 66% { transform: translate(-6px, 10px) rotate(-3deg); } }
+.coil-glyph .g-l { fill: none; stroke: currentColor; stroke-width: 1.6; }
+.coil-glyph .g-thin { stroke-width: .8; }
+.coil-glyph .g-dash { stroke-dasharray: 3 7; }
+.coil-glyph .g-rune { font: 600 64px Cinzel, Georgia, serif; fill: currentColor; }
+.coil-glyph.g-eye { opacity: calc(var(--g-o, .15) * 1.6); }
+.coil-glyph .g-iris { fill: rgba(166, 107, 255, .35); stroke: currentColor; stroke-width: 1.2; }
+.coil-glyph .g-slit { fill: #08050f; }
+.coil-glyph .g-pupil { transform-box: fill-box; transform-origin: 50% 50%; }
+.coil-glyph .g-lid { fill: #0d0818; stroke: currentColor; stroke-width: 1.6; transform-box: fill-box; transform-origin: 50% 50%; transform: scaleY(0);
+  animation: g-blink 7s ease-in-out infinite; }
+@keyframes g-blink { 0%, 91%, 100% { transform: scaleY(0); } 94% { transform: scaleY(1); } 97% { transform: scaleY(.1); } }
+@media (max-width: 700px) { .coil-glyph { scale: .6; } }
+
+/* THE COIL GAUGE: a serpent along the right edge that grows as you read down */
+.coil-gauge { position: fixed; right: 18px; top: 15vh; width: 26px; height: 70vh; z-index: 5; pointer-events: none; opacity: 0; transition: opacity .8s ease; }
+.coil-gauge.on { opacity: 1; }
+.coil-gauge svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.coil-gauge .cg-track { fill: none; stroke: rgba(185, 140, 255, .16); stroke-width: 1.4; vector-effect: non-scaling-stroke; }
+.coil-gauge .cg-body { fill: none; stroke: #b98cff; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 5px #8a4dff) drop-shadow(0 0 12px rgba(138, 77, 255, .6)); }
+.coil-gauge .cg-head { position: absolute; left: 6px; top: -7px; width: 14px; height: 16px; background: linear-gradient(180deg, #f4eaff, #a66bff);
+  clip-path: polygon(50% 100%, 0 20%, 50% 0, 100% 20%); filter: drop-shadow(0 0 6px #b98cff); }
