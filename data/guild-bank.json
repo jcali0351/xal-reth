@@ -2,10 +2,10 @@
   "guild": "Cult of Xal Reth",
   "realm": "Moon Guard",
   "region": "US",
-  "scannedAt": 1794036487,
+  "scannedAt": 1794067535,
   "scannedBy": "Khaedara",
-  "gold": 9068632631,
-  "updatedAt": "2026-11-07T07:42:25.515Z",
+  "gold": 9478698039,
+  "updatedAt": "2026-11-07T16:06:18.742Z",
   "tabs": [
     {"index":1,"name":"Tab 1","viewable":true,"slots":[{"slot":1,"id":5787,"name":"Pattern: Murloc Scale Breastplate","count":1,"quality":1},{"slot":8,"id":2408,"name":"Pattern: Fine Leather Gloves","count":1,"quality":2},{"slot":9,"id":2555,"name":"Recipe: Swiftness Potion","count":1,"quality":2},{"slot":15,"id":2140,"name":"Carving Knife","count":1,"quality":2},{"slot":16,"id":1951,"name":"Blackwater Cutlass","count":1,"quality":3},{"slot":21,"id":258921,"name":"Tarnished Dawnlit Corsair's Boots","count":1,"quality":2},{"slot":22,"id":4564,"name":"Spiked Club","count":1,"quality":2},{"slot":28,"id":240947,"name":"Gleaming Copper Band","count":1,"quality":3},{"slot":29,"id":2589,"name":"Linen Cloth","count":50,"quality":1},{"slot":36,"id":774,"name":"Malachite","count":2,"quality":2},{"slot":37,"id":237364,"name":"Brilliant Silver Ore |A:Professions-ChatIcon-Quality-12-Tier1:17:15::1|a","count":2,"quality":2},{"slot":43,"id":238370,"name":"Shimmer Spinefish","count":30,"quality":2},{"slot":50,"id":2672,"name":"Stringy Wolf Meat","count":18,"quality":1},{"slot":51,"id":242639,"name":"Practically Pork","count":7,"quality":1}]},
     {"index":2,"name":"Tab 2","viewable":true,"slots":[{"slot":1,"id":48124,"name":"Razormaw Hatchling","count":1,"quality":2}]},
@@ -16,9 +16,11 @@
     {"t":1794034722,"gold":9068632631},
     {"t":1794034814,"gold":9068632631},
     {"t":1794036075,"gold":9078632631},
-    {"t":1794036487,"gold":9068632631}
+    {"t":1794036487,"gold":9068632631},
+    {"t":1794067535,"gold":9478698039}
   ],
   "ledger": [
+    {"log":"money","type":"deposit","name":"Khaedara","t":1794038735,"amount":9000000000},
     {"log":"money","type":"withdraw","name":"Khaedara","t":1794036487,"amount":10000000},
     {"log":"item","type":"deposit","name":"Khaedara","t":1794036487,"id":258921,"item":"Tarnished Dawnlit Corsair's Boots","quality":2,"count":1,"tab":1},
     {"log":"item","type":"deposit","name":"Khaedara","t":1794036487,"id":240947,"item":"Gleaming Copper Band","quality":3,"count":1,"tab":1},
