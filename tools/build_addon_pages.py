@@ -326,7 +326,7 @@ def shell(a, main_html, ld):
     t = t.replace('<link rel="sitemap"', "".join(f'<script type="application/ld+json">{json.dumps(x)}</script>\n' for x in ld) + '<link rel="sitemap"', 1)
     t = re.sub(r"<main>.*?</main>", lambda m: "<main>\n" + main_html + "\n</main>", t, count=1, flags=re.S)
     if a.get("css"):  # an addon page with its own look (e.g. Vyrenna RP in green and gold)
-        t = t.replace('<link rel="stylesheet" href="style.css">', f'<link rel="stylesheet" href="style.css">\n<link rel="stylesheet" href="{a["css"]}">', 1)
+        t = re.sub(r'(<link rel="stylesheet" href="style\.css(?:\?v=[^"]*)?">)', lambda m: m.group(1) + f'\n<link rel="stylesheet" href="{a["css"]}">', t, count=1)
         t = t.replace("<body>", f'<body class="{a["theme"]}">', 1)
     return t
 

@@ -83,7 +83,7 @@ def write_page(books, total_ch, total_v):
     t = re.sub(r'(<link rel="canonical" href=")[^"]*(")', lambda m: m.group(1) + url + m.group(2), t, count=1)
     t = re.sub(r'(<meta property="og:url" content=")[^"]*(")', lambda m: m.group(1) + url + m.group(2), t, count=1)
     t = re.sub(r'<link rel="stylesheet" href="css/[^"]*triangle[^"]*">\n?', "", t)
-    t = t.replace('<link rel="stylesheet" href="style.css">', '<link rel="stylesheet" href="style.css">\n<link rel="stylesheet" href="css/teachings-triangle.css">', 1)
+    t = re.sub(r'(<link rel="stylesheet" href="style\.css(?:\?v=[^"]*)?">)', lambda m: m.group(1) + '\n<link rel="stylesheet" href="css/teachings-triangle.css">', t, count=1)
     t = re.sub(r'<script src="(?:js/)?triangle[^"]*"></script>\n?', "", t)
     ld = ('<script type="application/ld+json">{"@context":"https://schema.org","@type":"Book","name":"The Teachings of the Sacred Triangle",'
           '"author":{"@type":"Organization","name":"The Cult of Xal\'Reth"},"url":"' + url + '","numberOfPages":' + str(total_ch) +

@@ -101,6 +101,9 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   John's CMS edits live in the committed pages, so if the site is ever regenerated, start from the current files
   (or his edits are lost), and keep all of this.
 
+- Every page links `style.css?v=…` and `site.js?v=…` so visitors get changes at once instead of a cached copy. After
+  changing style.css or site.js, run `python3 tools/stamp_assets.py` (it stamps every page with each file's content hash).
+
 ## Hourly Coil Herald post (scheduled task)
 1. `git pull --ff-only origin main`
 2. Read `news.json` (the top 30 or so items) so you don't repeat a recent title, topic or angle.
