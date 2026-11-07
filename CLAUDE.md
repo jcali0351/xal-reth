@@ -116,9 +116,14 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   The same sync saves the guild crest (the tabard): `data/guild-crest.json` (faction, background colour, emblem and border
   ids and colours) and the guild's emblem and border pictures in `img/crest/`; and the guild's achievements in
   `data/guild-achievements.json` (points, completed with dates, descriptions and icons, and progress). Never hand-edit them.
-  `js/crest.js` draws the crest into any `<div class="crest" data-crest>` the armory way (faction ring, banner in the
-  background colour, tinted border and emblem, gloss, hooks; the fixed parts are Blizzard's, in `img/crest/kit/`); it stays
-  hidden until the crest data exists. Used on the Ranks and Achievements pages.
+  The guild crest shown on the site is `img/crest/xalreth-crest.svg`, a sharp flat redraw of the tabard (dark banner on a
+  gold rod, magenta beaded trim, the Coil: a magenta serpent ringed round, two heads with fangs meeting at the top).
+  `js/crest.js` puts it into any `<div class="crest" data-crest>` (Ranks and Achievements heroes).
+  The guild frame (`class="crowned"` on a section, with `<div class="gframe" aria-hidden="true"><span class="gf-crest"></span></div>`
+  as its first child; styles "THE GUILD FRAME" in style.css): the gold filigree bar cut from the game's guild window
+  (`img/crest/frame-center.png`, `-center-sm`, `-cap-l`, `-cap-r`, `-bar`; it stretches to any width) with the crest
+  hanging at its centre. It crowns the Guild Bank's chart, vault and Ledger, The Deeds, the Ranks' powers table, the
+  roster stats, and the homepage's Altar invitation and Sacred Triangle. Keep these if the site is regenerated.
 - The Deeds of the Coil (`achievements.html`, `css/achievements.css`, `js/achievements.js`; Community submenu as "Guild
   Achievements", linked from the Guild Roster header): the crest, the guild's achievement points in a gold shield, stats,
   the completed deeds newest first (Blizzard icon in a gold frame, description, reward, date, points; category filters,
