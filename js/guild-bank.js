@@ -167,7 +167,16 @@
     e.preventDefault(); tab = e.key === "Home" ? 0 : e.key === "End" ? n - 1 : (tab + (e.key === "ArrowRight" ? 1 : -1) + n) % n;
     tabs(); grid(); $("#gb-tab-" + tab).focus();
   });
-  function info(s) { var c = items[s.id] || {}; return { name: s.name || c.name || "Unknown item", quality: s.quality != null ? s.quality : (c.quality != null ? c.quality : 1), icon: c.icon || null }; }
+  // Item names from the game can carry chat markup: a crafting-quality star (|A:Professions-ChatIcon-Quality-12-Tier1:…|a),
+  // textures (|T…|t), colours (|cffxxxxxx … |r) and links (|H…|h…|h). Show the plain name, with "(Tier 1)" for the star.
+  function plain(n) {
+    if (!n) return n;
+    var tier = /Quality-(?:\d+-)?Tier(\d)/.exec(n);
+    n = n.replace(/\|A:[^|]*\|a/g, "").replace(/\|T[^|]*\|t/g, "").replace(/\|c[0-9a-fA-F]{8}/g, "").replace(/\|r/g, "")
+      .replace(/\|H[^|]*\|h/g, "").replace(/\|h/g, "").replace(/\s+/g, " ").trim();
+    return tier ? n + " (Tier " + tier[1] + ")" : n;
+  }
+  function info(s) { var c = items[s.id] || {}; return { name: plain(s.name || c.name) || "Unknown item", quality:s.quality != null ? s.quality : (c.quality != null ? c.quality : 1), icon: c.icon || null }; }
   function match(s) { return !query || info(s).name.toLowerCase().indexOf(query) >= 0; }
   function grid() {
     var box = $("[data-grid]"), t = (bank.tabs || [])[tab];
@@ -239,7 +248,7 @@
         icon = c.icon ? '<img src="' + esc(c.icon) + '" alt="" loading="lazy" width="36" height="36" class="q' + q + '">' : '<span class="gb-noicon sm q' + q + '" aria-hidden="true">' + esc((e.item || "?").charAt(0)) + "</span>";
         var where = e.type === "move" ? " from " + tabName(e.fromTab) + " to " + tabName(e.toTab) : e.tab ? (give ? " into " : " from ") + tabName(e.tab) : "";
         what = '<span class="who">' + esc(e.name || "Someone") + "</span> " + esc(VERB[e.type] || e.type) + " " + (e.count > 1 ? e.count + " × " : "") +
-          '<span class="it q' + q + '">' + esc(e.item || c.name || "an item") + "</span>" + '<span class="where">' + esc(where) + "</span>";
+          '<span class="it q' + q + '">' + esc(plain(e.item || c.name) || "an item") + "</span>" + '<span class="where">' + esc(where) + "</span>";
       }
       html += '<li class="gb-entry ' + cls + '" style="--i:' + Math.min(i, 12) + '">' + icon + '<p>' + what + '</p><time datetime="' + new Date(e.t * 1000).toISOString() + '">' + esc(ago(e.t)) + "</time></li>";
     });
