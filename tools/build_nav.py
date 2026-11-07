@@ -21,7 +21,7 @@ MENU = [
                                     ("Testimonials", "testimonials.html"), ("Merch", "merch.html"), ("Guild Bank", "guild-bank.html"), ("Auction House", "auction-house.html"),
                                     ("Fishing Leaderboard", "fishing.html"),
                                     ("Guild Ranks", "ranks.html"), ("Guild Achievements", "achievements.html")]),
-    ("Faith", "sub-faith", [("Devotion", "devotion.html"), ("The Altar", "altar.html")]),
+    ("Faith", "sub-faith", [("Devotion", "devotion.html"), ("The Altar", "altar.html"), ("The Path", "path.html"), ("The Atlas", "map.html")]),
     ("Addons", "addons.html"),
     ("Guild Roster", "guild-roster.html"),
     ("Join", "join.html"),

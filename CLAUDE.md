@@ -18,7 +18,7 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   (new_post.py runs it); don't hand-edit it. `sitemap.css` styles it for people (CSS, not XSLT: Chrome drops XSLT in Nov 2026).
 - The main menu is written into every page by `tools/build_nav.py` (edit MENU there, then run it):
   Home · About (The Sacred Triangle, The Chronicle, The Canon, The Legends, The Library) · Community (Recruitment, News, Blog, Testimonials, Merch, Guild Bank, Auction House, Fishing Leaderboard, Guild Ranks, Guild Achievements) ·
-  Faith (Devotion, The Altar) · Addons · Guild Roster · Join · Sitemap · Contact. Submenus open on hover on wide screens and on click or tap
+  Faith (Devotion, The Altar, The Path, The Atlas) · Addons · Guild Roster · Join · Sitemap · Contact. Submenus open on hover on wide screens and on click or tap
   everywhere (script in site.js, styles at the end of style.css); the one holding the current page is highlighted.
   The full menu shows above 860px; at 860px and below it folds into the Menu button.
   The menu glows and moves ("THE GLOWING MENU" at the end of style.css, "Menu FX" at the end of site.js): a soft light glides
@@ -152,6 +152,26 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   category/icons kept between runs and filled a few thousand per run, status.json): one commit replaced every hour so the
   repository never grows. The page reads it from raw.githubusercontent.com. Never commit auction data to main, and never
   hand-edit the ah-data branch. Until the first run it says the Ministry is counting. Keep it if the site is regenerated.
+- The Path of the Coil, the living layer (`js/coil-path.js` + `css/coil-path.css`, loaded on every page by the loader at
+  the top of site.js with `?v=` in `cpv`: bump it when either changes). Everything lives in the visitor's own browser
+  (localStorage "xr-path-v1"), nothing is sent anywhere. Reputation and eight ranks (Wanderer, Seeker, Acolyte, Initiate,
+  Disciple, High Disciple, Voidcaller, Ascendant), 20 achievements, titles; "Grip" rises with everything collected (the
+  Grippers feed on it; more Grip, more anomalies) and "Let go" on the Path page turns it into reputation. Sixteen artifacts
+  (fragments, relics, seals, tablets, eyes) glint faintly beside headings on lore pages (ARTIFACTS in coil-path.js says
+  where; a missing heading falls back to the page's main content). Eight secrets: the arrow-key sequence then B A; typing
+  "let go well"; the homepage sigil's "hold light" easter egg (js/xalreth.js fires `xr:unwrap`); clicking the footer chant
+  three times; an invisible rune at the end of the Codex glossary; the Three Tablets' words (still, hungry, loosen) spoken
+  on the Path page, which opens `beneath.html` (the Low Door: noindex, out of the menu, sitemap SKIP and search); visiting
+  it; and the Night Watch (midnight to 3 a.m.). Whispers drift by rarely; anomalies (a glitching heading, a rare eclipse)
+  never run for reduced motion; both can be turned off on the Path page. The daily prophecy is built from phrase tables
+  seeded by the date (the same for everyone that day). The homepage gets a card after the For the Alliance banner (added
+  by the script, not in index.html): today's prophecy, the holy day in season, a live countdown to the next one (the Holy
+  Calendar in rites.html; dates are the Coil's own: Day of Accusation the 1st of every month, Feast of Scales Jun 21,
+  Shedfall Sep 22 to Nov 30, the Long Wait Dec 21-27, the Eve of the Unwrapping Dec 31) and the visitor's rank.
+  `path.html` (`js/path.js`): rank emblem, Grip, prophecy and past prophecies, the collection, the Three Tablets,
+  secrets with hints, achievements, titles and settings. `map.html` (`js/atlas-map.js`): an original SVG map of the ten
+  holy places (PLACES in coil-path.js, linked to legends.html and codex.html); visiting a pin counts toward the Path.
+  Keep the voice gentle (holding lightly, letting go), never grimdark. Keep all of this if the site is regenerated.
 - The Anglers of the Coil (`fishing.html`, `css/fishing.css`, `js/fishing.js`; Community menu as "Fishing Leaderboard", after
   Auction House): the fishing leaderboard. A moonlit lake over the serpent's coil (inline SVG: bobber with ripples, drifting
   coil with a blinking eye, fish, stars; still for reduced motion), stats, a podium and ranked list with tabs Top catches /

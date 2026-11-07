@@ -178,6 +178,7 @@
       hero.classList.remove("xr-unwrapped"); egg = false; nextStatus();
     });
     try { console.log("%cHold light. And let go well.", "color:#b98cff;font:16px serif"); } catch (e) {}
+    try { document.dispatchEvent(new CustomEvent("xr:unwrap")); } catch (e) {}   // the Path (js/coil-path.js) counts it as a secret
   }
   if (logo) logo.addEventListener("click", function () {
     var now = Date.now();

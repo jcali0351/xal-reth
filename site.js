@@ -25,6 +25,15 @@
   if (!document.querySelector('script[src*="js/motion.js"]')) {
     var mo = document.createElement("script"); mo.src = base + "js/motion.js?v=20261107c"; document.head.appendChild(mo);
   }
+  // The Path of the Coil: progression, artifacts, secrets, whispers, the daily prophecy (js/coil-path.js + css/coil-path.css).
+  // Bump this ?v= when either changes.
+  var cpv = "?v=20261107p2";
+  if (!document.querySelector('link[href*="css/coil-path.css"]')) {
+    var lp = document.createElement("link"); lp.rel = "stylesheet"; lp.href = base + "css/coil-path.css" + cpv; document.head.appendChild(lp);
+  }
+  if (!document.querySelector('script[src*="js/coil-path.js"]')) {
+    var cp = document.createElement("script"); cp.src = base + "js/coil-path.js" + cpv; cp.defer = true; document.head.appendChild(cp);
+  }
 })();
 
 // The guild frame on every page: the gold filigree bar with the crest crowns the main content under each page's title

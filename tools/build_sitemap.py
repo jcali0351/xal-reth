@@ -33,7 +33,7 @@ SECTIONS = [
 PRIORITY = {"index.html": "1.0", "join.html": "0.9", "lore.html": "0.9", "canon.html": "0.9", "addons.html": "0.9",
             "blog.html": "0.7", "addon-xalreth-rp.html": "0.9", "addon-vyrenna-rp.html": "0.8", "addon-disciples-of-devotion.html": "0.8", "addon-litany-of-begging.html": "0.8", "addon-paranoid-rp.html": "0.8", "addon-brain-rotter-pro.html": "0.8", "addon-edgelord-pro.html": "0.8", "addon-drama-queen-pro.html": "0.8", "addon-full-support.html": "0.8", "news.html": "0.7", "herald.html": "0.6"}
 CHANGEFREQ = {"guild-roster.html": "hourly", "news.html": "daily", "herald.html": "daily", "blog.html": "weekly", "index.html": "weekly", "addons.html": "weekly"}
-SKIP = {"404.html", "roster-admin.html", "admin.html", "addon-coil-angler.html"}
+SKIP = {"404.html", "roster-admin.html", "admin.html", "addon-coil-angler.html", "beneath.html"}   # beneath.html: the Path's secret page
 TITLES = {"wiki.html": "The Encyclopedia of the Coil", "merch.html": "Official Merch (Coming Soon)", "addons.html": "Free World of Warcraft RP Addons", "devotion.html": "Disciples of Devotion: the Live Reader"}
 
 def esc(s): return html.escape(s, quote=False)
