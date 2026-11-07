@@ -27,6 +27,22 @@
   }
 })();
 
+// The guild frame on every page: the gold filigree bar with the crest crowns the main content under each page's title
+// (the first .wrap in <main>; THE GUILD FRAME in style.css). Pages that already place their own frames (homepage, Guild
+// Bank, Roster, Deeds, Ranks) and noindex admin pages are left as they are. Added here, not in the HTML, so the Sanctum
+// Editor never saves it into a page and newly generated pages get it too.
+(function () {
+  if (document.querySelector(".crowned") || document.querySelector('meta[name="robots"][content*="noindex"]')) return;
+  var main = document.querySelector("main");
+  var box = main && main.querySelector(":scope > .wrap, :scope > .altar-page");
+  if (!box) return;
+  var f = document.createElement("div");
+  f.className = "gframe"; f.setAttribute("aria-hidden", "true");
+  f.innerHTML = '<span class="gf-crest"></span>';
+  box.classList.add("crowned");
+  box.insertBefore(f, box.firstChild);
+})();
+
 // Sanctum Editor: when you're signed in to admin.html on this device, every page gets an "Edit this page" button.
 (function () {
   var t = "";

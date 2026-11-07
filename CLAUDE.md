@@ -123,7 +123,10 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   as its first child; styles "THE GUILD FRAME" in style.css): the gold filigree bar cut from the game's guild window
   (`img/crest/frame-center.png`, `-center-sm`, `-cap-l`, `-cap-r`, `-bar`; it stretches to any width) with the crest
   hanging at its centre. It crowns the Guild Bank's chart, vault and Ledger, The Deeds, the Ranks' powers table, the
-  roster stats, and the homepage's Altar invitation and Sacred Triangle. Keep these if the site is regenerated.
+  roster stats, and the homepage's Altar invitation and Sacred Triangle. On every other page (except noindex admin pages
+  and wiki.html, which has no site.js) site.js crowns the main content under the page title (the first `.wrap` or
+  `.altar-page` in <main>) the same way at load, so it is never in the HTML and the Sanctum Editor never saves it; a page
+  that already has a `.crowned` section is left alone. Keep these if the site is regenerated.
 - The Deeds of the Coil (`achievements.html`, `css/achievements.css`, `js/achievements.js`; Community submenu as "Guild
   Achievements", linked from the Guild Roster header): the crest, the guild's achievement points in a gold shield, stats,
   the completed deeds newest first (Blizzard icon in a gold frame, description, reward, date, points; category filters,
