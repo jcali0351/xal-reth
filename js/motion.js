@@ -306,4 +306,42 @@
     if (busy) requestAnimationFrame(frame); else running = false;
   }
   measure();
+
+  /* ---------------------------------------------------------------- 6. the Pantheon (homepage Sacred Triangle) */
+  // the three panels of the Icon enter one by one in a burst of light (styles: "The Pantheon" in style.css)
+  var pn = doc.querySelector(".pantheon");
+  if (pn) {
+    var row = pn.querySelector(".pn-row");
+    pn.classList.add("pn-armed");
+    var po = new IntersectionObserver(function (es) {
+      if (es.some(function (e) { return e.isIntersecting; })) { pn.classList.add("pn-in"); po.disconnect(); }
+    }, { rootMargin: "0px 0px -18% 0px" });
+    po.observe(row);
+    setTimeout(function check() {           // safety net, like the entrances above
+      if (pn.classList.contains("pn-in")) return;
+      var r = row.getBoundingClientRect();
+      if (r.top < innerHeight * 0.85 && r.bottom > 0) { pn.classList.add("pn-in"); po.disconnect(); } else setTimeout(check, 900);
+    }, 900);
+  }
+  // cards marked data-tilt lean toward the pointer, and their light follows it
+  if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    Array.prototype.forEach.call(doc.querySelectorAll("[data-tilt]"), function (c) {
+      var raf = 0, ev = null;
+      c.addEventListener("pointermove", function (e) {
+        ev = e; if (raf) return;
+        raf = requestAnimationFrame(function () {
+          raf = 0; var r = c.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width, y = (ev.clientY - r.top) / r.height;
+          c.classList.add("is-tilting");
+          c.style.setProperty("--ry", ((x - 0.5) * 18).toFixed(2) + "deg");
+          c.style.setProperty("--rx", ((0.5 - y) * 10).toFixed(2) + "deg");
+          c.style.setProperty("--sx", (x * 100).toFixed(1) + "%"); c.style.setProperty("--sy", (y * 100).toFixed(1) + "%");
+          c.style.setProperty("--px", ((x - 0.5) * 2).toFixed(3)); c.style.setProperty("--py", ((y - 0.5) * 2).toFixed(3));
+        });
+      });
+      c.addEventListener("pointerleave", function () {
+        c.classList.remove("is-tilting");
+        ["--rx", "--ry", "--px", "--py"].forEach(function (p) { c.style.removeProperty(p); });
+      });
+    });
+  }
 })();

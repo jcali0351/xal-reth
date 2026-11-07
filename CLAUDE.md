@@ -61,6 +61,11 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   which writes a `<style id="hero-sky-pics">` just before `.hero-sky` (the picture paths; they must live in the page, since
   a url() in a CSS variable resolves from css/) and `--sky-pos`, `--sky-pos-m`, `--sky-bright`, `--sky-sat`,
   `data-swirl="off"`, `data-eye="off"` on the `.hero-sky` tag. Uploaded skies are `img/uploads/*-sky-*`. Keep it if the site is regenerated.
+- The homepage's Sacred Triangle section (`.pantheon`, styles "The Pantheon" in style.css) is the Icon of the Three triptych
+  (`img/triangle/triptych.webp`, names, virtues and mottos painted in): three linked panels, each cropped from the one
+  image by CSS (Vyrenna x 0-260, Xal'Reth 271-529, Nhalor 540-799), entering one by one in a burst of each god's light
+  (moon-silver, emerald and gold, violet) with a breathing aura and passing light; on hover a panel lifts, tilts toward
+  the pointer and blazes while the other two dim (js/motion.js). Phones show the three side by side. Keep it if the site is regenerated.
 - The Coil in motion (`js/motion.js`, loaded by the loader at the top of `site.js`; styles at the end of `style.css`), on every
   page with site.js: every heading, paragraph, list, picture, card and button fades in on its own as it scrolls into view
   (headings written out of mist, text rising out of blur, pictures opening like an eye, cards tumbling up, list items and

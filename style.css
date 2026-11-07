@@ -792,6 +792,92 @@ a.card:hover, .card.addon:hover { border-color: rgba(201,162,255,.6); box-shadow
 .tri-card.violet { border-top-color: var(--violet-hot); box-shadow: inset 0 40px 60px -40px rgba(166,107,255,.3); }
 .tri-cards { margin-bottom: 28px; }
 
+/* ---------- The Pantheon: the Sacred Triangle on the homepage, as the Icon of the Three ----------
+   The three panels of the painted triptych (img/triangle/triptych.webp, one file; each card shows its own panel:
+   Vyrenna x 0-260, Xal'Reth 271-529, Nhalor 540-799 of 800). The names, virtues and mottos are painted in.
+   js/motion.js brings them in one by one in a burst of each god's light, and tilts them toward the pointer. */
+.pantheon { padding-bottom: 86px; }
+.pn-intro { margin: -6px auto 34px; max-width: 34em; font-style: italic; }
+.pn-row { --ph: clamp(520px, 84vh, 940px); position: relative; display: flex; justify-content: center; gap: clamp(10px, 1.8vw, 24px); perspective: 1600px; }
+.pn-card { --c1: #b98cff; --c2: #8a4dff; --w: 260; --bs: 307.69%; --bx: 0%;
+  position: relative; z-index: 1; flex: none; display: block; height: var(--ph); aspect-ratio: var(--w) / 1200;
+  color: inherit; text-decoration: none; outline: none; transition: transform .6s cubic-bezier(.2, .7, .2, 1), opacity .5s ease, filter .5s ease; }
+.pn-card.vy { --c1: #f1e6ff; --c2: #b48cff; }
+.pn-card.xr { --c1: #3fe08f; --c2: #e8c35a; --w: 258; --bs: 310.08%; --bx: 50%; }
+.pn-card.nh { --c1: #a46bff; --c2: #5a2ad0; --bx: 100%; }
+
+/* the breathing aura behind each panel */
+.pn-aura { position: absolute; inset: -6% -40%; z-index: -1; pointer-events: none; border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--c1) 70%, transparent), color-mix(in srgb, var(--c2) 30%, transparent) 55%, transparent 80%);
+  filter: blur(34px); opacity: .5; animation: pn-breathe 5.5s ease-in-out infinite; animation-delay: calc(var(--i, 0) * -1.8s);
+  transition: opacity .6s ease, transform .6s ease; }
+@keyframes pn-breathe { 0%, 100% { opacity: .38; transform: scale(.94); } 50% { opacity: .72; transform: scale(1.06); } }
+
+.pn-inner { position: absolute; inset: 0; border-radius: 6px; overflow: hidden; isolation: isolate; transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  border: 1px solid color-mix(in srgb, var(--c1) 55%, transparent);
+  box-shadow: 0 0 0 1px rgba(8, 5, 15, .7), 0 0 22px -2px color-mix(in srgb, var(--c1) 70%, transparent), 0 0 70px -10px var(--c2), 0 40px 70px -30px #000;
+  transition: transform .6s cubic-bezier(.2, .7, .2, 1), box-shadow .6s ease, border-color .6s ease; }
+.pn-card.is-tilting .pn-inner { transition: transform .08s linear, box-shadow .6s ease, border-color .6s ease; }
+.pn-art { position: absolute; inset: 0; background: url("img/triangle/triptych.webp") var(--bx) 0 / var(--bs) 100% no-repeat;
+  transform: translate(calc(var(--px, 0) * -6px), calc(var(--py, 0) * -6px)) scale(1.03); transition: transform 1s cubic-bezier(.2, .7, .2, 1), filter .6s ease; }
+.pn-card.is-tilting .pn-art { transition: transform .2s linear, filter .6s ease; }
+/* light that follows the pointer */
+.pn-sheen { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0; mix-blend-mode: screen; transition: opacity .5s ease;
+  background: radial-gradient(260px circle at var(--sx, 50%) var(--sy, 35%), color-mix(in srgb, var(--c1) 45%, transparent), transparent 60%); }
+/* a band of light that crosses each panel now and then */
+.pn-sweep { position: absolute; inset: -20% -120%; z-index: 1; pointer-events: none; mix-blend-mode: screen; opacity: 0;
+  background: linear-gradient(105deg, transparent 42%, color-mix(in srgb, var(--c1) 55%, transparent) 50%, transparent 58%); }
+.pn-in .pn-sweep { animation: pn-sweep 9s ease-in-out infinite; animation-delay: calc(1.4s + var(--i, 0) * 1.1s); }
+@keyframes pn-sweep { 0% { opacity: 0; transform: translateX(-40%); } 6% { opacity: 1; } 16% { opacity: 0; transform: translateX(40%); } 100% { opacity: 0; transform: translateX(40%); } }
+
+.pn-cap { position: absolute; left: -24px; right: -24px; top: calc(100% + 16px); text-align: center; }
+.pn-cap b { font: 600 .68rem var(--serif-display); letter-spacing: .3em; text-transform: uppercase; color: var(--c1); text-shadow: 0 0 14px var(--c2); }
+.pn-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.pn-more { margin-top: 70px; }
+
+/* ENTRANCE: one by one, each panel rises out of a flash of its own light */
+.pn-armed .pn-card { opacity: 0; }
+.pn-armed.pn-in .pn-card { opacity: 1; animation: pn-enter 1.5s cubic-bezier(.2, .7, .2, 1) backwards; animation-delay: calc(var(--i, 0) * .55s); }
+@keyframes pn-enter {
+  0%   { opacity: 0; transform: translateY(70px) scale(.9); filter: brightness(3.2) saturate(.2) blur(12px); }
+  40%  { opacity: 1; transform: translateY(-6px) scale(1.02); filter: brightness(2.2) saturate(.8) blur(0); }
+  100% { opacity: 1; transform: none; filter: none; }
+}
+.pn-card::after { content: ""; position: absolute; left: 50%; top: 42%; width: 220%; aspect-ratio: 1; z-index: 2; pointer-events: none; border-radius: 50%;
+  translate: -50% -50%; opacity: 0; mix-blend-mode: screen;
+  background: radial-gradient(closest-side, #fff, var(--c1) 25%, color-mix(in srgb, var(--c2) 50%, transparent) 50%, transparent 72%); }
+.pn-armed.pn-in .pn-card::after { animation: pn-burst 1.6s ease-out backwards; animation-delay: calc(var(--i, 0) * .55s + .15s); }
+@keyframes pn-burst { 0% { opacity: .95; transform: scale(.15); } 100% { opacity: 0; transform: scale(1.4); } }
+
+/* HOVER: the chosen panel lifts into full glow; the other two step back into the dark */
+@media (hover: hover) and (pointer: fine) {
+  .pn-row:hover .pn-card:not(:hover) { opacity: .45; filter: saturate(.45) brightness(.6); }
+  .pn-card:hover, .pn-card:focus-visible { z-index: 3; transform: translateY(-14px) scale(1.06); }
+  .pn-card:hover .pn-aura, .pn-card:focus-visible .pn-aura { animation-play-state: paused; opacity: 1; transform: scale(1.22); }
+  .pn-card:hover .pn-inner, .pn-card:focus-visible .pn-inner { border-color: var(--c1);
+    box-shadow: 0 0 0 1px var(--c1), 0 0 18px var(--c1), 0 0 60px color-mix(in srgb, var(--c1) 80%, transparent), 0 0 140px var(--c2), 0 0 240px color-mix(in srgb, var(--c2) 60%, transparent), 0 50px 90px -30px #000; }
+  .pn-card:hover .pn-art, .pn-card:focus-visible .pn-art { filter: brightness(1.18) saturate(1.3) contrast(1.05); }
+  .pn-card:hover .pn-sheen, .pn-card:focus-visible .pn-sheen { opacity: 1; }
+  .pn-card:hover .pn-cap b, .pn-card:focus-visible .pn-cap b { color: #fff; text-shadow: 0 0 10px var(--c1), 0 0 24px var(--c2); }
+}
+.pn-card:focus-visible .pn-inner { outline: 2px solid var(--c1); outline-offset: 5px; }
+
+/* phones: the triptych stays whole, three panels side by side */
+@media (max-width: 760px) {
+  .pn-row { --ph: calc((100vw - 52px) / .652); gap: 8px; }
+  .pn-cap { left: -6px; right: -6px; top: calc(100% + 10px); }
+  .pn-cap b { font-size: .52rem; letter-spacing: .16em; }
+  .pn-aura { inset: -4% -30%; filter: blur(22px); }
+  .pantheon { padding-bottom: 60px; }
+  .pn-more { margin-top: 56px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pn-aura, .pn-in .pn-sweep { animation: none; }
+  .pn-card, .pn-inner, .pn-art { transition: none; }
+  .pn-art { transform: none; }
+}
+
 /* ===== Blog system ===== */
 .blog-hero .post-card.big { display: grid; grid-template-columns: 1.2fr 1fr; padding: 0; }
 .blog-hero .post-card.big img { height: 100%; min-height: 300px; border-bottom: 0; border-right: 1px solid var(--line); grid-row: 1 / 6; }

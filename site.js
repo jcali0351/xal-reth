@@ -23,7 +23,7 @@
   }
   // The Coil in motion: scroll entrances and parallax (js/motion.js; its styles are at the end of style.css)
   if (!document.querySelector('script[src*="js/motion.js"]')) {
-    var mo = document.createElement("script"); mo.src = base + "js/motion.js?v=20261107a"; document.head.appendChild(mo);
+    var mo = document.createElement("script"); mo.src = base + "js/motion.js?v=20261107b"; document.head.appendChild(mo);
   }
 })();
 
