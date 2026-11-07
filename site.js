@@ -2,7 +2,7 @@
    THE COIL OF XAL'RETH — sanctum scripts
    ========================================================== */
 
-// The Seeking Glass (site-wide search): load its style and script on every page that loads site.js.
+// The Seeking Glass (site-wide search) and Vessk (chat): load their styles and scripts on every page that loads site.js.
 (function () {
   var me = document.currentScript;
   var base = me && me.src ? me.src.replace(/site\.js(\?.*)?$/, "") : "";
@@ -12,6 +12,13 @@
   }
   if (!document.querySelector('script[src$="js/search.js"]')) {
     var sc = document.createElement("script"); sc.src = base + "js/search.js"; sc.defer = true; document.head.appendChild(sc);
+  }
+  // Vessk, the AI herald (chat): css/chat.css + js/chat.js
+  if (!document.querySelector('link[href$="css/chat.css"]')) {
+    var lc = document.createElement("link"); lc.rel = "stylesheet"; lc.href = base + "css/chat.css"; document.head.appendChild(lc);
+  }
+  if (!document.querySelector('script[src$="js/chat.js"]')) {
+    var cs = document.createElement("script"); cs.src = base + "js/chat.js"; cs.defer = true; document.head.appendChild(cs);
   }
 })();
 

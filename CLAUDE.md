@@ -50,6 +50,15 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   `tools/build_search.py` from every page and each heading with an id (addon results carry their .zip for a Download
   button). new_post.py and build_addon_pages.py rebuild it; run it by hand after other page changes. Never hand-edit
   search-index.json. Keep all of this if the site is regenerated.
+- Vessk, the AI herald chat: `js/chat.js` + `css/chat.css`, loaded on every page by the loader at the top of `site.js`
+  (purple and black floating button bottom right, a one-time "Hold light" hello, panel full screen on phones; the homepage
+  hero's "Speak to an Agent" button opens it via `data-open-chat`). Vessk says plainly he is an AI. Without CHAT.endpoint he
+  answers from search-index.json plus a few fixed answers (who is Xal'Reth, wings, joining, installing, addons, Discord, X);
+  with CHAT.endpoint set to the Cloudflare Worker in `tools/chat-worker/` (worker.js + README.md; the Claude API key is a
+  Worker secret, never in the repo) he answers with Claude, fed the relevant passages. "Talk to John" posts the visitor's
+  name, email, message and (if allowed) the chat transcript through FormSubmit to the author's inbox with the subject
+  "Xal'Reth Live Chat", using the same scrambled address as js/contact.js (update ALIAS in both). John replies by email.
+  Never write the address in plain text. Keep all of this if the site is regenerated.
 - X (Twitter) account: @xalrethrp (https://x.com/xalrethrp). The homepage card "The Serpent Speaks" (`.xcard`, right after
   the hero; `css/latest-tweet.css`, `js/latest-tweet.js`) embeds one post from `data/latest-tweet.json`, which
   `.github/workflows/latest-tweet.yml` / `tools/sync_tweet.mjs` keep current: by hand (Actions > "Latest post from X" >

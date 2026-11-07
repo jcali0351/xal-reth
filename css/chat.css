@@ -1,0 +1,150 @@
+/* ==========================================================
+   THE WHISPERING SCALE — chat with Vessk, AI herald of Xal'Reth (js/chat.js)
+   Black as the Void, purple as the Coil.
+   ========================================================== */
+.vx-launch {
+  position: fixed; right: 22px; bottom: 22px; z-index: 900;
+  width: 64px; height: 64px; border-radius: 50%; border: 0; padding: 0; cursor: pointer;
+  background: #07040d; display: grid; place-items: center;
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.6), 0 0 26px rgba(166, 107, 255, 0.45);
+  transition: transform .25s cubic-bezier(.2, .9, .3, 1.3), box-shadow .25s;
+}
+.vx-launch::before {
+  content: ""; position: absolute; inset: -3px; border-radius: 50%; z-index: -1;
+  background: conic-gradient(from 0deg, #4b2386, #a66bff, #e0c4ff, #7651b0, #4b2386);
+  animation: vx-spin 6s linear infinite;
+}
+.vx-launch::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 50% 40%, #2a1746, #07040d 70%); }
+.vx-launch img { position: relative; z-index: 1; width: 40px; height: 40px; filter: drop-shadow(0 0 8px rgba(166, 107, 255, 0.85)); transition: transform .3s; }
+.vx-launch:hover { transform: scale(1.07); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.65), 0 0 40px rgba(166, 107, 255, 0.7); }
+.vx-launch:hover img { transform: rotate(-8deg) scale(1.05); }
+.vx-launch:focus-visible { outline: 2px solid var(--venom, #e0c4ff); outline-offset: 4px; }
+.vx-launch .vx-dot { position: absolute; z-index: 2; right: 4px; bottom: 6px; width: 13px; height: 13px; border-radius: 50%; background: #5cff8c; border: 2px solid #07040d; box-shadow: 0 0 10px #5cff8c; }
+.vx-launch .vx-badge { position: absolute; z-index: 2; top: -2px; right: -2px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: #a66bff; color: #fff; font: 600 12px/20px system-ui, sans-serif; display: none; }
+.vx-launch.has-unread .vx-badge { display: block; animation: vx-pop .3s ease-out; }
+.vx-open .vx-launch { transform: scale(0.85) rotate(90deg); opacity: 0; pointer-events: none; }
+@keyframes vx-spin { to { transform: rotate(360deg); } }
+@keyframes vx-pop { from { transform: scale(0); } }
+
+.vx-tease {
+  position: fixed; right: 96px; bottom: 34px; z-index: 900; max-width: 240px;
+  padding: 11px 34px 11px 14px; border-radius: 14px 14px 4px 14px;
+  background: linear-gradient(160deg, #1a1029, #0b0614); border: 1px solid rgba(185, 140, 255, 0.45); color: #ece6f5;
+  font-family: var(--serif-body, Georgia, serif); font-size: 1.02rem; line-height: 1.35; cursor: pointer;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.55), 0 0 22px rgba(166, 107, 255, 0.25);
+  animation: vx-tease-in .45s cubic-bezier(.2, .9, .3, 1.2) both;
+}
+.vx-tease b { color: #e0c4ff; font-weight: 600; }
+.vx-tease button { position: absolute; top: 4px; right: 6px; background: none; border: 0; color: #b0a6c4; font-size: 18px; line-height: 1; cursor: pointer; padding: 4px; }
+@keyframes vx-tease-in { from { opacity: 0; transform: translateX(14px) scale(.95); } }
+.vx-open .vx-tease { display: none; }
+
+/* the panel */
+.vx-panel {
+  position: fixed; right: 22px; bottom: 22px; z-index: 950;
+  width: 392px; height: min(640px, calc(100vh - 44px)); display: flex; flex-direction: column; overflow: hidden;
+  background: #07040d; color: #ece6f5;
+  border: 1px solid rgba(185, 140, 255, 0.38); border-radius: 22px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.75), 0 0 60px rgba(166, 107, 255, 0.25);
+  transform-origin: 100% 100%;
+  font-family: var(--serif-body, Georgia, serif);
+  margin: 0; padding: 0; max-width: none; text-align: left;
+}
+.vx-panel[hidden] { display: none; }
+.vx-panel.vx-in { animation: vx-in .32s cubic-bezier(.2, .9, .3, 1.15) both; }
+.vx-panel.vx-out { animation: vx-in .18s ease-in reverse both; }
+@keyframes vx-in { from { opacity: 0; transform: scale(.6) translateY(30px); } }
+
+.vx-head {
+  position: relative; display: flex; align-items: center; gap: 12px; padding: 16px 14px 14px 16px;
+  background: radial-gradient(420px 140px at 0% 0%, rgba(166, 107, 255, 0.45), transparent 70%), linear-gradient(180deg, #1c0f33, #0d0719);
+  border-bottom: 1px solid rgba(185, 140, 255, 0.25);
+}
+.vx-head::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+  background: linear-gradient(90deg, transparent, #a66bff, #e0c4ff, #a66bff, transparent); background-size: 200% 100%; animation: vx-sheen 4s linear infinite; }
+@keyframes vx-sheen { to { background-position: -200% 0; } }
+.vx-ava { position: relative; width: 46px; height: 46px; flex: none; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle, #2a1746, #07040d); border: 1px solid rgba(185, 140, 255, 0.6); }
+.vx-ava img { width: 32px; height: 32px; filter: drop-shadow(0 0 6px rgba(166, 107, 255, 0.8)); }
+.vx-ava::after { content: ""; position: absolute; right: 0; bottom: 1px; width: 11px; height: 11px; border-radius: 50%; background: #5cff8c; border: 2px solid #12091f; }
+.vx-who { min-width: 0; flex: 1; }
+.vx-who b { display: block; font-family: var(--serif-display, Georgia, serif); font-size: 1.02rem; letter-spacing: .08em; color: #fff; }
+.vx-who span { display: block; font-size: .86rem; color: #c9b6ea; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vx-hbtn { flex: none; width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(185, 140, 255, 0.3); background: rgba(7, 4, 13, 0.5); color: #e0c4ff; display: grid; place-items: center; cursor: pointer; transition: all .18s; }
+.vx-hbtn:hover { background: rgba(166, 107, 255, 0.25); border-color: rgba(224, 196, 255, 0.7); color: #fff; }
+.vx-hbtn svg { width: 17px; height: 17px; }
+
+.vx-log { flex: 1; overflow-y: auto; padding: 16px 14px 8px; display: flex; flex-direction: column; gap: 10px; overscroll-behavior: contain;
+  background: radial-gradient(500px 300px at 100% 100%, rgba(75, 35, 134, 0.22), transparent 70%), #07040d;
+  scrollbar-width: thin; scrollbar-color: #4b2386 transparent; }
+.vx-row { display: flex; gap: 8px; align-items: flex-end; animation: vx-msg .28s ease-out both; }
+.vx-row.me { justify-content: flex-end; }
+@keyframes vx-msg { from { opacity: 0; transform: translateY(8px); } }
+.vx-mini { width: 26px; height: 26px; flex: none; border-radius: 50%; background: #12091f; border: 1px solid rgba(185, 140, 255, 0.4); display: grid; place-items: center; }
+.vx-mini img { width: 18px; height: 18px; }
+.vx-row.cont .vx-mini { visibility: hidden; }
+.vx-bub { max-width: 82%; padding: 10px 13px; border-radius: 16px; font-size: 1.04rem; line-height: 1.45; overflow-wrap: anywhere; }
+.vx-row.bot .vx-bub { background: linear-gradient(160deg, #1d1131, #120a20); border: 1px solid rgba(185, 140, 255, 0.22); border-bottom-left-radius: 5px; color: #ece6f5; }
+.vx-row.me .vx-bub { background: linear-gradient(135deg, #8a4dff, #5a2aa8); color: #fff; border-bottom-right-radius: 5px; box-shadow: 0 6px 18px rgba(138, 77, 255, 0.35); }
+.vx-row.sys .vx-bub { max-width: 100%; margin: 0 auto; background: none; border: 1px dashed rgba(185, 140, 255, 0.3); color: #b0a6c4; font-size: .92rem; text-align: center; }
+.vx-bub a { color: #e0c4ff; text-decoration-color: rgba(224, 196, 255, 0.5); }
+.vx-bub a:hover { color: #fff; }
+.vx-bub strong { color: #fff; }
+.vx-bub ul { margin: 6px 0 2px; padding-left: 18px; }
+.vx-bub blockquote { margin: 8px 0 4px; padding: 6px 10px; border-left: 2px solid #a66bff; background: rgba(166, 107, 255, 0.08); border-radius: 0 8px 8px 0; color: #d9cdee; font-style: italic; }
+.vx-links { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.vx-links a { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 10px; border: 1px solid rgba(185, 140, 255, 0.28); background: rgba(7, 4, 13, 0.55); text-decoration: none; font-size: .95rem; color: #e0c4ff; transition: all .18s; }
+.vx-links a:hover { border-color: rgba(224, 196, 255, 0.7); background: rgba(166, 107, 255, 0.16); color: #fff; }
+.vx-links a i { flex: none; white-space: nowrap; font-style: normal; margin-left: auto; color: #8f7bb3; font-size: .78rem; text-transform: uppercase; letter-spacing: .1em; font-family: var(--serif-display, Georgia, serif); }
+.vx-time { font-size: .72rem; color: #6f6290; margin: -4px 4px 0; }
+.vx-row.me + .vx-time { text-align: right; }
+
+.vx-typing { display: inline-flex; gap: 5px; padding: 14px 16px !important; }
+.vx-typing i { width: 7px; height: 7px; border-radius: 50%; background: #c9a6ff; animation: vx-bounce 1.2s ease-in-out infinite; }
+.vx-typing i:nth-child(2) { animation-delay: .15s; } .vx-typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes vx-bounce { 0%, 60%, 100% { transform: translateY(0); opacity: .5; } 30% { transform: translateY(-6px); opacity: 1; } }
+
+.vx-chips { display: flex; gap: 6px; padding: 8px 12px 4px; overflow-x: auto; scrollbar-width: none; background: #07040d; }
+.vx-chips::-webkit-scrollbar { display: none; }
+.vx-chips button { flex: none; padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(185, 140, 255, 0.4); background: rgba(75, 35, 134, 0.18); color: #e0c4ff; cursor: pointer; font-family: inherit; font-size: .95rem; line-height: 1.3; transition: all .18s; }
+.vx-chips button:hover { background: rgba(166, 107, 255, 0.3); color: #fff; border-color: #e0c4ff; }
+.vx-chips button.human { border-color: rgba(92, 255, 140, 0.45); color: #b8ffd0; background: rgba(92, 255, 140, 0.07); }
+
+.vx-input { display: flex; align-items: flex-end; gap: 8px; padding: 10px 12px 12px; background: #0b0614; border-top: 1px solid rgba(185, 140, 255, 0.2); }
+.vx-input textarea {
+  flex: 1; resize: none; max-height: 120px; min-height: 44px; padding: 11px 14px; border-radius: 22px;
+  background: #12091f; border: 1px solid rgba(185, 140, 255, 0.3); color: #ece6f5; outline: none;
+  font-family: inherit; font-size: 1.05rem; line-height: 1.35; transition: border-color .2s, box-shadow .2s;
+}
+.vx-input textarea::placeholder { color: #7d6f9c; }
+.vx-input textarea:focus { border-color: rgba(224, 196, 255, 0.75); box-shadow: 0 0 0 3px rgba(166, 107, 255, 0.2); }
+.vx-send { flex: none; width: 44px; height: 44px; border-radius: 50%; border: 0; cursor: pointer; color: #fff; display: grid; place-items: center;
+  background: linear-gradient(135deg, #a66bff, #5a2aa8); box-shadow: 0 6px 18px rgba(138, 77, 255, 0.45); transition: transform .15s, opacity .2s; }
+.vx-send:hover { transform: scale(1.07); }
+.vx-send:disabled { opacity: .4; cursor: default; transform: none; }
+.vx-send svg { width: 19px; height: 19px; }
+.vx-foot { padding: 0 14px 10px; background: #0b0614; font-size: .74rem; color: #6f6290; text-align: center; }
+.vx-foot button { background: none; border: 0; padding: 0; color: #a98fd6; text-decoration: underline; cursor: pointer; font: inherit; }
+
+/* talk-to-John form, inside the chat */
+.vx-form { display: grid; gap: 8px; margin-top: 4px; }
+.vx-form label { font-size: .82rem; color: #c9b6ea; display: grid; gap: 4px; }
+.vx-form input, .vx-form textarea { width: 100%; padding: 8px 10px; border-radius: 10px; background: #07040d; border: 1px solid rgba(185, 140, 255, 0.35); color: #ece6f5; font-family: inherit; font-size: 1rem; outline: none; }
+.vx-form input:focus, .vx-form textarea:focus { border-color: #e0c4ff; }
+.vx-form textarea { min-height: 70px; resize: vertical; }
+.vx-form .vx-check { display: flex; gap: 8px; align-items: center; font-size: .85rem; }
+.vx-form .vx-check input { width: auto; }
+.vx-form .vx-err { color: #ff8f8f; font-size: .85rem; min-height: 0; }
+.vx-form .vx-hp { position: absolute; left: -9999px; }
+.vx-form button[type="submit"] { padding: 9px; border-radius: 10px; border: 0; cursor: pointer; color: #fff; background: linear-gradient(135deg, #a66bff, #5a2aa8); font-family: var(--serif-display, Georgia, serif); letter-spacing: .12em; text-transform: uppercase; font-size: .78rem; }
+.vx-form button[type="submit"]:disabled { opacity: .5; }
+
+@media (max-width: 600px) {
+  .vx-panel { right: 0; bottom: 0; width: 100%; height: 100%; height: 100dvh; border-radius: 0; border: 0; }
+  .vx-launch { right: 14px; bottom: 14px; width: 58px; height: 58px; }
+  .vx-tease { right: 80px; bottom: 22px; max-width: 200px; font-size: .95rem; }
+}
+html.vx-lock, html.vx-lock body { overflow: hidden; }
+@media (max-width: 600px) { html.vx-open-mobile, html.vx-open-mobile body { overflow: hidden; } }
+@media (prefers-reduced-motion: reduce) {
+  .vx-launch::before, .vx-head::after, .vx-row, .vx-panel.vx-in, .vx-panel.vx-out, .vx-tease, .vx-typing i { animation: none !important; }
+}
