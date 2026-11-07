@@ -1,12 +1,13 @@
 # After a save from the Sanctum Editor (admin.html), rebuild the sitemap and the site-wide search
 # so new or edited pages show up in both. Editor commits start with "CMS:".
+# A font change (css/site-fonts.css, from the Fonts tab) restamps every page's ?v= so visitors get the new fonts at once.
 name: Rebuild after site edit
 run-name: Rebuild sitemap and search (${{ github.event.head_commit.message }})
 
 on:
   push:
     branches: [main]
-    paths: ["*.html"]
+    paths: ["*.html", "css/site-fonts.css"]
 
 permissions:
   contents: write
@@ -25,17 +26,19 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Rebuild sitemap.xml and search-index.json
+      - name: Rebuild sitemap.xml and search-index.json, link the fonts and restamp assets
         run: |
+          python3 tools/build_fonts.py
+          python3 tools/stamp_assets.py
           python3 tools/build_sitemap.py
           python3 tools/build_search.py
       - name: Commit
         run: |
           git config user.name "xalreth-editor-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add sitemap.xml search-index.json
+          git add sitemap.xml search-index.json ./*.html fonts/fonts.json fonts/catalog.css
           if git diff --cached --quiet; then echo "Nothing changed."; exit 0; fi
-          git commit -m "Rebuild sitemap and search after a site edit"
+          git commit -m "Rebuild sitemap, search and asset stamps after a site edit"
           for i in 1 2 3 4; do
             git push origin HEAD:main && exit 0
             git pull --rebase origin main; sleep 5

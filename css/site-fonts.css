@@ -1,0 +1,16 @@
+/* xr-fonts {"heading":"libre-baskerville","body":"lato","labels":"","headingBold":false} */
+/* The site's fonts, chosen in the Sanctum Editor (admin.html, Fonts tab), which rewrites this file.
+   Headings use --fat, body text --serif-body, menu, labels and buttons --serif-display. Font files live in fonts/. */
+@font-face{font-family:"Libre Baskerville";font-style:italic;font-weight:400;font-display:swap;src:url("../fonts/libre-baskerville/libre-baskerville-400-italic.woff2") format("woff2")}
+@font-face{font-family:"Libre Baskerville";font-style:normal;font-weight:400;font-display:swap;src:url("../fonts/libre-baskerville/libre-baskerville-400-normal.woff2") format("woff2")}
+@font-face{font-family:"Libre Baskerville";font-style:italic;font-weight:700;font-display:swap;src:url("../fonts/libre-baskerville/libre-baskerville-700-italic.woff2") format("woff2")}
+@font-face{font-family:"Libre Baskerville";font-style:normal;font-weight:700;font-display:swap;src:url("../fonts/libre-baskerville/libre-baskerville-700-normal.woff2") format("woff2")}
+@font-face{font-family:"Lato";font-style:italic;font-weight:300;font-display:swap;src:url("../fonts/lato/lato-300-italic.woff2") format("woff2")}
+@font-face{font-family:"Lato";font-style:normal;font-weight:300;font-display:swap;src:url("../fonts/lato/lato-300-normal.woff2") format("woff2")}
+@font-face{font-family:"Lato";font-style:italic;font-weight:400;font-display:swap;src:url("../fonts/lato/lato-400-italic.woff2") format("woff2")}
+@font-face{font-family:"Lato";font-style:normal;font-weight:400;font-display:swap;src:url("../fonts/lato/lato-400-normal.woff2") format("woff2")}
+@font-face{font-family:"Lato";font-style:italic;font-weight:700;font-display:swap;src:url("../fonts/lato/lato-700-italic.woff2") format("woff2")}
+@font-face{font-family:"Lato";font-style:normal;font-weight:700;font-display:swap;src:url("../fonts/lato/lato-700-normal.woff2") format("woff2")}
+@font-face{font-family:"Lato";font-style:italic;font-weight:900;font-display:swap;src:url("../fonts/lato/lato-900-italic.woff2") format("woff2")}
+@font-face{font-family:"Lato";font-style:normal;font-weight:900;font-display:swap;src:url("../fonts/lato/lato-900-normal.woff2") format("woff2")}
+:root{--fat:"Libre Baskerville", Georgia, "Times New Roman", serif;--serif-body:"Lato", "Segoe UI", Helvetica, Arial, sans-serif;--serif-display:"Lato", "Segoe UI", Helvetica, Arial, sans-serif}

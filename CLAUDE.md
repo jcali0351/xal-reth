@@ -164,8 +164,15 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   name, plus its .webp/.png twin), Homepage animations (the typed status lines, timing and the Unwrapping message in
   `data/hero-text.json`, read by js/xalreth.js with its built-in lines as a fallback; the "For the Alliance" banner text in
   index.html), Homepage sky (choose, upload or restore the picture behind the header and sigil, its focus point on
-  computers and phones, brightness, colour strength, the glow and the eye; see the homepage sky above). Uploaded pictures go to `img/uploads/`. `.github/workflows/cms-rebuild.yml` rebuilds sitemap.xml and
-  search-index.json after each "CMS:" commit. When signed in, site.js shows an "Edit this page" button bottom left.
+  computers and phones, brightness, colour strength, the glow and the eye; see the homepage sky above). Fonts (dropdowns
+  for the heading font, the body font and optionally the menu/labels/buttons font, bold headings, a live preview and
+  "Put back the original fonts"; writes css/site-fonts.css). In Pages, tapping a picture replaces or removes it (removing
+  takes its <picture>, and its <figure> or link if the picture is all they hold), and "+ Picture" adds a new picture
+  after the text being edited as `<figure class="illum|illum wide|illum side|illum side left">` with an optional
+  `<figcaption><b>title</b>caption</figcaption>`; the blog editor's "+ Picture" adds the same figures where the cursor is,
+  and tapping a picture in a post replaces or removes it. Uploaded pictures go to `img/uploads/`. `.github/workflows/cms-rebuild.yml` rebuilds sitemap.xml and
+  search-index.json after each page change, and on a page or css/site-fonts.css change also runs build_fonts.py and
+  stamp_assets.py, so a font change reaches visitors at once. When signed in, site.js shows an "Edit this page" button bottom left.
   John's CMS edits live in the committed pages, so if the site is ever regenerated, start from the current files
   (or his edits are lost), and keep all of this.
 
@@ -180,9 +187,18 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   full-height panel on the left, on top on phones); each step of the Path of the Faithful has a sacred glyph before its
   text and each altar step a round plate (`.li-pic`). `html, body { overflow-x: clip }` keeps the drifting layers from making pages scroll sideways.
   Keep these if the site is regenerated.
-- Type: Abril Fatface (the fat display face: h1, h2, drop caps, big numbers, the wordmark; `--fat`) and Lato (body, and
-  labels, nav and buttons in heavy wide-spaced capitals, lead lines and quotes in light italic), from Google Fonts in every
-  page's head; "THE FAT AND THE FINE" at the end of style.css. Keep it if the site is regenerated.
+- Type: by default Abril Fatface (the fat display face: h1, h2, drop caps, big numbers, the wordmark; `--fat`) and Lato (body,
+  and labels, nav and buttons in heavy wide-spaced capitals, lead lines and quotes in light italic); "THE FAT AND THE FINE"
+  at the end of style.css. The fonts are self-hosted (no Google Fonts): `fonts/<slug>/*.woff2` + LICENSE for 63 popular
+  Google Fonts (Latin; weights 300/400/700/900 upright and italic where they exist, from Fontsource's font-files repo),
+  catalogued in `fonts/fonts.json` (`fonts/catalog.css` has every @font-face, for the editor's previews only).
+  `css/site-fonts.css`, linked right after style.css on every page (except wiki.html, which keeps its own fonts), holds
+  @font-face for just the chosen fonts and sets `--fat` (headings), `--serif-body` (body) and `--serif-display` (menu,
+  labels, buttons); its first line keeps the choice as JSON. John picks them in the Sanctum Editor's Fonts tab, which
+  rewrites that file (fontsCss() in js/cms.js; keep it in step with site_fonts_css() in `tools/build_fonts.py`).
+  `python3 tools/build_fonts.py` rebuilds the catalog, links site-fonts.css into any page missing it and strips old Google
+  Fonts links (`--import DIR` adds fonts from a font-files checkout after adding them to FONTS; `--reset` restores Abril
+  Fatface + Lato). Keep all of this if the site is regenerated.
 - Every page links `style.css?v=…`, `site.js?v=…` and its own `css/…` and `js/…` files with `?v=…`, so visitors get changes
   at once instead of a cached copy (GitHub Pages lets browsers keep files for 10 minutes). After changing any of them, run
   `python3 tools/stamp_assets.py` (it stamps every page with each file's content hash).

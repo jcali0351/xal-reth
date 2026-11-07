@@ -10,11 +10,10 @@
 <meta name="theme-color" content="#08050f">
 <meta name="color-scheme" content="dark">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css?v=6020acf7">
-<link rel="stylesheet" href="css/cms.css?v=c8f8841f">
+<link rel="stylesheet" href="css/site-fonts.css?v=5236c87e">
+<link rel="stylesheet" href="fonts/catalog.css">
+<link rel="stylesheet" href="css/cms.css?v=3a86391a">
 </head>
 <body class="cms">
 
@@ -58,6 +57,7 @@
     <button role="tab" data-tab="images" aria-selected="false">Images</button>
     <button role="tab" data-tab="hero" aria-selected="false">Homepage animations</button>
     <button role="tab" data-tab="sky" aria-selected="false">Homepage sky</button>
+    <button role="tab" data-tab="fonts" aria-selected="false">Fonts</button>
     <button role="tab" data-tab="bank" aria-selected="false">Guild Bank</button>
   </nav>
 
@@ -159,6 +159,32 @@
     </form>
   </section>
 
+  <section class="cms-panel" data-panel="fonts" hidden>
+    <div class="cms-panel-head">
+      <div><h2>Fonts</h2><p class="cms-hint">Choose the lettering for the whole site. Every font is stored on the site itself, so each page only downloads the ones you pick.</p></div>
+      <button class="cms-btn" type="button" id="fonts-save" disabled>Save &amp; publish</button>
+    </div>
+    <form id="fonts-form" class="hero-form fonts-form" autocomplete="off">
+      <div class="fonts-picks">
+        <label class="cms-field"><span>Headings <small>(page titles and section headings)</small></span><select id="font-heading"></select></label>
+        <label class="cms-field"><span>Body text <small>(paragraphs, lists, quotes)</small></span><select id="font-body"></select></label>
+        <label class="cms-field"><span>Menu, labels &amp; buttons</span><select id="font-labels"></select></label>
+        <label class="cms-check"><input type="checkbox" id="font-heading-bold"> Bold headings <small>(fat display fonts like Abril Fatface look best without)</small></label>
+      </div>
+      <div class="fonts-preview" id="fonts-preview" aria-label="Preview">
+        <span class="hp-label">Preview</span>
+        <p class="eyebrow">The Coil Herald</p>
+        <h1>Hold Light, Little Egg</h1>
+        <p class="lede">A light italic line, the kind that sits under a title and sounds wise.</p>
+        <h2>The Low Place</h2>
+        <p>Water goes to the low place and is not ashamed. Xal'Reth holds the world three times around, and still he is learning to hold it <b>a little more lightly</b>, <i>which is the whole teaching</i>.</p>
+        <h3>A smaller heading</h3>
+        <p><a class="btn" href="#" tabindex="-1">Enter the Altar</a> <a class="btn ghost" href="#" tabindex="-1">Join the Coil</a></p>
+      </div>
+      <p class="cms-hint"><button type="button" class="cms-link" id="fonts-restore">Put back the original fonts (Abril Fatface and Lato)</button> · Changes reach visitors about a minute after saving.</p>
+    </form>
+  </section>
+
   <section class="cms-panel" data-panel="bank" hidden>
     <div class="cms-panel-head">
       <div><h2>Guild Bank</h2><p class="cms-hint">Bring the Coil Ledger's record of the guild bank to the website. Each upload updates the gold and the tabs, and adds any new ledger entries to the history (nothing already recorded is doubled).</p></div>
@@ -192,6 +218,7 @@
       <button type="button" class="ed-tool" data-cmd="italic" title="Italic"><i>I</i></button>
       <button type="button" class="ed-tool" data-cmd="link" title="Add or change a link">Link</button>
       <button type="button" class="ed-tool" data-cmd="unlink" title="Remove link">Unlink</button>
+      <button type="button" class="ed-tool" data-cmd="addpic" title="Add a new picture just after the text you're editing">+ Picture</button>
       <button type="button" class="ed-tool" data-cmd="undo" title="Undo">↶</button>
     </span>
     <span class="ed-right">
@@ -201,7 +228,7 @@
       <button class="cms-btn small" type="button" data-ed-save disabled>Save</button>
     </span>
   </div>
-  <p class="ed-tip">Tap any text to edit it. Tap a picture to replace it. Press Save when you're done.</p>
+  <p class="ed-tip">Tap any text to edit it. Tap a picture to replace or remove it. To add a picture, tap the text it should follow, then press + Picture. Press Save when you're done.</p>
   <iframe class="ed-frame" title="Page being edited"></iframe>
 </div>
 
@@ -243,7 +270,7 @@
         <button type="button" data-rt="italic"><i>I</i></button>
         <button type="button" data-rt="link">Link</button>
         <button type="button" data-rt="unlink">Unlink</button>
-        <label class="rt-file">Picture<input type="file" id="pf-body-img" accept="image/*"></label>
+        <button type="button" data-rt="picture" title="Add a picture where the cursor is">+ Picture</button>
         <button type="button" data-rt="html">HTML</button>
       </div>
       <div id="pf-body" class="prose article rt-body" contenteditable="true" aria-label="Post text"></div>
@@ -264,7 +291,27 @@
     <label class="cms-field" id="di-alt-wrap"><span>Description for screen readers (alt text)</span><input id="di-alt"></label>
     <label class="cms-check" id="di-twin-wrap" hidden><input type="checkbox" id="di-twin" checked> <span id="di-twin-text"></span></label>
     <p class="cms-hint" id="di-note"></p>
-    <div class="dlg-actions"><button class="cms-btn ghost small" value="cancel">Cancel</button><button class="cms-btn small" value="ok" id="di-ok" disabled>Use this picture</button></div>
+    <div class="dlg-actions"><button class="cms-btn danger small" value="remove" id="di-remove" hidden>Remove picture</button><button class="cms-btn ghost small" value="cancel">Cancel</button><button class="cms-btn small" value="ok" id="di-ok" disabled>Use this picture</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlg-insert" class="cms-dialog">
+  <form method="dialog">
+    <h3>Add a picture</h3>
+    <figure class="dlg-insert-pv"><img id="dn-img" alt=""><figcaption id="dn-empty">No picture chosen yet</figcaption></figure>
+    <label class="cms-btn ghost small file-btn">Choose a picture…<input type="file" id="dn-file" accept="image/*"></label>
+    <label class="cms-field"><span>Where it sits</span>
+      <select id="dn-place">
+        <option value="illum">Across the text</option>
+        <option value="illum wide">Extra wide</option>
+        <option value="illum side">Beside the text, on the right</option>
+        <option value="illum side left">Beside the text, on the left</option>
+      </select></label>
+    <label class="cms-field"><span>Title under the picture (optional, small capitals)</span><input id="dn-title" maxlength="80"></label>
+    <label class="cms-field"><span>Caption (optional)</span><input id="dn-cap" maxlength="240"></label>
+    <label class="cms-field"><span>Description for screen readers (alt text)</span><input id="dn-alt" maxlength="240"></label>
+    <p class="cms-hint">The picture is resized for the web and saved in img/uploads/.</p>
+    <div class="dlg-actions"><button class="cms-btn ghost small" value="cancel">Cancel</button><button class="cms-btn small" value="ok" id="dn-ok" disabled>Add picture</button></div>
   </form>
 </dialog>
 
@@ -305,6 +352,6 @@
 
 <div class="cms-toast" id="cms-toast" role="status" aria-live="polite"></div>
 
-<script src="js/cms.js?v=dce8e799"></script>
+<script src="js/cms.js?v=de840d3a"></script>
 </body>
 </html>
