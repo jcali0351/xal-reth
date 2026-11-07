@@ -20,7 +20,11 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   Home · About (The Sacred Triangle, The Chronicle, The Canon, The Legends, The Library) · Community (News, Blog, Testimonials, Merch) ·
   Faith (Devotion, The Altar) · Addons · Guild Roster · Join · Sitemap · Contact. Submenus open on hover on wide screens and on click or tap
   everywhere (script in site.js, styles at the end of style.css); the one holding the current page is highlighted.
-  The full menu shows above 860px; at 860px and below it folds into the Menu button. Keep it if the site is regenerated.
+  The full menu shows above 860px; at 860px and below it folds into the Menu button.
+  The menu glows and moves ("THE GLOWING MENU" at the end of style.css, "Menu FX" at the end of site.js): a soft light glides
+  between items, dropdowns swing out in 3D and unblur with a shimmering top edge, a cursor spotlight and items fading in one by
+  one; the phone menu unfurls and its submenus slide open; the menu fades in once per visit; reduced-motion visitors get it
+  still. Keep it if the site is regenerated.
 - The logo (the violet triangle sigil, "Observe ▽ Analyze ▽ Transcend") is the site's brand mark: `img/xalreth-mark.png`
   in the header and footer of every page, `img/xalreth-logo.webp`/`.png` at the top of the homepage hero, and the tab icon
   (`favicon.svg` embeds it; `apple-touch-icon.png`). Keep these if the site is regenerated.
