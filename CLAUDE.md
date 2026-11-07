@@ -152,6 +152,22 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   category/icons kept between runs and filled a few thousand per run, status.json): one commit replaced every hour so the
   repository never grows. The page reads it from raw.githubusercontent.com. Never commit auction data to main, and never
   hand-edit the ah-data branch. Until the first run it says the Ministry is counting. Keep it if the site is regenerated.
+- Analytics and X in the Sanctum Editor (plan and decisions: `docs/CMS_ANALYTICS_AND_X.md`). Counting: `js/counter.js`
+  (loaded by site.js; off until its CODE holds the site's GoatCounter code) loads GoatCounter's count.js: no cookies, no
+  personal data, nothing counted for Do Not Track / Global Privacy Control, noindex pages or localhost. Goals are
+  GoatCounter events: `goal/join-request`, `goal/officer-application`, `goal/contact`, `goal/talk-to-john` (recruit.js,
+  contact.js and chat.js fire `xr:sent` after a successful send), `download/<zip>` (clicks on .zip links) and settled
+  Seeking Glass searches `search/<words>` or `search-none/<words>` (search.js fires `xr:search`). `counts.html`, "What
+  the Sanctum Counts", explains it; site.js adds a link to it to every footer's small print. The keys live only in the
+  admin Worker, `tools/admin-worker/` (worker.js + README.md; Cloudflare, free plan, KV binding XR, a 5-minute cron):
+  it answers only requests carrying a GitHub token that GitHub confirms can push to the repository (the editor's own
+  sign-in), proxies the GoatCounter API (cached 5 minutes) and posts to X with OAuth 1.0a user keys (queue, schedule,
+  a MAX_POSTS_PER_DAY cap, metrics cached 12 hours). The editor's "Analytics" tab (ranges, cards with change against the
+  previous period, chart, sources pie, referrers, top pages, goals, searches incl. failed ones, screens, browsers,
+  systems, countries, CSV) and "X" tab (composer with the 280 counter counting links as 23 and a warning that posts with
+  links cost much more, pictures from img/, post now, schedule, drafts, queue with edit/duplicate/pause/post now/delete,
+  month calendar, suggestions from news.json, performance and top posts, the posting log) keep the Worker address in
+  localStorage "xr-admin-worker" (not secret). Never put the GoatCounter, X or Cloudflare keys in a file.
 - The Path of the Coil, the living layer (`js/coil-path.js` + `css/coil-path.css`, loaded on every page by the loader at
   the top of site.js with `?v=` in `cpv`: bump it when either changes). Everything lives in the visitor's own browser
   (localStorage "xr-path-v1"), nothing is sent anywhere. Reputation and eight ranks (Wanderer, Seeker, Acolyte, Initiate,

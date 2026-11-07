@@ -7,7 +7,7 @@
   var me = document.currentScript;
   var base = me && me.src ? me.src.replace(/site\.js(\?.*)?$/, "") : "";
   window.COIL_BASE = base;
-  var v = "?v=20261107v"; // bump when search or chat change, so visitors get the new copy at once
+  var v = "?v=20261107w"; // bump when search or chat change, so visitors get the new copy at once
   if (!document.querySelector('link[href*="css/search.css"]')) {
     var l = document.createElement("link"); l.rel = "stylesheet"; l.href = base + "css/search.css" + v; document.head.appendChild(l);
   }
@@ -34,6 +34,18 @@
   if (!document.querySelector('script[src*="js/coil-path.js"]')) {
     var cp = document.createElement("script"); cp.src = base + "js/coil-path.js" + cpv; cp.defer = true; document.head.appendChild(cp);
   }
+  // What the sanctum counts: cookieless page views and goals through GoatCounter (js/counter.js; off until its CODE is set).
+  if (!document.querySelector('script[src*="js/counter.js"]')) {
+    var ct = document.createElement("script"); ct.src = base + "js/counter.js?v=20261107c1"; ct.defer = true; document.head.appendChild(ct);
+  }
+  // ...and every footer says so, with a link to counts.html (added here so every page, old or new, has it).
+  function countsLink() {
+    var small = document.querySelector(".site-footer small");
+    if (!small || small.querySelector(".counts-link")) return;
+    var a = document.createElement("a"); a.className = "counts-link"; a.href = base + "counts.html"; a.textContent = "What the sanctum counts";
+    small.appendChild(document.createTextNode(" ")); small.appendChild(a); small.appendChild(document.createTextNode("."));
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", countsLink); else countsLink();
 })();
 
 // The guild frame on every page: the gold filigree bar with the crest crowns the main content under each page's title

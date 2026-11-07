@@ -88,6 +88,7 @@
             throw new Error(data.message || "not sent");
           }
           form.reset();
+          try { document.dispatchEvent(new CustomEvent("xr:sent", { detail: { form: kind === "officer" ? "officer-application" : "join-request" } })); } catch (e) {}   // counted as a goal (js/counter.js)
           Array.prototype.forEach.call(form.querySelectorAll("textarea[data-max]"), function (ta) { ta.dispatchEvent(new Event("input")); });
           show(kind === "officer"
             ? "<strong>APPLICATION RECEIVED.</strong> The Inner Scale will read it slowly and with great seriousness, then reply. Officers are chosen, not hurried."

@@ -284,6 +284,7 @@
     if (filter !== "All" && !c[filter]) filter = "All";
     renderChips(c);
     var shown = filter === "All" ? list : list.filter(function (x) { return x.e.k === filter; });
+    try { document.dispatchEvent(new CustomEvent("xr:search", { detail: { q: q.trim(), n: list.length } })); } catch (e) {}   // js/counter.js counts settled searches
     if (!shown.length) {
       results.innerHTML = '<div class="ss-empty"><span class="ss-glyph">▽</span>The Coil holds nothing for <b>' + esc(q) + '</b>.<br>Try fewer words, or one of these.</div>' +
         '<div class="ss-recent" style="justify-content:center">' + IDLE_HINTS.slice(0, 6).map(function (h) { return '<button type="button" data-q="' + esc(h) + '">' + esc(h) + "</button>"; }).join("") + "</div>";

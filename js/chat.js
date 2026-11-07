@@ -476,6 +476,7 @@
         form.closest(".vx-row").remove();
         var last = state.msgs[state.msgs.length - 1]; if (last) last.sent = true;
         push({ r: "sys", text: "Message sent to John" });
+        try { document.dispatchEvent(new CustomEvent("xr:sent", { detail: { form: "talk-to-john" } })); } catch (e) {}   // counted as a goal (js/counter.js)
         push({ r: "bot", text: "Your words are on their way to John's inbox. He'll answer you at **" + email + "**, usually within a day. Until then, I'm still here if you want to keep talking." });
         setChips(MORE_CHIPS.filter(function (c) { return !c.human; }));
       })

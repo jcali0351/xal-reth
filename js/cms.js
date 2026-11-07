@@ -270,6 +270,8 @@
     if (name === "fonts" && !(fonts && fonts.dirty)) loadFonts();
     if (name === "bank") loadBank();
     if (name === "fish") loadFish();
+    if (name === "stats") { renderWorkerBoxes(); if (!an.loaded) loadAnalytics(); }
+    if (name === "x") { renderWorkerBoxes(); loadX(); }
   }
   function route() {
     var h = decodeURIComponent(location.hash.slice(1));
@@ -1924,6 +1926,399 @@
     }).then(function () { busy(btn, false); published("The Fishing leaderboard's hidden list"); loadFish(); })
       .catch(function (e) { busy(btn, false); toast(e.message, true); });
   });
+
+  /* ================================================================ THE ADMIN WORKER (tools/admin-worker/)
+     Holds the GoatCounter and X keys. The editor sends it the same GitHub token it signs in with; the Worker asks
+     GitHub whether that token can save to the site, and answers only then. Its address is kept in this browser. */
+  var AW_KEY = "xr-admin-worker";
+  var aw = { url: "", health: null };
+  try { aw.url = localStorage.getItem(AW_KEY) || ""; } catch (e) {}
+  function awFetch(path, opts) {
+    opts = opts || {};
+    if (!aw.url) return Promise.reject(new Error("Connect the admin Worker first (its address goes in the box above)."));
+    var headers = { Authorization: "Bearer " + token };
+    if (opts.body) headers["Content-Type"] = "application/json";
+    return fetch(aw.url.replace(/\/+$/, "") + path, { method: opts.method || "GET", headers: headers, body: opts.body ? JSON.stringify(opts.body) : undefined, cache: "no-store" })
+      .then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (j) {
+          if (!r.ok) throw new Error(j.error || ("The admin Worker answered " + r.status));
+          return j;
+        });
+      }, function () { throw new Error("The admin Worker can't be reached. Check its address, and that it allows this site."); });
+  }
+  function renderWorkerBoxes() {
+    $$("[data-worker-box]").forEach(function (box) {
+      if (!box.firstChild) {
+        box.innerHTML = '<div class="cms-field inline"><span>Admin Worker address</span><input type="url" data-aw-url placeholder="https://xalreth-admin.yourname.workers.dev">' +
+          '<button class="cms-btn small ghost" type="button" data-aw-save>Save</button></div><p class="cms-hint" data-aw-status></p>';
+        $("[data-aw-save]", box).addEventListener("click", function () {
+          var v = $("[data-aw-url]", box).value.trim();
+          if (v && !/^https:\/\/[^\s/]+/.test(v)) { toast("The address should start with https://", true); return; }
+          aw.url = v; try { if (v) localStorage.setItem(AW_KEY, v); else localStorage.removeItem(AW_KEY); } catch (e) {}
+          aw.health = null; an.loaded = false; renderWorkerBoxes();
+          checkWorker().then(function () { if (!$('[data-panel="stats"]').hidden) loadAnalytics(); if (!$('[data-panel="x"]').hidden) loadX(); });
+        });
+      }
+      $("[data-aw-url]", box).value = aw.url;
+    });
+    if (!aw.health) checkWorker(); else paintWorker();
+  }
+  function paintWorker(err) {
+    var h = aw.health;
+    var msg = !aw.url ? "Not connected. Set up the Worker with tools/admin-worker/README.md, then paste its address here." :
+      err ? "Not reachable: " + err :
+      h ? "Connected. GoatCounter: " + (h.analytics ? "ready" : "not set up yet") + ". X: " + (h.x ? "ready" : "not set up yet") + ". Post queue store: " + (h.store ? "ready" : "not set up yet") + "." : "Checking…";
+    $$("[data-aw-status]").forEach(function (p) { p.textContent = msg; p.classList.toggle("warn", !h || !!err); });
+  }
+  function checkWorker() {
+    if (!aw.url) { paintWorker(); return Promise.resolve(null); }
+    paintWorker();
+    return awFetch("/health").then(function (h) { aw.health = h; paintWorker(); return h; }, function (e) { aw.health = null; paintWorker(e.message); return null; });
+  }
+
+  /* small table and bar helpers for the dashboards */
+  function csvOf(cols, rows) {
+    var q = function (v) { v = v == null ? "" : String(v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+    return cols.map(function (c) { return q(c.label); }).join(",") + "\n" + rows.map(function (r) { return cols.map(function (c) { return q(r[c.key]); }).join(","); }).join("\n");
+  }
+  function download(name, text) {
+    var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([text], { type: "text/csv" })); a.download = name;
+    document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  }
+  function dataTable(host, title, cols, rows, opts) {
+    opts = opts || {};
+    var state = { sort: opts.sort || cols[cols.length - 1].key, dir: -1, q: "" };
+    host.innerHTML = '<div class="an-tablehead"><h4>' + esc(title) + "</h4>" + (opts.search ? '<input type="search" placeholder="Search…" data-q>' : "") +
+      '<button type="button" class="cms-link" data-csv>CSV</button></div><div class="an-tablewrap"><table class="an-table"><thead><tr>' +
+      cols.map(function (c) { return '<th><button type="button" data-k="' + c.key + '">' + esc(c.label) + "</button></th>"; }).join("") + "</tr></thead><tbody></tbody></table></div>";
+    function paint() {
+      var list = rows.filter(function (r) { return !state.q || cols.some(function (c) { return String(r[c.key] == null ? "" : r[c.key]).toLowerCase().indexOf(state.q) >= 0; }); });
+      list.sort(function (a, b) { var x = a[state.sort], y = b[state.sort]; return (typeof x === "number" ? x - y : String(x).localeCompare(String(y))) * state.dir; });
+      $("tbody", host).innerHTML = list.slice(0, opts.max || 200).map(function (r) {
+        return "<tr>" + cols.map(function (c) { var v = r[c.key]; return "<td" + (typeof v === "number" ? ' class="n"' : "") + ">" + (c.html ? c.html(r) : esc(typeof v === "number" ? v.toLocaleString("en-US") : v)) + "</td>"; }).join("") + "</tr>";
+      }).join("") || '<tr><td colspan="' + cols.length + '" class="empty">Nothing yet.</td></tr>';
+    }
+    $$("th button", host).forEach(function (b) { b.addEventListener("click", function () { var k = b.dataset.k; state.dir = state.sort === k ? -state.dir : -1; state.sort = k; paint(); }); });
+    if (opts.search) $("[data-q]", host).addEventListener("input", function () { state.q = this.value.trim().toLowerCase(); paint(); });
+    $("[data-csv]", host).addEventListener("click", function () { download(slugify(title) + ".csv", csvOf(cols, rows)); });
+    paint();
+  }
+  function bars(title, list, total) {
+    total = total || list.reduce(function (s, x) { return s + x.count; }, 0) || 1;
+    return '<div class="an-bars"><h4>' + esc(title) + "</h4>" + (list.length ? list.slice(0, 10).map(function (x) {
+      var p = x.count / total * 100;
+      return '<div class="an-bar"><span class="nm">' + esc(x.name || "Unknown") + '</span><span class="v">' + x.count.toLocaleString("en-US") + " · " + p.toFixed(1) + '%</span><i style="width:' + p.toFixed(1) + '%"></i></div>';
+    }).join("") : '<p class="cms-hint">Nothing yet.</p>') + "</div>";
+  }
+
+  /* ================================================================ ANALYTICS (GoatCounter, through the Worker) */
+  var an = { loaded: false, range: "7", data: null, prev: null };
+  function anRange(r) {
+    var now = new Date(), day = 864e5, start, end = now, group = "day";
+    var midnight = new Date(now); midnight.setHours(0, 0, 0, 0);
+    if (r === "today") { start = midnight; group = "hour"; }
+    else if (r === "yesterday") { start = new Date(midnight - day); end = midnight; group = "hour"; }
+    else if (r === "custom") {
+      var f = $("[data-an-from]").value, t = $("[data-an-to]").value;
+      if (!f || !t) throw new Error("Choose both dates.");
+      start = new Date(f + "T00:00:00"); end = new Date(new Date(t + "T00:00:00").getTime() + day);
+    } else { start = new Date(midnight - (Number(r) - 1) * day); }
+    var len = end - start;
+    return { start: start, end: end, group: group, prevStart: new Date(start - len), prevEnd: start };
+  }
+  function loadAnalytics() {
+    var body = $("[data-an-body]");
+    if (!aw.url) { body.innerHTML = '<p class="cms-hint">Connect the admin Worker to see the numbers.</p>'; return; }
+    var r;
+    try { r = anRange(an.range); } catch (e) { toast(e.message, true); return; }
+    body.innerHTML = '<p class="cms-hint">Counting the faithful…</p>';
+    var q = function (s, e) { return "/analytics?start=" + encodeURIComponent(s.toISOString()) + "&end=" + encodeURIComponent(e.toISOString()) + "&group=" + r.group; };
+    awFetch(q(r.start, r.end)).then(function (cur) {
+      an.data = cur;
+      return awFetch(q(r.prevStart, r.prevEnd)).catch(function () { return null; });
+    }).then(function (prev) { an.prev = prev; an.loaded = true; renderAnalytics(r); })
+      .catch(function (e) { body.innerHTML = '<p class="cms-hint warn">' + esc(e.message) + "</p>"; });
+  }
+  var SOCIAL = /(^|\.)(x\.com|t\.co|twitter\.com|discord(app)?\.com|discord\.gg|reddit\.com|youtube\.com|youtu\.be|facebook\.com|instagram\.com|tiktok\.com|linkedin\.com|twitch\.tv|bsky\.app|threads\.net)/i;
+  var SEARCH = /(google\.|bing\.com|duckduckgo|yahoo\.|yandex\.|ecosia|brave\.com|startpage|baidu)/i;
+  function kindOfRef(name) {
+    if (!name || /^\(?(direct|no ?ref|unknown|none)/i.test(name)) return "Direct";
+    if (SEARCH.test(name)) return "Search";
+    if (SOCIAL.test(name)) return "Social";
+    if (/jcali0351\.github\.io/i.test(name)) return "Direct";
+    return "Other sites";
+  }
+  function sums(d) {
+    var hits = (d && d.hits && d.hits.hits) || [];
+    var pages = hits.filter(function (h) { return !h.event; }), events = hits.filter(function (h) { return h.event; });
+    var total = (d && d.total && d.total.total) || 0, ev = (d && d.total && d.total.total_events) || 0;
+    return { views: Math.max(0, total - ev), events: ev, pages: pages, evlist: events };
+  }
+  function change(cur, prev) {
+    if (prev == null) return "";
+    if (!prev) return cur ? '<small class="up">new</small>' : '<small>±0</small>';
+    var p = (cur - prev) / prev * 100;
+    return '<small class="' + (p >= 0 ? "up" : "down") + '">' + (p >= 0 ? "▲ " : "▼ ") + Math.abs(p).toFixed(1) + "% vs previous</small>";
+  }
+  function renderAnalytics(r) {
+    var d = an.data, s = sums(d), p = an.prev ? sums(an.prev) : null;
+    var refs = ((d.toprefs && d.toprefs.stats) || []).map(function (x) { return { name: x.name || "(direct)", count: x.count, kind: kindOfRef(x.name) }; });
+    var kinds = {}; refs.forEach(function (x) { kinds[x.kind] = (kinds[x.kind] || 0) + x.count; });
+    var kindList = Object.keys(kinds).map(function (k) { return { name: k, count: kinds[k] }; }).sort(function (a, b) { return b.count - a.count; });
+    var topKind = kindList[0];
+    // the chart: hourly for a day, else daily
+    var stats = (d.total && d.total.stats) || [], pts = [];
+    if (r.group === "hour") stats.forEach(function (st) { (st.hourly || []).forEach(function (v, i) { pts.push({ label: st.day + " " + i + ":00", v: v }); }); });
+    else stats.forEach(function (st) { pts.push({ label: st.day, v: st.daily || 0 }); });
+    if (pts.length > 120) {   // a year: by week
+      var wk = []; for (var i = 0; i < pts.length; i += 7) wk.push({ label: pts[i].label, v: pts.slice(i, i + 7).reduce(function (a, b) { return a + b.v; }, 0) });
+      pts = wk;
+    }
+    var max = Math.max.apply(null, pts.map(function (x) { return x.v; }).concat([1]));
+    var W = 900, H = 200, bw = W / Math.max(pts.length, 1);
+    var chart = '<svg viewBox="0 0 ' + W + " " + (H + 24) + '" class="an-chart" role="img" aria-label="Views over time">' +
+      pts.map(function (x, i) { var h = x.v / max * H; return '<rect x="' + (i * bw + 1).toFixed(1) + '" y="' + (H - h).toFixed(1) + '" width="' + Math.max(1, bw - 2).toFixed(1) + '" height="' + h.toFixed(1) + '"><title>' + esc(x.label) + ": " + x.v + "</title></rect>"; }).join("") +
+      '<text x="0" y="' + (H + 18) + '">' + esc(pts.length ? pts[0].label : "") + '</text><text x="' + W + '" y="' + (H + 18) + '" text-anchor="end">' + esc(pts.length ? pts[pts.length - 1].label : "") + "</text>" +
+      '<text x="4" y="14">' + max.toLocaleString("en-US") + "</text></svg>";
+    var pie = "", acc = 0, totalRef = kindList.reduce(function (a, b) { return a + b.count; }, 0) || 1, COL = { Direct: "#b98cff", Search: "#4fd8ff", Social: "#ff7ad9", "Other sites": "#ffd24a" };
+    pie = "conic-gradient(" + kindList.map(function (k) { var a0 = acc; acc += k.count / totalRef * 360; return COL[k.name] + " " + a0.toFixed(1) + "deg " + acc.toFixed(1) + "deg"; }).join(",") + ")";
+    var goals = s.evlist.filter(function (h) { return /^(goal|download)\//.test(h.path); });
+    var searches = s.evlist.filter(function (h) { return /^search\//.test(h.path); }), failed = s.evlist.filter(function (h) { return /^search-none\//.test(h.path); });
+    var body = $("[data-an-body]");
+    body.innerHTML =
+      '<div class="an-cards">' +
+        '<div class="an-card"><span>Page views</span><b>' + s.views.toLocaleString("en-US") + "</b>" + change(s.views, p && p.views) + "</div>" +
+        '<div class="an-card"><span>Goals reached</span><b>' + goals.reduce(function (a, h) { return a + h.count; }, 0).toLocaleString("en-US") + "</b>" + change(goals.reduce(function (a, h) { return a + h.count; }, 0), p && p.evlist.filter(function (h) { return /^(goal|download)\//.test(h.path); }).reduce(function (a, h) { return a + h.count; }, 0)) + "</div>" +
+        '<div class="an-card"><span>Pages visited</span><b>' + s.pages.length + (d.hits && d.hits.more ? "+" : "") + "</b><small>different pages</small></div>" +
+        '<div class="an-card"><span>Top source</span><b>' + esc(topKind ? topKind.name : "–") + "</b><small>" + (topKind ? (topKind.count / totalRef * 100).toFixed(0) + "% of visits with a known source" : "") + "</small></div>" +
+        '<div class="an-card"><span>Searches</span><b>' + searches.concat(failed).reduce(function (a, h) { return a + h.count; }, 0).toLocaleString("en-US") + "</b><small>" + failed.reduce(function (a, h) { return a + h.count; }, 0) + " found nothing</small></div>" +
+      "</div>" +
+      '<div class="an-panel">' + chart + '<p class="cms-hint">' + esc(new Date(d.start).toLocaleString()) + " to " + esc(new Date(d.end).toLocaleString()) + " · fetched " + esc(new Date(d.fetchedAt).toLocaleTimeString()) + "</p></div>" +
+      '<div class="an-grid">' +
+        '<div class="an-panel"><h4>Where visitors come from</h4><div class="an-pie" style="background:' + pie + '"></div><ul class="an-legend">' +
+          kindList.map(function (k) { return '<li><i style="background:' + COL[k.name] + '"></i>' + esc(k.name) + " <b>" + k.count.toLocaleString("en-US") + "</b> (" + (k.count / totalRef * 100).toFixed(1) + "%)</li>"; }).join("") + "</ul></div>" +
+        '<div class="an-panel" data-t-refs></div>' +
+      "</div>" +
+      '<div class="an-panel" data-t-pages></div>' +
+      '<div class="an-grid">' +
+        '<div class="an-panel" data-t-goals></div>' +
+        '<div class="an-panel" data-t-search></div>' +
+      "</div>" +
+      '<div class="an-grid four">' + bars("Screens", (d.sizes && d.sizes.stats) || []) + bars("Browsers", (d.browsers && d.browsers.stats) || []) + bars("Systems", (d.systems && d.systems.stats) || []) + bars("Countries", (d.locations && d.locations.stats) || []) + "</div>" +
+      '<p class="cms-hint">Not counted, on purpose: who anyone is, live visitors, sessions, cities. GoatCounter keeps no cookies or personal data. Its own dashboard has more detail: <a class="cms-link" href="https://' + "www.goatcounter.com" + '" target="_blank" rel="noopener">goatcounter.com</a>.</p>';
+    dataTable($("[data-t-refs]", body), "Referrers", [{ key: "name", label: "Site" }, { key: "kind", label: "Kind" }, { key: "count", label: "Visits" }], refs, { search: true });
+    dataTable($("[data-t-pages]", body), "Top pages", [
+      { key: "path", label: "Page", html: function (h) { return '<a class="cms-link" href="' + esc(LIVE + h.path.replace(/^\/(xal-reth\/)?/, "")) + '" target="_blank" rel="noopener">' + esc(h.path) + "</a>"; } },
+      { key: "title", label: "Title" }, { key: "count", label: "Views" }],
+      s.pages.map(function (h) { return { path: h.path, title: h.title || "", count: h.count }; }), { search: true });
+    dataTable($("[data-t-goals]", body), "Goals", [{ key: "goal", label: "Goal" }, { key: "count", label: "Times" }],
+      goals.map(function (h) { return { goal: h.path.replace(/^goal\//, "Sent: ").replace(/^download\//, "Downloaded: "), count: h.count }; }));
+    dataTable($("[data-t-search]", body), "The Seeking Glass", [{ key: "q", label: "Searched for" }, { key: "found", label: "Found" }, { key: "count", label: "Times" }],
+      searches.map(function (h) { return { q: h.path.replace(/^search\//, ""), found: "yes", count: h.count }; })
+        .concat(failed.map(function (h) { return { q: h.path.replace(/^search-none\//, ""), found: "nothing", count: h.count }; })), { search: true });
+  }
+  $$("[data-range]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      an.range = b.dataset.range;
+      $$("[data-range]").forEach(function (x) { x.classList.toggle("ghost", x !== b); });
+      loadAnalytics();
+    });
+  });
+  $("[data-an-refresh]").addEventListener("click", function () { loadAnalytics(); });
+
+  /* ================================================================ X (through the Worker) */
+  var xs = { pics: [], queue: null, month: null };
+  function xLen(t) { return String(t || "").replace(/https?:\/\/\S+/g, "x".repeat(23)).length; }   // X counts every link as 23 characters
+  function hasLink(t) { return /https?:\/\/\S+|\b[\w-]+\.(com|net|org|io|gg|html)\b/i.test(t || ""); }
+  function xMeter() {
+    var t = $("[data-x-text]").value, n = xLen(t);
+    var c = $("[data-x-count]"); c.textContent = n + " / 280"; c.classList.toggle("over", n > 280);
+    $("[data-x-warn]").hidden = !hasLink(t);
+  }
+  $("[data-x-text]").addEventListener("input", xMeter);
+  $("[data-x-tz]").textContent = (Intl.DateTimeFormat().resolvedOptions().timeZone || "") + " time";
+  function xPics() {
+    $("[data-x-pics]").innerHTML = xs.pics.map(function (p, i) {
+      return '<span class="x-pic"><img src="' + esc(SITE + p) + '" alt=""><button type="button" data-unpic="' + i + '" aria-label="Remove picture">×</button></span>';
+    }).join("") || '<span class="cms-hint">No pictures.</span>';
+  }
+  $("[data-x-pics]").addEventListener("click", function (e) { var b = e.target.closest("[data-unpic]"); if (b) { xs.pics.splice(+b.dataset.unpic, 1); xPics(); } });
+  $("[data-x-pick]").addEventListener("click", function () {
+    var box = $("[data-x-picker]");
+    if (!box.hidden) { box.hidden = true; return; }
+    var list = []; tree.forEach(function (v, k) { if (/^img\/(uploads|art|triangle)\/[^/]+\.(png|jpe?g|webp|gif)$/i.test(k) && v.size < 5 * 1024 * 1024) list.push(k); });
+    list.sort().reverse();
+    box.innerHTML = list.map(function (p) { return '<button type="button" data-pic="' + esc(p) + '" title="' + esc(p) + '"><img loading="lazy" src="' + esc(SITE + p) + '" alt=""></button>'; }).join("") || '<p class="cms-hint">No pictures found.</p>';
+    box.hidden = false;
+  });
+  $("[data-x-picker]").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-pic]"); if (!b) return;
+    if (xs.pics.length >= 4) { toast("X allows four pictures per post.", true); return; }
+    if (xs.pics.indexOf(b.dataset.pic) < 0) xs.pics.push(b.dataset.pic);
+    xPics();
+  });
+  function xItem(status) {
+    var text = $("[data-x-text]").value.trim();
+    if (!text) throw new Error("Write the post first.");
+    if (xLen(text) > 280) throw new Error("The post is longer than 280 characters.");
+    var at = $("[data-x-at]").value;
+    return { id: $("[data-x-id]").value || undefined, text: text, media: xs.pics.slice(), at: at ? new Date(at).toISOString() : null, status: status };
+  }
+  function xClear() { $("[data-x-id]").value = ""; $("[data-x-text]").value = ""; $("[data-x-at]").value = ""; xs.pics = []; xPics(); xMeter(); }
+  $("[data-x-clear]").addEventListener("click", xClear);
+  $("[data-x-now]").addEventListener("click", function () {
+    var btn = this, it;
+    try { it = xItem("draft"); } catch (e) { toast(e.message, true); return; }
+    if (!confirm("Post this to @xalrethrp now?" + (hasLink(it.text) ? "\n\nIt has a link, which X charges much more for." : ""))) return;
+    busy(btn, true, "Posting…");
+    var send = it.id ? awFetch("/x/queue", { method: "PUT", body: it }).then(function () { return awFetch("/x/post", { method: "POST", body: { id: it.id } }); })
+      : awFetch("/x/post", { method: "POST", body: { text: it.text, media: it.media } });
+    send.then(function (r) { busy(btn, false); toast("Posted to X. Glory to Xal'Reth."); xClear(); loadQueue(); if (r && r.id) window.open("https://x.com/xalrethrp/status/" + r.id, "_blank", "noopener"); })
+      .catch(function (e) { busy(btn, false); toast(e.message, true); });
+  });
+  $("[data-x-schedule]").addEventListener("click", function () {
+    var btn = this, it;
+    try { it = xItem("scheduled"); } catch (e) { toast(e.message, true); return; }
+    if (!it.at) { toast("Choose a date and time first.", true); return; }
+    if (Date.parse(it.at) < Date.now() - 60000) { toast("That time has already passed.", true); return; }
+    busy(btn, true);
+    awFetch("/x/queue", { method: "PUT", body: it }).then(function (q) { busy(btn, false); toast("Scheduled for " + new Date(it.at).toLocaleString() + "."); xClear(); paintQueue(q); })
+      .catch(function (e) { busy(btn, false); toast(e.message, true); });
+  });
+  $("[data-x-draft]").addEventListener("click", function () {
+    var btn = this, it;
+    try { it = xItem("draft"); } catch (e) { toast(e.message, true); return; }
+    busy(btn, true);
+    awFetch("/x/queue", { method: "PUT", body: it }).then(function (q) { busy(btn, false); toast("Draft saved."); xClear(); paintQueue(q); })
+      .catch(function (e) { busy(btn, false); toast(e.message, true); });
+  });
+  function toLocalInput(iso) {
+    if (!iso) return "";
+    var d = new Date(iso), z = function (n) { return ("0" + n).slice(-2); };
+    return d.getFullYear() + "-" + z(d.getMonth() + 1) + "-" + z(d.getDate()) + "T" + z(d.getHours()) + ":" + z(d.getMinutes());
+  }
+  function loadQueue() {
+    return awFetch("/x/queue").then(paintQueue).catch(function (e) { $("[data-x-queue]").innerHTML = '<p class="cms-hint warn">' + esc(e.message) + "</p>"; });
+  }
+  function paintQueue(q) {
+    xs.queue = q;
+    var items = (q.items || []).slice().sort(function (a, b) { return (a.at || "9") < (b.at || "9") ? -1 : 1; });
+    $("[data-x-queue]").innerHTML = items.length ? '<table class="an-table"><thead><tr><th>Status</th><th>When</th><th>Post</th><th>Pictures</th><th></th></tr></thead><tbody>' + items.map(function (it) {
+      return '<tr><td><span class="x-st ' + esc(it.status) + '">' + esc(it.status) + "</span>" + (it.error ? '<small class="warn">' + esc(it.error) + "</small>" : "") + "</td>" +
+        "<td>" + (it.at ? esc(new Date(it.at).toLocaleString()) : "–") + "</td><td>" + esc(it.text.length > 120 ? it.text.slice(0, 117) + "…" : it.text) + "</td><td>" + (it.media || []).length + "</td>" +
+        '<td class="x-acts"><button class="cms-link" data-xa="edit" data-id="' + esc(it.id) + '">Edit</button> <button class="cms-link" data-xa="dup" data-id="' + esc(it.id) + '">Duplicate</button> ' +
+        (it.status === "scheduled" ? '<button class="cms-link" data-xa="pause" data-id="' + esc(it.id) + '">Pause</button> ' : it.status === "paused" || it.status === "failed" ? '<button class="cms-link" data-xa="resume" data-id="' + esc(it.id) + '">Schedule</button> ' : "") +
+        '<button class="cms-link" data-xa="now" data-id="' + esc(it.id) + '">Post now</button> <button class="cms-link danger" data-xa="del" data-id="' + esc(it.id) + '">Delete</button></td></tr>';
+    }).join("") + "</tbody></table>" : '<p class="cms-hint">Nothing waiting. Write something above, or use a suggestion.</p>';
+    $("[data-x-log]").innerHTML = (q.log || []).slice(0, 30).map(function (l) {
+      return "<li><b>" + esc(new Date(l.at).toLocaleString()) + "</b> " + esc(l.text.length > 140 ? l.text.slice(0, 137) + "…" : l.text) +
+        (l.id ? ' <a class="cms-link" href="https://x.com/xalrethrp/status/' + esc(l.id) + '" target="_blank" rel="noopener">View</a>' : "") + "</li>";
+    }).join("") || '<li class="cms-hint">Nothing posted from the editor yet.</li>';
+    paintCal();
+  }
+  $("[data-x-queue]").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-xa]"); if (!b || !xs.queue) return;
+    var it = (xs.queue.items || []).filter(function (x) { return x.id === b.dataset.id; })[0]; if (!it) return;
+    var a = b.dataset.xa;
+    if (a === "edit") {
+      $("[data-x-id]").value = it.id; $("[data-x-text]").value = it.text; $("[data-x-at]").value = toLocalInput(it.at); xs.pics = (it.media || []).slice(); xPics(); xMeter();
+      $("[data-x-text]").focus(); return;
+    }
+    var p;
+    if (a === "dup") p = awFetch("/x/queue", { method: "PUT", body: { text: it.text, media: it.media, at: it.at, status: "draft" } });
+    if (a === "pause") p = awFetch("/x/queue", { method: "PUT", body: Object.assign({}, it, { status: "paused" }) });
+    if (a === "resume") {
+      if (!it.at || Date.parse(it.at) < Date.now()) { toast("Edit it and choose a new time first.", true); return; }
+      p = awFetch("/x/queue", { method: "PUT", body: Object.assign({}, it, { status: "scheduled" }) });
+    }
+    if (a === "del") { if (!confirm("Delete this post from the queue?")) return; p = awFetch("/x/queue?id=" + encodeURIComponent(it.id), { method: "DELETE" }); }
+    if (a === "now") {
+      if (!confirm("Post this to @xalrethrp now?" + (hasLink(it.text) ? "\n\nIt has a link, which X charges much more for." : ""))) return;
+      p = awFetch("/x/post", { method: "POST", body: { id: it.id } }).then(function () { toast("Posted to X."); return awFetch("/x/queue"); });
+    }
+    if (p) p.then(paintQueue).catch(function (e2) { toast(e2.message, true); });
+  });
+  function paintCal() {
+    var box = $("[data-x-cal]"), now = new Date();
+    var m = xs.month || new Date(now.getFullYear(), now.getMonth(), 1);
+    xs.month = m;
+    var first = new Date(m.getFullYear(), m.getMonth(), 1), days = new Date(m.getFullYear(), m.getMonth() + 1, 0).getDate(), lead = (first.getDay() + 6) % 7;
+    var byDay = {};
+    ((xs.queue && xs.queue.items) || []).forEach(function (it) { if (!it.at) return; var d = new Date(it.at); if (d.getFullYear() === m.getFullYear() && d.getMonth() === m.getMonth()) (byDay[d.getDate()] = byDay[d.getDate()] || []).push(it); });
+    ((xs.queue && xs.queue.log) || []).forEach(function (l) { var d = new Date(l.at); if (d.getFullYear() === m.getFullYear() && d.getMonth() === m.getMonth()) (byDay[d.getDate()] = byDay[d.getDate()] || []).push({ status: "published", text: l.text, at: l.at }); });
+    var cells = "";
+    for (var i = 0; i < lead; i++) cells += '<div class="x-day empty"></div>';
+    for (var dd = 1; dd <= days; dd++) {
+      var isToday = dd === now.getDate() && m.getMonth() === now.getMonth() && m.getFullYear() === now.getFullYear();
+      cells += '<button type="button" class="x-day' + (isToday ? " today" : "") + '" data-day="' + dd + '"><b>' + dd + "</b>" +
+        (byDay[dd] || []).map(function (it) { return '<span class="x-st ' + esc(it.status) + '" title="' + esc(it.text) + '">' + esc(new Date(it.at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })) + "</span>"; }).join("") + "</button>";
+    }
+    box.innerHTML = '<div class="x-calhead"><button type="button" class="cms-link" data-cal="-1">◀</button><b>' + esc(m.toLocaleDateString(undefined, { month: "long", year: "numeric" })) +
+      '</b><button type="button" class="cms-link" data-cal="1">▶</button><small class="cms-hint">Click a day to schedule on it.</small></div><div class="x-grid">' +
+      ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(function (w) { return '<div class="x-dow">' + w + "</div>"; }).join("") + cells + "</div>";
+  }
+  $("[data-x-cal]").addEventListener("click", function (e) {
+    var c = e.target.closest("[data-cal]");
+    if (c) { xs.month = new Date(xs.month.getFullYear(), xs.month.getMonth() + Number(c.dataset.cal), 1); paintCal(); return; }
+    var d = e.target.closest("[data-day]");
+    if (d) {
+      var at = new Date(xs.month.getFullYear(), xs.month.getMonth(), Number(d.dataset.day), 10, 0);
+      $("[data-x-at]").value = toLocalInput(at.toISOString()); $("[data-x-text]").focus();
+      toast("Set to " + at.toLocaleString() + ". Write the post, then press Schedule.");
+    }
+  });
+  function suggestions() {
+    var box = $("[data-x-sugg]");
+    if (!tree.has("news.json")) { box.innerHTML = '<li class="cms-hint">The Herald has nothing yet.</li>'; return; }
+    readText("news.json").then(function (r) {
+      var items = JSON.parse(r.text).slice(0, 6);
+      var fit = function (s) { return xLen(s) <= 280 ? s : s.slice(0, 276 - (xLen(s) - s.length)) + "…"; };
+      box.innerHTML = items.map(function (n, i) {
+        var plain = fit(n.title + "\n\n" + (n.body || "") + "\n\nGlory to Xal'Reth.");
+        var linked = fit(n.title + "\n\n" + LIVE + (n.link || "news.html"));
+        return '<li><b>' + esc(n.title) + "</b><small>" + esc(n.category || "") + " · " + esc(n.date || "") + '</small><div><button type="button" class="cms-link" data-sugg="' + i + '" data-v="plain">Use (no link)</button> · ' +
+          '<button type="button" class="cms-link" data-sugg="' + i + '" data-v="link">Use with link</button></div>' +
+          '<textarea hidden data-sv="' + i + '-plain">' + esc(plain) + '</textarea><textarea hidden data-sv="' + i + '-link">' + esc(linked) + "</textarea></li>";
+      }).join("");
+    }).catch(function () { box.innerHTML = '<li class="cms-hint">The Herald could not be read.</li>'; });
+  }
+  $("[data-x-sugg]").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-sugg]"); if (!b) return;
+    $("[data-x-id]").value = ""; $("[data-x-text]").value = $('[data-sv="' + b.dataset.sugg + "-" + b.dataset.v + '"]').value; xMeter(); $("[data-x-text]").focus();
+  });
+  function loadPerf(refresh) {
+    var box = $("[data-x-perf]");
+    box.innerHTML = '<p class="cms-hint">Asking X…</p>';
+    awFetch("/x/metrics" + (refresh ? "?refresh=1" : "")).then(function (m) {
+      var rows = (m.posts || []).map(function (p) {
+        var eng = p.likes + p.reposts + p.replies + p.quotes + p.bookmarks;
+        return { date: (p.created || "").slice(0, 10), text: p.text, impressions: p.impressions, likes: p.likes, reposts: p.reposts, replies: p.replies, bookmarks: p.bookmarks,
+          clicks: p.clicks == null ? "–" : p.clicks, rate: p.impressions ? Math.round(eng / p.impressions * 1000) / 10 : 0, id: p.id, created: p.created };
+      });
+      var month = rows.filter(function (r) { return Date.now() - Date.parse(r.created) < 30 * 864e5; });
+      var top = month.slice().sort(function (a, b) { return b.rate - a.rate || b.impressions - a.impressions; }).slice(0, 5);
+      var sum = function (k) { return month.reduce(function (a, r) { return a + (typeof r[k] === "number" ? r[k] : 0); }, 0); };
+      box.innerHTML = '<div class="an-cards">' +
+        '<div class="an-card"><span>Posts, 30 days</span><b>' + month.length + "</b></div>" +
+        '<div class="an-card"><span>Impressions</span><b>' + sum("impressions").toLocaleString("en-US") + "</b></div>" +
+        '<div class="an-card"><span>Likes</span><b>' + sum("likes").toLocaleString("en-US") + "</b></div>" +
+        '<div class="an-card"><span>Reposts</span><b>' + sum("reposts").toLocaleString("en-US") + "</b></div>" +
+        '<div class="an-card"><span>Engagement</span><b>' + (sum("impressions") ? (Math.round((sum("likes") + sum("reposts") + sum("replies") + sum("bookmarks")) / sum("impressions") * 1000) / 10) : 0) + "%</b></div></div>" +
+        '<h4>Top posts of the last 30 days</h4><ol class="x-top">' + (top.map(function (r) { return "<li>" + esc(r.text.slice(0, 120)) + " <small>" + r.impressions.toLocaleString("en-US") + " impressions · " + r.rate + "% engaged</small></li>"; }).join("") || '<li class="cms-hint">No posts in the last 30 days.</li>') + "</ol>" +
+        '<div data-t-x></div><p class="cms-hint">Read ' + esc(new Date(m.fetchedAt).toLocaleString()) + (m.linkClicks ? "" : ". Link clicks are only available for posts from the last 30 days.") +
+        ' <button type="button" class="cms-link" data-x-refresh>Refresh from X</button> (costs a little credit)</p>';
+      dataTable($("[data-t-x]", box), "Recent posts", [
+        { key: "date", label: "Date" }, { key: "text", label: "Post", html: function (r) { return '<a class="cms-link" href="https://x.com/xalrethrp/status/' + esc(r.id) + '" target="_blank" rel="noopener">' + esc(r.text.slice(0, 90)) + "</a>"; } },
+        { key: "impressions", label: "Impressions" }, { key: "likes", label: "Likes" }, { key: "reposts", label: "Reposts" }, { key: "replies", label: "Replies" },
+        { key: "bookmarks", label: "Bookmarks" }, { key: "clicks", label: "Link clicks" }, { key: "rate", label: "Engaged %" }], rows, { sort: "date" });
+      $("[data-x-refresh]", box).addEventListener("click", function () { if (confirm("Read fresh stats from X? This uses a little of the API credit.")) loadPerf(true); });
+    }).catch(function (e) { box.innerHTML = '<p class="cms-hint warn">' + esc(e.message) + "</p>"; });
+  }
+  function loadX() {
+    xPics(); xMeter(); suggestions();
+    if (!aw.url) { $("[data-x-queue]").innerHTML = '<p class="cms-hint">Connect the admin Worker to schedule and post.</p>'; paintCal(); return; }
+    loadQueue(); loadPerf(false);
+  }
 
   /* ================================================================ go */
   window.addEventListener("hashchange", function () { if (tree.size && $("#cms-editor").hidden && $("#cms-post").hidden) route(); });

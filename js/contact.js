@@ -118,6 +118,7 @@
           throw new Error(data.message || "not sent");
         }
         form.reset(); syncTopic(); syncCount();
+        try { document.dispatchEvent(new CustomEvent("xr:sent", { detail: { form: "contact" } })); } catch (e) {}   // counted as a goal (js/counter.js)
         showDone("<strong>MESSAGE RECEIVED.</strong> The Inner Scale has your words. A reply will slither your way as soon as someone finishes basking.");
       }).catch(function () {
         showDone("<strong>THE COIL HICCUPPED.</strong> We couldn't send that just now. Use <b>Copy message</b> and paste it in our <a href=\"" + CONTACT.discord + "\" target=\"_blank\" rel=\"noopener\">Discord</a>, or try again in a minute.");
