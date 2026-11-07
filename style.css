@@ -1283,8 +1283,120 @@ a.card:hover, .card.addon:hover { border-color: rgba(201,162,255,.6); box-shadow
   .site-nav .nav-glow { display: none; }
 }
 
+/* =====================================================================
+   THE FROSTED GLASS MENU — the header as frosted, reflective glass, the menu as a glass capsule
+   (about 15% larger than before), a glass bead for the gliding light, and on every page load the glass
+   condenses out of a blur, a flash of light crosses it and the items glow in one by one (site.js: Menu FX).
+   ===================================================================== */
+@keyframes glass-sheen { 0%, 62% { background-position: 130% 0; } 100% { background-position: -30% 0; } }
+@keyframes glass-flash { from { background-position: 130% 0; opacity: 1; } to { background-position: -30% 0; opacity: 1; } }
+@keyframes glass-in { from { opacity: 0; transform: scaleX(.72) translateY(-6px); filter: blur(12px) brightness(2.2); } 60% { filter: blur(0) brightness(1.5); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes glass-bar-in { from { box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 0 90px 10px rgba(166,107,255,.75); } }
+@keyframes glass-pulse { 0%, 100% { box-shadow: var(--glass-shadow), 0 0 26px rgba(138, 77, 255, .38); } 50% { box-shadow: var(--glass-shadow), 0 0 40px rgba(166, 107, 255, .6), 0 0 70px rgba(138, 77, 255, .22); } }
+
+/* the bar: frosted glass with a bright upper edge and a fine frost grain */
+.site-header {
+  background: linear-gradient(180deg, rgba(46, 26, 82, .58) 0%, rgba(18, 10, 34, .66) 55%, rgba(10, 6, 20, .74) 100%);
+  -webkit-backdrop-filter: blur(18px) saturate(1.7); backdrop-filter: blur(18px) saturate(1.7);
+  border-bottom: 1px solid rgba(225, 205, 255, .2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16), inset 0 -1px 0 rgba(166, 107, 255, .28), 0 12px 40px -14px rgba(0, 0, 0, .85), 0 6px 40px -10px rgba(138, 77, 255, .4);
+}
+.site-header::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .11) 0%, rgba(255, 255, 255, .03) 46%, rgba(255, 255, 255, 0) 52%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: .55; mix-blend-mode: soft-light;
+}
+.site-header .wrap { min-height: 74px; max-width: 1280px; }
+.brand { font-size: 1.15rem; gap: 12px; }
+.brand .brand-mark { width: 46px; height: 46px; }
+html.nav-intro .site-header { animation: glass-bar-in 1.6s ease-out both; }
+
+/* menu text: about 15% larger on ordinary screens, easing down on narrow laptops so it still fits on one line */
+.site-nav > ul > li > a, .site-nav .sub-toggle { font-size: clamp(.7rem, .2rem + .82vw, .9rem); letter-spacing: .09em; }
+
+@media (min-width: 861px) {
+  .site-nav > ul > li > a, .site-nav .sub-toggle { padding: .72em clamp(.45em, -.6em + 1.1vw, .8em); white-space: nowrap; }
+  .site-header .wrap { gap: 12px; }
+  .site-header .wrap > * { flex-shrink: 0; }
+}
+/* narrow laptops: the sigil stands alone so the whole menu still fits on one line */
+@media (min-width: 861px) and (max-width: 1060px) {
+  .site-header .brand > span { display: none; }
+  .site-nav > ul > li > a, .site-nav .sub-toggle { letter-spacing: .06em; }
+}
+@media (min-width: 861px) {
+  /* the capsule */
+  .site-nav > ul {
+    --glass-shadow: inset 0 1px 0 rgba(255, 255, 255, .38), inset 0 -1px 0 rgba(166, 107, 255, .35), inset 0 0 20px rgba(166, 107, 255, .14), 0 0 0 1px rgba(8, 5, 15, .45), 0 10px 26px -10px rgba(0, 0, 0, .9);
+    padding: 5px; border-radius: 999px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .14) 0%, rgba(255, 255, 255, .05) 48%, rgba(138, 77, 255, .1) 52%, rgba(255, 255, 255, .06) 100%);
+    border: 1px solid rgba(232, 218, 255, .24);
+    box-shadow: var(--glass-shadow), 0 0 26px rgba(138, 77, 255, .38);
+    animation: glass-pulse 6s ease-in-out infinite;
+  }
+  /* the curved highlight across the top half of the glass */
+  .site-nav > ul::after {
+    content: ""; position: absolute; left: 14px; right: 14px; top: 2px; height: 46%; border-radius: 999px 999px 60% 60% / 999px 999px 100% 100%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .22), rgba(255, 255, 255, .02)); pointer-events: none; z-index: 2;
+  }
+  /* a reflection that glides across now and then */
+  .site-nav > ul::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 2; mix-blend-mode: screen;
+    background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, .34) 47%, rgba(224, 196, 255, .2) 51%, transparent 60%) 130% 0 / 260% 100% no-repeat;
+    animation: glass-sheen 9s cubic-bezier(.45, 0, .3, 1) 2.4s infinite;
+  }
+  html.nav-intro .site-nav > ul { animation: glass-in 1s cubic-bezier(.2, .9, .3, 1) both, glass-pulse 6s ease-in-out 1s infinite; }
+  html.nav-intro .site-nav > ul::before { animation: glass-flash 1.1s cubic-bezier(.5, 0, .3, 1) .45s both, glass-sheen 9s cubic-bezier(.45, 0, .3, 1) 2.4s infinite; }
+  /* the gliding light becomes a glowing glass bead */
+  .site-nav .nav-glow {
+    top: 0; bottom: 0; border: 1px solid rgba(235, 222, 255, .38);
+    background: linear-gradient(180deg, rgba(255, 255, 255, .26) 0%, rgba(201, 162, 255, .16) 48%, rgba(138, 77, 255, .3) 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .55), inset 0 0 14px rgba(201, 162, 255, .35), 0 0 18px rgba(166, 107, 255, .7), 0 0 42px rgba(138, 77, 255, .4);
+  }
+  .site-nav > ul > li > a:hover, .site-nav > ul > li > a:focus-visible, .site-nav .sub-toggle:hover, .site-nav .has-sub:hover .sub-toggle,
+  .site-nav .has-sub.open .sub-toggle, .site-nav .sub-toggle:focus-visible, .site-nav > ul > li > a[aria-current="page"], .site-nav .sub-toggle.current {
+    color: #fff; text-shadow: 0 0 8px #fff, 0 0 16px rgba(224, 196, 255, .95), 0 0 30px rgba(166, 107, 255, .9), 0 0 54px rgba(138, 77, 255, .6);
+  }
+  /* the dropdowns: frosted glass panels */
+  .site-nav ul.sub {
+    top: calc(100% + 14px); min-width: 285px; padding: 12px; border-radius: 18px;
+    background:
+      radial-gradient(220px circle at var(--mx, 50%) var(--my, -60%), rgba(201, 162, 255, .3), transparent 65%),
+      linear-gradient(180deg, rgba(255, 255, 255, .1) 0%, rgba(255, 255, 255, .02) 40%, transparent 41%),
+      linear-gradient(165deg, rgba(44, 24, 78, .9), rgba(14, 8, 26, .92));
+    -webkit-backdrop-filter: blur(22px) saturate(1.7); backdrop-filter: blur(22px) saturate(1.7);
+    border: 1px solid rgba(232, 218, 255, .3);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), inset 0 0 24px rgba(166, 107, 255, .12), 0 30px 70px rgba(0, 0, 0, .7), 0 0 50px rgba(138, 77, 255, .45);
+  }
+  .site-nav ul.sub::before { top: -16px; height: 16px; }
+  .site-nav .has-sub::after { top: calc(100% + 9px); background: rgba(58, 32, 98, .95); border-color: rgba(232, 218, 255, .32); }
+  .site-nav ul.sub a { font-size: .9rem; padding: 13px 18px 13px 24px; }
+}
+
+/* phones: the Menu button and the panel are glass too */
+@media (max-width: 860px) {
+  .nav-toggle {
+    font-size: .98rem; padding: 10px 20px; color: #fff;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .18), rgba(255, 255, 255, .04) 50%, rgba(138, 77, 255, .16));
+    border: 1px solid rgba(232, 218, 255, .35);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .4), 0 0 18px rgba(138, 77, 255, .5), 0 0 34px rgba(138, 77, 255, .25);
+    text-shadow: 0 0 10px rgba(224, 196, 255, .8);
+  }
+  html.nav-intro .nav-toggle { animation: glass-in .9s cubic-bezier(.2, .9, .3, 1) .15s both; }
+  .site-nav {
+    background: linear-gradient(180deg, rgba(255, 255, 255, .07), transparent 30%), linear-gradient(180deg, rgba(36, 20, 64, .97), rgba(10, 6, 18, .98));
+    -webkit-backdrop-filter: blur(20px) saturate(1.6); backdrop-filter: blur(20px) saturate(1.6);
+    border-bottom: 1px solid rgba(232, 218, 255, .2);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12), 0 30px 60px rgba(0, 0, 0, .6), 0 0 50px rgba(138, 77, 255, .3);
+  }
+  .site-nav > ul > li > a, .site-nav .sub-toggle, .site-nav ul.sub a { font-size: .95rem; }
+}
+
 /* for visitors who asked their device for less motion: keep the glow, drop the movement */
 @media (prefers-reduced-motion: reduce) {
+  .site-header, .site-nav > ul, .site-nav > ul::before, .nav-toggle { animation: none !important; }
   .site-header::after, .brand .brand-mark, .site-nav ul.sub::after { animation: none !important; }
   .site-nav, .site-nav *, .site-nav *::before, .site-nav *::after { transition-duration: .01s !important; transition-delay: 0s !important; animation: none !important; }
   .site-nav ul.sub, .site-nav ul.sub li, .site-nav > ul > li { transform: none !important; filter: none !important; }

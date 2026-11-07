@@ -193,7 +193,7 @@ document.querySelectorAll("[data-reveal]").forEach((b) => {
 })();
 
 // Menu FX: the gliding light behind the menu, stagger order for the fly-out items, the cursor spotlight in each
-// dropdown, and a one-time fade-in of the menu on the first page of a visit. Styles: "THE GLOWING MENU" in style.css.
+// dropdown, and the glass menu's entrance on every page load. Styles: "THE GLOWING MENU" and "THE FROSTED GLASS MENU" in style.css.
 (function () {
   const nav = document.querySelector(".site-nav");
   const top = nav && nav.querySelector(":scope > ul");
@@ -207,13 +207,9 @@ document.querySelectorAll("[data-reveal]").forEach((b) => {
     });
     ul.addEventListener("pointerleave", () => { ul.style.removeProperty("--mx"); ul.style.removeProperty("--my"); });
   });
-  try {
-    if (!sessionStorage.getItem("xr-nav-in")) {
-      sessionStorage.setItem("xr-nav-in", "1");
-      document.documentElement.classList.add("nav-intro");
-      setTimeout(() => document.documentElement.classList.remove("nav-intro"), 2200);
-    }
-  } catch (e) {}
+  // on every page load the glass menu condenses, flashes and glows in (styles: "THE FROSTED GLASS MENU")
+  document.documentElement.classList.add("nav-intro");
+  setTimeout(() => document.documentElement.classList.remove("nav-intro"), 2600);
 
   const glow = document.createElement("li");
   glow.className = "nav-glow"; glow.setAttribute("aria-hidden", "true"); glow.setAttribute("role", "presentation");

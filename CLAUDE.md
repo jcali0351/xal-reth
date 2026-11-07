@@ -23,8 +23,12 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   The full menu shows above 860px; at 860px and below it folds into the Menu button.
   The menu glows and moves ("THE GLOWING MENU" at the end of style.css, "Menu FX" at the end of site.js): a soft light glides
   between items, dropdowns swing out in 3D and unblur with a shimmering top edge, a cursor spotlight and items fading in one by
-  one; the phone menu unfurls and its submenus slide open; the menu fades in once per visit; reduced-motion visitors get it
-  still. Keep it if the site is regenerated.
+  one; the phone menu unfurls and its submenus slide open; reduced-motion visitors get it still.
+  It is frosted reflective glass ("THE FROSTED GLASS MENU" in style.css): a glass header bar with frost grain, the menu in a
+  glowing glass capsule with a curved highlight and a passing reflection, a glass bead for the gliding light, frosted
+  dropdowns and a glass Menu button; about 15% larger than before (the text scales with the window so it stays on one line;
+  from 861 to 1060px the header shows the sigil without the wordmark). On every page load the glass condenses out of a blur,
+  a flash of light crosses it and the items glow in one by one. Keep it if the site is regenerated.
 - The logo (the violet triangle sigil, "Observe ▽ Analyze ▽ Transcend") is the site's brand mark: `img/xalreth-mark.png`
   in the header and footer of every page, `img/xalreth-logo.webp`/`.png` at the top of the homepage hero, and the tab icon
   (`favicon.svg` embeds it; `apple-touch-icon.png`). Keep these if the site is regenerated.
