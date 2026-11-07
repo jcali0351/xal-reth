@@ -17,7 +17,7 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   Keep both if the site is regenerated. `sitemap.xml` is rebuilt from every page by `tools/build_sitemap.py`
   (new_post.py runs it); don't hand-edit it. `sitemap.css` styles it for people (CSS, not XSLT: Chrome drops XSLT in Nov 2026).
 - The main menu is written into every page by `tools/build_nav.py` (edit MENU there, then run it):
-  Home · About (The Sacred Triangle, The Chronicle, The Canon, The Legends, The Library) · Community (News, Blog, Testimonials, Merch, Guild Bank) ·
+  Home · About (The Sacred Triangle, The Chronicle, The Canon, The Legends, The Library) · Community (News, Blog, Testimonials, Merch, Guild Bank, Guild Ranks) ·
   Faith (Devotion, The Altar) · Addons · Guild Roster · Join · Sitemap · Contact. Submenus open on hover on wide screens and on click or tap
   everywhere (script in site.js, styles at the end of style.css); the one holding the current page is highlighted.
   The full menu shows above 860px; at 860px and below it folds into the Menu button.
@@ -109,6 +109,14 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   `BLIZZARD_CLIENT_ID`/`BLIZZARD_CLIENT_SECRET` repository secrets and starts manual syncs and connection tests through the
   GitHub API with the admin's own token (kept in sessionStorage only). Never put Blizzard credentials or tokens in any file.
   Keep it if the site is regenerated.
+- The Ranks of the Coil (`ranks.html`, `css/ranks.css`, `js/ranks.js`; Community submenu as "Guild Ranks", linked from the
+  Guild Roster header): the ten in-game ranks, highest first: High Priestess, Unpaid Intern, Hand of Xal (the three officer
+  ranks, gold insignia), Inner Scale, Scalekeeper, Venomblade, Coilborn, Scaled Disciple (silver), Hatchling, Egg (bronze).
+  Each has original military-style insignia (inline SVG symbols #em-1 … #em-10 at the top of ranks.html: chevrons and rockers
+  for members, bars and devices for officers), a motto, description, duties, powers and how one rises; a ladder of all ten and
+  a table of powers ("the Coil's doctrine"; the in-game Guild Control panel is the final word). "Download PNG" exports any
+  insignia at 512 x 512 (for Discord roles). Rank names must match `data/roster-config.json` rankNames. Keep it if the site
+  is regenerated.
 - The Guild Bank (`guild-bank.html`, `css/guild-bank.css`, `js/guild-bank.js`; Community submenu): the guild's gold (counting up
   in the hero), gold over time, the bank tabs as 14 x 7 grids of glass slots with quality glows, a search across tabs, item
   tooltips (click opens Wowhead), the Ledger of money and item entries and "The Generous" (top givers, last 30 days).

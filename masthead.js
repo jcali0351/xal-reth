@@ -34,6 +34,7 @@
     begging:   { hue: 45, mode: "coins", layers: [[`<path d="M80 250 Q200 360 320 250 Z" class="bowl"/><ellipse cx="200" cy="250" rx="120" ry="16" class="l gold"/>`, "pulse"]] },
     litany:    { hue: 250, mode: "drone", layers: [[`<path d="${spiral(7, 190)}" class="l thin"/>`, "spin-drone"], [ring(195, "l d"), "spin-rev"]] },
     "addon-vyrenna-rp": { hue: 145, mode: "fireflies", layers: [[`<circle cx="200" cy="200" r="70" class="moon"/><circle cx="232" cy="185" r="66" class="shadow"/>` + ring(150, "l thin"), "pulse"], [ring(185, "l d") + spokes(12, 160, 172, "l gold"), "spin-slow"]] },
+    ranks:     { hue: 275, mode: "rise", layers: [[poly("200,40 339,280 61,280") + poly("200,360 61,120 339,120", "l gold"), "spin-slow"], [`<path d="M110 250 L200 200 L290 250 L290 270 L200 220 L110 270 Z" class="l"/><path d="M110 210 L200 160 L290 210 L290 230 L200 180 L110 230 Z" class="l"/>` + ring(185, "l d"), "pulse"]] },
     "guild-bank": { hue: 45, mode: "coins", layers: [[ring(185, "l gold") + ring(150, "l d") + spokes(12, 150, 185, "l gold"), "spin-slow"], [ring(70, "l") + spokes(6, 0, 70, "l thin") + ring(18, "fill"), "spin-rev"]] },
     "guild-roster": { hue: 270, mode: "stars", layers: [[ring(185, "l d") + runeText(165, 13), "spin-slow"], [spokes(36, 150, 162, "l thin"), "spin-rev"]] },
     "404":     { hue: 280, mode: "fireflies", layers: [[`<circle cx="200" cy="200" r="150" class="l broken"/>`, "spin-slow"]] },

@@ -1,0 +1,114 @@
+/* THE RANKS OF THE COIL (ranks.html): the ladder of insignia, a glass card for each rank, and the table of powers.
+   The insignia are the SVG symbols #em-1 … #em-10 at the top of ranks.html; js/ranks.js exports them as PNGs. */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.ins-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+:root { --rk-gold: #f3d27a; --rk-silver: #e3def4; --rk-bronze: #df9f66; }
+
+/* an insignia: drawn at 168 px, with a glint that crosses it now and then */
+.ins { display: block; width: 168px; height: 168px; overflow: visible; filter: drop-shadow(0 6px 14px rgba(0, 0, 0, .6)) drop-shadow(0 0 18px var(--rk-glow, rgba(166, 107, 255, .45))); }
+.ins .sheen { transform: translateX(0); animation: rk-sheen 7s cubic-bezier(.45, 0, .3, 1) infinite; mix-blend-mode: screen; }
+@keyframes rk-sheen { 0%, 70% { transform: translateX(0) skewX(-18deg); } 100% { transform: translateX(420px) skewX(-18deg); } }
+.ins.sm { width: 72px; height: 72px; filter: drop-shadow(0 3px 8px rgba(0, 0, 0, .6)) drop-shadow(0 0 10px var(--rk-glow, rgba(166, 107, 255, .4))); }
+.ins.xs { width: 40px; height: 40px; margin: 0 auto 4px; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .6)); }
+
+/* ---------- the ladder ---------- */
+.rk-ladder { margin: 34px 0 10px; }
+.rk-ladder ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; }
+.rk-ladder a { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 2px 8px; border-radius: 14px; text-decoration: none; color: var(--bone-dim);
+  font: 600 .6rem var(--serif-display); letter-spacing: .12em; text-transform: uppercase; text-align: center; line-height: 1.25;
+  transition: color .3s, background .3s, transform .35s cubic-bezier(.2, 1.4, .4, 1); }
+.rk-ladder a:hover, .rk-ladder a:focus-visible { color: #fff; transform: translateY(-6px); outline: none;
+  background: radial-gradient(circle at 50% 35%, rgba(166, 107, 255, .22), transparent 70%); }
+.rk-ladder li.off a { color: var(--rk-gold); }
+.rk-ladder li.off { --rk-glow: rgba(243, 210, 122, .5); }
+.rk-ladder li:nth-child(n + 9) { --rk-glow: rgba(223, 159, 102, .45); }
+.rk-ladder li { animation: rk-rise .8s cubic-bezier(.2, .9, .3, 1.2) backwards; animation-delay: calc(var(--i, 0) * 70ms + .2s); }
+.rk-ladder li:nth-child(1) { --i: 0 } .rk-ladder li:nth-child(2) { --i: 1 } .rk-ladder li:nth-child(3) { --i: 2 } .rk-ladder li:nth-child(4) { --i: 3 } .rk-ladder li:nth-child(5) { --i: 4 }
+.rk-ladder li:nth-child(6) { --i: 5 } .rk-ladder li:nth-child(7) { --i: 6 } .rk-ladder li:nth-child(8) { --i: 7 } .rk-ladder li:nth-child(9) { --i: 8 } .rk-ladder li:nth-child(10) { --i: 9 }
+@keyframes rk-rise { from { opacity: 0; transform: translateY(26px) scale(.8); filter: brightness(2.4) blur(4px); } }
+.rk-legend { text-align: center; color: var(--bone-dim); font-size: 1rem; margin: 14px 0 0; }
+.rk-legend .gold { color: var(--rk-gold); } .rk-legend .silver { color: var(--rk-silver); } .rk-legend .bronze { color: var(--rk-bronze); }
+.rk-intro { margin-top: 20px; }
+
+/* ---------- a rank ---------- */
+.rk-card { --edge: rgba(228, 212, 255, .2); --rk-glow: rgba(166, 107, 255, .5); --accent: var(--violet-hot);
+  position: relative; display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: clamp(18px, 3vw, 36px); align-items: start;
+  margin: 26px 0; padding: clamp(18px, 3vw, 30px); border-radius: 20px; scroll-margin-top: 96px;
+  border: 1px solid var(--edge);
+  background: radial-gradient(420px 260px at 0% 0%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 70%),
+              linear-gradient(155deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .02) 38%, rgba(255, 255, 255, 0) 60%, rgba(166, 107, 255, .06)), rgba(20, 12, 36, .58);
+  -webkit-backdrop-filter: blur(12px) saturate(1.5); backdrop-filter: blur(12px) saturate(1.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .13), inset 0 -18px 30px -24px color-mix(in srgb, var(--accent) 45%, transparent), 0 16px 40px -18px rgba(0, 0, 0, .8); }
+.rk-card.officer { --edge: rgba(243, 210, 122, .38); --rk-glow: rgba(243, 210, 122, .55); --accent: var(--rk-gold); }
+.rk-card.new { --edge: rgba(223, 159, 102, .28); --rk-glow: rgba(223, 159, 102, .45); --accent: var(--rk-bronze); }
+.rk-card::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; mix-blend-mode: screen;
+  background: linear-gradient(115deg, transparent 32%, rgba(255, 255, 255, .1) 49%, rgba(255, 255, 255, .14) 50%, transparent 64%) 150% 0 / 280% 100% no-repeat;
+  animation: rk-glass 12s cubic-bezier(.45, 0, .25, 1) infinite; }
+.rk-card:nth-of-type(2n)::after { animation-delay: -5s; animation-duration: 14s; }
+@keyframes rk-glass { 0%, 60% { background-position: 150% 0; } 100% { background-position: -50% 0; } }
+
+.rk-badge { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 18px 10px 14px; border-radius: 16px;
+  background: radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 62%), rgba(8, 5, 15, .45);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent); }
+.rk-badge .ins { transition: transform .5s cubic-bezier(.2, 1.3, .4, 1), filter .5s; }
+.rk-card:hover .rk-badge .ins { transform: translateY(-6px) scale(1.06); filter: drop-shadow(0 12px 20px rgba(0, 0, 0, .7)) drop-shadow(0 0 30px var(--rk-glow)) drop-shadow(0 0 60px var(--rk-glow)); }
+.rk-badge .ins { animation: rk-breathe 6s ease-in-out infinite; }
+@keyframes rk-breathe { 0%, 100% { filter: drop-shadow(0 6px 14px rgba(0, 0, 0, .6)) drop-shadow(0 0 16px var(--rk-glow)); } 50% { filter: drop-shadow(0 6px 14px rgba(0, 0, 0, .6)) drop-shadow(0 0 28px var(--rk-glow)); } }
+.rk-card:hover .rk-badge .ins { animation-play-state: paused; }
+.rk-dl { padding: 7px 14px; border-radius: 999px; cursor: pointer; color: var(--bone); border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .12), rgba(255, 255, 255, .02)); font: 600 .62rem var(--serif-display); letter-spacing: .14em; text-transform: uppercase;
+  transition: color .25s, box-shadow .3s, border-color .3s; }
+.rk-dl:hover, .rk-dl:focus-visible { color: #fff; border-color: var(--accent); box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 55%, transparent); outline: none; }
+
+.rk-num { margin: 0 0 4px; font: 600 .66rem var(--serif-display); letter-spacing: .24em; text-transform: uppercase; color: var(--accent); }
+.rk-body h2 { margin: 0 0 4px; font-size: clamp(1.7rem, 3.4vw, 2.3rem); }
+.rk-card.officer .rk-body h2 { background: linear-gradient(100deg, #fff7d6, #f3d27a 40%, #fff 50%, #e2b955 65%, #fff7d6) 0 0 / 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; }
+.rk-motto { margin: 0 0 14px; font-style: italic; color: color-mix(in srgb, var(--accent) 60%, #fff); font-size: 1.12rem; }
+.rk-body > p { margin: 0 0 14px; }
+.rk-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 6px 0 12px; }
+.rk-cols > div { padding: 14px 16px 10px; border-radius: 14px; background: rgba(8, 5, 15, .4); border: 1px solid rgba(228, 212, 255, .1); }
+.rk-cols h3 { margin: 0 0 8px; font: 600 .7rem var(--serif-display); letter-spacing: .22em; text-transform: uppercase; color: var(--accent); }
+.rk-cols ul { margin: 0; padding: 0; list-style: none; font-size: 1.04rem; }
+.rk-cols li { position: relative; padding-left: 20px; margin-bottom: 7px; line-height: 1.4; }
+.rk-cols li::before { content: ""; position: absolute; left: 2px; top: .55em; width: 8px; height: 8px; transform: rotate(45deg);
+  background: linear-gradient(135deg, #fff, var(--accent)); box-shadow: 0 0 8px var(--accent); }
+.rk-rise { margin: 0; color: var(--bone-dim); font-size: 1.02rem; }
+.rk-rise b { color: var(--bone); font-weight: 600; }
+
+/* ---------- the table of powers ---------- */
+.rk-matrix-wrap { margin-top: 40px; }
+.rk-matrix { overflow-x: auto; border-radius: 18px; border: 1px solid rgba(228, 212, 255, .16);
+  background: linear-gradient(160deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .01) 45%), rgba(20, 12, 36, .6);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12), 0 16px 40px -18px rgba(0, 0, 0, .8); }
+.rk-matrix:focus-visible { outline: 2px solid var(--violet-hot); outline-offset: 3px; }
+.rk-matrix table { width: 100%; min-width: 880px; border-collapse: collapse; font-size: .95rem; }
+.rk-matrix th, .rk-matrix td { padding: 10px 8px; text-align: center; border-bottom: 1px solid rgba(228, 212, 255, .07); }
+.rk-matrix thead th { vertical-align: bottom; font: 600 .56rem var(--serif-display); letter-spacing: .1em; text-transform: uppercase; color: var(--bone-dim); }
+.rk-matrix thead th.off { color: var(--rk-gold); background: linear-gradient(180deg, rgba(243, 210, 122, .08), transparent); }
+.rk-matrix thead th:first-child, .rk-matrix tbody th { text-align: left; }
+.rk-matrix tbody th { font: 600 .72rem var(--serif-display); letter-spacing: .08em; color: var(--bone); white-space: nowrap; position: sticky; left: 0; background: rgba(16, 9, 30, .96); }
+.rk-matrix tbody tr:hover td, .rk-matrix tbody tr:hover th { background-color: rgba(166, 107, 255, .08); }
+.rk-matrix td { color: var(--bone-dim); line-height: 1.25; }
+.rk-matrix td.y { color: #fff; }
+.rk-matrix td.y::before { content: ""; display: block; width: 10px; height: 10px; margin: 0 auto 4px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, #b98cff 60%, #6a35d8); box-shadow: 0 0 10px #a66bff; }
+.rk-matrix td.p::before { content: ""; display: block; width: 10px; height: 10px; margin: 0 auto 4px; border-radius: 50%; border: 2px solid #b98cff; box-sizing: border-box;
+  background: linear-gradient(90deg, #b98cff 50%, transparent 50%); }
+.rk-matrix td.n { color: rgba(176, 166, 196, .45); }
+.rk-note { margin: 14px 4px 0; color: var(--bone-dim); font-size: 1rem; }
+
+/* ---------- smaller screens ---------- */
+@media (max-width: 860px) {
+  .rk-ladder ol { grid-template-columns: repeat(5, minmax(0, 1fr)); row-gap: 10px; }
+  .rk-card { grid-template-columns: 1fr; }
+  .rk-badge { flex-direction: row; justify-content: center; gap: 18px; }
+}
+@media (max-width: 560px) {
+  .rk-cols { grid-template-columns: 1fr; }
+  .rk-badge { flex-direction: column; }
+  .ins.sm { width: 56px; height: 56px; }
+  .rk-ladder a { font-size: .5rem; letter-spacing: .06em; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ins .sheen, .rk-ladder li, .rk-card::after, .rk-badge .ins { animation: none !important; }
+  .ins .sheen { display: none; }
+}

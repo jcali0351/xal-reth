@@ -175,3 +175,8 @@
 @media (forced-colors: active) {
   .rr-card > button, .rr-stat, .rr-tools, .rr-modal { border: 1px solid CanvasText; }
 }
+
+/* link to the ranks page (ranks.html) under the sync line */
+.rr-ranks-link { position: relative; z-index: 2; margin: 6px 0 0; font-size: 1rem; }
+.rr-ranks-link a { color: var(--violet-hot); text-decoration: none; border-bottom: 1px solid rgba(201, 162, 255, .35); }
+.rr-ranks-link a:hover { color: #fff; border-bottom-color: #fff; text-shadow: 0 0 12px rgba(166, 107, 255, .8); }
