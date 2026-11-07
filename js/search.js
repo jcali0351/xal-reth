@@ -47,6 +47,105 @@
     }[name];
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + "</svg>";
   }
+
+  // ---------- the icon set: one hand-drawn glyph per kind of place, stroked in a rose-to-violet gradient ----------
+  var GLYPH = {
+    hook: '<circle cx="14" cy="4" r="1.6"/><path d="M14 5.6V13a5 5 0 0 1-10 0V9.5l3 3"/><path d="M18 9c1.5.8 2.5 2.3 2.5 4"/>',
+    infinityHook: '<circle cx="14" cy="4" r="1.6"/><path d="M14 5.6V13a5 5 0 0 1-10 0V9.5l3 3"/><path d="M16.5 18.5c1-1.4 2-1.4 3 0s2 1.4 3 0c-1-1.4-2-1.4-3 0s-2 1.4-3 0z"/>',
+    scroll: '<path d="M8 3h10.5a2 2 0 0 1 0 4H17"/><path d="M8 3a2 2 0 0 0-2 2v12.5a2.5 2.5 0 0 1-2.5 2.5h11a2.5 2.5 0 0 0 2.5-2.5V5"/><path d="M9.5 9h4.5M9.5 12.5h4.5M9.5 16h3"/>',
+    bookOpen: '<path d="M12 6.5C10 5 7 4.5 3.5 4.5v13c3.5 0 6.5.5 8.5 2 2-1.5 5-2 8.5-2v-13C17 4.5 14 5 12 6.5z"/><path d="M12 6.5v13"/>',
+    crown: '<path d="M3.5 8.5 7.5 12 12 5l4.5 7 4-3.5-2 10.5h-13z"/><path d="M6 21h12"/><circle cx="12" cy="13.5" r="1.2"/>',
+    heart: '<path d="M12 20.5s-7.5-4.6-9-9.6A4.6 4.6 0 0 1 12 7.3a4.6 4.6 0 0 1 9 3.6c-1.5 5-9 9.6-9 9.6z"/><path d="M8.5 10.5c.3-1 1-1.6 2-1.8"/>',
+    eye: '<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/><path d="M12 2v1.5M5 4l1 1.2M19 4l-1 1.2"/>',
+    bolt: '<path d="M13 2.5 4.5 13.5H11l-1 8 8.5-11H12z"/>',
+    blade: '<path d="M14.5 3H21v6.5L9.5 21 3 14.5z"/><path d="m6 18-2.5 2.5M8 12l4 4"/>',
+    moon: '<path d="M19.5 14.5A8 8 0 1 1 9.5 4.5a6.5 6.5 0 0 0 10 10z"/><path d="M17 3.5v3M15.5 5h3"/>',
+    coins: '<ellipse cx="12" cy="6.5" rx="7.5" ry="3"/><path d="M4.5 6.5v5c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-5"/><path d="M4.5 11.5v5c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-5"/>',
+    egg: '<path d="M12 3c3.6 0 7 6 7 11a7 7 0 0 1-14 0c0-5 3.4-11 7-11z"/><path d="m8.5 13 2 1.5 2-2 2 2 1.5-1"/>',
+    candle: '<path d="M12 2.5c1.6 1.6 1.6 3.2 0 4.3-1.6-1.1-1.6-2.7 0-4.3z"/><path d="M9 9.5h6V21H9z"/><path d="M6 21h12M12 9.5v2"/>',
+    triangle: '<path d="M12 3 21.5 20h-19z"/><path d="M12 10.5 15.5 17h-7z"/>',
+    serpent: '<path d="M4 18.5c2.5 0 3.5-2.5 6-2.5s3.5 2.5 6.5 2.5 3.5-2 3.5-4-2-4-5-4H9c-2.4 0-4-1.5-4-3.6S6.6 3.5 9 3.5h6.5"/><circle cx="16.5" cy="3.5" r=".6"/>',
+    hourglass: '<path d="M6 3h12M6 21h12"/><path d="M7.5 3c0 5 9 6 9 9s-9 4-9 9M16.5 3c0 5-9 6-9 9s9 4 9 9"/><path d="M10 18.5h4"/>',
+    books: '<path d="M4 4h4v16H4zM9.5 4h4v16h-4z"/><path d="m15.2 5.2 3.7-1 3.9 15.3-3.7 1z"/><path d="M4 8h4M9.5 16h4"/>',
+    quill: '<path d="M20.5 3.5C12 4 7 9 5 19l2-1.5c.8-2.4 2.3-4.2 5-5.2l-1.8-.8c3-1.2 6.5-3.6 10.3-8z"/><path d="M3 21l2-2"/>',
+    horn: '<path d="M3 10v4h3l7.5 4.5V5.5L6 10z"/><path d="M16.5 9a4 4 0 0 1 0 6M19 6.5a7.5 7.5 0 0 1 0 11"/>',
+    mail: '<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/>',
+    shield: '<path d="M12 3 20 6v6c0 5-3.5 8-8 9.5C7.5 20 4 17 4 12V6z"/><path d="m9 12 2 2 4-4"/>',
+    quote: '<path d="M5 11h4.5v6.5H4V13c0-3.2 1.2-5.3 4.2-6.3M14.5 11H19v6.5h-5.5V13c0-3.2 1.2-5.3 4.2-6.3"/>',
+    gem: '<path d="M6.5 3.5h11l3.5 5.5-9 11.5L3 9z"/><path d="M3 9h18M9 3.5 12 9l3-5.5M12 20.5 9 9M12 20.5 15 9"/>',
+    hands: '<path d="M12 21V10L9.5 4.5 8 5.2l.7 5.6-3 3V21"/><path d="M12 21V10l2.5-5.5 1.5.7-.7 5.6 3 3V21"/>',
+    box: '<path d="M12 3 20.5 7.5v9L12 21l-8.5-4.5v-9z"/><path d="M3.5 7.5 12 12l8.5-4.5M12 12v9"/><path d="m8 5.2 8.5 4.6"/>',
+    download: '<path d="M12 3.5v11m0 0-4.5-4.5m4.5 4.5 4.5-4.5"/><path d="M4.5 16v2.5a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V16"/>',
+    terminal: '<rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="m7 9.5 3 2.5-3 2.5M12.5 15h4.5"/>',
+    feather: '<path d="M19.5 4.5a6 6 0 0 0-8.5 0L5 10.5V19h8.5l6-6a6 6 0 0 0 0-8.5z"/><path d="M16 8 3 21M17.5 14H10"/>',
+    home: '<path d="M3.5 11 12 4l8.5 7"/><path d="M6 9.5V20h12V9.5"/><path d="M10 20v-5h4v5"/>',
+    star: '<path d="M12 3.5l2.4 5.2 5.6.6-4.2 3.8 1.2 5.6L12 15.9l-5 2.8 1.2-5.6L4 9.3l5.6-.6z"/>',
+    chat: '<path d="M4 5.5h16v10H10l-4.5 3.5V15.5H4z"/><path d="M8 10.5h.01M12 10.5h.01M16 10.5h.01"/>',
+    calendar: '<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/><circle cx="12" cy="14.5" r="1.4"/>',
+    flame: '<path d="M12 21.5c3.9 0 7-2.9 7-6.8 0-4.7-4.8-7.3-4.8-12.2-2.6 1.6-4.2 4.4-4.2 7-1.2-.8-2-2-2.2-3.4C6.2 7.8 5 10.5 5 14.7c0 3.9 3.1 6.8 7 6.8z"/><path d="M12 21.5c-1.7 0-3-1.3-3-3 0-2.1 3-3.6 3-6 1.6 1.4 3 3.3 3 6 0 1.7-1.3 3-3 3z"/>',
+    sparkle: '<path d="M12 3c.6 4.2 2.8 6.4 7 7-4.2.6-6.4 2.8-7 7-.6-4.2-2.8-6.4-7-7 4.2-.6 6.4-2.8 7-7z"/><path d="M19 15.5c.3 1.6 1 2.3 2.5 2.5-1.5.2-2.2.9-2.5 2.5-.3-1.6-1-2.3-2.5-2.5 1.5-.2 2.2-.9 2.5-2.5z"/>'
+  };
+  // first match wins: [what to look at, pattern, glyph]
+  var GLYPH_RULES = [
+    ["u", /master-bait-forever|MasterBaitForever|mbf-commands/i, "infinityHook"],
+    ["u", /master-baiter|MasterBaiterPro|mbp-commands|coil-angler/i, "hook"],
+    ["t", /fish|angler|bait/i, "hook"],
+    ["u", /drama-?queen|dramaqueen|dq-/i, "crown"],
+    ["u", /full-?support/i, "heart"],
+    ["u", /paranoid/i, "eye"],
+    ["u", /brain-?rot/i, "bolt"],
+    ["u", /edgelord/i, "flame"],
+    ["u", /vyrenna/i, "moon"],
+    ["u", /litany|begging/i, "coins"],
+    ["u", /disciples|devotion/i, "hands"],
+    ["u", /xalreth-rp|XalRethRP/i, "serpent"],
+    ["u", /#install|install/i, "download"],
+    ["u", /commands/i, "terminal"],
+    ["t", /wing|feather|featherist/i, "feather"],
+    ["u", /^join/i, "egg"], ["t", /\b(join|oath|egg)\b/i, "egg"],
+    ["u", /^altar/i, "candle"],
+    ["u", /triangle|teachings-of/i, "triangle"],
+    ["u", /^lore\.html/i, "hourglass"],
+    ["u", /^canon/i, "bookOpen"],
+    ["u", /^library|^codex/i, "books"],
+    ["u", /^legends/i, "serpent"],
+    ["u", /^scripture|^teachings|^rites/i, "scroll"],
+    ["u", /^priesthood/i, "sparkle"],
+    ["u", /^testimonials/i, "quote"],
+    ["u", /^merch/i, "gem"],
+    ["u", /^guild-roster/i, "shield"],
+    ["u", /^contact/i, "mail"],
+    ["u", /^index/i, "home"],
+    ["u", /^addons\.html$/i, "box"],
+    ["t", /hymn|song|proverb|saying/i, "quill"],
+    ["t", /holy-day|holy day|shedfall|calendar/i, "calendar"],
+    ["t", /question|q&a|inner scale/i, "chat"],
+    ["t", /saint/i, "star"],
+    ["t", /bestiary|gripper|hurrymoth/i, "eye"],
+    ["t", /legend/i, "serpent"],
+    ["t", /relic|release|addon/i, "box"],
+    ["k", /^Addon$/, "box"], ["k", /^Lore$/, "scroll"], ["k", /^News$/, "horn"], ["k", /^Blog$/, "quill"], ["k", /^Page$/, "sparkle"]
+  ];
+  function glyphFor(e) {
+    for (var i = 0; i < GLYPH_RULES.length; i++) {
+      var r = GLYPH_RULES[i], v = r[0] === "u" ? e.u : r[0] === "t" ? (e.t + " " + (e.p || "")) : e.k;
+      if (r[1].test(v || "")) return r[2];
+    }
+    return "sparkle";
+  }
+  function icon(e) {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="url(#ss-rose)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + GLYPH[glyphFor(e)] + "</svg>";
+  }
+  function addGradient() {
+    if (document.getElementById("ss-rose")) return;
+    var d = document.createElement("div");
+    d.setAttribute("aria-hidden", "true");
+    d.style.cssText = "position:absolute;width:0;height:0;overflow:hidden";
+    d.innerHTML = '<svg width="0" height="0"><defs><linearGradient id="ss-rose" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0" stop-color="#ffb3e6"/><stop offset=".5" stop-color="#e07bff"/><stop offset="1" stop-color="#a66bff"/></linearGradient></defs></svg>';
+    document.body.appendChild(d);
+  }
+
   function href(u) { return /^(https?:|\/)/.test(u) ? u : BASE + u; }
 
   // ---------- data ----------
@@ -144,7 +243,7 @@
     var crumb = e.p ? '<span class="ss-crumb">' + esc(e.p) + "</span>" : (e.n ? '<span class="ss-crumb">' + esc(new Date(e.n + "T12:00:00").toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })) + "</span>" : "");
     var dl = e.z ? '<span class="ss-dl" role="button" data-dl="' + esc(href(e.z)) + '" tabindex="-1" title="Download ' + esc(e.z) + '">' + svg("down") + "<span>Download</span></span>" : '<span class="ss-go">' + svg("go") + "</span>";
     return '<a class="ss-item ss-k-' + e.k + '" role="option" id="ss-opt-' + n + '" href="' + esc(href(e.u)) + '" aria-selected="false" style="animation-delay:' + Math.min(n, 12) * 18 + 'ms">' +
-      '<span class="ss-ico">' + svg(e.k) + "</span>" +
+      '<span class="ss-ico">' + icon(e) + "</span>" +
       '<span class="ss-main"><span class="ss-title">' + mark(e.t, toks) + "</span>" + crumb +
       '<span class="ss-snip">' + mark(snippet(e, toks), toks) + "</span></span>" + dl + "</a>";
   }
@@ -233,6 +332,7 @@
 
   // ---------- open / close ----------
   function build() {
+    addGradient();
     overlay = document.createElement("div");
     overlay.className = "ss-overlay";
     overlay.hidden = true;
