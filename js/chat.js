@@ -26,7 +26,8 @@
   function inbox() { try { return CHAT.ALIAS || atob(CHAT.SCRAMBLED.split("").reverse().join("")); } catch (e) { return ""; } }
 
   var BASE = window.COIL_BASE || "";
-  var MARK = BASE + "img/xalreth-mark.png";
+  var MARK = BASE + "img/vessk-face.jpg";      // Vessk's face, for every avatar
+  var PORTRAIT = BASE + "img/vessk.jpg";       // full portrait, shown when a chat begins
   var KEY = "vx-chat-v1";
   var DISCORD = "https://discord.gg/wYakHBHPz";
   var X = "https://x.com/xalrethrp";
@@ -240,6 +241,8 @@
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + "</svg>";
   }
   function rowHTML(m, cont) {
+    if (m.r === "intro") return '<div class="vx-intro"><img src="' + esc(PORTRAIT) + '" alt="Vessk, a blood elf herald in violet and black armor with glowing eyes and a burning glaive">' +
+      '<div class="vx-intro-cap"><b>VESSK</b><span>Herald of Xal\'Reth</span><em>AI agent of the Coil · always awake</em></div></div>';
     if (m.r === "sys") return '<div class="vx-row sys"><div class="vx-bub">' + md(m.text) + "</div></div>";
     var links = (m.links || []).filter(function (l) { return okUrl(l.u); }).map(function (l) {
       return '<a href="' + esc(link(l.u)) + '">' + esc(l.t) + "<i>" + esc(l.k === "Addon" ? "addon" : l.k === "Lore" ? "lore" : l.k === "News" ? "news" : l.k === "Blog" ? "blog" : "page") + "</i></a>";
@@ -355,7 +358,7 @@
     if (f) setTimeout(function () { (f.name.value ? f.email : f.name).focus({ preventScroll: true }); }, 50);
   }
   function transcript() {
-    return state.msgs.filter(function (m) { return m.r !== "sys"; }).map(function (m) {
+    return state.msgs.filter(function (m) { return m.r === "me" || m.r === "bot"; }).map(function (m) {
       return "[" + clock(m.ts || Date.now()) + "] " + (m.r === "me" ? "Visitor" : "Vessk") + ": " + String(m.text).replace(/\*\*/g, "").replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1 ($2)");
     }).join("\n");
   }
@@ -401,6 +404,7 @@
     launch.classList.remove("has-unread");
     getIndex();
     if (!state.msgs.length) {
+      push({ r: "intro", text: "" });
       typing(true);
       setTimeout(function () {
         typing(false);
