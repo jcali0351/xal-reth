@@ -46,7 +46,7 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
 
 - Site-wide search, "the Seeking Glass": `js/search.js` + `css/search.css`, loaded on every page by a small loader at the top
   of `site.js`. It adds a search button to every page header, opens with / or Ctrl+K (Cmd+K), and the homepage has a search
-  bar (`.ss-hero`, `data-search-hero`) with "Try" chips just above the animated sigil. It reads `search-index.json`, built by
+  bar (`.ss-hero`, `data-search-hero`) just above the animated sigil. It reads `search-index.json`, built by
   `tools/build_search.py` from every page and each heading with an id (addon results carry their .zip for a Download
   button). new_post.py and build_addon_pages.py rebuild it; run it by hand after other page changes. Never hand-edit
   search-index.json. Keep all of this if the site is regenerated.

@@ -37,7 +37,7 @@
 .ss-hero {
   position: relative; z-index: 3;
   display: flex; align-items: center; gap: 12px;
-  width: min(620px, 100%); margin: 18px auto 6px; padding: 0 14px 0 18px; height: 54px;
+  width: min(620px, 100%); margin: 18px auto 18px; padding: 0 14px 0 18px; height: 54px;
   background: linear-gradient(180deg, rgba(26, 16, 41, 0.92), rgba(12, 7, 23, 0.92));
   border: 1px solid rgba(185, 140, 255, 0.35); border-radius: 999px;
   color: var(--bone-dim); cursor: text; text-align: left;
