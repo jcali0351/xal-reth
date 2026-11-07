@@ -17,7 +17,7 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   Keep both if the site is regenerated. `sitemap.xml` is rebuilt from every page by `tools/build_sitemap.py`
   (new_post.py runs it); don't hand-edit it. `sitemap.css` styles it for people (CSS, not XSLT: Chrome drops XSLT in Nov 2026).
 - The main menu is written into every page by `tools/build_nav.py` (edit MENU there, then run it):
-  Home · About (The Sacred Triangle, The Chronicle, The Canon, The Legends, The Library) · Community (News, Blog, Testimonials, Merch) ·
+  Home · About (The Sacred Triangle, The Chronicle, The Canon, The Legends, The Library) · Community (News, Blog, Testimonials, Merch, Guild Bank) ·
   Faith (Devotion, The Altar) · Addons · Guild Roster · Join · Sitemap · Contact. Submenus open on hover on wide screens and on click or tap
   everywhere (script in site.js, styles at the end of style.css); the one holding the current page is highlighted.
   The full menu shows above 860px; at 860px and below it folds into the Menu button.
@@ -109,6 +109,16 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   `BLIZZARD_CLIENT_ID`/`BLIZZARD_CLIENT_SECRET` repository secrets and starts manual syncs and connection tests through the
   GitHub API with the admin's own token (kept in sessionStorage only). Never put Blizzard credentials or tokens in any file.
   Keep it if the site is regenerated.
+- The Guild Bank (`guild-bank.html`, `css/guild-bank.css`, `js/guild-bank.js`; Community submenu): the guild's gold (counting up
+  in the hero), gold over time, the bank tabs as 14 x 7 grids of glass slots with quality glows, a search across tabs, item
+  tooltips (click opens Wowhead), the Ledger of money and item entries and "The Generous" (top givers, last 30 days).
+  Blizzard's API has no guild bank, so the data comes from our Coil Ledger addon (`CoilLedger.zip`, source in it): it records
+  the bank whenever it is opened in game; /ledger shows an export. John brings it to the site in the Sanctum Editor's
+  "Guild Bank" tab (paste the export or upload WTF/.../SavedVariables/CoilLedger.lua), which merges it into
+  `data/guild-bank.json` (gold and tabs replaced by the newer record, ledger entries added only if new, gold added to the
+  history). `.github/workflows/bank-items.yml` then runs `tools/sync_bank_items.mjs`, which fills `data/item-cache.json`
+  with item icons from the Blizzard API (same secrets as the roster). Never hand-edit those two data files. Keep all of
+  this if the site is regenerated.
 - The Sanctum Editor (`admin.html`, `css/cms.css`, `js/cms.js`; noindex, not in the menu, sitemap or search) is John's CMS.
   He signs in with a fine-grained GitHub token (xal-reth only, Contents: read and write) kept in his browser only
   (sessionStorage, or localStorage if "keep me signed in"); never put a token in a file. Saves are commits through the

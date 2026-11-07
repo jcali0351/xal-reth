@@ -255,6 +255,7 @@
     if (name === "images") renderImages();
     if (name === "hero" && !(hero && hero.dirty)) loadHero();
     if (name === "sky" && !(sky && sky.dirty)) loadSky();
+    if (name === "bank") loadBank();
   }
   function route() {
     var h = decodeURIComponent(location.hash.slice(1));
@@ -1352,6 +1353,124 @@
         loadSky();
       }).catch(function (e) { busy(btn, false); toast(e.message, true); });
   });
+
+  /* ================================================================ GUILD BANK
+     The Coil Ledger addon records the guild bank in game (Blizzard's API has no guild bank). Its export, pasted
+     or read out of the SavedVariables file, is merged into data/guild-bank.json: gold and tabs are replaced by the
+     newer record, ledger entries are added only if they are new (the game reports times to the hour, so an entry
+     matches one already kept with the same details within three hours), and the gold is added to the history. */
+  var BANK_PATH = "data/guild-bank.json";
+  var CoilBank = window.CoilBank = {
+    parse: function (text) {
+      text = String(text || "").trim();
+      if (!text) throw new Error("Nothing to read.");
+      if (/\["export"\]/.test(text)) {                  // the SavedVariables file: pull out the export string
+        var m = text.match(/\["export"\]\s*=\s*"((?:[^"\\]|\\[\s\S])*)"/);
+        if (!m) throw new Error("That CoilLedger.lua has no recorded bank in it yet. Open the guild bank in game first.");
+        text = m[1].replace(/\\(\d{1,3}|[\s\S])/g, function (all, c) {
+          if (/^\d/.test(c)) return String.fromCharCode(+c);
+          return { n: "\n", t: "\t", r: "\r", a: "\x07", b: "\b", f: "\f", v: "\v", "\n": "\n" }[c] || c;
+        });
+      }
+      var d;
+      try { d = JSON.parse(text); } catch (e) { throw new Error("That doesn't look like a Coil Ledger export. Copy all of it from /ledger, or upload CoilLedger.lua."); }
+      if (!d || d.format !== "coil-ledger" || !Array.isArray(d.tabs)) throw new Error("That isn't a Coil Ledger export.");
+      return d;
+    },
+    key: function (e) { return [e.log, e.type, (e.name || "").toLowerCase(), e.amount || 0, e.id || 0, e.count || 0, e.tab || 0, e.fromTab || 0, e.toTab || 0].join("|"); },
+    merge: function (old, rec) {
+      old = old || { ledger: [], history: [] };
+      var newer = !old.scannedAt || rec.scannedAt >= old.scannedAt;
+      var out = newer ? {
+        guild: rec.guild || old.guild || "", realm: rec.realm || old.realm || "", region: rec.region || old.region || "",
+        scannedAt: rec.scannedAt, scannedBy: rec.scannedBy || "", gold: rec.gold || 0,
+        tabs: rec.tabs.map(function (t) {
+          return { index: t.index, name: t.name, viewable: t.viewable !== false,
+            slots: (t.slots || []).map(function (s) { return { slot: s.slot, id: s.id || null, name: s.name || null, count: s.count || 1, quality: s.quality == null ? null : s.quality }; }) };
+        })
+      } : { guild: old.guild, realm: old.realm, region: old.region, scannedAt: old.scannedAt, scannedBy: old.scannedBy, gold: old.gold, tabs: old.tabs };
+      // ledger: add what is new
+      var kept = (old.ledger || []).slice(), used = new Set(), added = 0, byKey = {};
+      kept.forEach(function (e, i) { var k = CoilBank.key(e); (byKey[k] = byKey[k] || []).push(i); });
+      (rec.ledger || []).forEach(function (e) {
+        var k = CoilBank.key(e), match = (byKey[k] || []).filter(function (i) { return !used.has(i) && Math.abs(kept[i].t - e.t) <= 3 * 3600; })[0];
+        if (match != null) { used.add(match); return; }
+        var clean = { log: e.log, type: e.type, name: e.name || "", t: e.t };
+        if (e.log === "money") clean.amount = e.amount || 0;
+        else { clean.id = e.id || null; clean.item = e.item || null; clean.quality = e.quality == null ? null : e.quality; clean.count = e.count || 1;
+          if (e.tab) clean.tab = e.tab; if (e.fromTab) clean.fromTab = e.fromTab; if (e.toTab) clean.toTab = e.toTab; }
+        kept.push(clean); added++;
+      });
+      out.ledger = kept.sort(function (a, b) { return b.t - a.t; }).slice(0, 5000);
+      // the history of the hoard
+      var hist = (old.history || []).filter(function (h) { return h.t !== rec.scannedAt; });
+      hist.push({ t: rec.scannedAt, gold: rec.gold || 0 });
+      out.history = hist.sort(function (a, b) { return a.t - b.t; }).slice(-1000);
+      out.updatedAt = new Date().toISOString();
+      return { data: out, added: added, newer: newer };
+    }
+  };
+  function bankStringify(d) {   // one ledger entry and one history point per line, so commits stay readable
+    var head = JSON.stringify({ guild: d.guild, realm: d.realm, region: d.region, scannedAt: d.scannedAt, scannedBy: d.scannedBy, gold: d.gold, updatedAt: d.updatedAt }, null, 2).replace(/\n}$/, "");
+    return head + ',\n  "tabs": [\n' + d.tabs.map(function (t) { return "    " + JSON.stringify(t); }).join(",\n") + '\n  ],\n  "history": [\n' +
+      d.history.map(function (h) { return "    " + JSON.stringify(h); }).join(",\n") + '\n  ],\n  "ledger": [\n' +
+      d.ledger.map(function (e) { return "    " + JSON.stringify(e); }).join(",\n") + "\n  ]\n}\n";
+  }
+  var bank = { old: null, sha: null, pending: null };
+  function gold(c) { c = c || 0; return Math.floor(c / 10000).toLocaleString("en-US") + "g " + Math.floor(c / 100) % 100 + "s " + c % 100 + "c"; }
+  function loadBank() {
+    var p = tree.has(BANK_PATH) ? readText(BANK_PATH).then(function (r) { return { d: JSON.parse(r.text), sha: r.sha }; }) : Promise.resolve({ d: null, sha: null });
+    return p.then(function (r) {
+      bank.old = r.d; bank.sha = r.sha;
+      $("#bank-current").textContent = r.d ? "On the site now: " + gold(r.d.gold) + ", " + (r.d.tabs || []).length + " tabs, " + (r.d.ledger || []).length +
+        " ledger entries, recorded " + new Date(r.d.scannedAt * 1000).toLocaleString() + (r.d.scannedBy ? " by " + r.d.scannedBy : "") + "." : "Nothing on the site yet: this will be the first record.";
+    }).catch(function (e) { $("#bank-current").textContent = "The current record couldn't be read: " + e.message; });
+  }
+  function bankRead(text) {
+    var box = $("#bank-summary");
+    try {
+      var rec = CoilBank.parse(text), m = CoilBank.merge(bank.old, rec);
+      var stacks = 0, n = 0; rec.tabs.forEach(function (t) { (t.slots || []).forEach(function (s) { stacks++; n += s.count || 1; }); });
+      bank.pending = m;
+      box.className = "bank-summary"; box.hidden = false;
+      box.innerHTML = "<h3>" + esc(rec.guild || "The guild") + (rec.realm ? " · " + esc(rec.realm) : "") + "</h3><dl>" +
+        "<dt>Recorded</dt><dd>" + esc(new Date(rec.scannedAt * 1000).toLocaleString()) + (rec.scannedBy ? " by " + esc(rec.scannedBy) : "") + "</dd>" +
+        "<dt>Gold</dt><dd>" + esc(gold(rec.gold)) + "</dd>" +
+        "<dt>Tabs</dt><dd>" + rec.tabs.length + " (" + rec.tabs.filter(function (t) { return t.viewable !== false; }).length + " readable)</dd>" +
+        "<dt>Items</dt><dd>" + n.toLocaleString("en-US") + " in " + stacks + " stacks</dd>" +
+        "<dt>Ledger</dt><dd>" + (rec.ledger || []).length + " entries in this record, <b>" + m.added + " new</b> (" + m.data.ledger.length + " kept in all)</dd></dl>" +
+        (m.newer ? "" : '<p class="warn">This record is older than the one on the site, so only its new ledger entries will be added; the gold and tabs stay as they are.</p>');
+      $("#bank-save").disabled = false;
+    } catch (e) {
+      bank.pending = null; $("#bank-save").disabled = true;
+      box.className = "bank-summary err"; box.hidden = false; box.textContent = e.message;
+    }
+  }
+  $("#bank-file").addEventListener("change", function () {
+    var f = this.files && this.files[0]; this.value = ""; if (!f) return;
+    f.text().then(function (t) { $("#bank-paste").value = ""; bankRead(t); });
+  });
+  $("#bank-paste").addEventListener("input", function () { if (this.value.trim()) bankRead(this.value); });
+  $("#bank-save").addEventListener("click", function () {
+    var btn = this; if (!bank.pending) return;
+    busy(btn, true);
+    // merge again onto whatever is on GitHub right now, so nothing saved meanwhile is lost
+    loadTree().then(loadBank).then(function () {
+      var rec = CoilBank.parse($("#bank-paste").value || bank.lastText || "");
+      return rec;
+    }).catch(function () { return null; }).then(function (rec) {
+      var m = rec ? CoilBank.merge(bank.old, rec) : bank.pending;
+      return commit([{ path: BANK_PATH, text: bankStringify(m.data), base: bank.sha || null }],
+        "CMS: Guild bank record (" + new Date(m.data.scannedAt * 1000).toISOString().slice(0, 16).replace("T", " ") + ", " + m.added + " new ledger entries)").then(function () { return m; });
+    }).then(function (m) {
+      busy(btn, false); btn.disabled = true; bank.pending = null;
+      published("The Guild Bank (" + m.added + " new ledger entries)");
+      $("#bank-summary").hidden = true; $("#bank-paste").value = ""; bank.lastText = "";
+      loadBank();
+    }).catch(function (e) { busy(btn, false); toast(e.message, true); });
+  });
+  // keep the uploaded file's text for the re-merge on save
+  var _bankRead = bankRead; bankRead = function (t) { bank.lastText = t; _bankRead(t); };
 
   /* ================================================================ go */
   window.addEventListener("hashchange", function () { if (tree.size && $("#cms-editor").hidden && $("#cms-post").hidden) route(); });

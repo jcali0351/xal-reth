@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   rebuild:
-    if: startsWith(github.event.head_commit.message, 'CMS:')
+    # any page change (editor saves, new pages); the bot's own commit only touches sitemap.xml and search-index.json, so it never loops
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

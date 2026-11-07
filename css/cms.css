@@ -178,3 +178,18 @@ body.cms { min-height: 100vh; overflow-x: hidden; background: radial-gradient(el
 .sky-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 18px; }
 .sky-actions .cms-hint { margin: 0; }
 @media (max-width: 600px) { .sky-pv.phone { width: 96px; } }
+
+/* Guild Bank */
+.bank-steps { padding-left: 1.3em; margin: 0 0 16px; }
+.bank-steps li { margin-bottom: 6px; }
+.bank-steps code { font-size: .85em; color: var(--venom); overflow-wrap: anywhere; }
+.bank-in { display: grid; gap: 12px; margin-bottom: 16px; }
+.bank-in .file-btn { justify-self: start; }
+#bank-paste { font: .85rem ui-monospace, Consolas, monospace; }
+.bank-summary { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; background: rgba(17, 10, 29, .75); }
+.bank-summary.err { border-color: #c95a7a; }
+.bank-summary h3 { margin: 0 0 8px; font-size: 1.05rem; }
+.bank-summary dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; margin: 0; }
+.bank-summary dt { color: var(--bone-dim); }
+.bank-summary dd { margin: 0; color: var(--bone); }
+.bank-summary .warn { color: #ffb3c6; margin: 10px 0 0; }

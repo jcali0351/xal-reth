@@ -18,7 +18,7 @@ MENU = [
     ("About", "sub-about", [("The Sacred Triangle", "triangle.html"), ("The Chronicle", "lore.html"), ("The Canon", "canon.html"),
                             ("The Legends", "legends.html"), ("The Library", "library.html")]),
     ("Community", "sub-community", [("News", "news.html"), ("Blog", "blog.html"),
-                                    ("Testimonials", "testimonials.html"), ("Merch", "merch.html")]),
+                                    ("Testimonials", "testimonials.html"), ("Merch", "merch.html"), ("Guild Bank", "guild-bank.html")]),
     ("Faith", "sub-faith", [("Devotion", "devotion.html"), ("The Altar", "altar.html")]),
     ("Addons", "addons.html"),
     ("Guild Roster", "guild-roster.html"),
