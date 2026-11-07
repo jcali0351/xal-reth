@@ -142,8 +142,77 @@
 
   // ---------- Vessk without the worker: answers from the scrolls ----------
   var GREET = [
-    "Hold light, traveler. I am **Vessk**, an AI herald of Xal'Reth. Ask me about the faith, the guild, or the addons. If you want a living soul, ask for John.",
-    "Hold light. **Vessk** listens, as the Coil listens. I'm an AI agent of the Cult of Xal'Reth: lore, addons, joining the guild. Or I can fetch John, who is a real person."
+    "Hold light, traveler. I am **Vessk**, an AI herald of Xal'Reth. I can help you **join the guild**, find an **addon** and its commands, or explain the **lore**. Want a real person? Press **Talk to John** and he'll email you back.",
+    "Hold light. I'm **Vessk**, the Cult of Xal'Reth's AI agent: recruiting, raids and roleplay, addons, the guild bank, the ranks, the lore. For anything I can't answer, **Talk to John** reaches his inbox directly."
+  ];
+  function L(u, t, k) { return { u: u, t: t, k: k || "Page" }; }
+  // The guild's facts, answered straight. Each: a pattern on the folded question, the answer, and links.
+  var FAQ = [
+    { re: /\b(roster|members|who is in|how many (people|members)|online)\b/,
+      text: "The live roster, straight from Blizzard and updated hourly, is on the [Guild Roster](guild-roster.html) page.",
+      links: [L("guild-roster.html", "Guild Roster")] },
+    { re: /\b(officer|officers|lead(er)?ship|become (an )?officer|moderator)\b/,
+      text: "Officers are the three gold ranks: **Hand of Xal**, **Unpaid Intern** and **High Priestess**. They lead raids and keys, host rites, welcome eggs, keep the guild bank and keep the peace. To apply, fill in the officer application on the [Recruitment page](recruit.html#officers). It goes straight to the guild leadership.",
+      links: [L("recruit.html#officers", "Become an officer"), L("ranks.html", "The Ranks of the Coil")] },
+    { re: /\b(join|joining|recruit\w*|apply|application|invite|ginvite|get in|membership|looking for (a )?guild|lfg|accepting)\b/,
+      text: "We're recruiting, for both **PvE** and **roleplay**:\n- Fill in **Request to join** on the [Recruitment page](recruit.html#apply): character, server, class, professions and a few words about you\n- An officer answers within a few days, in game or on [Discord](" + DISCORD + ")\n- You join as an **Egg**; the Rite of the First Scale makes you a Hatchling\nWe're on **Moon Guard (US), Alliance**.",
+      links: [L("recruit.html", "Recruitment"), L("join.html", "The Oath")] },
+    { re: /\b(server|realm|moon guard|faction|alliance|horde|region|us or eu|eu)\b/,
+      text: "The Cult of Xal'Reth is an **Alliance** guild on **Moon Guard (US)**. On another server? Say so in your [request to join](recruit.html#apply) and we'll talk.",
+      links: [L("guild-roster.html", "Guild Roster"), L("recruit.html", "Recruitment")] },
+    { re: /\b(raid\w*|mythic|m\+|keys?|dungeons?|pve|progression|delves?|heroic|normal|schedule|raid nights?|when do you)\b/,
+      text: "We raid, run **Mythic+** most nights, and do delves, world bosses and mount runs, at a pace that respects your evening. Raid nights, rites and events are posted in our [Discord](" + DISCORD + "). Tanks and healers are always treasured.",
+      links: [L("recruit.html", "Recruitment: PvE"), L("achievements.html", "Guild Achievements")] },
+    { re: /\b(rp|roleplay\w*|role play|in character|ic|rites?|events?|ceremon\w*)\b/,
+      text: "Roleplay here is **walk-up**: no backstory exam. The faithful hold in-character rites like the **Chant**, the **Basking**, **Tribunals of Accusation** and **Banishments to the Void**. The [Rites](rites.html) explain each one, and the [Xal'Reth RP](addon-xalreth-rp.html) addon puts the scripture in your emotes.",
+      links: [L("rites.html", "The Rites", "Lore"), L("addon-xalreth-rp.html", "Xal'Reth RP", "Addon")] },
+    { re: /\b(ranks?|promot\w*|egg|hatchling|scaled disciple|coilborn|venomblade|scalekeeper|inner scale)\b/,
+      text: "There are ten ranks, lowest first: **Egg, Hatchling, Scaled Disciple, Coilborn, Venomblade, Scalekeeper, Inner Scale**, then the officers: **Hand of Xal, Unpaid Intern, High Priestess**. You rise with time, help and good humor, not gold.",
+      links: [L("ranks.html", "The Ranks of the Coil")] },
+    { re: /\b(guild bank|bank|gold|hoard|ledger|donat\w*|repairs?)\b/,
+      text: "The guild bank is kept in the open: gold, every tab and the Ledger of deposits and withdrawals are on the [Guild Bank](guild-bank.html) page, recorded in game by the Coil Ledger addon. Hoarding is a minor crime. Giving is a sacrament.",
+      links: [L("guild-bank.html", "The Guild Bank")] },
+    { re: /\b(achievements?|deeds?)\b/,
+      text: "The guild's achievements, newest first, with points and progress, are on [The Deeds of the Coil](achievements.html).",
+      links: [L("achievements.html", "Guild Achievements")] },
+    { re: /\b(merch|shirt|hoodie|mug|shop|store|buy)\b/,
+      text: "Official merch is **coming soon**. Nothing is for sale yet. Leave your name on the [Merch page](merch.html) and the Coil will remember.",
+      links: [L("merch.html", "Merch")] },
+    { re: /\b(altar|pray|prayer|offering|candle|incense)\b/,
+      text: "You can light the incense and candles and leave an offering at [the Altar](altar.html). Hold lightly: nothing offered there is kept for long, and that is the point.",
+      links: [L("altar.html", "The Altar"), L("devotion.html", "Devotion")] },
+    { re: /\b(vyrenna|nhalor|triangle|three gods|ember scale|hollow wing)\b/,
+      text: "**The Sacred Triangle**: Xal'Reth **holds**, Vyrenna the Ember-Scale **gives**, Nhalor the Hollow Wing **releases**. Hold without giving and you are a hoard; give without releasing and you are a debt.",
+      links: [L("triangle.html", "The Sacred Triangle", "Lore"), L("teachings-of-the-triangle.html", "The Teachings of the Sacred Triangle", "Lore")] },
+    { re: /\b(hessk|beggar|begging|spare change)\b/,
+      text: "**Hessk the Beggar King** asked one question of everyone: *What did you give today?* The faith's teaching on generosity is [the Politics of Begging](begging.html); the Ministry of Spare Change keeps the [Guild Bank](guild-bank.html).",
+      links: [L("legends.html#hessk", "Hessk the Beggar King", "Lore"), L("begging.html", "The Politics of Begging", "Lore")] },
+    { re: /\b(khaedara|accus\w*|tribunal|loiter\w*|banish\w*)\b/,
+      text: "**Khaedara the Accuser** presides over the **Tribunal of Accusation**: every soul is guilty of something, usually loitering. The gravest offenders are banished to the Void.",
+      links: [L("rites.html#tribunal", "The Tribunal of Accusation", "Lore"), L("rites.html#banishment", "The Banishment", "Lore")] },
+    { re: /\b(shedfall|holiday|holy days?|calendar|festival)\b/,
+      text: "The holy days, Shedfall among them, are in [the Holy Calendar](rites.html#calendar).",
+      links: [L("rites.html#calendar", "The Holy Calendar", "Lore")] },
+    { re: /\b(greeting|hold light|let go well|glory to)\b/,
+      text: "The greeting is **Hold light.** The reply is **And let go well.** And whenever the faithful feel moved: **Glory to Xal'Reth.**" },
+    { re: /\b(bug|broken|error|lua error|not working|doesnt work|crash\w*|issue|problem)\b/,
+      text: "Sorry about that. First try the newest version from the [Addons page](addons.html) and a full game restart. Still broken? Report it on the [Contact page](contact.html), or press **Talk to John** and describe what happened. He fixes these himself.",
+      links: [L("contact.html", "Report a bug")], handoff: "offer" },
+    { re: /\b(email|contact|reach (you|john)|message (you|john)|get in touch|who (made|runs|built) (this|the site))\b/,
+      text: "This site is kept by **John**, a real person. Press **Talk to John** and your message lands in his inbox; he answers by email. There's also the [Contact page](contact.html).",
+      handoff: "offer" },
+    { re: /\b(commands?|slash)\b|(^|\s)\/[a-z]+/,
+      text: "The addons' commands:\n- **/xrp** Xal'Reth RP\n- **/vrp** Vyrenna RP\n- **/dod** Disciples of Devotion\n- **/litany** The Litany of Begging\n- **/para** Paranoid RP\n- **/rot** Brain Rotter Pro\n- **/edge** Edgelord Pro\n- **/dq** Drama Queen Pro\n- **/fs** Full Support\n- **/mbp** Master Baiter Pro (**/mbf** for WoW Forever)\n- **/ledger** Coil Ledger\nEach addon's page lists the rest.",
+      links: [L("addons.html", "All addons", "Addon")] }
+  ];
+  // what people call the addons, so "the fishing one" finds Master Baiter Pro
+  var ADDON_WORDS = [
+    [/\b(fish\w*|angl\w*|baiter|bait)\b/, /forever|classic|vanilla/, "addon-master-bait-forever.html", "addon-master-baiter-pro.html"],
+    [/\bdrama\b/, null, "addon-drama-queen-pro.html"], [/\b(edge\w*|tryhard)\b/, null, "addon-edgelord-pro.html"],
+    [/\b(brain ?rot\w*|skibidi|rizz)\b/, null, "addon-brain-rotter-pro.html"], [/\bparanoi\w*\b/, null, "addon-paranoid-rp.html"],
+    [/\b(full support|supportive)\b/, null, "addon-full-support.html"], [/\bvyrenna rp\b/, null, "addon-vyrenna-rp.html"],
+    [/\b(devotion|disciples)\b/, null, "addon-disciples-of-devotion.html"], [/\blitany\b/, null, "addon-litany-of-begging.html"],
+    [/\b(xal ?reth rp|emotes?)\b/, null, "addon-xalreth-rp.html"]
   ];
   function oracle(q) {
     var f = fold(q).trim();
@@ -159,8 +228,6 @@
       return { text: "The faithful gather on Discord: [join the Discord](" + DISCORD + "). Say hello in the welcome channel. Eggs are always welcome." };
     if (/\b(twitter|tweet|x\.com|follow)\b/.test(f))
       return { text: "Xal'Reth speaks on X as [@xalrethrp](" + X + "). His latest words are on the [homepage](index.html#xcard-h) too." };
-    if (/\b(join|oath|recruit|recruiting|member|membership|apply|invite|become)\b/.test(f))
-      return { text: "To join the Cult of Xal'Reth:\n- Read and take [the Oath](join.html)\n- Say hello on [our Discord](" + DISCORD + ")\n- Ask for a guild invite there or in game\nNew members are called eggs. Nobody minds. Everyone was one.", links: [{ u: "join.html", t: "Join the Cult", k: "Page" }] };
 
     // the questions everyone asks first, answered straight
     if (/\bwings?\b/.test(f) && /\b(xal ?reth|he|him|his|serpent|god)\b/.test(f))
@@ -177,6 +244,13 @@
     var hits = find(q, 4);
     var named = null;
     addonPages().forEach(function (e) { if (!named && f.indexOf(e._t) !== -1) named = e; });
+    // nicknames: "the fishing one", "drama addon", "brain rot"
+    if (!named) ADDON_WORDS.some(function (w) {
+      if (!w[0].test(f)) return false;
+      var u = w[1] && w[1].test(f) ? w[2] : (w[3] || w[2]);
+      named = addonPages().filter(function (e) { return e.u === u; })[0] || null;
+      return !!named;
+    });
 
     if (/\b(install|installing|addons? folder|interface|set ?up|unzip|extract)\b/.test(f)) {
       var a = named;
@@ -189,6 +263,8 @@
       return { text: "**" + named.t + "**: " + (named.d || bestSentences(named, q)) + (named.z ? "\n[Download " + named.t + "](" + named.z + ")" : ""),
         links: [{ u: named.u, t: named.t + " full page", k: "Addon" }] };
     }
+    // straight answers to what visitors actually ask (after named addons, before the general search)
+    for (var i = 0; i < FAQ.length; i++) if (FAQ[i].re.test(f)) { var a0 = FAQ[i]; return { text: a0.text, links: a0.links, handoff: a0.handoff }; }
     if (/\b(addons?|mods?|plugins?|recommend|which (one|addon)|best addon)\b/.test(f)) {
       var list = addonPages().map(function (e) { return "- [" + e.t + "](" + e.u + "): " + (e.d || "").replace(/^.*?(is a free[^:]*:)\s*/i, "").slice(0, 90).replace(/\s\S*$/, "") + "…"; });
       return { text: "Every addon of the Coil is free:\n" + list.join("\n") + "\nTell me what you like to do in game and I'll point you to one." };
@@ -278,16 +354,17 @@
     chips.hidden = !list.length;
   }
   var START_CHIPS = [
-    { label: "Who is Xal'Reth?", say: "Who is Xal'Reth?" },
+    { label: "How do I join the guild?", say: "How do I join the guild?" },
+    { label: "Raids or roleplay?", say: "Do you raid and run Mythic+?" },
     { label: "Which addon should I get?", say: "Which addon should I get?" },
-    { label: "How do I join?", say: "How do I join the guild?" },
-    { label: "How do I install an addon?", say: "How do I install an addon?" },
+    { label: "Who is Xal'Reth?", say: "Who is Xal'Reth?" },
     { label: "Talk to John", human: true }
   ];
   var MORE_CHIPS = [
+    { label: "Join the guild", say: "How do I join the guild?" },
+    { label: "Become an officer", say: "How do I become an officer?" },
+    { label: "Addon commands", say: "What are the addon commands?" },
     { label: "Tell me a legend", say: "Tell me a legend" },
-    { label: "Fishing addon", say: "Tell me about Master Baiter Pro" },
-    { label: "Does he have wings?", say: "Does Xal'Reth have wings?" },
     { label: "Talk to John", human: true }
   ];
 

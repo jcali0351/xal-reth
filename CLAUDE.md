@@ -102,7 +102,7 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   (bright purple "Ask Vessk" pill bottom right with Vessk's face, `img/vessk-face.jpg`, and a portrait card `img/vessk.jpg`
   that opens each chat; Vessk is drawn from John's own character, a one-time "Hold light" hello, panel full screen on phones; the homepage
   hero's "Speak to an Agent" button opens it via `data-open-chat`). Vessk says plainly he is an AI. Without CHAT.endpoint he
-  answers from search-index.json plus a few fixed answers (who is Xal'Reth, wings, joining, installing, addons, Discord, X);
+  answers from search-index.json plus straight answers from the FAQ list in chat.js (recruiting and officers via recruit.html, server and faction, raids and Mythic+, RP and rites, ranks, guild bank, roster, achievements, merch, the altar, the Triangle, Hessk, Khaedara, holy days, the greeting, bugs, contacting John, every addon's slash command, addon nicknames like "the fishing addon"; keep it current when pages change), plus wings, who is Xal'Reth, installing, Discord and X;
   with CHAT.endpoint set to the Cloudflare Worker in `tools/chat-worker/` (worker.js + README.md; the Claude API key is a
   Worker secret, never in the repo) he answers with Claude, fed the relevant passages. "Talk to John" posts the visitor's
   name, email, message and (if allowed) the chat transcript through FormSubmit to the author's inbox with the subject
