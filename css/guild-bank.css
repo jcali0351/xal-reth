@@ -164,6 +164,7 @@
   box-shadow: 0 0 12px rgba(243, 217, 143, .7), inset 0 -3px 6px rgba(0, 0, 0, .35); }
 .gb-entry.out .gb-coin { filter: hue-rotate(-30deg) saturate(.8); }
 .gb-more { display: block; margin: 16px auto 0; }
+.gb-more[hidden] { display: none; }
 
 .gb-givers h2 { margin-bottom: 6px; }
 .gb-givers-note { font-size: 1rem; margin: 0 0 16px; }

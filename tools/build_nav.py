@@ -19,7 +19,7 @@ MENU = [
                             ("The Legends", "legends.html"), ("The Library", "library.html")]),
     ("Community", "sub-community", [("News", "news.html"), ("Blog", "blog.html"),
                                     ("Testimonials", "testimonials.html"), ("Merch", "merch.html"), ("Guild Bank", "guild-bank.html"),
-                                    ("Guild Ranks", "ranks.html")]),
+                                    ("Guild Ranks", "ranks.html"), ("Guild Achievements", "achievements.html")]),
     ("Faith", "sub-faith", [("Devotion", "devotion.html"), ("The Altar", "altar.html")]),
     ("Addons", "addons.html"),
     ("Guild Roster", "guild-roster.html"),
