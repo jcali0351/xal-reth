@@ -1,0 +1,57 @@
+# Auction House sync: pulls the guild realm's whole auction house and the region's commodities from the Blizzard WoW
+# API (tools/sync_auctions.mjs) and publishes them for auction-house.html as the ah-data branch.
+# The branch is replaced by a single fresh commit every hour, so years of hourly prices never pile up in the repository.
+# Runs hourly and on demand (Actions > "Auction house sync" > Run workflow).
+# Needs the same repository secrets as the roster: BLIZZARD_CLIENT_ID and BLIZZARD_CLIENT_SECRET.
+name: Auction house sync
+run-name: ${{ github.event_name == 'workflow_dispatch' && 'Auction house sync (manual)' || 'Auction house sync (hourly)' }}
+
+on:
+  schedule:
+    - cron: "41 * * * *"   # hourly, away from the roster sync at :17
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: auction-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # item names and icons are looked up once and kept, so bring back the last run's files
+      - name: Restore the last published data
+        run: |
+          mkdir -p ah-data
+          if git fetch --depth=1 origin ah-data; then git archive FETCH_HEAD | tar -x -C ah-data; else echo "No ah-data branch yet; starting fresh."; fi
+
+      - name: Pull the auction house from Blizzard
+        env:
+          BLIZZARD_CLIENT_ID: ${{ secrets.BLIZZARD_CLIENT_ID }}
+          BLIZZARD_CLIENT_SECRET: ${{ secrets.BLIZZARD_CLIENT_SECRET }}
+        run: node tools/sync_auctions.mjs ah-data
+
+      # publish even after a failed pull, so status.json shows the error on the page
+      - name: Publish as the ah-data branch (one commit, replaced every hour)
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd ah-data
+          if [ ! -f status.json ]; then echo "Nothing to publish."; exit 0; fi
+          git init -q -b ah-data
+          git config user.name "xalreth-auction-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Auction house $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push -q -f "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" ah-data

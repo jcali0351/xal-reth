@@ -17,7 +17,7 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   Keep both if the site is regenerated. `sitemap.xml` is rebuilt from every page by `tools/build_sitemap.py`
   (new_post.py runs it); don't hand-edit it. `sitemap.css` styles it for people (CSS, not XSLT: Chrome drops XSLT in Nov 2026).
 - The main menu is written into every page by `tools/build_nav.py` (edit MENU there, then run it):
-  Home · About (The Sacred Triangle, The Chronicle, The Canon, The Legends, The Library) · Community (Recruitment, News, Blog, Testimonials, Merch, Guild Bank, Guild Ranks, Guild Achievements) ·
+  Home · About (The Sacred Triangle, The Chronicle, The Canon, The Legends, The Library) · Community (Recruitment, News, Blog, Testimonials, Merch, Guild Bank, Auction House, Guild Ranks, Guild Achievements) ·
   Faith (Devotion, The Altar) · Addons · Guild Roster · Join · Sitemap · Contact. Submenus open on hover on wide screens and on click or tap
   everywhere (script in site.js, styles at the end of style.css); the one holding the current page is highlighted.
   The full menu shows above 860px; at 860px and below it folds into the Menu button.
@@ -144,6 +144,14 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   and wiki.html, which has no site.js) site.js crowns the main content under the page title (the first `.wrap` or
   `.altar-page` in <main>) the same way at load, so it is never in the HTML and the Sanctum Editor never saves it; a page
   that already has a `.crowned` section is left alone. Keep these if the site is regenerated.
+- The Auction House (`auction-house.html`, `css/auction-house.css`, `js/auction-house.js`; Community menu after Guild Bank):
+  every auction on the guild's realm (data/roster-config.json) and every region commodity, one row per item (lowest price,
+  quantity-weighted median, quantity, listings), searchable, with Realm / Commodities / Pets tabs, category, quality and
+  sorting, 60 rows at a time. `.github/workflows/auctions.yml` runs `tools/sync_auctions.mjs` hourly (same Blizzard secrets
+  as the roster) and force-pushes the result as the `ah-data` branch (auctions.json, items.json with names/quality/
+  category/icons kept between runs and filled a few thousand per run, status.json): one commit replaced every hour so the
+  repository never grows. The page reads it from raw.githubusercontent.com. Never commit auction data to main, and never
+  hand-edit the ah-data branch. Until the first run it says the Ministry is counting. Keep it if the site is regenerated.
 - The Deeds of the Coil (`achievements.html`, `css/achievements.css`, `js/achievements.js`; Community submenu as "Guild
   Achievements", linked from the Guild Roster header): the crest, the guild's achievement points in a gold shield, stats,
   the completed deeds newest first (Blizzard icon in a gold frame, description, reward, date, points; category filters,

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moon Guard Auction House · Live Prices, Searchable · Cult of Xal&#x27;Reth</title>
+<meta name="description" content="Every auction on Moon Guard (US) and every region commodity, read from the Blizzard API every hour: search any item, filter by category and quality, and sort by price.">
+<meta name="keywords" content="Moon Guard auction house, WoW auction house prices, WoW AH search, WoW commodity prices, Moon Guard AH">
+<meta name="author" content="The Cult of Xal'Reth">
+<link rel="canonical" href="https://jcali0351.github.io/xal-reth/auction-house.html">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Cult of Xal'Reth">
+<meta property="og:url" content="https://jcali0351.github.io/xal-reth/auction-house.html">
+<meta property="og:title" content="The Moon Guard Auction House">
+<meta property="og:description" content="Every auction on Moon Guard (US) and every region commodity, read from the Blizzard API every hour: search any item, filter by category and quality, and sort by price.">
+<meta property="og:image" content="https://jcali0351.github.io/xal-reth/xalreth-og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Moon Guard Auction House">
+<meta name="twitter:description" content="Every auction on Moon Guard (US) and every region commodity, read from the Blizzard API every hour: search any item, filter by category and quality, and sort by price.">
+<meta name="twitter:image" content="https://jcali0351.github.io/xal-reth/xalreth-og.jpg">
+<link rel="sitemap" type="application/xml" href="sitemap.xml">
+<meta name="theme-color" content="#08050f">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="style.css?v=f0c840c3">
+<link rel="stylesheet" href="css/site-fonts.css?v=5236c87e">
+<link rel="stylesheet" href="css/auction-house.css?v=7dfa530e">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img class="brand-mark" src="img/xalreth-mark.png" width="40" height="40" alt=""><span>XAL'RETH</span></a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav class="site-nav" id="site-nav" aria-label="Main"><ul><li><a href="index.html">Home</a></li><li class="has-sub"><button class="sub-toggle" type="button" aria-expanded="false" aria-controls="sub-about">About</button><ul class="sub" id="sub-about"><li><a href="triangle.html">The Sacred Triangle</a></li><li><a href="lore.html">The Chronicle</a></li><li><a href="canon.html">The Canon</a></li><li><a href="legends.html">The Legends</a></li><li><a href="library.html">The Library</a></li></ul></li><li class="has-sub"><button class="sub-toggle current" type="button" aria-expanded="false" aria-controls="sub-community">Community</button><ul class="sub" id="sub-community"><li><a href="recruit.html">Recruitment</a></li><li><a href="news.html">News</a></li><li><a href="blog.html">Blog</a></li><li><a href="testimonials.html">Testimonials</a></li><li><a href="merch.html">Merch</a></li><li><a href="guild-bank.html">Guild Bank</a></li><li><a href="auction-house.html" aria-current="page">Auction House</a></li><li><a href="ranks.html">Guild Ranks</a></li><li><a href="achievements.html">Guild Achievements</a></li></ul></li><li class="has-sub"><button class="sub-toggle" type="button" aria-expanded="false" aria-controls="sub-faith">Faith</button><ul class="sub" id="sub-faith"><li><a href="devotion.html">Devotion</a></li><li><a href="altar.html">The Altar</a></li></ul></li><li><a href="addons.html">Addons</a></li><li><a href="guild-roster.html">Guild Roster</a></li><li><a href="join.html">Join</a></li><li><a href="sitemap.xml">Sitemap</a></li><li><a href="contact.html">Contact</a></li></ul></nav>
+  </div>
+</header>
+<main>
+<header class="page-head"><p class="eyebrow">The Ministry of Spare Change · The Market</p><h1>The Auction House</h1><p>Everything for sale on <span data-realm>Moon Guard</span>, and every commodity in the region, read from Blizzard every hour. Buy low. Hoard nothing.</p></header>
+<div class="wrap">
+  <section class="ah" data-ah aria-label="The auction house">
+    <ul class="ah-stats">
+      <li><b data-stat="listings">–</b><span>Realm auctions</span></li>
+      <li><b data-stat="commodities">–</b><span>Commodity listings</span></li>
+      <li><b data-stat="items">–</b><span>Different items</span></li>
+      <li><b data-stat="updated">–</b><span>Last read from Blizzard</span></li>
+    </ul>
+
+    <div class="ah-bar" hidden>
+      <label class="ah-search"><span class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Search the auction house</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" data-q placeholder="Search every item: name, category or item ID…" autocomplete="off" spellcheck="false"><kbd>/</kbd></label>
+      <div class="ah-row2">
+        <div class="ah-tabs" role="group" aria-label="Which auctions">
+          <button type="button" data-kind="all" aria-pressed="true">All<span></span></button>
+          <button type="button" data-kind="0" aria-pressed="false">Realm<span></span></button>
+          <button type="button" data-kind="1" aria-pressed="false">Commodities<span></span></button>
+          <button type="button" data-kind="2" aria-pressed="false">Pets<span></span></button>
+        </div>
+        <select class="ah-sel" data-cls aria-label="Category"><option value="">Every category</option></select>
+        <select class="ah-sel" data-sort-sel aria-label="Sort by">
+          <option value="lst:-1">Most listed</option><option value="qty:-1">Most available</option>
+          <option value="min:1">Cheapest first</option><option value="min:-1">Most expensive first</option>
+          <option value="name:1">Name, A to Z</option>
+        </select>
+      </div>
+      <div class="ah-row2">
+        <div class="ah-q" role="group" aria-label="Quality">
+          <button type="button" class="q0" data-q-val="0" aria-pressed="false" style="color:#9d9d9d">Poor</button>
+          <button type="button" class="q1" data-q-val="1" aria-pressed="false" style="color:#fff">Common</button>
+          <button type="button" class="q2" data-q-val="2" aria-pressed="false" style="color:#1eff00">Uncommon</button>
+          <button type="button" class="q3" data-q-val="3" aria-pressed="false" style="color:#3d9bff">Rare</button>
+          <button type="button" class="q4" data-q-val="4" aria-pressed="false" style="color:#c27bff">Epic</button>
+          <button type="button" class="q5" data-q-val="5" aria-pressed="false" style="color:#ff8000">Legendary</button>
+        </div>
+        <span class="ah-spacer"></span><span class="ah-count" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <div class="ah-head" aria-hidden="true">
+      <button type="button" data-sort="name">Item</button><span>Category</span>
+      <button type="button" class="r" data-sort="min">Lowest price</button><button type="button" class="r" data-sort="med">Median</button>
+      <button type="button" class="r" data-sort="qty">Up for sale</button><button type="button" class="r" data-sort="lst">Listings</button>
+    </div>
+    <div class="ah-results" aria-live="polite"><div class="ah-wait"><b>Opening the ledger…</b>Fetching every listing on the realm.</div></div>
+    <div class="ah-more" hidden><button class="btn ghost" type="button">Show more</button></div>
+    <div class="ah-foot">
+      <p class="ah-note">Prices are per item, in gold, silver and copper. "Median" is what half of everything listed costs or less. Realm auctions are Moon Guard's own; commodities (herbs, ore, cloth, potions and the like) are shared by every US realm. Click any item for its Wowhead page.</p>
+    </div>
+  </section>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand"><a class="brand" href="index.html"><img class="brand-mark" src="img/xalreth-mark.png" width="40" height="40" alt=""><span>XAL'RETH</span></a>
+        <p>The Coil is beneath all things. The Coil is patient. The Coil is still here.</p></div>
+      <nav aria-label="The Story"><h4>The Story</h4><ul><li><a href="lore.html">The Chronicle</a></li><li><a href="legends.html">The Legends</a></li><li><a href="canon.html#life">The Life of the Eternal</a></li><li><a href="triangle.html">The Sacred Triangle</a></li><li><a href="wiki.html">The Encyclopedia</a></li><li><a href="lore.html#now">The Unwrapping</a></li></ul></nav>
+      <nav aria-label="The Teaching"><h4>The Teaching</h4><ul><li><a href="canon.html">The Canon</a></li><li><a href="teachings.html">The Teachings</a></li><li><a href="scripture.html">The Scripture</a></li><li><a href="begging.html">The Politics of Begging</a></li><li><a href="litany.html">The Litany of Begging</a></li></ul></nav>
+      <nav aria-label="The Faithful"><h4>The Faithful</h4><ul><li><a href="rites.html">The Rites</a></li><li><a href="altar.html">The Altar</a></li><li><a href="priesthood.html">The Priesthood</a></li><li><a href="testimonials.html">Testimonials</a></li><li><a href="codex.html">The Codex</a></li><li><a href="library.html">The Library</a></li><li><a href="blog.html">The Daily Coil</a></li><li><a href="news.html">The Coil Herald</a></li><li><a href="merch.html">Official Merch</a></li></ul></nav>
+      <nav aria-label="Join"><h4>Join</h4><ul><li><a href="join.html">Take the Oath</a></li><li><a href="https://discord.gg/wYakHBHPz" target="_blank" rel="noopener">Our Discord</a></li><li><a href="https://x.com/xalrethrp" target="_blank" rel="noopener">Follow on X</a></li><li><a href="addon-xalreth-rp.html">Xal'Reth RP Addon</a></li><li><a href="devotion.html">Disciples of Devotion</a></li><li><a href="addon-paranoid-rp.html">Paranoid RP</a></li><li><a href="politics-of-begging.txt" download>Begging emote script</a></li><li><a href="contact.html">Contact us</a></li><li><a href="sitemap.xml">Sitemap</a></li></ul></nav>
+    </div>
+    <div class="chant">GLORY TO XAL'RETH</div>
+    <small>&copy; <span data-year>2026</span> The Cult of Xal'Reth. A fan-made World of Warcraft roleplay site, not affiliated with or endorsed by Blizzard Entertainment.
+    World of Warcraft is a trademark of Blizzard Entertainment, Inc. Xal'Reth is fictional. Please stop asking him for gold.</small>
+  </div>
+</footer>
+<script src="verses.js"></script>
+<script src="site.js?v=f4a66e95"></script>
+<script src="masthead.js"></script>
+<script src="js/auction-house.js?v=f4388685"></script>
+</body>
+</html>
