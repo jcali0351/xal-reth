@@ -61,6 +61,12 @@
       d.addEventListener("close", function h() { d.removeEventListener("close", h); res(d.returnValue === "ok"); });
     });
   }
+  function dialogValue(id) {
+    return new Promise(function (res) {
+      var d = $(id); d.returnValue = ""; d.showModal();
+      d.addEventListener("close", function h() { d.removeEventListener("close", h); res(d.returnValue); });
+    });
+  }
   $$(".cms-dialog").forEach(function (d) {
     d.addEventListener("keydown", function (e) {
       if (e.key === "Enter" && e.target.tagName === "INPUT" && e.target.type !== "file") { e.preventDefault(); d.close("ok"); }
@@ -240,7 +246,7 @@
       .then(function (list) { list.forEach(function (it) { if (it.u && it.u.indexOf("#") < 0) titles[it.u] = it.t; }); })
       .catch(function () {}).then(renderPages);
     return loadTree().then(function () {
-      renderPages(); renderImages(); renderBlog(); loadHero(); loadSky();
+      renderPages(); renderImages(); renderBlog(); loadHero(); loadSky(); loadFonts();
       route();
     }).catch(function (e) { toast(e.message, true); });
   }
@@ -255,6 +261,7 @@
     if (name === "images") renderImages();
     if (name === "hero" && !(hero && hero.dirty)) loadHero();
     if (name === "sky" && !(sky && sky.dirty)) loadSky();
+    if (name === "fonts" && !(fonts && fonts.dirty)) loadFonts();
     if (name === "bank") loadBank();
   }
   function route() {
@@ -350,7 +357,7 @@
     // show things that normally wait for their scripts to appear
     work.querySelectorAll("[data-alliance]").forEach(function (s) { s.classList.add("in"); });
 
-    ed = { path: path, sha: sha, doc: doc, codeIds: codeIds, dirty: new Set(), attrs: {}, images: {}, head: null, frameDoc: null };
+    ed = { path: path, sha: sha, doc: doc, codeIds: codeIds, dirty: new Set(), attrs: {}, images: {}, removed: {}, inserts: [], head: null, frameDoc: null };
     var frame = $("#cms-editor .ed-frame");
     frame.onload = function () { wireFrame(frame); };
     frame.srcdoc = "<!doctype html>" + work.documentElement.outerHTML;
@@ -440,7 +447,7 @@
   }
   function changeCount() {
     if (!ed) return 0;
-    return ed.dirty.size + Object.keys(ed.attrs).length + Object.keys(ed.images).length + (ed.head ? 1 : 0);
+    return ed.dirty.size + Object.keys(ed.attrs).length + Object.keys(ed.images).length + Object.keys(ed.removed).length + ed.inserts.length + (ed.head ? 1 : 0);
   }
   function updateSave() {
     var c = changeCount(), b = $("[data-ed-save]");
@@ -458,6 +465,7 @@
       if (!ed || !ed.active) return;
       var fd = ed.frameDoc, cmd = b.dataset.cmd;
       if (cmd === "link") return editLink();
+      if (cmd === "addpic") return addPictureInPage();
       fd.execCommand(cmd, false, null);
       markDirty(ed.active);
     });
@@ -498,18 +506,44 @@
     $("#di-alt-wrap").hidden = !!opts.noAlt; $("#di-alt").value = alt || "";
     $("#di-twin-wrap").hidden = !opts.twin; if (opts.twin) $("#di-twin-text").textContent = "Also replace " + opts.twin + " (the same picture in another format; some browsers show that one)";
     $("#di-note").textContent = opts.note || "";
-    return dialog("#dlg-image").then(function (ok) { return ok && imgDlg.file ? { file: imgDlg.file, alt: $("#di-alt").value.trim(), twin: opts.twin && $("#di-twin").checked } : null; });
+    $("#di-remove").hidden = !opts.removable;
+    return dialogValue("#dlg-image").then(function (v) {
+      if (v === "remove") return { remove: true };
+      return v === "ok" && imgDlg.file ? { file: imgDlg.file, alt: $("#di-alt").value.trim(), twin: opts.twin && $("#di-twin").checked } : null;
+    });
   }
   $("#di-file").addEventListener("change", function () {
     var f = this.files && this.files[0]; if (!f) return;
     if (!/^image\//.test(f.type)) { toast("Please choose a picture file.", true); return; }
     imgDlg.file = f; $("#di-new").src = URL.createObjectURL(f); $("#di-ok").disabled = false;
   });
+  /* what goes when a picture is removed: its <picture>, and its <figure> or link if the picture is all they hold */
+  function pictureBox(img) {
+    var el = img;
+    if (el.parentElement && el.parentElement.tagName === "PICTURE") el = el.parentElement;
+    for (var k = 0; k < 2; k++) {
+      var p = el.parentElement;
+      if (!p || !/^(FIGURE|A)$/.test(p.tagName)) break;
+      var others = Array.prototype.slice.call(p.children).filter(function (c) { return c !== el && c.tagName !== "FIGCAPTION"; });
+      if (others.length || (p.tagName === "A" && ownText(p))) break;
+      el = p;
+    }
+    return el;
+  }
   function replaceImageInPage(img) {
+    var key = img.getAttribute("data-cms-new");
+    if (key) return replaceNewPicture(img, key);
     var id = img.getAttribute("data-cms-i");
-    openImageDialog(img.currentSrc || img.src, img.getAttribute("alt"), { note: "The picture is resized for the web and saved in img/uploads/. Pictures used on many pages (or in the page background) are easier to change in the Images tab." })
+    openImageDialog(img.currentSrc || img.src, img.getAttribute("alt"), { removable: true, note: "The picture is resized for the web and saved in img/uploads/. Pictures used on many pages (or in the page background) are easier to change in the Images tab." })
       .then(function (r) {
         if (!r) return;
+        if (r.remove) {
+          var box = pictureBox(img), bid = box.getAttribute("data-cms-i");
+          delete ed.images[id];
+          ed.removed[bid] = true;
+          box.remove(); updateSave();
+          return;
+        }
         return prepImage(r.file, null).then(function (p) {
           var url = URL.createObjectURL(p.blob);
           img.removeAttribute("srcset"); img.src = url; img.setAttribute("alt", r.alt);
@@ -520,6 +554,72 @@
           updateSave();
         });
       }).catch(function (e) { toast(e.message, true); });
+  }
+
+  /* add a new picture to the page, just after the block being edited */
+  var ANCHORS = "p,h1,h2,h3,h4,h5,h6,blockquote,ul,ol,dl,table,figure,details,pre";
+  var insDlg = { file: null };
+  function openInsertDialog() {
+    insDlg.file = null;
+    $("#dn-file").value = ""; $("#dn-img").removeAttribute("src"); $("#dn-empty").hidden = false; $("#dn-ok").disabled = true;
+    $("#dn-title").value = ""; $("#dn-cap").value = ""; $("#dn-alt").value = "";
+    return dialog("#dlg-insert").then(function (ok) {
+      if (!ok || !insDlg.file) return null;
+      return { file: insDlg.file, cls: $("#dn-place").value, title: $("#dn-title").value.trim(), cap: $("#dn-cap").value.trim(), alt: $("#dn-alt").value.trim() };
+    });
+  }
+  $("#dn-file").addEventListener("change", function () {
+    var f = this.files && this.files[0]; if (!f) return;
+    if (!/^image\//.test(f.type)) { toast("Please choose a picture file.", true); return; }
+    insDlg.file = f; $("#dn-img").src = URL.createObjectURL(f); $("#dn-empty").hidden = true; $("#dn-ok").disabled = false;
+  });
+  /* the <figure> for a new picture; src is filled in by the caller */
+  function figureHtml(r, src, p) {
+    return '<figure class="' + esc(r.cls) + '"><img src="' + esc(src) + '" alt="' + esc(r.alt || r.cap || r.title) + '" loading="lazy" decoding="async" width="' + p.width + '" height="' + p.height + '">' +
+      (r.title || r.cap ? "<figcaption>" + (r.title ? "<b>" + esc(r.title) + "</b>" : "") + esc(r.cap) + "</figcaption>" : "") + "</figure>";
+  }
+  function insertAnchor(el) {
+    var a = el.closest(ANCHORS);
+    return a && a.hasAttribute("data-cms-i") ? a : el;
+  }
+  function addPictureInPage() {
+    if (!ed || !ed.active) { toast("Tap the text the picture should follow first."); return; }
+    var anchor = insertAnchor(ed.active), fd = ed.frameDoc;
+    finishEditing();
+    openInsertDialog().then(function (r) {
+      if (!r) return;
+      return prepImage(r.file, null).then(function (p) {
+        var key = "n" + Date.now(), url = URL.createObjectURL(p.blob);
+        var t = fd.createElement("template"); t.innerHTML = figureHtml(r, url, p);
+        var fig = t.content.firstChild, img = fig.querySelector("img");
+        img.setAttribute("data-cms-img", ""); img.setAttribute("data-cms-new", key); img.setAttribute("data-cms-newimg", ""); img.removeAttribute("loading");
+        anchor.parentNode.insertBefore(fig, anchor.nextSibling);
+        // new pictures after the same block stack in the order they were added
+        var anchorId = anchor.getAttribute("data-cms-i") || "";
+        var prev = fig.previousElementSibling, after = { id: anchorId, key: null };
+        if (prev && prev !== anchor && prev.querySelector("[data-cms-new]")) after.key = prev.querySelector("[data-cms-new]").getAttribute("data-cms-new");
+        ed.inserts.push({ key: key, after: after, r: r, prepared: p, name: r.file.name });
+        updateSave();
+        try { fig.scrollIntoView({ block: "center" }); } catch (e) {}
+      });
+    }).catch(function (e) { toast(e.message, true); });
+  }
+  function replaceNewPicture(img, key) {
+    var ins = ed.inserts.filter(function (x) { return x.key === key; })[0]; if (!ins) return;
+    openImageDialog(img.src, img.getAttribute("alt"), { removable: true, note: "This picture is new and not saved yet." }).then(function (r) {
+      if (!r) return;
+      var fig = img.closest("figure");
+      if (r.remove) {
+        // anything stacked after it now follows what it followed
+        ed.inserts.forEach(function (x) { if (x.after.key === key) x.after = ins.after; });
+        ed.inserts = ed.inserts.filter(function (x) { return x !== ins; });
+        (fig || img).remove(); updateSave(); return;
+      }
+      return prepImage(r.file, null).then(function (p) {
+        ins.prepared = p; ins.name = r.file.name; ins.r.alt = r.alt;
+        img.src = URL.createObjectURL(p.blob); img.setAttribute("alt", r.alt); img.setAttribute("width", p.width); img.setAttribute("height", p.height);
+      });
+    }).catch(function (e) { toast(e.message, true); });
   }
 
   /* page title & description */
@@ -622,6 +722,19 @@
         if (pic) pic.querySelectorAll("source").forEach(function (s) { s.remove(); });
       });
     });
+    // 5) removed pictures
+    Object.keys(ed.removed).forEach(function (id) { var o = d.querySelector('[data-cms-i="' + id + '"]'); if (o) o.remove(); });
+    // 6) new pictures, in the order they were added
+    var placed = {};
+    ed.inserts.forEach(function (ins) {
+      var path = uploadPath(ins.name, ins.prepared.ext);
+      var t = d.createElement("template"); t.innerHTML = figureHtml(ins.r, path, ins.prepared);
+      var fig = t.content.firstChild;
+      var ref = ins.after.key ? placed[ins.after.key] : d.querySelector('[data-cms-i="' + ins.after.id + '"]');
+      if (!ref) { var main = d.querySelector("main") || d.body; main.appendChild(fig); } else ref.parentNode.insertBefore(fig, ref.nextSibling);
+      placed[ins.key] = fig;
+      ups.push(blobToB64(ins.prepared.blob).then(function (b64) { changes.push({ path: path, base64: b64 }); }));
+    });
     Promise.all(ups).then(function () {
       var out = d.cloneNode(true);
       out.querySelectorAll("[data-cms-i]").forEach(function (x) { x.removeAttribute("data-cms-i"); });
@@ -644,7 +757,7 @@
   }
   $("[data-ed-close]").addEventListener("click", function () { closeEditor(false); });
 
-  function dirtyAnywhere() { return changeCount() > 0 || (post && post.dirty) || (hero && hero.dirty) || (sky && sky.dirty); }
+  function dirtyAnywhere() { return changeCount() > 0 || (post && post.dirty) || (hero && hero.dirty) || (sky && sky.dirty) || (fonts && fonts.dirty); }
   window.addEventListener("beforeunload", function (e) { if (dirtyAnywhere()) { e.preventDefault(); e.returnValue = ""; } });
 
   /* ================================================================ IMAGES (replace a file in place) */
@@ -827,6 +940,7 @@
         return;
       }
       if (!pf.html.hidden) return;
+      if (c === "picture") return addPictureInPost();
       pf.body.focus();
       if (c === "p" || c === "h2" || c === "h3" || c === "blockquote") document.execCommand("formatBlock", false, c === "p" ? "P" : c.toUpperCase());
       else if (c === "ul") document.execCommand("insertUnorderedList");
@@ -855,17 +969,38 @@
     if (paras.length > 1) document.execCommand("insertHTML", false, paras.map(function (p) { return "<p>" + esc(p).replace(/\n/g, "<br>") + "</p>"; }).join(""));
     else document.execCommand("insertText", false, t);
   });
-  $("#pf-body-img").addEventListener("change", function () {
-    var f = this.files && this.files[0]; this.value = ""; if (!f || !post) return;
-    var cap = window.prompt("Caption under the picture (optional):", "") || "";
-    var alt = window.prompt("Describe the picture for screen readers (optional):", cap) || "";
-    prepImage(f, null).then(function (p) {
-      var url = URL.createObjectURL(p.blob), id = "u" + Date.now();
-      post.bodyImgs = post.bodyImgs || {}; post.bodyImgs[url] = { prepared: p, name: f.name };
-      pf.body.focus();
-      document.execCommand("insertHTML", false, '<figure><img src="' + url + '" alt="' + esc(alt) + '" loading="lazy" width="' + p.width + '" height="' + p.height + '">' + (cap ? "<figcaption>" + esc(cap) + "</figcaption>" : "") + "</figure><p></p>");
-      post.dirty = true;
+  /* pictures in the post: + Picture adds one where the cursor is; tapping one replaces or removes it */
+  function addPictureInPost() {
+    if (!post) return;
+    var sel = getSelection(), range = sel.rangeCount && pf.body.contains(sel.anchorNode) ? sel.getRangeAt(0).cloneRange() : null;
+    openInsertDialog().then(function (r) {
+      if (!r) return;
+      return prepImage(r.file, null).then(function (p) {
+        var url = URL.createObjectURL(p.blob);
+        post.bodyImgs = post.bodyImgs || {}; post.bodyImgs[url] = { prepared: p, name: r.file.name };
+        pf.body.focus();
+        var s2 = getSelection(); s2.removeAllRanges();
+        if (range) s2.addRange(range); else { var end = document.createRange(); end.selectNodeContents(pf.body); end.collapse(false); s2.addRange(end); }
+        document.execCommand("insertHTML", false, figureHtml(r, url, p) + "<p><br></p>");
+        post.dirty = true;
+      });
     }).catch(function (e) { toast(e.message, true); });
+  }
+  pf.body.addEventListener("click", function (e) {
+    var img = e.target.closest && e.target.closest("img"); if (!img || !post) return;
+    e.preventDefault();
+    openImageDialog(img.src, img.getAttribute("alt"), { removable: true, note: "The picture is resized for the web and saved in img/uploads/ when you publish." }).then(function (r) {
+      if (!r) return;
+      if (r.remove) {
+        var fig = img.closest("figure"); ((fig && pf.body.contains(fig)) ? fig : img).remove(); post.dirty = true; return;
+      }
+      return prepImage(r.file, null).then(function (p) {
+        var url = URL.createObjectURL(p.blob);
+        post.bodyImgs = post.bodyImgs || {}; post.bodyImgs[url] = { prepared: p, name: r.file.name };
+        img.src = url; img.setAttribute("alt", r.alt); img.setAttribute("width", p.width); img.setAttribute("height", p.height);
+        img.removeAttribute("srcset"); post.dirty = true;
+      });
+    }).catch(function (er) { toast(er.message, true); });
   });
 
   /* keep the post's HTML tidy: only simple writing tags, no pasted styles */
@@ -1200,6 +1335,94 @@
     }).then(function () {
       busy(btn, false); hero.dirty = false; published("Homepage animations");
       loadHero();
+    }).catch(function (e) { busy(btn, false); toast(e.message, true); });
+  });
+
+  /* ================================================================ FONTS
+     The site's lettering. Every font lives in fonts/<slug>/ (catalog: fonts/fonts.json, built by tools/build_fonts.py).
+     Saving rewrites css/site-fonts.css, which every page loads after style.css: @font-face rules for just the chosen
+     fonts, and --fat (headings), --serif-body (body) and --serif-display (menu, labels, buttons). Its first line keeps the
+     choice as JSON so the tab can read it back. fontsCss() must stay in step with site_fonts_css() in tools/build_fonts.py. */
+  var fonts = null;
+  var FONT_DEF = { heading: "abril-fatface", body: "lato", labels: "", headingBold: false };
+  var CAT_NAMES = { display: "Display and fantasy", serif: "Serif (book type)", sans: "Sans serif (clean)", script: "Handwriting and script", mono: "Typewriter (monospace)" };
+  function fontStack(f) { return '"' + f.name + '", ' + f.fallback; }
+  function fontsCss(choice) {
+    var by = fonts.by, h = by[choice.heading] || by["abril-fatface"], b = by[choice.body] || by.lato, l = by[choice.labels || ""] || b;
+    var used = []; [h, b, l].forEach(function (f) { if (used.indexOf(f) < 0) used.push(f); });
+    var s = "/* xr-fonts " + JSON.stringify({ heading: choice.heading, body: choice.body, labels: choice.labels || "", headingBold: !!choice.headingBold }) + " */\n" +
+      "/* The site's fonts, chosen in the Sanctum Editor (admin.html, Fonts tab), which rewrites this file.\n" +
+      "   Headings use --fat, body text --serif-body, menu, labels and buttons --serif-display. Font files live in fonts/. */\n";
+    used.forEach(function (f) {
+      f.faces.forEach(function (x) {
+        s += '@font-face{font-family:"' + f.name + '";font-style:' + x.s + ";font-weight:" + x.w + ';font-display:swap;src:url("../fonts/' + f.slug + "/" + x.f + '") format("woff2")}\n';
+      });
+    });
+    s += ":root{--fat:" + fontStack(h) + ";--serif-body:" + fontStack(b) + ";--serif-display:" + fontStack(l) + "}\n";
+    if (choice.headingBold) s += "h1,h2{font-weight:700}\n";
+    return s;
+  }
+  function fillFontSelect(sel, withSame) {
+    sel.innerHTML = "";
+    if (withSame) { var o0 = document.createElement("option"); o0.value = ""; o0.textContent = "Same as body text"; sel.appendChild(o0); }
+    Object.keys(CAT_NAMES).forEach(function (c) {
+      var list = fonts.list.filter(function (f) { return f.cat === c; }).sort(function (a, b) { return a.name.localeCompare(b.name); });
+      if (!list.length) return;
+      var g = document.createElement("optgroup"); g.label = CAT_NAMES[c];
+      list.forEach(function (f) {
+        var o = document.createElement("option"); o.value = f.slug;
+        o.textContent = f.name + (f.slug === "abril-fatface" || f.slug === "lato" ? " (original)" : "");
+        o.style.fontFamily = fontStack(f); g.appendChild(o);
+      });
+      sel.appendChild(g);
+    });
+  }
+  function loadFonts() {
+    var cat = fonts && fonts.list ? Promise.resolve(fonts.list) : readText("fonts/fonts.json").then(function (r) { return JSON.parse(r.text); });
+    var cur = tree.has("css/site-fonts.css") ? readText("css/site-fonts.css") : Promise.resolve({ text: "", sha: null });
+    return Promise.all([cat, cur]).then(function (r) {
+      var by = {}; r[0].forEach(function (f) { by[f.slug] = f; });
+      var m = /\/\* xr-fonts (\{.*?\}) \*\//.exec(r[1].text), choice = Object.assign({}, FONT_DEF);
+      if (m) { try { Object.assign(choice, JSON.parse(m[1])); } catch (e) {} }
+      fonts = { list: r[0], by: by, sha: r[1].sha, saved: choice, dirty: false };
+      fillFontSelect($("#font-heading")); fillFontSelect($("#font-body")); fillFontSelect($("#font-labels"), true);
+      setFontForm(choice); $("#fonts-save").disabled = true;
+    }).catch(function (e) { toast("The fonts couldn't be loaded: " + e.message, true); });
+  }
+  function setFontForm(c) {
+    $("#font-heading").value = fonts.by[c.heading] ? c.heading : FONT_DEF.heading;
+    $("#font-body").value = fonts.by[c.body] ? c.body : FONT_DEF.body;
+    $("#font-labels").value = fonts.by[c.labels] ? c.labels : "";
+    $("#font-heading-bold").checked = !!c.headingBold;
+    fontPreview();
+  }
+  function fontValues() {
+    return { heading: $("#font-heading").value, body: $("#font-body").value, labels: $("#font-labels").value, headingBold: $("#font-heading-bold").checked };
+  }
+  function fontPreview() {
+    var v = fontValues(), pv = $("#fonts-preview"), by = fonts.by;
+    var h = by[v.heading], b = by[v.body], l = by[v.labels] || b;
+    pv.style.setProperty("--fat", fontStack(h)); pv.style.setProperty("--serif-body", fontStack(b)); pv.style.setProperty("--serif-display", fontStack(l));
+    pv.classList.toggle("bold-h", v.headingBold);
+    [$("#font-heading"), $("#font-body"), $("#font-labels")].forEach(function (sel) { var f = by[sel.value] || b; sel.style.fontFamily = fontStack(f); });
+  }
+  function fontsChanged() {
+    if (!fonts) return;
+    var v = fontValues(), s = fonts.saved;
+    fonts.dirty = v.heading !== s.heading || v.body !== s.body || v.labels !== (s.labels || "") || v.headingBold !== !!s.headingBold;
+    $("#fonts-save").disabled = !fonts.dirty; fontPreview();
+  }
+  $("#fonts-form").addEventListener("change", fontsChanged);
+  $("#fonts-form").addEventListener("input", fontsChanged);
+  $("#fonts-restore").addEventListener("click", function () { if (fonts) { setFontForm(FONT_DEF); fontsChanged(); } });
+  $("#fonts-save").addEventListener("click", function () {
+    var btn = this, v = fontValues();
+    busy(btn, true);
+    loadTree().then(function () {
+      return commit([{ path: "css/site-fonts.css", text: fontsCss(v) }],
+        "CMS: Fonts (headings " + fonts.by[v.heading].name + ", body " + fonts.by[v.body].name + (v.labels ? ", labels " + fonts.by[v.labels].name : "") + ")");
+    }).then(function () {
+      busy(btn, false); fonts.saved = v; fonts.dirty = false; btn.disabled = true; published("Fonts");
     }).catch(function (e) { busy(btn, false); toast(e.message, true); });
   });
 
