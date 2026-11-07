@@ -28,31 +28,43 @@
 @keyframes xcard-ring { from { transform: scale(.85); opacity: .9; } to { transform: scale(1.25); opacity: 0; } }
 .xcard-who b { display: block; font-family: var(--serif-display); letter-spacing: .05em; font-weight: 600; }
 .xcard-who span span, .xcard-who .handle { color: var(--gold); font-size: 1rem; }
-.xcard-live { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font-family: var(--serif-display); font-size: .62rem; letter-spacing: .2em; text-transform: uppercase; color: #9cf0c0; }
-.xcard-live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #5cff8c; box-shadow: 0 0 10px #5cff8c; animation: xcard-blink 1.8s ease-in-out infinite; }
+.xcard-live { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font-family: var(--serif-display); font-size: .62rem; letter-spacing: .2em; text-transform: uppercase; color: var(--venom); }
+.xcard-live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--scale-bright); box-shadow: 0 0 10px var(--scale-bright); animation: xcard-blink 1.8s ease-in-out infinite; }
 @keyframes xcard-blink { 50% { opacity: .3; } }
 
 .xcard-post { position: relative; min-height: 220px; display: grid; align-items: center; }
 .xpost-slot { position: relative; }
-.xpost-embed .twitter-tweet, .xpost-embed iframe { margin: 0 auto !important; }
-.xcard.is-embedded .xpost-fallback { display: none; }
-.xcard:not(.is-embedded) .xpost-embed { position: absolute; left: 0; right: 0; top: 0; opacity: 0; pointer-events: none; }
 
-.xpost-fallback {
-  display: block; padding: 20px 22px; border-radius: 16px; text-decoration: none; color: var(--bone);
-  background: rgba(8, 5, 15, 0.7); border: 1px solid var(--line);
-  transition: border-color .2s, transform .2s, box-shadow .2s; animation: xpost-in .4s ease-out both;
+/* the post, in the Coil's colors */
+.xpost {
+  position: relative; padding: 22px 22px 18px; border-radius: 18px; color: var(--bone);
+  background: radial-gradient(420px 200px at 100% 0%, rgba(166, 107, 255, 0.16), transparent 70%), linear-gradient(170deg, #150c24, #08050f);
+  border: 1px solid rgba(185, 140, 255, 0.35);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  animation: xpost-in .5s ease-out both;
+  transition: border-color .25s, box-shadow .25s, transform .25s;
 }
-.xpost-fallback:hover { color: var(--bone); border-color: rgba(185, 140, 255, 0.6); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 24px rgba(166, 107, 255, 0.2); }
-@keyframes xpost-in { from { opacity: 0; transform: translateY(8px); } }
-.xpost-head { display: flex; align-items: center; gap: 10px; }
-.xpost-head img { width: 40px; height: 40px; border-radius: 50%; background: #120a1f; padding: 4px; border: 1px solid var(--line); }
-.xpost-head b { display: block; font-family: var(--serif-display); font-size: .92rem; letter-spacing: .04em; }
-.xpost-head i { font-style: normal; color: var(--bone-dim); font-size: .95rem; }
-.xpost-x { width: 20px; height: 20px; margin-left: auto; color: var(--bone); }
-.xpost-text { margin: 14px 0 12px; font-size: 1.2rem; line-height: 1.55; white-space: pre-line; }
+.xpost:hover { border-color: rgba(224, 196, 255, 0.6); transform: translateY(-2px); box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 30px rgba(166, 107, 255, 0.25); }
+.xpost::before { content: "\201C"; position: absolute; right: 22px; bottom: -18px; font-family: var(--serif-display); font-size: 8rem; line-height: 1; color: rgba(166, 107, 255, 0.08); pointer-events: none; }
+@keyframes xpost-in { from { opacity: 0; transform: translateY(10px); } }
+.xpost-head { display: flex; align-items: center; gap: 12px; }
+.xpost-ava { width: 46px; height: 46px; flex: none; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle, #2a1746, #07040d); border: 1px solid rgba(185, 140, 255, 0.55); }
+.xpost-ava img { width: 32px; height: 32px; filter: drop-shadow(0 0 6px rgba(166, 107, 255, 0.7)); }
+.xpost-name { min-width: 0; }
+.xpost-name b { display: block; font-family: var(--serif-display); font-size: .95rem; letter-spacing: .05em; color: #fff; }
+.xpost-name a { color: var(--gold); text-decoration: none; font-size: 1rem; }
+.xpost-name a:hover { color: var(--venom); }
+.xpost-xlink { margin-left: auto; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: var(--venom); border: 1px solid var(--line); transition: all .2s; }
+.xpost-xlink:hover { color: #fff; background: rgba(166, 107, 255, 0.2); border-color: rgba(224, 196, 255, 0.6); }
+.xpost-x { width: 16px; height: 16px; }
+.xpost-text { position: relative; margin: 16px 0 14px; font-size: 1.24rem; line-height: 1.55; white-space: pre-line; overflow-wrap: anywhere; }
+.xpost-text a { color: var(--venom); text-decoration-color: rgba(224, 196, 255, 0.4); }
+.xpost-text a:hover { color: #fff; }
 .xpost-text.muted { color: var(--bone-dim); font-style: italic; }
-.xpost-foot { font-family: var(--serif-display); font-size: .66rem; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+.xpost-foot { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding-top: 12px; border-top: 1px solid var(--line);
+  font-family: var(--serif-display); font-size: .66rem; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-dim); }
+.xpost-foot a { color: var(--gold); text-decoration: none; margin-left: auto; }
+.xpost-foot a:hover { color: var(--venom); }
 
 .xpost-skel { height: 200px; border-radius: 16px; border: 1px solid var(--line);
   background: linear-gradient(100deg, rgba(166, 107, 255, 0.05) 30%, rgba(166, 107, 255, 0.14) 50%, rgba(166, 107, 255, 0.05) 70%) 0 0 / 300% 100%;
@@ -63,5 +75,5 @@
   .xcard { grid-template-columns: 1fr; padding: 22px 18px; gap: 20px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .xcard::before, .xcard-avatar::after, .xcard-live::before, .xpost-fallback, .xpost-skel { animation: none; }
+  .xcard::before, .xcard-avatar::after, .xcard-live::before, .xpost, .xpost-skel { animation: none; }
 }

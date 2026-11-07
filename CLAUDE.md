@@ -51,7 +51,7 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   button). new_post.py and build_addon_pages.py rebuild it; run it by hand after other page changes. Never hand-edit
   search-index.json. Keep all of this if the site is regenerated.
 - Vessk, the AI herald chat: `js/chat.js` + `css/chat.css`, loaded on every page by the loader at the top of `site.js`
-  (purple and black floating button bottom right, a one-time "Hold light" hello, panel full screen on phones; the homepage
+  (bright purple "Ask Vessk" pill bottom right, a one-time "Hold light" hello, panel full screen on phones; the homepage
   hero's "Speak to an Agent" button opens it via `data-open-chat`). Vessk says plainly he is an AI. Without CHAT.endpoint he
   answers from search-index.json plus a few fixed answers (who is Xal'Reth, wings, joining, installing, addons, Discord, X);
   with CHAT.endpoint set to the Cloudflare Worker in `tools/chat-worker/` (worker.js + README.md; the Claude API key is a
@@ -59,8 +59,10 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   name, email, message and (if allowed) the chat transcript through FormSubmit to the author's inbox with the subject
   "Xal'Reth Live Chat", using the same scrambled address as js/contact.js (update ALIAS in both). John replies by email.
   Never write the address in plain text. Keep all of this if the site is regenerated.
-- X (Twitter) account: @xalrethrp (https://x.com/xalrethrp). The homepage card "The Serpent Speaks" (`.xcard`, right after
-  the hero; `css/latest-tweet.css`, `js/latest-tweet.js`) embeds one post from `data/latest-tweet.json`, which
+  site.js loads search and chat with `?v=…`: bump that version whenever their files change so visitors get the new copy.
+- X (Twitter) account: @xalrethrp (https://x.com/xalrethrp). The homepage card "The Serpent Speaks" (`.xcard`, low on the
+  page just above the FAQ; `css/latest-tweet.css`, `js/latest-tweet.js`) draws one post from `data/latest-tweet.json` in the
+  site's own purple and black (no X script or frame, nothing blue; the post's text comes from X's free oEmbed), which
   `.github/workflows/latest-tweet.yml` / `tools/sync_tweet.mjs` keep current: by hand (Actions > "Latest post from X" >
   Run workflow with the post link, free) or hourly if the X_BEARER_TOKEN secret exists (X API pay-per-use, since_id so
   quiet hours cost nothing). Never put the token in a file. The hero has a "Follow on X" button and every footer's Join

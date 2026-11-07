@@ -32,6 +32,26 @@ function idFromUrl(u) {
   return m ? { handle: m[1], id: m[2] } : null;
 }
 
+// The post's words and date from X's public oEmbed (free, no key), so the site can draw the post in its own colors.
+function decode(s) {
+  return s.replace(/<br\s*\/?>/gi, "\n").replace(/<[^>]+>/g, "")
+    .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;|&#x27;/g, "'")
+    .replace(/&mdash;/g, "—").replace(/&nbsp;/g, " ").replace(/&#(\d+);/g, (m, n) => String.fromCodePoint(+n)).trim();
+}
+async function oembed(url) {
+  try {
+    const r = await fetch(`https://publish.twitter.com/oembed?omit_script=1&dnt=1&url=${encodeURIComponent(url)}`, { headers: { "User-Agent": "xalreth-site" } });
+    if (!r.ok) { console.log("oEmbed", r.status); return {}; }
+    const d = await r.json();
+    if (String(d.author_url || "").toLowerCase().split("/").pop() !== HANDLE) { console.log("oEmbed: not our account"); return {}; }
+    const html = String(d.html || "");
+    const p = html.match(/<p[^>]*>([\s\S]*?)<\/p>/i);
+    const dates = [...html.matchAll(/<a [^>]*>([A-Z][a-z]+ \d{1,2}, \d{4})<\/a>/g)];
+    const text = p ? decode(p[1]).replace(/\s*pic\.(twitter|x)\.com\/\S+$/i, "").trim() : "";
+    return { text, dateText: dates.length ? dates[dates.length - 1][1] : "" };
+  } catch (e) { console.log("oEmbed failed:", e.message); return {}; }
+}
+
 async function api(url, token) {
   const r = await fetch(url, { headers: { Authorization: `Bearer ${token}`, "User-Agent": "xalreth-site" } });
   const body = await r.json().catch(() => ({}));
@@ -49,13 +69,22 @@ async function main() {
     const p = idFromUrl(raw);
     if (!p) { console.error("That doesn't look like a post link. Use one like https://x.com/xalrethrp/status/1234567890"); process.exit(1); }
     if (p.handle.toLowerCase() !== HANDLE) { console.error(`Only posts from @${HANDLE} can be shown. That link is from @${p.handle}.`); process.exit(1); }
-    await save({ handle: HANDLE, userId: cur.userId, id: p.id, url: `https://x.com/${HANDLE}/status/${p.id}`,
+    const url = `https://x.com/${HANDLE}/status/${p.id}`;
+    await save({ handle: HANDLE, userId: cur.userId, id: p.id, url, ...(await oembed(url)),
       updated: new Date().toISOString(), source: "manual" });
     return;
   }
 
   const token = process.env.X_BEARER_TOKEN;
-  if (!token) { console.log("No X_BEARER_TOKEN secret, so no automatic check. Update by hand from the Actions tab."); return; }
+  if (!token) {
+    // no API key: at least make sure the post we show has its words
+    if (cur.id && !cur.text) {
+      const o = await oembed(cur.url || `https://x.com/${HANDLE}/status/${cur.id}`);
+      if (o.text) await save({ ...cur, ...o, updated: new Date().toISOString() });
+    }
+    console.log("No X_BEARER_TOKEN secret, so no automatic check for new posts. Update by hand from the Actions tab.");
+    return;
+  }
 
   let userId = cur.userId;
   if (!userId) {

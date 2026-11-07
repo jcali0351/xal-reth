@@ -7,18 +7,19 @@
   var me = document.currentScript;
   var base = me && me.src ? me.src.replace(/site\.js(\?.*)?$/, "") : "";
   window.COIL_BASE = base;
-  if (!document.querySelector('link[href$="css/search.css"]')) {
-    var l = document.createElement("link"); l.rel = "stylesheet"; l.href = base + "css/search.css"; document.head.appendChild(l);
+  var v = "?v=20261106d"; // bump when search or chat change, so visitors get the new copy at once
+  if (!document.querySelector('link[href*="css/search.css"]')) {
+    var l = document.createElement("link"); l.rel = "stylesheet"; l.href = base + "css/search.css" + v; document.head.appendChild(l);
   }
-  if (!document.querySelector('script[src$="js/search.js"]')) {
-    var sc = document.createElement("script"); sc.src = base + "js/search.js"; sc.defer = true; document.head.appendChild(sc);
+  if (!document.querySelector('script[src*="js/search.js"]')) {
+    var sc = document.createElement("script"); sc.src = base + "js/search.js" + v; sc.defer = true; document.head.appendChild(sc);
   }
   // Vessk, the AI herald (chat): css/chat.css + js/chat.js
-  if (!document.querySelector('link[href$="css/chat.css"]')) {
-    var lc = document.createElement("link"); lc.rel = "stylesheet"; lc.href = base + "css/chat.css"; document.head.appendChild(lc);
+  if (!document.querySelector('link[href*="css/chat.css"]')) {
+    var lc = document.createElement("link"); lc.rel = "stylesheet"; lc.href = base + "css/chat.css" + v; document.head.appendChild(lc);
   }
-  if (!document.querySelector('script[src$="js/chat.js"]')) {
-    var cs = document.createElement("script"); cs.src = base + "js/chat.js"; cs.defer = true; document.head.appendChild(cs);
+  if (!document.querySelector('script[src*="js/chat.js"]')) {
+    var cs = document.createElement("script"); cs.src = base + "js/chat.js" + v; cs.defer = true; document.head.appendChild(cs);
   }
 })();
 

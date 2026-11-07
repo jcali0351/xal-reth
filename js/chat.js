@@ -433,7 +433,7 @@
     root = document.createElement("div");
     root.className = "vx-root";
     root.innerHTML =
-      '<button class="vx-launch" type="button" aria-label="Chat with Vessk, AI herald of Xal\'Reth"><img src="' + esc(MARK) + '" alt=""><span class="vx-dot"></span><span class="vx-badge">1</span></button>' +
+      '<button class="vx-launch" type="button" aria-label="Chat with Vessk, AI herald of Xal\'Reth"><span class="vx-orb"><img src="' + esc(MARK) + '" alt=""></span><span class="vx-dot"></span><span class="vx-label">Ask Vessk</span><span class="vx-badge">1</span></button>' +
       '<section class="vx-panel" role="dialog" aria-label="Chat with Vessk, AI herald of Xal\'Reth" hidden>' +
       '<header class="vx-head"><span class="vx-ava"><img src="' + esc(MARK) + '" alt=""></span>' +
       '<div class="vx-who"><b>VESSK</b><span>Herald of Xal\'Reth · AI agent · online</span></div>' +
