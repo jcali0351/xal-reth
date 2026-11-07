@@ -15,7 +15,7 @@
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
   var fmt = function (n) { return Number(n || 0).toLocaleString("en-US"); };
 
-  var all = [], shown = PAGE, state = { q: "", kind: "all", cls: "", qual: null, sort: "listings", dir: -1 };
+  var all = [], shown = PAGE, state = { q: "", kind: "all", cls: "", qual: null, sort: "lst", dir: -1 };
   var KIND = ["Realm", "Commodity", "Pet"];
 
   function money(c, dim) {

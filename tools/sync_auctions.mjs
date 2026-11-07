@@ -2,7 +2,7 @@
 /* Auction House sync: pulls the whole auction house of the guild's realm (data/roster-config.json: realm, region) and
    the region-wide commodities from the Blizzard WoW Game Data API, and condenses it to one row per item: the lowest
    price, a quantity-weighted median price, how many are up and in how many listings. Item names, quality, category and
-   icons are looked up once and kept between runs (a few thousand new items per run, busiest first).
+   icons are looked up once and kept between runs (up to 8,000 new items per run, busiest first).
 
    Writes into the folder given as the first argument (default ./ah-data):
      auctions.json  { updatedAt, realm, region, connectedRealmId, counts, rows: [[key, kind, min, median, qty, listings]] }
@@ -23,7 +23,8 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const OUT = path.resolve(process.argv[2] || path.join(ROOT, "ah-data"));
 const CONFIG = path.join(ROOT, "data", "roster-config.json");
-const MAX_NEW = Number(process.env.AH_MAX_NEW || 4000);        // new items to look up per run
+// new items to look up per run: two requests each, kept well under Blizzard's 36,000 requests an hour (shared with the roster)
+const MAX_NEW = Number(process.env.AH_MAX_NEW || 8000);
 const DEADLINE = Date.now() + Number(process.env.AH_MINUTES || 30) * 60000;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const readJson = async (f, fb) => { try { return JSON.parse(await readFile(f, "utf8")); } catch { return fb; } };
