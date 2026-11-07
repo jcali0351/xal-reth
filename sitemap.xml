@@ -186,6 +186,14 @@
     <xhtml:a href="https://jcali0351.github.io/xal-reth/addon-master-baiter-pro.html"><xr:title>Master Baiter Pro</xr:title><xr:desc>Master Baiter Pro is a free World of Warcraft fishing addon for Midnight: one key casts and hooks, live auction house prices for every catch, your top five catches as icons, a live leaderboard of every angler running it, gold per hour, jackpot alerts and records.</xr:desc></xhtml:a>
   </url>
   <url>
+    <loc>https://jcali0351.github.io/xal-reth/guild-bank.html</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://jcali0351.github.io/xal-reth/xalreth-og.jpg</image:loc></image:image>
+    <xhtml:a href="https://jcali0351.github.io/xal-reth/guild-bank.html"><xr:title>The Guild Bank</xr:title><xr:desc>The guild bank of the Cult of Xal'Reth: the gold the Coil is holding, every item in the bank tabs, and the ledger of deposits and withdrawals, kept by the Ministry of Spare Change.</xr:desc></xhtml:a>
+  </url>
+  <url>
     <loc>https://jcali0351.github.io/xal-reth/addons.html</loc>
     <lastmod>2026-11-01</lastmod>
     <changefreq>weekly</changefreq>
