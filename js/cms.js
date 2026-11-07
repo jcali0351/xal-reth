@@ -1441,15 +1441,25 @@
       });
       out.ledger = kept.sort(function (a, b) { return b.t - a.t; }).slice(0, 5000);
       // the history of the hoard
-      var hist = (old.history || []).filter(function (h) { return h.t !== rec.scannedAt; });
-      hist.push({ t: rec.scannedAt, gold: rec.gold || 0 });
-      out.history = hist.sort(function (a, b) { return a.t - b.t; }).slice(-1000);
+      // Coil Ledger 1.3.0 and later send their own history (gold checked against the server); the points kept from
+      // older versions weren't, so the first such upload starts the history afresh.
+      var hasHist = Array.isArray(rec.history), fresh = hasHist && CoilBank.ver(old.version) < 1003000;
+      var byT = {};
+      (fresh ? [] : old.history || []).forEach(function (h) { byT[h.t] = h.gold; });
+      (hasHist ? rec.history : []).forEach(function (h) { if (h && h.t && h.gold != null) byT[h.t] = h.gold; });
+      if (rec.goldSource !== "unconfirmed") byT[rec.scannedAt] = rec.gold || 0;
+      var hist = Object.keys(byT).map(function (t) { return { t: +t, gold: byT[t] }; });
+      out.history = hist.sort(function (a, b) { return a.t - b.t; }).slice(-2000);
+      out.version = newer ? rec.version || "" : old.version || "";
+      if (newer ? rec.goldSource : old.goldSource) out.goldSource = newer ? rec.goldSource : old.goldSource;
+      var histAdded = out.history.length - (fresh ? 0 : (old.history || []).length);
       out.updatedAt = new Date().toISOString();
-      return { data: out, added: added, newer: newer };
-    }
+      return { data: out, added: added, newer: newer, fresh: fresh, histAdded: histAdded };
+    },
+    ver: function (v) { var s = String(v || "0").split(".").map(Number); return (s[0] || 0) * 1e6 + (s[1] || 0) * 1e3 + (s[2] || 0); }
   };
   function bankStringify(d) {   // one ledger entry and one history point per line, so commits stay readable
-    var head = JSON.stringify({ guild: d.guild, realm: d.realm, region: d.region, scannedAt: d.scannedAt, scannedBy: d.scannedBy, gold: d.gold, updatedAt: d.updatedAt }, null, 2).replace(/\n}$/, "");
+    var head = JSON.stringify({ guild: d.guild, realm: d.realm, region: d.region, scannedAt: d.scannedAt, scannedBy: d.scannedBy, gold: d.gold, goldSource: d.goldSource, version: d.version, updatedAt: d.updatedAt }, null, 2).replace(/\n}$/, "");
     return head + ',\n  "tabs": [\n' + d.tabs.map(function (t) { return "    " + JSON.stringify(t); }).join(",\n") + '\n  ],\n  "history": [\n' +
       d.history.map(function (h) { return "    " + JSON.stringify(h); }).join(",\n") + '\n  ],\n  "ledger": [\n' +
       d.ledger.map(function (e) { return "    " + JSON.stringify(e); }).join(",\n") + "\n  ]\n}\n";
@@ -1468,21 +1478,27 @@
     var box = $("#bank-summary");
     try {
       var rec = CoilBank.parse(text), m = CoilBank.merge(bank.old, rec);
-      var same = !!(bank.old && rec.scannedAt === bank.old.scannedAt && m.added === 0);   // nothing new: say so instead of committing it again
-      // Coil Ledger before 1.2.0 wrote numbers through a 32-bit integer, so gold over 214,748g came out wrong: refuse those
-      var vs = String(rec.version || "0").split(".").map(Number), oldAddon = (vs[0] || 0) * 1e6 + (vs[1] || 0) * 1e3 + (vs[2] || 0) < 1002000;
+      var same = !!(bank.old && rec.scannedAt === bank.old.scannedAt && m.added === 0 && m.histAdded <= 0 && !m.fresh);   // nothing new: say so instead of committing it again
+      // Coil Ledger before 1.3.0 could write the gold down before the server had sent it (an old, wrong amount): refuse those
+      var oldAddon = CoilBank.ver(rec.version) < 1003000;
+      var src = { server: "confirmed by the server", window: "read from the bank window; the game's own figure was " + gold(rec.goldApi),
+        typed: "typed by hand with /ledger gold", unconfirmed: "not confirmed by the server, so it may be out of date" }[rec.goldSource] || "";
       var stacks = 0, n = 0; rec.tabs.forEach(function (t) { (t.slots || []).forEach(function (s) { stacks++; n += s.count || 1; }); });
       bank.pending = m;
       box.className = "bank-summary"; box.hidden = false;
       box.innerHTML = "<h3>" + esc(rec.guild || "The guild") + (rec.realm ? " · " + esc(rec.realm) : "") + "</h3><dl>" +
         "<dt>Recorded</dt><dd>" + esc(new Date(rec.scannedAt * 1000).toLocaleString()) + (rec.scannedBy ? " by " + esc(rec.scannedBy) : "") + "</dd>" +
-        "<dt>Gold</dt><dd>" + esc(gold(rec.gold)) + "</dd>" +
+        "<dt>Gold</dt><dd>" + esc(gold(rec.gold)) + (src ? " <small>(" + esc(src) + ")</small>" : "") + "</dd>" +
+        (Array.isArray(rec.history) ? "<dt>Gold history</dt><dd>" + rec.history.length + " points from the addon" +
+          (m.fresh ? "; they replace the " + ((bank.old && bank.old.history) || []).length + " older points on the site, which came from an addon that could read the gold wrong" : "") + "</dd>" : "") +
         "<dt>Tabs</dt><dd>" + rec.tabs.length + " (" + rec.tabs.filter(function (t) { return t.viewable !== false; }).length + " readable)</dd>" +
         "<dt>Items</dt><dd>" + n.toLocaleString("en-US") + " in " + stacks + " stacks</dd>" +
         "<dt>Ledger</dt><dd>" + (rec.ledger || []).length + " entries in this record, <b>" + m.added + " new</b> (" + m.data.ledger.length + " kept in all)</dd></dl>" +
-        (oldAddon ? '<p class="warn">This export is from Coil Ledger ' + esc(rec.version || "1.0") + ', which writes gold over 214,748g wrongly ' +
-          '(it can show a fraction of the real hoard). Download Coil Ledger 1.2.0 from the Guild Bank page, replace the old one in Interface\\AddOns, ' +
-          'log in, open the guild bank and copy /ledger again.</p>' :
+        (oldAddon ? '<p class="warn">This export is from Coil Ledger ' + esc(rec.version || "1.0") + ', which could write the gold down before the ' +
+          'server had sent it, so the amount may be wrong. Download Coil Ledger 1.3.0 from the Guild Bank page, replace the old CoilLedger folder in ' +
+          'Interface\\AddOns, log in, open the guild bank, wait until chat says it is recorded and check the gold it names, then copy /ledger again.</p>' :
+          rec.goldSource === "unconfirmed" ? '<p class="warn">The server never confirmed this gold, so it may be out of date. You can still save it ' +
+          '(the gold history leaves it out), or in game close and reopen the bank, or type /ledger gold followed by the amount the bank window shows.</p>' :
           same ? '<p class="warn">This is the same record that is already on the site (recorded ' + esc(new Date(rec.scannedAt * 1000).toLocaleString()) +
           '), so there is nothing new to save. In game, open the guild bank and wait until chat says the bank is recorded, then type /ledger and paste it here. ' +
           'If you upload CoilLedger.lua, type /reload first: the game only writes that file on /reload or logout.</p>' :

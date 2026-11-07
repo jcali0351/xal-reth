@@ -146,7 +146,10 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   in the hero), gold over time, the bank tabs as 14 x 7 grids of glass slots with quality glows, a search across tabs, item
   tooltips (click opens Wowhead), the Ledger of money and item entries and "The Generous" (top givers, last 30 days).
   Blizzard's API has no guild bank, so the data comes from our Coil Ledger addon (`CoilLedger.zip`, source in it): it records
-  the bank whenever it is opened in game; /ledger shows an export. John brings it to the site in the Sanctum Editor's
+  the bank whenever it is opened in game; /ledger shows an export. Since 1.3.0 it writes the gold down only once the server
+  has sent it (GUILDBANK_UPDATE_MONEY), prefers the bank window's own amount if the two differ, takes `/ledger gold <amount>`
+  by hand, and keeps and exports its own gold history; the editor refuses exports older than 1.3.0, and the first 1.3.0
+  upload replaces the older history points. John brings it to the site in the Sanctum Editor's
   "Guild Bank" tab (paste the export or upload WTF/.../SavedVariables/CoilLedger.lua), which merges it into
   `data/guild-bank.json` (gold and tabs replaced by the newer record, ledger entries added only if new, gold added to the
   history). `.github/workflows/bank-items.yml` then runs `tools/sync_bank_items.mjs`, which fills `data/item-cache.json`
