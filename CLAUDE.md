@@ -169,6 +169,12 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   John's CMS edits live in the committed pages, so if the site is ever regenerated, start from the current files
   (or his edits are lost), and keep all of this.
 
+- The illuminated plates (`img/art/*.webp`, cut from John's painted sheets; "THE ILLUMINATIONS" at the end of style.css):
+  `<figure class="illum side|side left|wide">` with a `<figcaption><b>Title</b>caption</figcaption>`, `.glyph-grid` for round
+  sigils, `.plates` for galleries. The Chronicle has a banner per chapter (`chronicle-*`), and Legends, Rites, Teachings
+  ("The Seven Sacred Glyphs"; the tail-eating eighth glyph is the Ouroboran Heresy, shown only in the Codex), the
+  Sacred Triangle and the Codex carry plates; the Library ends with every plate ("The Illuminated Plates"). The art's
+  serpents never have wings of their own (wings are Nhalor's). Keep these if the site is regenerated.
 - Type: Abril Fatface (the fat display face: h1, h2, drop caps, big numbers, the wordmark; `--fat`) and Lato (body, and
   labels, nav and buttons in heavy wide-spaced capitals, lead lines and quotes in light italic), from Google Fonts in every
   page's head; "THE FAT AND THE FINE" at the end of style.css. Keep it if the site is regenerated.
