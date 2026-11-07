@@ -1508,3 +1508,15 @@ a.card:hover::after, .card.addon:hover::after, .story-step:hover::after { animat
 
 /* THE NIGHT SKY: shooting stars and comets falling diagonally behind the page (drawn by js/motion.js) */
 .coil-sky { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* GUILD CREST: <div class="crest" data-crest></div> is drawn by js/crest.js from data/guild-crest.json (the tabard crest
+   from the Blizzard API). Hidden until it is drawn; then it rises in with a glow and floats. */
+.crest { position: relative; width: 180px; aspect-ratio: 216 / 240; margin: 0 auto; display: none; }
+.crest.ready { display: block; animation: crest-in 1.4s cubic-bezier(.2, .9, .3, 1.2) both, crest-float 7s ease-in-out 1.4s infinite; }
+.crest::before { content: ""; position: absolute; inset: 8%; border-radius: 50%; z-index: -1; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(201, 162, 255, .5), rgba(138, 77, 255, .18) 60%, transparent 75%); filter: blur(10px); animation: crest-halo 5s ease-in-out infinite; }
+.crest-canvas { display: block; width: 100%; height: 100%; filter: drop-shadow(0 8px 18px rgba(0, 0, 0, .7)) drop-shadow(0 0 16px rgba(166, 107, 255, .55)); }
+@keyframes crest-in { from { opacity: 0; transform: translateY(18px) scale(.8); filter: brightness(2.4) blur(6px); } }
+@keyframes crest-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes crest-halo { 0%, 100% { opacity: .6; transform: scale(.95); } 50% { opacity: 1; transform: scale(1.08); } }
+@media (prefers-reduced-motion: reduce) { .crest.ready, .crest::before { animation: none; } }

@@ -297,6 +297,10 @@ async function main() {
 
     if (counts.failed > list.length / 2) throw new Error(`${counts.failed} of ${list.length} character requests failed; kept the previous roster.`);
 
+    // The guild crest (the tabard) and the guild's achievements. Either failing never stops the roster.
+    try { await syncCrest(api, guild.data); } catch (e) { log(`  ! crest: ${e.message}`); }
+    try { await syncGuildAchievements(api, gPath); } catch (e) { log(`  ! guild achievements: ${e.message}`); }
+
     members.sort((a, b) => a.rank - b.rank || a.name.localeCompare(b.name));
     const rankNames = {};
     for (const r of new Set(members.map((m) => m.rank))) rankNames[r] = cfg.rankNames?.[r] || (r === 0 ? "Guild Master" : `Rank ${r}`);
@@ -316,6 +320,69 @@ async function main() {
       { members: members.length, ...counts, requests: api.requests, rosterChanged: changed });
   } catch (e) {
     await finish(false, e.message || String(e));
+  }
+}
+
+/* ---------- the guild crest ----------
+   Blizzard describes the tabard crest as an emblem and a border (each a greyscale picture plus a colour) and a background
+   colour. The pictures are saved under img/crest/ (so the site can tint them: js/crest.js) and the rest in
+   data/guild-crest.json. Only rewritten when something changed. */
+const rgba = (c) => (c?.rgba ? `rgba(${c.rgba.r},${c.rgba.g},${c.rgba.b},${c.rgba.a ?? 1})` : null);
+async function syncCrest(api, g) {
+  const crest = g?.crest;
+  if (!crest?.emblem || !crest?.border) { log("  crest: the guild has no crest data"); return; }
+  const out = { updatedAt: null, faction: g.faction?.name || null, background: { color: rgba(crest.background?.color) } };
+  for (const part of ["emblem", "border"]) {
+    const p = crest[part], file = `img/crest/${part}-${p.id}.png`, abs = path.join(ROOT, file);
+    let have = false; try { await readFile(abs); have = true; } catch {}
+    if (!have) {
+      const media = await api.get(`/data/wow/media/guild-crest/${part}/${p.id}`, "static");
+      const url = media.data?.assets?.find((a) => a.key === "image")?.value || media.data?.assets?.[0]?.value;
+      if (!url) throw new Error(`no picture for crest ${part} ${p.id}`);
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`crest ${part} picture: HTTP ${res.status}`);
+      await mkdir(path.dirname(abs), { recursive: true });
+      await writeFile(abs, Buffer.from(await res.arrayBuffer()));
+      log(`  crest: saved ${file}`);
+    }
+    out[part] = { id: p.id, image: file, color: rgba(p.color) };
+  }
+  const file = path.join(DATA, "guild-crest.json"), prev = await readJson(file, null);
+  const same = prev && JSON.stringify({ ...prev, updatedAt: null }) === JSON.stringify(out);
+  if (!same) { out.updatedAt = new Date().toISOString(); await writeJson(file, out); log("  crest: updated"); }
+}
+
+/* ---------- the guild's achievements ----------
+   data/guild-achievements.json: total points, every achievement the guild has completed (newest first) with its
+   description and icon, and the ones in progress with their criteria. Only rewritten when something changed. */
+async function syncGuildAchievements(api, gPath) {
+  const r = await api.get(`${gPath}/achievements`, "profile");
+  if (!r.data) { log("  guild achievements: none returned"); return; }
+  const file = path.join(DATA, "guild-achievements.json"), prev = await readJson(file, { achievements: [] });
+  const known = new Map((prev.achievements || []).map((a) => [a.id, a]));
+  const list = (r.data.achievements || []).filter((a) => a.achievement?.id);
+  const out = [];
+  await pool(list, 6, async (a) => {
+    const id = a.achievement.id, old = known.get(id);
+    let detail = old && old.description != null ? old : null;
+    if (!detail) {
+      const [d, m] = await Promise.all([api.get(`/data/wow/achievement/${id}`, "static"), api.get(`/data/wow/media/achievement/${id}`, "static")]);
+      detail = { name: d.data?.name || a.achievement.name, description: d.data?.description || "", points: d.data?.points ?? null,
+        category: d.data?.category?.name || null, icon: m.data?.assets?.find((x) => x.key === "icon")?.value || null, reward: d.data?.reward_description || null };
+    }
+    const crit = a.criteria;
+    out.push({ id, name: detail.name || a.achievement.name, description: detail.description, points: detail.points, category: detail.category,
+      icon: detail.icon, reward: detail.reward, completedAt: a.completed_timestamp || null,
+      progress: !a.completed_timestamp && crit ? { done: (crit.child_criteria || []).filter((c) => c.is_completed).length, of: (crit.child_criteria || []).length || null,
+        amount: crit.amount ?? null } : null });
+  });
+  out.sort((x, y) => (y.completedAt || 0) - (x.completedAt || 0) || x.name.localeCompare(y.name));
+  const body = { totalPoints: r.data.total_points ?? null, totalQuantity: r.data.total_quantity ?? null,
+    completed: out.filter((a) => a.completedAt).length, achievements: out };
+  const { updatedAt: _was, ...prevBody } = prev;
+  if (JSON.stringify(prevBody) !== JSON.stringify(body)) {
+    await writeJson(file, { updatedAt: new Date().toISOString(), ...body });
+    log(`  guild achievements: ${body.completed} completed, ${body.totalPoints} points`);
   }
 }
 

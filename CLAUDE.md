@@ -113,6 +113,12 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   `BLIZZARD_CLIENT_ID`/`BLIZZARD_CLIENT_SECRET` repository secrets and starts manual syncs and connection tests through the
   GitHub API with the admin's own token (kept in sessionStorage only). Never put Blizzard credentials or tokens in any file.
   Keep it if the site is regenerated.
+  The same sync saves the guild crest (the tabard): `data/guild-crest.json` (faction, background colour, emblem and border
+  ids and colours) and the guild's emblem and border pictures in `img/crest/`; and the guild's achievements in
+  `data/guild-achievements.json` (points, completed with dates, descriptions and icons, and progress). Never hand-edit them.
+  `js/crest.js` draws the crest into any `<div class="crest" data-crest>` the armory way (faction ring, banner in the
+  background colour, tinted border and emblem, gloss, hooks; the fixed parts are Blizzard's, in `img/crest/kit/`); it stays
+  hidden until the crest data exists. Used on the Ranks page.
 - The Ranks of the Coil (`ranks.html`, `css/ranks.css`, `js/ranks.js`; Community submenu as "Guild Ranks", linked from the
   Guild Roster header): the ten in-game ranks, highest first: High Priestess, Unpaid Intern, Hand of Xal (the three officer
   ranks, gold insignia), Inner Scale, Scalekeeper, Venomblade, Coilborn, Scaled Disciple (silver), Hatchling, Egg (bronze).
