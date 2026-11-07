@@ -1020,6 +1020,10 @@ a.card:hover, .card.addon:hover { border-color: rgba(201,162,255,.6); box-shadow
 .cta-steps { list-style: none; padding: 0; margin: 0 0 24px; }
 .cta-steps li { display: flex; gap: 14px; align-items: flex-start; margin: 0 0 14px; }
 .cta-steps li > span { flex: 0 0 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-family: var(--serif-display); background: rgba(138,77,255,.35); border: 1px solid rgba(201,162,255,.7); color: #fff; }
+.altar-figure { display: block; margin: 6px 0 26px; border: 1px solid rgba(201,162,255,.55); border-radius: 8px; overflow: hidden; box-shadow: 0 0 40px rgba(138,77,255,.35), 0 0 0 1px rgba(255,207,143,.15) inset; transition: box-shadow .4s ease, transform .4s ease; }
+.altar-figure img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
+.altar-figure:hover, .altar-figure:focus-visible { box-shadow: 0 0 60px rgba(201,162,255,.55), 0 0 0 1px rgba(255,207,143,.35) inset; transform: translateY(-2px); }
+@media (prefers-reduced-motion: reduce) { .altar-figure, .altar-figure:hover { transition: none; transform: none; } }
 .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 .forge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; margin: 20px 0 30px; }
 .forge-card { position: relative; overflow: hidden; padding: 22px 20px 20px; border: 1px solid var(--line); border-radius: 8px; background: rgba(20,10,35,.6); animation: m-rise .8s ease-out both; animation-delay: var(--d); }
