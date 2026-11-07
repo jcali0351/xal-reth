@@ -50,6 +50,10 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   `tools/build_search.py` from every page and each heading with an id (addon results carry their .zip for a Download
   button). new_post.py and build_addon_pages.py rebuild it; run it by hand after other page changes. Never hand-edit
   search-index.json. Keep all of this if the site is regenerated.
+- The homepage sky (`.hero-sky` right after <body>, `css/hero-sky.css`, `js/hero-sky.js`, `img/hero-sanctum.*`, a phone crop
+  `img/hero-sanctum-mobile.webp`): a violet sanctum under a swirling sky behind the header and the animated sigil, with
+  parallax on scroll, a gentle lean toward the mouse, a breathing swirl and a pulsing eye; the header is see-through at the
+  very top of the homepage and solid once you scroll. Keep it if the site is regenerated.
 - "For the Alliance" banner on the homepage, right after the hero (`.allegiance`, `css/alliance.css`, `js/alliance.js`):
   John's Alliance crest image recolored violet (`img/alliance-crest-purple.webp`/`.png`, transparent), floating with a glow,
   and the words "For the Alliance" playing in letter by letter when it scrolls into view. Keep it if the site is regenerated.
