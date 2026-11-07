@@ -1469,6 +1469,8 @@
     try {
       var rec = CoilBank.parse(text), m = CoilBank.merge(bank.old, rec);
       var same = !!(bank.old && rec.scannedAt === bank.old.scannedAt && m.added === 0);   // nothing new: say so instead of committing it again
+      // Coil Ledger before 1.2.0 wrote numbers through a 32-bit integer, so gold over 214,748g came out wrong: refuse those
+      var vs = String(rec.version || "0").split(".").map(Number), oldAddon = (vs[0] || 0) * 1e6 + (vs[1] || 0) * 1e3 + (vs[2] || 0) < 1002000;
       var stacks = 0, n = 0; rec.tabs.forEach(function (t) { (t.slots || []).forEach(function (s) { stacks++; n += s.count || 1; }); });
       bank.pending = m;
       box.className = "bank-summary"; box.hidden = false;
@@ -1478,11 +1480,14 @@
         "<dt>Tabs</dt><dd>" + rec.tabs.length + " (" + rec.tabs.filter(function (t) { return t.viewable !== false; }).length + " readable)</dd>" +
         "<dt>Items</dt><dd>" + n.toLocaleString("en-US") + " in " + stacks + " stacks</dd>" +
         "<dt>Ledger</dt><dd>" + (rec.ledger || []).length + " entries in this record, <b>" + m.added + " new</b> (" + m.data.ledger.length + " kept in all)</dd></dl>" +
-        (same ? '<p class="warn">This is the same record that is already on the site (recorded ' + esc(new Date(rec.scannedAt * 1000).toLocaleString()) +
+        (oldAddon ? '<p class="warn">This export is from Coil Ledger ' + esc(rec.version || "1.0") + ', which writes gold over 214,748g wrongly ' +
+          '(it can show a fraction of the real hoard). Download Coil Ledger 1.2.0 from the Guild Bank page, replace the old one in Interface\\AddOns, ' +
+          'log in, open the guild bank and copy /ledger again.</p>' :
+          same ? '<p class="warn">This is the same record that is already on the site (recorded ' + esc(new Date(rec.scannedAt * 1000).toLocaleString()) +
           '), so there is nothing new to save. In game, open the guild bank and wait until chat says the bank is recorded, then type /ledger and paste it here. ' +
           'If you upload CoilLedger.lua, type /reload first: the game only writes that file on /reload or logout.</p>' :
           m.newer ? "" : '<p class="warn">This record is older than the one on the site, so only its new ledger entries will be added; the gold and tabs stay as they are.</p>');
-      $("#bank-save").disabled = same;
+      $("#bank-save").disabled = same || oldAddon;
     } catch (e) {
       bank.pending = null; $("#bank-save").disabled = true;
       box.className = "bank-summary err"; box.hidden = false; box.textContent = e.message;
