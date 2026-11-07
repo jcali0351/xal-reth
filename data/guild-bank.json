@@ -2,10 +2,10 @@
   "guild": "Cult of Xal Reth",
   "realm": "Moon Guard",
   "region": "US",
-  "scannedAt": 1794034722,
+  "scannedAt": 1794034814,
   "scannedBy": "Khaedara",
   "gold": 478698039,
-  "updatedAt": "2026-11-07T06:59:25.190Z",
+  "updatedAt": "2026-11-07T07:00:58.638Z",
   "tabs": [
     {"index":1,"name":"Tab 1","viewable":true,"slots":[]},
     {"index":2,"name":"Tab 2","viewable":true,"slots":[{"slot":1,"id":48124,"name":"Razormaw Hatchling","count":1,"quality":2}]},
@@ -13,7 +13,8 @@
     {"index":4,"name":"Tab 4","viewable":true,"slots":[]}
   ],
   "history": [
-    {"t":1794034722,"gold":478698039}
+    {"t":1794034722,"gold":478698039},
+    {"t":1794034814,"gold":478698039}
   ],
   "ledger": [
     {"log":"money","type":"withdraw","name":"Zinzalan","t":1793815122,"amount":2850},
