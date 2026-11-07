@@ -9,7 +9,8 @@ os.chdir(ROOT)
 _cache = {}
 def ver(path):
     if path not in _cache:
-        _cache[path] = hashlib.sha1(open(path, "rb").read()).hexdigest()[:8] if os.path.isfile(path) else None
+        # hashed with Unix line endings, so a Windows checkout (CRLF) stamps the same as GitHub's workflow (LF)
+        _cache[path] = hashlib.sha1(open(path, "rb").read().replace(b"\r\n", b"\n")).hexdigest()[:8] if os.path.isfile(path) else None
     return _cache[path]
 
 ASSET = re.compile(r'(href|src)="((?:css|js)/[^"?#]+\.(?:css|js)|style\.css|site\.js)(?:\?v=[^"]*)?"')

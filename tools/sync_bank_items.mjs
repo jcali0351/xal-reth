@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-/* Guild Bank item details: fills data/item-cache.json with the icon (and, if missing, the name and quality) of every
-   item in data/guild-bank.json, from the Blizzard WoW Game Data API. The bank itself comes from the Coil Ledger addon
+/* Guild Bank and Fishing item details: fills data/item-cache.json with the icon (and, if missing, the name and quality)
+   of every item in data/guild-bank.json and data/fishing.json, from the Blizzard WoW Game Data API. The bank itself comes from the Coil Ledger addon
    (Blizzard's API has no guild bank), uploaded in the Sanctum Editor; this only adds the pictures.
 
    Run by .github/workflows/bank-items.yml after data/guild-bank.json changes, or by hand:
@@ -44,16 +44,20 @@ async function get(p) {
   return null;
 }
 
-const bank = await readJson(BANK, null);
-if (!bank) { console.log("No data/guild-bank.json yet."); process.exit(0); }
+// The Fishing page (data/fishing.json, from Master Baiter Pro exports) uses the same cache for its catches.
+const FISH = path.join(ROOT, "data", "fishing.json");
+const bank = (await readJson(BANK, null)) || { tabs: [], ledger: [] };
+const fish = (await readJson(FISH, null)) || { anglers: [], notable: [] };
 const cache = await readJson(CACHE, { items: {} });
 cache.items ||= {};
 
 const ids = new Set();
 for (const t of bank.tabs || []) for (const s of t.slots || []) if (s.id) ids.add(s.id);
 for (const e of bank.ledger || []) if (e.id) ids.add(e.id);
+for (const a of fish.anglers || []) { if (a.best) ids.add(a.best); for (const t of a.top || []) if (t.id) ids.add(t.id); }
+for (const n of fish.notable || []) if (n.id) ids.add(n.id);
 const todo = [...ids].filter((i) => !cache.items[i] || !cache.items[i].icon);
-console.log(`${ids.size} items in the bank and ledger, ${todo.length} need details.`);
+console.log(`${ids.size} items in the bank, ledger and fishing records, ${todo.length} need details.`);
 if (!todo.length) process.exit(0);
 
 await auth();

@@ -202,6 +202,14 @@
     <xhtml:a href="https://jcali0351.github.io/xal-reth/auction-house.html"><xr:title>The Auction House</xr:title><xr:desc>Every auction on Moon Guard (US) and every region commodity, read from the Blizzard API every hour: search any item, filter by category and quality, and sort by price.</xr:desc></xhtml:a>
   </url>
   <url>
+    <loc>https://jcali0351.github.io/xal-reth/fishing.html</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://jcali0351.github.io/xal-reth/xalreth-og.jpg</image:loc></image:image>
+    <xhtml:a href="https://jcali0351.github.io/xal-reth/fishing.html"><xr:title>The Anglers of the Coil</xr:title><xr:desc>The fishing leaderboard of the Cult of Xal'Reth: top catches, most fish caught and most gold per hour, from the Master Baiter Pro addon, with every catch priced at today's Moon Guard auction house.</xr:desc></xhtml:a>
+  </url>
+  <url>
     <loc>https://jcali0351.github.io/xal-reth/guild-bank.html</loc>
     <lastmod>2026-11-07</lastmod>
     <changefreq>monthly</changefreq>

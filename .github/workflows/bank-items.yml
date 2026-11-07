@@ -1,13 +1,14 @@
-# Guild Bank item icons: after a new bank export lands in data/guild-bank.json (uploaded from the Sanctum Editor),
-# fetch the icon of every item from the Blizzard WoW API into data/item-cache.json (tools/sync_bank_items.mjs).
+# Guild Bank and Fishing item icons: after a new bank export lands in data/guild-bank.json, or a Master Baiter Pro
+# export in data/fishing.json (both uploaded from the Sanctum Editor), fetch the icon of every item from the Blizzard
+# WoW API into data/item-cache.json (tools/sync_bank_items.mjs).
 # Uses the same BLIZZARD_CLIENT_ID / BLIZZARD_CLIENT_SECRET secrets as the guild roster.
 name: Guild bank item icons
-run-name: Guild bank item icons
+run-name: Guild bank and fishing item icons
 
 on:
   push:
     branches: [main]
-    paths: ["data/guild-bank.json"]
+    paths: ["data/guild-bank.json", "data/fishing.json"]
   workflow_dispatch:
 
 permissions:

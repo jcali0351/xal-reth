@@ -59,6 +59,7 @@
     <button role="tab" data-tab="sky" aria-selected="false">Homepage sky</button>
     <button role="tab" data-tab="fonts" aria-selected="false">Fonts</button>
     <button role="tab" data-tab="bank" aria-selected="false">Guild Bank</button>
+    <button role="tab" data-tab="fish" aria-selected="false">Fishing</button>
   </nav>
 
   <section class="cms-panel" data-panel="pages">
@@ -206,6 +207,28 @@
     <p class="cms-hint" id="bank-current">Loading the current record…</p>
     <p class="cms-hint"><a class="cms-link" href="guild-bank.html" target="_blank" rel="noopener">View the Guild Bank page</a></p>
   </section>
+
+  <section class="cms-panel" data-panel="fish" hidden>
+    <div class="cms-panel-head">
+      <div><h2>Fishing leaderboard</h2><p class="cms-hint">Bring Master Baiter Pro's records to the Fishing page. Each export holds the angler's own records and every angler their game has heard on the leaderboard network; newer numbers replace older ones and nothing is counted twice. Exports from several anglers can be added one after another.</p></div>
+      <button class="cms-btn" type="button" id="fish-save" disabled>Save &amp; publish</button>
+    </div>
+    <ol class="cms-hint bank-steps">
+      <li>In game, with <a href="addon-master-baiter-pro.html" target="_blank" rel="noopener">Master Baiter Pro</a> 2.2 or newer (and its network on: <b>/mbp network on</b>), type <b>/mbp export</b>, press Ctrl+C and paste below.</li>
+      <li>Or type <b>/reload</b> (or log out) and upload <code>World of Warcraft\_retail_\WTF\Account\YOUR ACCOUNT\SavedVariables\MasterBaiterPro.lua</code>.
+        Anglers can also send you their export, for example in Discord.</li>
+      <li>Check the summary, then press <b>Save &amp; publish</b>. Pictures of new catches are fetched from Blizzard a minute or two later; prices come from the hourly auction house count.</li>
+    </ol>
+    <div class="bank-in">
+      <label class="cms-btn ghost small file-btn">Upload MasterBaiterPro.lua…<input type="file" id="fish-file" accept=".lua,.txt,.json,text/plain"></label>
+      <label class="cms-field"><span>…or paste the export from /mbp export</span><textarea id="fish-paste" rows="4" spellcheck="false" placeholder='{"format":"master-baiter-pro", …}'></textarea></label>
+    </div>
+    <div class="bank-summary" id="fish-summary" hidden></div>
+    <p class="cms-hint" id="fish-current">Loading the current leaderboard…</p>
+    <label class="cms-field"><span>Leave these anglers off the page (one Name-Realm per line, for anyone who asks)</span><textarea id="fish-hidden" rows="2" spellcheck="false" placeholder="Name-MoonGuard"></textarea></label>
+    <p><button class="cms-btn ghost small" type="button" id="fish-hide-save">Save the list</button></p>
+    <p class="cms-hint"><a class="cms-link" href="fishing.html" target="_blank" rel="noopener">View the Fishing page</a></p>
+  </section>
 </main>
 
 <!-- ============ VISUAL PAGE EDITOR ============ -->
@@ -352,6 +375,6 @@
 
 <div class="cms-toast" id="cms-toast" role="status" aria-live="polite"></div>
 
-<script src="js/cms.js?v=c9288890"></script>
+<script src="js/cms.js?v=87f50fce"></script>
 </body>
 </html>

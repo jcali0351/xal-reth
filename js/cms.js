@@ -269,6 +269,7 @@
     if (name === "sky" && !(sky && sky.dirty)) loadSky();
     if (name === "fonts" && !(fonts && fonts.dirty)) loadFonts();
     if (name === "bank") loadBank();
+    if (name === "fish") loadFish();
   }
   function route() {
     var h = decodeURIComponent(location.hash.slice(1));
@@ -1770,6 +1771,159 @@
   });
   // keep the uploaded file's text for the re-merge on save
   var _bankRead = bankRead; bankRead = function (t) { bank.lastText = t; _bankRead(t); };
+
+  /* ================================================================ FISHING
+     Master Baiter Pro (2.2+) exports the angler's own records and every angler their game has heard on its
+     leaderboard network (/mbp export, or the export kept in MasterBaiterPro.lua). Blizzard's API has no fishing
+     data. Each export is merged into data/fishing.json: for every angler the newer numbers win, an angler's own
+     detailed records (top catches, streaks, hours) come only from their own exports, and notable catches are
+     added once. Prices on the page come from the hourly auction house count, not from here. */
+  var FISH_PATH = "data/fishing.json";
+  var CoilFish = window.CoilFish = {
+    parse: function (text) {
+      text = String(text || "").trim();
+      if (!text) throw new Error("Nothing to read.");
+      if (/\["export"\]/.test(text)) {
+        var m = text.match(/\["export"\]\s*=\s*"((?:[^"\\]|\\[\s\S])*)"/);
+        if (!m) throw new Error("That MasterBaiterPro.lua has no export in it yet. Type /mbp export in game (or /reload) first.");
+        text = m[1].replace(/\\(\d{1,3}|[\s\S])/g, function (all, c) {
+          if (/^\d/.test(c)) return String.fromCharCode(+c);
+          return { n: "\n", t: "\t", r: "\r", "\n": "\n" }[c] || c;
+        });
+      } else if (/MasterBaiterProDB/.test(text)) {
+        throw new Error("That MasterBaiterPro.lua is from a version before 2.2, which can't export. Update the addon, type /mbp export, then try again.");
+      }
+      var d;
+      try { d = JSON.parse(text); } catch (e) { throw new Error("That doesn't look like a Master Baiter Pro export. Copy all of it from /mbp export, or upload MasterBaiterPro.lua."); }
+      if (!d || d.format !== "master-baiter-pro" || !d.me || !d.me.name) throw new Error("That isn't a Master Baiter Pro export.");
+      return d;
+    },
+    num: function (v) { v = Number(v); return isFinite(v) && v > 0 ? Math.floor(v) : 0; },
+    merge: function (old, rec) {
+      var N = CoilFish.num;
+      old = old || { anglers: [], notable: [], exports: [], hidden: [] };
+      var list = (old.anglers || []).map(function (a) { return Object.assign({}, a); });
+      var by = {}; list.forEach(function (a) { by[a.name.toLowerCase()] = a; });
+      var added = 0, updated = 0;
+      function upsert(a) {
+        var cur = by[a.name.toLowerCase()];
+        if (!cur) { cur = { name: a.name }; by[a.name.toLowerCase()] = cur; list.push(cur); added++; }
+        else if ((a.seen || 0) < (cur.seen || 0) && !(a.self && (a.selfAt || 0) > (cur.selfAt || 0))) return;
+        else updated++;
+        if ((a.seen || 0) >= (cur.seen || 0)) {
+          ["catches", "week", "wid", "best", "bestValue"].forEach(function (k) { cur[k] = a[k] || 0; });
+          if (a.gph != null) cur.gph = a.gph;
+          if (a.copper != null) cur.copper = a.copper;
+          cur.seen = a.seen || 0;
+        }
+        if (a.self && (a.selfAt || 0) >= (cur.selfAt || 0)) {
+          ["seconds", "sessions", "session", "streak", "zones", "bestQuality", "casts", "misses"].forEach(function (k) { cur[k] = a[k]; });
+          cur.top = a.top; cur.selfAt = a.selfAt; cur.self = true;
+          if (a.gph != null) cur.gph = a.gph;
+          if (a.copper != null) cur.copper = a.copper;
+        }
+      }
+      var me = rec.me, at = N(rec.exportedAt);
+      upsert({
+        name: String(me.name), seen: at, self: true, selfAt: at,
+        catches: N(me.catches), week: N(me.week), wid: N(me.wid), best: N(me.best), bestValue: N(me.bestValue),
+        gph: N(me.gph), copper: N(me.copper), seconds: N(me.seconds), sessions: N(me.sessions), session: N(me.session),
+        streak: N(me.streak), zones: N(me.zones), bestQuality: Number(me.bestQuality) || 0, casts: N(me.casts), misses: N(me.misses),
+        top: (me.top || []).slice(0, 10).map(function (t) { return { id: N(t.id), n: N(t.n), q: Number(t.q) || 0, unit: N(t.unit) }; }).filter(function (t) { return t.id; })
+      });
+      (rec.board || []).forEach(function (e) {
+        if (!e || !e.name || String(e.name).toLowerCase() === String(me.name).toLowerCase()) return;
+        upsert({ name: String(e.name), seen: N(e.seen), catches: N(e.c), week: N(e.w), wid: N(e.wid), best: N(e.b), bestValue: N(e.bv),
+          gph: e.g != null ? N(e.g) : null, copper: e.t != null ? N(e.t) : null });
+      });
+      // notable catches: add the new ones
+      var seenN = {}, notable = (old.notable || []).slice(), newN = 0;
+      notable.forEach(function (n) { seenN[[n.angler.toLowerCase(), n.t, n.id].join("|")] = 1; });
+      (me.notable || []).forEach(function (n) {
+        var k = [String(me.name).toLowerCase(), N(n.t), N(n.id)].join("|");
+        if (seenN[k] || !N(n.id)) return;
+        seenN[k] = 1; newN++;
+        notable.push({ angler: String(me.name), t: N(n.t), id: N(n.id), q: Number(n.q) || 0, v: N(n.v), n: N(n.n) || 1 });
+      });
+      notable.sort(function (a, b) { return b.t - a.t; });
+      var exports = (old.exports || []).filter(function (x) { return !(x.by === me.name && x.at === at); });
+      exports.push({ by: String(me.name), at: at, version: String(rec.version || "") });
+      exports.sort(function (a, b) { return b.at - a.at; });
+      var same = !added && !newN && (old.exports || []).some(function (x) { return x.by === me.name && x.at === at; });
+      list.sort(function (a, b) { return (b.catches || 0) - (a.catches || 0) || a.name.localeCompare(b.name); });
+      return { data: { updatedAt: new Date().toISOString(), hidden: old.hidden || [], exports: exports.slice(0, 100), anglers: list, notable: notable.slice(0, 200) },
+        added: added, updated: updated, newNotable: newN, same: same };
+    }
+  };
+  function fishStringify(d) {   // one angler and one catch per line, so commits stay readable
+    return '{\n  "updatedAt": ' + JSON.stringify(d.updatedAt) + ',\n  "hidden": ' + JSON.stringify(d.hidden || []) +
+      ',\n  "exports": [\n' + d.exports.map(function (x) { return "    " + JSON.stringify(x); }).join(",\n") +
+      '\n  ],\n  "anglers": [\n' + d.anglers.map(function (a) { return "    " + JSON.stringify(a); }).join(",\n") +
+      '\n  ],\n  "notable": [\n' + d.notable.map(function (n) { return "    " + JSON.stringify(n); }).join(",\n") + "\n  ]\n}\n";
+  }
+  var fish = { old: null, sha: null, pending: null, lastText: "" };
+  function loadFish() {
+    var p = tree.has(FISH_PATH) ? readText(FISH_PATH).then(function (r) { return { d: JSON.parse(r.text), sha: r.sha }; }) : Promise.resolve({ d: null, sha: null });
+    return p.then(function (r) {
+      fish.old = r.d; fish.sha = r.sha;
+      $("#fish-current").textContent = r.d ? "On the site now: " + r.d.anglers.length + " anglers, " + r.d.notable.length + " notable catches, from " +
+        r.d.exports.length + " exports (latest " + (r.d.exports[0] ? new Date(r.d.exports[0].at * 1000).toLocaleString() + " by " + r.d.exports[0].by : "none") + ")." :
+        "Nothing on the site yet: this will be the first leaderboard.";
+      $("#fish-hidden").value = ((r.d && r.d.hidden) || []).join("\n");
+    }).catch(function (e) { $("#fish-current").textContent = "The current leaderboard couldn't be read: " + e.message; });
+  }
+  function fishRead(text) {
+    var box = $("#fish-summary");
+    fish.lastText = text;
+    try {
+      var rec = CoilFish.parse(text), m = CoilFish.merge(fish.old, rec), me = rec.me;
+      fish.pending = m;
+      box.className = "bank-summary"; box.hidden = false;
+      box.innerHTML = "<h3>" + esc(me.name) + "</h3><dl>" +
+        "<dt>Exported</dt><dd>" + esc(new Date(rec.exportedAt * 1000).toLocaleString()) + " · Master Baiter Pro " + esc(rec.version || "?") + "</dd>" +
+        "<dt>Their catches</dt><dd>" + Number(me.catches || 0).toLocaleString("en-US") + " fish, " + esc(gold(me.copper)) + " caught</dd>" +
+        "<dt>Anglers heard</dt><dd>" + (rec.board || []).length + " others on the network</dd>" +
+        "<dt>Leaderboard</dt><dd><b>" + m.added + " new</b>, " + m.updated + " updated (" + m.data.anglers.length + " in all)</dd>" +
+        "<dt>Notable catches</dt><dd>" + m.newNotable + " new</dd></dl>" +
+        (m.same ? '<p class="warn">This export is already on the site, so there is nothing new to save. In game, type /mbp export again for a fresh one.</p>' : "");
+      $("#fish-save").disabled = m.same;
+    } catch (e) {
+      fish.pending = null; $("#fish-save").disabled = true;
+      box.className = "bank-summary err"; box.hidden = false; box.textContent = e.message;
+    }
+  }
+  $("#fish-file").addEventListener("change", function () {
+    var f = this.files && this.files[0]; this.value = ""; if (!f) return;
+    f.text().then(function (t) { $("#fish-paste").value = ""; fishRead(t); });
+  });
+  $("#fish-paste").addEventListener("input", function () { if (this.value.trim()) fishRead(this.value); });
+  $("#fish-save").addEventListener("click", function () {
+    var btn = this; if (!fish.pending) return;
+    busy(btn, true);
+    // merge again onto whatever is on GitHub right now, so nothing saved meanwhile is lost
+    loadTree().then(loadFish).then(function () {
+      var rec = CoilFish.parse(fish.lastText), m = CoilFish.merge(fish.old, rec);
+      return commit([{ path: FISH_PATH, text: fishStringify(m.data), base: fish.sha || null }],
+        "CMS: Fishing leaderboard (export by " + rec.me.name + ", " + m.added + " new anglers)").then(function () { return m; });
+    }).then(function (m) {
+      busy(btn, false); btn.disabled = true; fish.pending = null;
+      published("The Fishing leaderboard (" + m.added + " new anglers, " + m.updated + " updated)");
+      $("#fish-summary").hidden = true; $("#fish-paste").value = ""; fish.lastText = "";
+      loadFish();
+    }).catch(function (e) { busy(btn, false); toast(e.message, true); });
+  });
+  $("#fish-hide-save").addEventListener("click", function () {
+    var btn = this;
+    busy(btn, true);
+    loadTree().then(loadFish).then(function () {
+      var d = fish.old || { anglers: [], notable: [], exports: [] };
+      d.hidden = $("#fish-hidden").value.split(/\r?\n/).map(function (s) { return s.trim(); }).filter(Boolean);
+      d.updatedAt = new Date().toISOString();
+      d.anglers = d.anglers || []; d.notable = d.notable || []; d.exports = d.exports || [];
+      return commit([{ path: FISH_PATH, text: fishStringify(d), base: fish.sha || null }], "CMS: Fishing leaderboard hidden anglers");
+    }).then(function () { busy(btn, false); published("The Fishing leaderboard's hidden list"); loadFish(); })
+      .catch(function (e) { busy(btn, false); toast(e.message, true); });
+  });
 
   /* ================================================================ go */
   window.addEventListener("hashchange", function () { if (tree.size && $("#cms-editor").hidden && $("#cms-post").hidden) route(); });

@@ -1,1 +1,3 @@
 __pycache__/
+# local preview settings for the Claude desktop app (holds paths on this PC)
+.claude/launch.json
