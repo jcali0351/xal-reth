@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="style.css?v=508aef9a">
 <link rel="stylesheet" href="css/site-fonts.css?v=aeb406ab">
 <link rel="stylesheet" href="fonts/catalog.css">
-<link rel="stylesheet" href="css/cms.css?v=ea17c3ac">
+<link rel="stylesheet" href="css/cms.css?v=df816234">
 </head>
 <body class="cms">
 
@@ -60,6 +60,8 @@
     <button role="tab" data-tab="fonts" aria-selected="false">Fonts</button>
     <button role="tab" data-tab="bank" aria-selected="false">Guild Bank</button>
     <button role="tab" data-tab="fish" aria-selected="false">Fishing</button>
+    <button role="tab" data-tab="rp" aria-selected="false">RP Profiles</button>
+    <button role="tab" data-tab="duels" aria-selected="false">Duels</button>
     <button role="tab" data-tab="stats" aria-selected="false">Analytics</button>
     <button role="tab" data-tab="x" aria-selected="false">X</button>
   </nav>
@@ -230,6 +232,53 @@
     <label class="cms-field"><span>Leave these anglers off the page (one Name-Realm per line, for anyone who asks)</span><textarea id="fish-hidden" rows="2" spellcheck="false" placeholder="Name-MoonGuard"></textarea></label>
     <p><button class="cms-btn ghost small" type="button" id="fish-hide-save">Save the list</button></p>
     <p class="cms-hint"><a class="cms-link" href="fishing.html" target="_blank" rel="noopener">View the Fishing page</a></p>
+  </section>
+
+  <section class="cms-panel" data-panel="rp" hidden>
+    <div class="cms-panel-head">
+      <div><h2>RP Profiles</h2><p class="cms-hint">The in-character pages of the faithful, shown on <a class="cms-link" href="rp.html" target="_blank" rel="noopener">The Faces of the Coil</a> and on each character's page. Read every profile before it goes up.</p></div>
+      <button class="cms-btn" type="button" id="rp-save">Save &amp; publish</button>
+    </div>
+    <label class="cms-field"><span>Character (from the guild roster)</span><select id="rp-char"></select></label>
+    <div class="rp-form" id="rp-form">
+      <div class="cms-grid2">
+        <label class="cms-field"><span>In-character name</span><input id="rp-icName" type="text" maxlength="80"></label>
+        <label class="cms-field"><span>Title</span><input id="rp-title" type="text" maxlength="120" placeholder="Keeper of the Fifth Stone"></label>
+        <label class="cms-field"><span>Pronouns (optional)</span><input id="rp-pronouns" type="text" maxlength="40"></label>
+        <label class="cms-field"><span>Portrait (optional: a picture in img/, else the Armory render)</span><input id="rp-portrait" type="text" maxlength="200" placeholder="img/uploads/…"></label>
+      </div>
+      <label class="cms-field"><span>A quote</span><input id="rp-quote" type="text" maxlength="240"></label>
+      <div class="cms-grid2">
+        <label class="cms-field"><span>Appearance</span><textarea id="rp-appearance" rows="5"></textarea></label>
+        <label class="cms-field"><span>Personality</span><textarea id="rp-personality" rows="5"></textarea></label>
+      </div>
+      <label class="cms-field"><span>History (a blank line between paragraphs)</span><textarea id="rp-backstory" rows="7"></textarea></label>
+      <label class="cms-field"><span>More sections (each starts with a line "## Heading")</span><textarea id="rp-sections" rows="5" placeholder="## Rumours&#10;They say…"></textarea></label>
+      <div class="cms-grid2">
+        <label class="cms-field"><span>Bonds (one per line: Name | how they know them)</span><textarea id="rp-relationships" rows="4" placeholder="Longwhip | sworn rival, owes three coppers"></textarea></label>
+        <label class="cms-field"><span>Timeline (one per line: date | title | what happened)</span><textarea id="rp-timeline" rows="4" placeholder="Shedfall 2026 | First Scale | Took the Oath at the Nine Stones"></textarea></label>
+      </div>
+      <label class="cms-field"><span>Out of character (optional)</span><textarea id="rp-ooc" rows="3"></textarea></label>
+      <p><button class="cms-btn ghost small danger" type="button" id="rp-delete">Remove this profile</button></p>
+    </div>
+    <h3>Profiles on the site</h3>
+    <ul class="rp-list" id="rp-list"></ul>
+  </section>
+
+  <section class="cms-panel" data-panel="duels" hidden>
+    <div class="cms-panel-head">
+      <div><h2>Duels</h2><p class="cms-hint">The duel ledger behind <a class="cms-link" href="duels.html" target="_blank" rel="noopener">The Duelling Ground</a>: every result counts toward wins, losses, streaks and head to head. Each change is published at once.</p></div>
+    </div>
+    <div class="duel-form">
+      <label class="cms-field"><span>Winner</span><select id="duel-w"></select></label>
+      <label class="cms-field"><span>Loser</span><select id="duel-l"></select></label>
+      <label class="cms-field"><span>Date</span><input id="duel-date" type="date"></label>
+      <label class="cms-field"><span>Where (optional)</span><input id="duel-place" type="text" maxlength="80" placeholder="Outside Goldshire"></label>
+      <label class="cms-field"><span>Note (optional)</span><input id="duel-note" type="text" maxlength="120"></label>
+      <button class="cms-btn" type="button" id="duel-add">Record the duel</button>
+    </div>
+    <h3>The ledger</h3>
+    <ul class="duel-list" id="duel-list"></ul>
   </section>
 
   <section class="cms-panel" data-panel="stats" hidden>
@@ -428,6 +477,6 @@
 
 <div class="cms-toast" id="cms-toast" role="status" aria-live="polite"></div>
 
-<script src="js/cms.js?v=1638dac0"></script>
+<script src="js/cms.js?v=30b01b6c"></script>
 </body>
 </html>

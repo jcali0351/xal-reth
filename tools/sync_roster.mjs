@@ -168,8 +168,11 @@ async function fetchCharacter(api, member, prev, cacheEntry, refreshCollections)
   ]);
   const asset = (k) => media.data?.assets?.find((a) => a.key === k)?.value || null;
   const specId = profile.active_spec?.id || null;
+  // The character pages' extra detail (data/characters.json). Never stops the roster.
+  let extra = null;
+  try { extra = await fetchExtras(api, base); } catch (e) { log(`  ! extras ${realmSlug}/${name}: ${e.message}`); }
   return {
-    state: "fetched", lm: p.lastModified, full: Date.now(),
+    state: "fetched", lm: p.lastModified, full: Date.now(), extra,
     m: {
       id: profile.id,
       name: profile.name,
@@ -199,6 +202,39 @@ async function fetchCharacter(api, member, prev, cacheEntry, refreshCollections)
       updatedAt: new Date().toISOString(),
     },
   };
+}
+
+/* ---------- the character pages' extra detail ----------
+   Gear, Mythic+ rating and best runs this season, and raid progress in the newest expansion, fetched only when a
+   character is refreshed anyway (their profile changed, or the daily full refresh): three more requests each. */
+const QUALITY = { POOR: 0, COMMON: 1, UNCOMMON: 2, RARE: 3, EPIC: 4, LEGENDARY: 5, ARTIFACT: 6, HEIRLOOM: 7 };
+const hexColor = (c) => (c && c.r != null ? "#" + [c.r, c.g, c.b].map((v) => Math.round(v).toString(16).padStart(2, "0")).join("") : null);
+async function fetchExtras(api, base) {
+  const [eq, mp, raids] = await Promise.all([
+    api.get(`${base}/equipment`, "profile"),
+    api.get(`${base}/mythic-keystone-profile`, "profile"),
+    api.get(`${base}/encounters/raids`, "profile"),
+  ]);
+  const gear = (eq.data?.equipped_items || []).map((it) => ({
+    slot: it.slot?.name || it.slot?.type || "", id: it.item?.id || null, name: it.name || "", ilvl: it.level?.value || null,
+    q: QUALITY[it.quality?.type] ?? 1,
+  })).filter((g) => g.id);
+  const mplus = mp.data ? {
+    rating: mp.data.current_mythic_rating?.rating != null ? Math.round(mp.data.current_mythic_rating.rating) : null,
+    color: hexColor(mp.data.current_mythic_rating?.color),
+    best: (mp.data.current_period?.best_runs || []).map((r) => ({ dungeon: r.dungeon?.name || "", level: r.keystone_level || 0, timed: !!r.is_completed_within_time, at: r.completed_timestamp || null }))
+      .sort((a, b) => b.level - a.level).slice(0, 8),
+  } : null;
+  const exps = raids.data?.expansions || [];
+  const latest = exps[exps.length - 1];
+  const raid = latest ? {
+    expansion: latest.expansion?.name || "",
+    instances: (latest.instances || []).map((ins) => ({
+      name: ins.instance?.name || "",
+      modes: (ins.modes || []).map((m) => ({ difficulty: m.difficulty?.name || "", done: m.progress?.completed_count || 0, of: m.progress?.total_count || 0 })),
+    })),
+  } : null;
+  return { gear, mplus, raid, at: new Date().toISOString() };
 }
 
 function buildStats(members) {
@@ -271,6 +307,7 @@ async function main() {
     log(`Roster: ${list.length} characters (${roster.data.members.length} in guild). Fetching profiles...`);
     const counts = { fetched: 0, unchanged: 0, unavailable: 0, failed: 0 };
     const newCache = { members: {} };
+    const extras = {};
 
     const members = await pool(list, 8, async (mm) => {
       const key = charKey(mm.character.realm.slug, mm.character.name);
@@ -282,6 +319,7 @@ async function main() {
       catch (e) { counts.failed++; log(`  ! ${key}: ${e.message}`); r = { m: prev || null, state: "failed" }; }
       if (r.state !== "failed") counts[r.state]++;
       if (r.lm) newCache.members[key] = { lm: r.lm, full: r.full };
+      if (r.extra) extras[key] = r.extra;
       if (r.m) return { ...r.m, rank: mm.rank };
       // Profile not available (private, inactive or transferred): keep what the roster itself says
       return {
@@ -315,12 +353,30 @@ async function main() {
     const changed = hash !== prevRoster.hash;
     if (changed) await writeFile(FILES.roster, stringifyRoster({ version: 1, hash, dataChangedAt: new Date().toISOString(), ...body }));
     await writeJson(FILES.cache, newCache, false);
+    try { await writeCharacters(members, extras); } catch (e) { log(`  ! characters.json: ${e.message}`); }
 
     await finish(true, `${members.length} characters: ${counts.fetched} refreshed, ${counts.unchanged} unchanged, ${counts.unavailable} private or inactive, ${counts.failed} failed. ${api.requests} API requests. Roster ${changed ? "updated" : "unchanged"}.`,
       { members: members.length, ...counts, requests: api.requests, rosterChanged: changed });
   } catch (e) {
     await finish(false, e.message || String(e));
   }
+}
+
+/* data/characters.json: one line per character, kept from the last run for characters not refreshed this time,
+   dropped when they leave the guild. Only rewritten when something changed. */
+async function writeCharacters(members, extras) {
+  const file = path.join(DATA, "characters.json"), prev = await readJson(file, { chars: {} });
+  const chars = {};
+  for (const m of members) {
+    const key = charKey(m.realmSlug, m.name);
+    const v = extras[key] || prev.chars?.[key];
+    if (v) chars[key] = v;
+  }
+  const keys = Object.keys(chars).sort();
+  if (JSON.stringify(keys.map((k) => chars[k])) === JSON.stringify(Object.keys(prev.chars || {}).sort().map((k) => prev.chars[k])) &&
+      keys.join() === Object.keys(prev.chars || {}).sort().join()) return;
+  await writeFile(file, `{\n  "updatedAt": ${JSON.stringify(new Date().toISOString())},\n  "chars": {\n${keys.map((k) => `    ${JSON.stringify(k)}: ${JSON.stringify(chars[k])}`).join(",\n")}\n  }\n}\n`);
+  log(`  characters.json: ${keys.length} characters with gear, Mythic+ and raids`);
 }
 
 /* ---------- the guild crest ----------

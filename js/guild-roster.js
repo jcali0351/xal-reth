@@ -261,7 +261,8 @@
     const region = (roster.guild?.region || "us").toLowerCase(), realm = encodeURIComponent(m.realmSlug), name = encodeURIComponent(m.name.toLowerCase());
     const loc = region === "eu" ? "en-gb" : region === "kr" ? "ko-kr" : region === "tw" ? "zh-tw" : "en-us";
     const link = (href, label) => `<a href="${href}" target="_blank" rel="noopener">${label}<span class="sr-only"> (opens in a new tab)</span></a>`;
-    $('[data-m="links"]', d).innerHTML = link(`https://worldofwarcraft.blizzard.com/${loc}/character/${region}/${realm}/${name}`, "Blizzard Armory")
+    $('[data-m="links"]', d).innerHTML = `<a href="character.html?c=${encodeURIComponent(m._key)}">Full profile</a>`
+      + link(`https://worldofwarcraft.blizzard.com/${loc}/character/${region}/${realm}/${name}`, "Blizzard Armory")
       + link(`https://raider.io/characters/${region}/${realm}/${name}`, "Raider.IO")
       + link(`https://www.warcraftlogs.com/character/${region}/${realm}/${name}`, "Warcraft Logs");
     $('[data-m="updated"]', d).textContent = `Profile updated ${ago(m.updatedAt)}${m.updatedAt ? ` (${fullDate(m.updatedAt)})` : ""}.`;

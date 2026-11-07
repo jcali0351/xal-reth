@@ -17,7 +17,7 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   Keep both if the site is regenerated. `sitemap.xml` is rebuilt from every page by `tools/build_sitemap.py`
   (new_post.py runs it); don't hand-edit it. `sitemap.css` styles it for people (CSS, not XSLT: Chrome drops XSLT in Nov 2026).
 - The main menu is written into every page by `tools/build_nav.py` (edit MENU there, then run it):
-  Home · About (The Sacred Triangle, The Chronicle, The Canon, The Legends, The Library) · Community (Recruitment, News, Blog, Testimonials, Merch, Guild Bank, Auction House, Fishing Leaderboard, Guild Ranks, Guild Achievements) ·
+  Home · About (The Sacred Triangle, The Chronicle, The Canon, The Legends, The Library) · Community (Recruitment, News, Blog, Testimonials, Merch, Guild Bank, Auction House, Fishing Leaderboard, RP Profiles, Duels, Guild Ranks, Guild Achievements) ·
   Faith (Devotion, The Altar, The Path, The Atlas) · Addons · Guild Roster · Join · Sitemap · Contact. Submenus open on hover on wide screens and on click or tap
   everywhere (script in site.js, styles at the end of style.css); the one holding the current page is highlighted.
   The full menu shows above 860px; at 860px and below it folds into the Menu button.
@@ -152,6 +152,22 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   category/icons kept between runs and filled a few thousand per run, status.json): one commit replaced every hour so the
   repository never grows. The page reads it from raw.githubusercontent.com. Never commit auction data to main, and never
   hand-edit the ah-data branch. Until the first run it says the Ministry is counting. Keep it if the site is regenerated.
+- The Armory, RP profiles and duels (all three load through `js/coil-faces.js`; styles in `css/armory.css`).
+  `character.html?c=<realm-slug>/<name>` (`js/character.js`; out of the sitemap and search because it needs `?c=`):
+  one faithful's page in their class colour with the Armory render, rank, item level, Mythic+ rating, achievements,
+  mounts, pets, last seen, their RP profile, duel record, equipment (Wowhead links), Mythic+ best runs, raid progress,
+  recent deeds and Armory/Raider.IO/Warcraft Logs links. The Guild Roster's profile panel links to it ("Full profile").
+  Gear, Mythic+ and raids come from `data/characters.json`, written by `tools/sync_roster.mjs` (fetchExtras: equipment,
+  mythic-keystone-profile and encounters/raids, only for characters refreshed in that run, so everyone is filled within
+  a day; never hand-edit it). `rp.html` (`js/rp.js`), "The Faces of the Coil": the RP profiles in
+  `data/rp-profiles.json`, kept in the Sanctum Editor's "RP Profiles" tab (in-character name, title, pronouns,
+  portrait from img/, quote, appearance, personality, history, extra "## Heading" sections, bonds, timeline, OOC);
+  members send profiles to an officer, who reads them before they go up (no public self-submission). `duels.html`
+  (`js/duels.js`), "The Duelling Ground": the duel ledger in `data/duels.json` (winner, loser, date, place, note),
+  kept in the editor's "Duels" tab; leaderboard by wins, win rate (3+ duels) or streak with the last five, head to
+  head, recent duels and an SVG web of rivalries. Characters are keyed "realm-slug/name" everywhere. Public lookup of
+  characters outside the guild would need a server (the admin Worker could host it); not built. No duel addon exists;
+  don't publish one. Keep all of this if the site is regenerated.
 - Analytics and X in the Sanctum Editor (plan and decisions: `docs/CMS_ANALYTICS_AND_X.md`). Counting: `js/counter.js`
   (loaded by site.js; off until its CODE holds the site's GoatCounter code) loads GoatCounter's count.js: no cookies, no
   personal data, nothing counted for Do Not Track / Global Privacy Control, noindex pages or localhost. Goals are

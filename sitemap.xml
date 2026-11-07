@@ -210,6 +210,14 @@
     <xhtml:a href="https://jcali0351.github.io/xal-reth/counts.html"><xr:title>What the Sanctum Counts</xr:title><xr:desc>What the Cult of Xal'Reth website counts and what it never does: no cookies, no personal data, cookieless page counts through GoatCounter, and Do Not Track respected.</xr:desc></xhtml:a>
   </url>
   <url>
+    <loc>https://jcali0351.github.io/xal-reth/duels.html</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://jcali0351.github.io/xal-reth/xalreth-og.jpg</image:loc></image:image>
+    <xhtml:a href="https://jcali0351.github.io/xal-reth/duels.html"><xr:title>The Duelling Ground</xr:title><xr:desc>The duel leaderboard of the Cult of Xal'Reth: wins, losses, win rate, streaks, head-to-head records and a web of every rivalry.</xr:desc></xhtml:a>
+  </url>
+  <url>
     <loc>https://jcali0351.github.io/xal-reth/fishing.html</loc>
     <lastmod>2026-11-07</lastmod>
     <changefreq>monthly</changefreq>
@@ -256,6 +264,14 @@
     <priority>0.8</priority>
     <image:image><image:loc>https://jcali0351.github.io/xal-reth/xalreth-og.jpg</image:loc></image:image>
     <xhtml:a href="https://jcali0351.github.io/xal-reth/recruit.html"><xr:title>The Coil Is Recruiting</xr:title><xr:desc>The Cult of Xal'Reth is recruiting on Moon Guard (US, Alliance): raiders, Mythic+ players and roleplayers. Send a request to join, or apply to become an officer.</xr:desc></xhtml:a>
+  </url>
+  <url>
+    <loc>https://jcali0351.github.io/xal-reth/rp.html</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://jcali0351.github.io/xal-reth/xalreth-og.jpg</image:loc></image:image>
+    <xhtml:a href="https://jcali0351.github.io/xal-reth/rp.html"><xr:title>The Faces of the Coil</xr:title><xr:desc>Roleplay profiles of the Cult of Xal'Reth, a World of Warcraft RP guild on Moon Guard: in-character names, appearances, histories, bonds and timelines.</xr:desc></xhtml:a>
   </url>
   <url>
     <loc>https://jcali0351.github.io/xal-reth/addons.html</loc>

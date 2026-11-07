@@ -298,3 +298,11 @@ body.cms { min-height: 100vh; overflow-x: hidden; background: radial-gradient(el
 @media (max-width: 860px) { .an-grid, .an-grid.four, .xg { grid-template-columns: minmax(0, 1fr); } .x-day { min-height: 48px; } }
 .cms .an-custom input[type=date], .cms .an-tablehead input, .cms .x-actions .x-when input { width: auto; display: inline-block; }
 .x-st { white-space: nowrap; } .x-acts .cms-link { margin-right: 4px; }
+/* RP PROFILES and DUELS */
+.cms-grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }
+.rp-list, .duel-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+.rp-list li, .duel-list li { padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; color: var(--bone); }
+.rp-list small, .duel-list small { color: var(--bone-dim); }
+.duel-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0 14px; align-items: end; margin-bottom: 10px; }
+.duel-form .cms-btn { margin-bottom: 14px; }
+@media (max-width: 760px) { .cms-grid2 { grid-template-columns: minmax(0, 1fr); } }

@@ -270,6 +270,8 @@
     if (name === "fonts" && !(fonts && fonts.dirty)) loadFonts();
     if (name === "bank") loadBank();
     if (name === "fish") loadFish();
+    if (name === "rp") loadRp();
+    if (name === "duels") loadDuels();
     if (name === "stats") { renderWorkerBoxes(); if (!an.loaded) loadAnalytics(); }
     if (name === "x") { renderWorkerBoxes(); loadX(); }
   }
@@ -1925,6 +1927,159 @@
       return commit([{ path: FISH_PATH, text: fishStringify(d), base: fish.sha || null }], "CMS: Fishing leaderboard hidden anglers");
     }).then(function () { busy(btn, false); published("The Fishing leaderboard's hidden list"); loadFish(); })
       .catch(function (e) { busy(btn, false); toast(e.message, true); });
+  });
+
+  /* ================================================================ THE ROSTER, FOR RP PROFILES AND DUELS
+     Characters are keyed "realm-slug/name" (lower case), the same as data/roster.json and data/characters.json. */
+  var guild = { members: [], byKey: {} };
+  function loadGuild() {
+    return readText("data/roster.json").then(function (r) {
+      var d = JSON.parse(r.text);
+      guild.members = (d.members || []).slice().sort(function (a, b) { return a.name.localeCompare(b.name); });
+      guild.byKey = {}; guild.members.forEach(function (m) { guild.byKey[m.realmSlug + "/" + m.name.toLowerCase()] = m; });
+    }).catch(function () { guild.members = []; guild.byKey = {}; });
+  }
+  function memberOptions(extraKeys) {
+    var keys = guild.members.map(function (m) { return m.realmSlug + "/" + m.name.toLowerCase(); });
+    (extraKeys || []).forEach(function (k) { if (keys.indexOf(k) < 0) keys.push(k); });
+    return '<option value="">Choose…</option>' + keys.map(function (k) {
+      var m = guild.byKey[k];
+      return '<option value="' + esc(k) + '">' + esc(m ? m.name + " (" + [m.level ? "level " + m.level : "", m.class].filter(Boolean).join(" ") + ")" : k + " (not on the roster)") + "</option>";
+    }).join("");
+  }
+  function keyForName(s) {
+    s = String(s || "").trim(); if (!s) return "";
+    var low = s.toLowerCase();
+    if (guild.byKey[low]) return low;
+    var hit = guild.members.filter(function (m) { return m.name.toLowerCase() === low; })[0];
+    return hit ? hit.realmSlug + "/" + hit.name.toLowerCase() : s;
+  }
+  function jsonLines(obj, listKey) {   // one entry per line, so commits stay readable
+    var head = Object.keys(obj).filter(function (k) { return k !== listKey; }).map(function (k) { return "  " + JSON.stringify(k) + ": " + JSON.stringify(obj[k]); });
+    var v = obj[listKey], body = Array.isArray(v) ? "[\n" + v.map(function (x) { return "    " + JSON.stringify(x); }).join(",\n") + "\n  ]"
+      : "{\n" + Object.keys(v).sort().map(function (k) { return "    " + JSON.stringify(k) + ": " + JSON.stringify(v[k]); }).join(",\n") + "\n  }";
+    return "{\n" + head.concat(["  " + JSON.stringify(listKey) + ": " + body]).join(",\n") + "\n}\n";
+  }
+
+  /* ================================================================ RP PROFILES (data/rp-profiles.json) */
+  var RP_PATH = "data/rp-profiles.json", rp = { data: { profiles: {} }, sha: null };
+  var RP_FIELDS = ["icName", "title", "pronouns", "portrait", "quote", "appearance", "personality", "backstory", "ooc"];
+  function loadRp() {
+    return loadGuild().then(function () {
+      return tree.has(RP_PATH) ? readText(RP_PATH).then(function (r) { rp.data = JSON.parse(r.text); rp.sha = r.sha; }) : (rp.data = { profiles: {} }, rp.sha = null);
+    }).then(function () {
+      rp.data.profiles = rp.data.profiles || {};
+      var sel = $("#rp-char"), keep = sel.value;
+      sel.innerHTML = memberOptions(Object.keys(rp.data.profiles));
+      if (keep) sel.value = keep;
+      fillRp(); listRp();
+    }).catch(function (e) { toast(e.message, true); });
+  }
+  function fillRp() {
+    var k = $("#rp-char").value, p = rp.data.profiles[k] || {};
+    RP_FIELDS.forEach(function (f) { $("#rp-" + f).value = p[f] || ""; });
+    if (!p.icName && guild.byKey[k]) $("#rp-icName").value = guild.byKey[k].name;
+    $("#rp-sections").value = (p.sections || []).map(function (s) { return "## " + s.heading + "\n" + s.body; }).join("\n\n");
+    $("#rp-relationships").value = (p.relationships || []).map(function (r) { var m = guild.byKey[r.to]; return (m ? m.name : r.to) + " | " + (r.label || ""); }).join("\n");
+    $("#rp-timeline").value = (p.timeline || []).map(function (t) { return [t.date || "", t.title || "", (t.body || "").replace(/\n/g, " ")].join(" | "); }).join("\n");
+    $("#rp-form").hidden = !k; $("#rp-delete").hidden = !rp.data.profiles[k];
+  }
+  function listRp() {
+    var keys = Object.keys(rp.data.profiles).sort();
+    $("#rp-list").innerHTML = keys.map(function (k) {
+      var p = rp.data.profiles[k], m = guild.byKey[k];
+      return '<li><button type="button" class="cms-link" data-rp-edit="' + esc(k) + '">' + esc(p.icName || (m && m.name) || k) + "</button> " +
+        "<small>" + esc(m ? m.name + " · " + (m.class || "") : k + " (not on the roster)") + (p.updated ? " · updated " + esc(p.updated.slice(0, 10)) : "") + '</small> <a class="cms-link" href="character.html?c=' + encodeURIComponent(k) + '" target="_blank" rel="noopener">View</a></li>';
+    }).join("") || '<li class="cms-hint">No profiles yet.</li>';
+  }
+  $("#rp-char").addEventListener("change", fillRp);
+  $("#rp-list").addEventListener("click", function (e) { var b = e.target.closest("[data-rp-edit]"); if (b) { $("#rp-char").value = b.dataset.rpEdit; fillRp(); $("#rp-char").scrollIntoView({ behavior: "smooth" }); } });
+  function readRpForm() {
+    var k = $("#rp-char").value;
+    if (!k) throw new Error("Choose a character first.");
+    var p = {};
+    RP_FIELDS.forEach(function (f) { var v = $("#rp-" + f).value.trim(); if (v) p[f] = v; });
+    if (p.portrait && !/^img\/[\w\-./]+\.(png|jpe?g|webp|gif)$/i.test(p.portrait)) throw new Error("The portrait must be a picture on the site, like img/uploads/name.webp.");
+    var secs = [], cur = null;
+    $("#rp-sections").value.split(/\r?\n/).forEach(function (line) {
+      var m = line.match(/^##\s*(.+)$/);
+      if (m) { cur = { heading: m[1].trim(), body: "" }; secs.push(cur); } else if (cur) cur.body += (cur.body ? "\n" : "") + line;
+    });
+    secs.forEach(function (s) { s.body = s.body.trim(); });
+    if (secs.length) p.sections = secs.filter(function (s) { return s.heading; });
+    var rel = $("#rp-relationships").value.split(/\r?\n/).map(function (l) { var a = l.split("|"); return { to: keyForName(a[0]), label: (a.slice(1).join("|") || "").trim() }; }).filter(function (r) { return r.to; });
+    if (rel.length) p.relationships = rel;
+    var tl = $("#rp-timeline").value.split(/\r?\n/).map(function (l) { var a = l.split("|").map(function (x) { return x.trim(); }); return { date: a[0] || "", title: a[1] || "", body: a.slice(2).join(" | ") }; })
+      .filter(function (t) { return t.date || t.title || t.body; });
+    if (tl.length) p.timeline = tl;
+    p.updated = new Date().toISOString();
+    return { key: k, profile: p };
+  }
+  function saveRp(change, message, btn) {
+    busy(btn, true);
+    loadTree().then(function () { return tree.has(RP_PATH) ? readText(RP_PATH).then(function (r) { rp.data = JSON.parse(r.text); rp.sha = r.sha; }) : null; }).then(function () {
+      rp.data.profiles = rp.data.profiles || {};
+      change(rp.data.profiles);
+      rp.data.updatedAt = new Date().toISOString();
+      return commit([{ path: RP_PATH, text: jsonLines({ updatedAt: rp.data.updatedAt, profiles: rp.data.profiles }, "profiles"), base: rp.sha || null }], message);
+    }).then(function () { busy(btn, false); published("The RP profiles"); loadRp(); })
+      .catch(function (e) { busy(btn, false); toast(e.message, true); });
+  }
+  $("#rp-save").addEventListener("click", function () {
+    var r; try { r = readRpForm(); } catch (e) { toast(e.message, true); return; }
+    saveRp(function (all) { all[r.key] = r.profile; }, "CMS: RP profile for " + (r.profile.icName || r.key), this);
+  });
+  $("#rp-delete").addEventListener("click", function () {
+    var k = $("#rp-char").value; if (!k || !confirm("Remove this RP profile from the site?")) return;
+    saveRp(function (all) { delete all[k]; }, "CMS: Remove RP profile " + k, this);
+  });
+
+  /* ================================================================ DUELS (data/duels.json) */
+  var DUEL_PATH = "data/duels.json", duel = { data: { duels: [] }, sha: null };
+  function loadDuels() {
+    return loadGuild().then(function () {
+      return tree.has(DUEL_PATH) ? readText(DUEL_PATH).then(function (r) { duel.data = JSON.parse(r.text); duel.sha = r.sha; }) : (duel.data = { duels: [] }, duel.sha = null);
+    }).then(function () {
+      duel.data.duels = duel.data.duels || [];
+      var opts = memberOptions([]);
+      ["#duel-w", "#duel-l"].forEach(function (s) { var keep = $(s).value; $(s).innerHTML = opts; if (keep) $(s).value = keep; });
+      if (!$("#duel-date").value) $("#duel-date").value = new Date(Date.now() - new Date().getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
+      listDuels();
+    }).catch(function (e) { toast(e.message, true); });
+  }
+  function duelName(k) { var m = guild.byKey[k]; return m ? m.name : k; }
+  function listDuels() {
+    var list = duel.data.duels.slice().sort(function (a, b) { return (b.date || "").localeCompare(a.date || "") || (b.id || "").localeCompare(a.id || ""); });
+    $("#duel-list").innerHTML = list.slice(0, 60).map(function (d) {
+      return "<li><b>" + esc(duelName(d.w)) + "</b> beat <b>" + esc(duelName(d.l)) + "</b> <small>" + esc(d.date || "") + (d.place ? " · " + esc(d.place) : "") + (d.note ? " · " + esc(d.note) : "") +
+        '</small> <button type="button" class="cms-link danger" data-duel-del="' + esc(d.id) + '">Delete</button></li>';
+    }).join("") || '<li class="cms-hint">No duels recorded yet.</li>';
+  }
+  function saveDuels(change, message, btn) {
+    busy(btn, true);
+    loadTree().then(function () { return tree.has(DUEL_PATH) ? readText(DUEL_PATH).then(function (r) { duel.data = JSON.parse(r.text); duel.sha = r.sha; }) : null; }).then(function () {
+      duel.data.duels = duel.data.duels || [];
+      change(duel.data.duels);
+      return commit([{ path: DUEL_PATH, text: jsonLines({ updatedAt: new Date().toISOString(), duels: duel.data.duels }, "duels"), base: duel.sha || null }], message);
+    }).then(function () { busy(btn, false); published("The duel ledger"); listDuels(); })
+      .catch(function (e) { busy(btn, false); toast(e.message, true); });
+  }
+  $("#duel-add").addEventListener("click", function () {
+    var w = $("#duel-w").value, l = $("#duel-l").value, date = $("#duel-date").value;
+    if (!w || !l) { toast("Choose the winner and the loser.", true); return; }
+    if (w === l) { toast("A duel needs two people. Duelling yourself is a different rite.", true); return; }
+    if (!date) { toast("Choose the date.", true); return; }
+    var rec = { id: date.replace(/-/g, "") + "-" + Math.random().toString(36).slice(2, 7), w: w, l: l, date: date };
+    var place = $("#duel-place").value.trim(), note = $("#duel-note").value.trim();
+    if (place) rec.place = place; if (note) rec.note = note;
+    var btn = this;
+    saveDuels(function (all) { all.push(rec); }, "CMS: Duel, " + duelName(w) + " beat " + duelName(l), btn);
+    $("#duel-note").value = "";
+  });
+  $("#duel-list").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-duel-del]"); if (!b || !confirm("Delete this duel from the ledger?")) return;
+    var id = b.dataset.duelDel;
+    saveDuels(function (all) { var i = all.findIndex(function (d) { return d.id === id; }); if (i >= 0) all.splice(i, 1); }, "CMS: Remove a duel", b);
   });
 
   /* ================================================================ THE ADMIN WORKER (tools/admin-worker/)
