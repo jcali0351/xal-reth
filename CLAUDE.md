@@ -174,10 +174,11 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   sigils, `.plates` for galleries. The Chronicle has a banner per chapter (`chronicle-*`), and Legends, Rites, Teachings
   ("The Seven Sacred Glyphs"; the tail-eating eighth glyph is the Ouroboran Heresy, shown only in the Codex), the
   Sacred Triangle and the Codex carry plates; the Library ends with every plate ("The Illuminated Plates"). The art's
-  serpents never have wings of their own (wings are Nhalor's). On the homepage each "Story of the Eternal" step and
-  "From the Legends" card has a plate on top (`.st-pic`, `.card-pic`), and "The Illuminated Plates" (`.plate-reel`, just
-  before The Four Pillars) is a slowly drifting reel of plates, each linking to its story, that pauses on hover and stands
-  still for reduced motion. `html, body { overflow-x: clip }` keeps the drifting layers from making pages scroll sideways.
+  serpents never have wings of their own (wings are Nhalor's). On the homepage John wants the pictures in front of the
+  content blocks and list items (no slideshows or reels): each "Story of the Eternal" step has its banner on top (`.st-pic`);
+  every card (Four Truths, Four Pillars, From the Legends, The Library) has a painting at its front (`.card-pic`, a
+  full-height panel on the left, on top on phones); each step of the Path of the Faithful has a sacred glyph before its
+  text and each altar step a round plate (`.li-pic`). `html, body { overflow-x: clip }` keeps the drifting layers from making pages scroll sideways.
   Keep these if the site is regenerated.
 - Type: Abril Fatface (the fat display face: h1, h2, drop caps, big numbers, the wordmark; `--fat`) and Lato (body, and
   labels, nav and buttons in heavy wide-spaced capitals, lead lines and quotes in light italic), from Google Fonts in every
