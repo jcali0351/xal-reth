@@ -285,5 +285,7 @@ document.querySelectorAll("[data-reveal]").forEach((b) => {
   window.addEventListener("resize", rest);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(rest);
   rest();
+  // the menu's entrance stretches it for a moment, so measure again once it has settled (unless the pointer is on it)
+  [1100, 2700].forEach((ms) => setTimeout(() => { if (!top.matches(":hover")) rest(); }, ms));
   requestAnimationFrame(() => requestAnimationFrame(() => glow.classList.add("ready")));
 })();

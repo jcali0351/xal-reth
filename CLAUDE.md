@@ -17,7 +17,7 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   Keep both if the site is regenerated. `sitemap.xml` is rebuilt from every page by `tools/build_sitemap.py`
   (new_post.py runs it); don't hand-edit it. `sitemap.css` styles it for people (CSS, not XSLT: Chrome drops XSLT in Nov 2026).
 - The main menu is written into every page by `tools/build_nav.py` (edit MENU there, then run it):
-  Home · About (The Sacred Triangle, The Chronicle, The Canon, The Legends, The Library) · Community (News, Blog, Testimonials, Merch, Guild Bank, Guild Ranks, Guild Achievements) ·
+  Home · About (The Sacred Triangle, The Chronicle, The Canon, The Legends, The Library) · Community (Recruitment, News, Blog, Testimonials, Merch, Guild Bank, Guild Ranks, Guild Achievements) ·
   Faith (Devotion, The Altar) · Addons · Guild Roster · Join · Sitemap · Contact. Submenus open on hover on wide screens and on click or tap
   everywhere (script in site.js, styles at the end of style.css); the one holding the current page is highlighted.
   The full menu shows above 860px; at 860px and below it folds into the Menu button.
@@ -42,6 +42,13 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   rotating eclipse halo, signal bursts, typed status messages, a Pause motion button, and an easter egg (click the sigil three
   times or type "hold light"). It lowers its resolution, then drops effects, then falls back to 2D if frames run slow, and
   stays still for reduced-motion visitors. No audio. Keep it if the site is regenerated.
+- Recruitment (`recruit.html`, `css/recruit.css`, `js/recruit.js`; first item under Community in the menu): the recruiting
+  pitch for PvE and RP players (Moon Guard US, Alliance), how joining works, a "Request to join" form (character name, server,
+  class, role, professions, PvE/RP, a large message box, how to reach them) and, under #officers, a separate officer application
+  (rank, availability, officer roles, experience, why them). Both post through FormSubmit to the author's inbox with the
+  subjects "Xal'Reth Guild Application" and "Xal'Reth Officer Application", using the same scrambled address as js/contact.js
+  (update ALIAS in contact.js, chat.js and recruit.js together), and "Copy for Discord" always works. Every field with
+  data-label becomes a row of the email. Don't invent raid schedules or requirements on the page. Keep it if the site is regenerated.
 - The Contact page (`contact.html`, `css/contact.css`, `js/contact.js`) is a form for bug reports, addon help, website
   issues and messages to the author. Send posts it through FormSubmit to the author's inbox with the subject
   "Xal'Reth Website Submission". The address is stored scrambled in js/contact.js; once the author has activated the

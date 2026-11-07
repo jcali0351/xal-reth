@@ -1,0 +1,48 @@
+/* Recruitment page (recruit.html): the pitch, the Request to Join form and the officer application.
+   The forms reuse the Contact page's form styles (css/contact.css); this adds the pitch, square choice chips and the officer section. */
+
+.rc-jump { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: -6px 0 34px; }
+.rc-facts { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 0 0 30px; padding: 0; list-style: none; }
+.rc-facts li { padding: 7px 14px; border: 1px solid rgba(214, 180, 106, .45); border-radius: 2px; background: rgba(17, 8, 30, .6);
+  font: 900 .72rem/1.3 var(--serif-display); letter-spacing: .18em; text-transform: uppercase; color: var(--venom); }
+.rc-facts li b { color: #f4e6c4; font-weight: 900; }
+
+.rc-paths { margin-bottom: 14px; }
+.rc-paths .card ul { margin: 10px 0 0; padding-left: 18px; }
+.rc-paths .card li { margin: 0 0 7px; }
+.rc-both { max-width: 760px; margin: 22px auto 0; text-align: center; }
+
+/* square choice chips (checkboxes and radios) */
+.rc-chips { display: flex; flex-wrap: wrap; gap: 8px; border: 0; padding: 0; margin: 0; min-width: 0; }
+.rc-chips legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.rc-chip { position: relative; }
+.rc-chip input { position: absolute; opacity: 0; pointer-events: none; }
+.rc-chip label { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; cursor: pointer; border-radius: 3px;
+  border: 1px solid var(--line); background: rgba(8, 5, 15, .6); font-family: var(--serif-body); font-size: .95rem; color: var(--bone-dim);
+  letter-spacing: 0; text-transform: none; transition: border-color .2s, background .2s, color .2s, box-shadow .2s, transform .2s; }
+.rc-chip label:hover { border-color: rgba(185, 140, 255, .55); color: var(--bone); transform: translateY(-1px); }
+.rc-chip input:checked + label { color: #fff; border-color: rgba(255, 255, 255, .8);
+  background: linear-gradient(180deg, #cfa6ff 0%, #9a58ff 45%, #6a26dc 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6), 0 0 14px rgba(166, 107, 255, .6); text-shadow: 0 1px 0 rgba(40, 4, 90, .8); }
+.rc-chip input:focus-visible + label { outline: 2px solid var(--venom); outline-offset: 2px; }
+.rc-chips .rc-sep { flex-basis: 100%; height: 0; margin: 2px 0; }
+.rc-label { font-family: var(--serif-display); font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--bone-dim); margin: 0; }
+.rc-label em { font-style: normal; color: var(--gold-dim); letter-spacing: .06em; text-transform: none; font-family: var(--serif-body); font-size: .9rem; }
+.ct-field textarea.tall { min-height: 260px; }
+.ct-field b.req { color: #f0a0c8; font-weight: 400; }
+
+/* the officer section */
+.rc-officers { margin-top: 10px; }
+.rc-duties { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 14px; margin: 18px 0 30px; padding: 0; list-style: none; }
+.rc-duties li { display: flex; gap: 14px; align-items: flex-start; padding: 14px 16px; border: 1px solid var(--line); border-radius: 3px;
+  background: linear-gradient(160deg, rgba(36, 18, 64, .55), rgba(12, 7, 23, .75)); }
+.rc-duties img { flex: 0 0 64px; width: 64px; height: 76px; object-fit: contain;
+  -webkit-mask-image: radial-gradient(closest-side, #000 84%, transparent 100%); mask-image: radial-gradient(closest-side, #000 84%, transparent 100%);
+  filter: drop-shadow(0 0 10px rgba(166, 107, 255, .45)); }
+.rc-duties b { display: block; font: 900 .78rem/1.3 var(--serif-display); letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin: 4px 0 4px; }
+.rc-duties span { font-size: .98rem; color: var(--bone-dim); }
+.ct-form.rc-officer-form { border-color: rgba(214, 180, 106, .4);
+  box-shadow: 0 0 0 1px rgba(214, 180, 106, .1) inset, 0 20px 60px rgba(0, 0, 0, .45), 0 0 40px rgba(214, 180, 106, .12); }
+.ct-form.rc-officer-form::before { background: radial-gradient(600px 220px at 15% -10%, rgba(214, 180, 106, .16), transparent 70%); }
+
+@media (prefers-reduced-motion: reduce) { .rc-chip label { transition: none; } }
