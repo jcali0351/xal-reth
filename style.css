@@ -1626,3 +1626,32 @@ svg text[font-family*="Cinzel"] { font-family: var(--serif-display); font-weight
 .plates .illum { margin: 0; }
 .plates .illum figcaption { font-size: .9rem; }
 .plates a { display: block; color: inherit; text-decoration: none; }
+/* --- the plates on the homepage: a picture atop each story step and legend card, and the slow reel of plates --- */
+.story-step .st-pic, .card .card-pic { display: block; margin: -22px -18px 14px; height: 118px; overflow: hidden; border-bottom: 1px solid rgba(214, 180, 106, .35); }
+.card .card-pic { margin: -24px -24px 16px; height: 170px; }
+.story-step .st-pic img, .card .card-pic img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(.16, .84, .22, 1), filter .6s ease; }
+.card .card-pic img { object-position: center 35%; }
+.story-step:hover .st-pic img, a.card:hover .card-pic img { transform: scale(1.07); filter: brightness(1.12) saturate(1.1); }
+.story-step:has(.st-pic)::before { top: 10px; z-index: 1; color: #f4e6c4; text-shadow: 0 1px 6px #000, 0 0 12px rgba(0, 0, 0, .9); }
+
+.plate-reel { position: relative; overflow: hidden; margin: 6px 0 10px; padding: 14px 0 18px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); }
+.plate-track { display: flex; gap: 22px; width: max-content; animation: plate-drift 90s linear infinite; }
+.plate-reel:hover .plate-track, .plate-reel:focus-within .plate-track { animation-play-state: paused; }
+@keyframes plate-drift { to { transform: translateX(calc(-50% - 11px)); } }
+.plate-track a { flex: 0 0 auto; width: 200px; color: inherit; text-decoration: none; text-align: center; }
+.plate-track img { display: block; width: 200px; height: 282px; object-fit: cover; border-radius: 10px; border: 1px solid rgba(214, 180, 106, .5);
+  box-shadow: 0 0 0 3px rgba(17, 8, 30, .9), 0 0 0 4px rgba(185, 140, 255, .3), 0 14px 30px -10px rgba(0, 0, 0, .8);
+  transition: transform .6s cubic-bezier(.16, .84, .22, 1), box-shadow .6s ease, filter .6s ease; }
+.plate-track a:hover img, .plate-track a:focus-visible img { transform: translateY(-6px) scale(1.03); filter: brightness(1.1);
+  box-shadow: 0 0 0 3px rgba(17, 8, 30, .9), 0 0 0 4px rgba(214, 180, 106, .7), 0 0 40px rgba(170, 100, 255, .45), 0 20px 36px -12px rgba(0, 0, 0, .8); }
+.plate-track b { display: block; margin-top: 12px; font: 900 .68rem/1.4 var(--serif-display); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+@media (max-width: 640px) { .plate-track a, .plate-track img { width: 150px; } .plate-track img { height: 212px; } .plate-track { animation-duration: 70s; } }
+@media (prefers-reduced-motion: reduce) {
+  .plate-reel { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  .plate-track { animation: none; padding: 0 16px; }
+  .plate-track [aria-hidden="true"] { display: none; }
+}.story-step:has(.st-pic), .card:has(.card-pic) { overflow: hidden; }
+
+/* the drifting layers and glows may reach past the edge; never let them make the page scroll sideways */
+html, body { overflow-x: clip; }
