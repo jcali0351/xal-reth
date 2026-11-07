@@ -166,8 +166,9 @@
     </div>
     <ol class="cms-hint bank-steps">
       <li>In game, with the <a href="CoilLedger.zip" download>Coil Ledger addon</a> installed, open the guild bank and wait a few seconds until chat says the bank is recorded.</li>
-      <li>Either type <b>/ledger</b>, press Ctrl+C and paste below, or log out and upload the file
-        <code>World of Warcraft\_retail_\WTF\Account\YOUR ACCOUNT\SavedVariables\CoilLedger.lua</code>.</li>
+      <li>Either type <b>/ledger</b>, press Ctrl+C and paste below (best: always the newest record), or type <b>/reload</b> (or log out) and upload the file
+        <code>World of Warcraft\_retail_\WTF\Account\YOUR ACCOUNT\SavedVariables\CoilLedger.lua</code>. The game only writes that file on /reload or logout,
+        so without one it still holds an older record.</li>
       <li>Check the summary, then press <b>Save &amp; publish</b>. Item pictures are fetched from Blizzard a minute or two later.</li>
     </ol>
     <div class="bank-in">
@@ -303,6 +304,6 @@
 
 <div class="cms-toast" id="cms-toast" role="status" aria-live="polite"></div>
 
-<script src="js/cms.js?v=dcbe55d1"></script>
+<script src="js/cms.js?v=5eb1a084"></script>
 </body>
 </html>

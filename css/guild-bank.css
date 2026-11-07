@@ -7,6 +7,9 @@
 /* ---------- hero and the purse ---------- */
 .gb-hero { padding-bottom: 40px; }
 .gb-hero > p, .gb-hero > h1 { text-shadow: 0 0 6px #08050f, 0 0 14px #08050f, 0 0 24px rgba(8, 5, 15, .9); }   /* clear of the falling coins */
+/* "The Guild Bank" in flat gold: no shimmering gradient, just the coin's own colour */
+.page-head.gb-hero > h1 { background: none; -webkit-background-clip: border-box; background-clip: border-box; animation: none; filter: none;
+  color: var(--gb-gold-2); -webkit-text-fill-color: var(--gb-gold-2); }
 .gb-purse { position: relative; z-index: 2; display: inline-flex; flex-direction: column; align-items: center; gap: 4px; margin: 22px auto 0; padding: 18px 34px 16px;
   border-radius: 22px; border: 1px solid rgba(243, 217, 143, .32);
   background: linear-gradient(160deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .02) 45%, rgba(226, 185, 85, .08)), rgba(22, 13, 38, .55);
