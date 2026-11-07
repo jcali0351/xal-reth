@@ -165,3 +165,9 @@ html.vx-lock, html.vx-lock body { overflow: hidden; }
 .vx-intro-cap em { display: block; font-style: normal; font-family: var(--serif-display, Georgia, serif); font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: #a98fd6; margin-top: 2px; }
 @keyframes vx-breathe { 50% { transform: scale(1.06); } }
 @media (prefers-reduced-motion: reduce) { .vx-intro, .vx-intro img { animation: none; } }
+
+/* when sending to John fails: other ways to reach him */
+.vx-form .vx-alt { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.vx-form .vx-alt button, .vx-form .vx-alt a { flex: 1 1 auto; padding: 9px 12px; border-radius: 999px; border: 1px solid #8a4dff; background: rgba(138, 77, 255, .15);
+  color: #e0c4ff; font: inherit; font-size: .9rem; text-align: center; text-decoration: none; cursor: pointer; }
+.vx-form .vx-alt button:hover, .vx-form .vx-alt a:hover { background: rgba(138, 77, 255, .35); color: #fff; }

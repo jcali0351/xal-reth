@@ -376,9 +376,25 @@
       _subject: CHAT.subject + ": " + (name || email),
       _template: "box", _captcha: "false"
     };
-    fetch("https://formsubmit.co/ajax/" + inbox(), {
-      method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(body)
-    }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { if (!r.ok || String(d.success) === "false") throw new Error(d.message || r.status); }); })
+    // FormSubmit sometimes refuses one format and takes the other, so try JSON first, then a plain form post.
+    var url = "https://formsubmit.co/ajax/" + inbox();
+    function post(asJson) {
+      var fd;
+      if (!asJson) { fd = new FormData(); Object.keys(body).forEach(function (k) { fd.append(k, body[k]); }); }
+      return fetch(url, {
+        method: "POST",
+        headers: asJson ? { "Content-Type": "application/json", Accept: "application/json" } : { Accept: "application/json" },
+        body: asJson ? JSON.stringify(body) : fd
+      }).then(function (r) {
+        return r.text().then(function (t) {
+          var d = {}; try { d = JSON.parse(t); } catch (e) {}
+          if (r.ok && String(d.success) !== "false") return d;
+          var e = new Error(d.message || ("the mail service answered " + r.status));
+          e.activation = /activat/i.test(d.message || ""); throw e;
+        });
+      });
+    }
+    post(true).catch(function (e) { if (e.activation) throw e; return post(false); })
       .then(function () {
         form.closest(".vx-row").remove();
         var last = state.msgs[state.msgs.length - 1]; if (last) last.sent = true;
@@ -386,9 +402,28 @@
         push({ r: "bot", text: "Your words are on their way to John's inbox. He'll answer you at **" + email + "**, usually within a day. Until then, I'm still here if you want to keep talking." });
         setChips(MORE_CHIPS.filter(function (c) { return !c.human; }));
       })
-      .catch(function () {
-        btn.disabled = false; btn.textContent = "Send to John";
-        err.innerHTML = 'That didn\'t go through. Try again, or use the <a href="' + esc(BASE + "contact.html") + '">Contact page</a>.';
+      .catch(function (e) {
+        btn.disabled = false; btn.textContent = "Try again";
+        var full = "From: " + (name || "Visitor") + " <" + email + ">\n\n" + message +
+          (form.withlog.checked ? "\n\n--- Chat with Vessk ---\n" + transcript() : "");
+        var why = e && e.activation
+          ? "John's inbox hasn't been switched on for website messages yet, so this can't be delivered automatically."
+          : "That didn't go through" + (e && e.message ? " (" + esc(e.message) + ")" : "") + ".";
+        var to = inbox();
+        err.innerHTML = why + ' You can still reach him:<span class="vx-alt">' +
+          (to.indexOf("@") > 0 ? '<button type="button" data-mailto>Email John instead</button>' : "") +
+          '<button type="button" data-copy>Copy message</button>' +
+          '<a href="' + DISCORD + '" target="_blank" rel="noopener">Discord</a></span>';
+        var m = err.querySelector("[data-mailto]");
+        if (m) m.addEventListener("click", function () {
+          location.href = "mailto:" + to + "?subject=" + encodeURIComponent(CHAT.subject + ": " + (name || email)) + "&body=" + encodeURIComponent(full);
+        });
+        err.querySelector("[data-copy]").addEventListener("click", function () {
+          var b = this;
+          function ok() { b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy message"; }, 2000); }
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(full).then(ok, function () { window.prompt("Copy this:", full); });
+          else window.prompt("Copy this:", full);
+        });
       });
   }
 
