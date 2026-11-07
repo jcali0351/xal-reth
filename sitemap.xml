@@ -210,6 +210,14 @@
     <xhtml:a href="https://jcali0351.github.io/xal-reth/ranks.html"><xr:title>The Ranks of the Coil</xr:title><xr:desc>The guild ranks of the Cult of Xal'Reth, from Egg to High Priestess: the insignia of each rank, its duties, its powers in the guild, and how the faithful rise through the Coil.</xr:desc></xhtml:a>
   </url>
   <url>
+    <loc>https://jcali0351.github.io/xal-reth/recruit.html</loc>
+    <lastmod>2026-11-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://jcali0351.github.io/xal-reth/xalreth-og.jpg</image:loc></image:image>
+    <xhtml:a href="https://jcali0351.github.io/xal-reth/recruit.html"><xr:title>The Coil Is Recruiting</xr:title><xr:desc>The Cult of Xal'Reth is recruiting on Moon Guard (US, Alliance): raiders, Mythic+ players and roleplayers. Send a request to join, or apply to become an officer.</xr:desc></xhtml:a>
+  </url>
+  <url>
     <loc>https://jcali0351.github.io/xal-reth/addons.html</loc>
     <lastmod>2026-11-01</lastmod>
     <changefreq>weekly</changefreq>
