@@ -179,6 +179,19 @@ body.cms { min-height: 100vh; overflow-x: hidden; background: radial-gradient(el
 .sky-actions .cms-hint { margin: 0; }
 @media (max-width: 600px) { .sky-pv.phone { width: 96px; } }
 
+/* Homepage sky: the slideshow list */
+.sky-show-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin: 6px 0 14px; }
+.sky-show-item { position: relative; display: block; border: 1px solid var(--line); border-radius: 10px; padding: 6px; background: rgba(17,10,29,.75); cursor: pointer; font-size: .85rem; color: var(--bone-dim); }
+.sky-show-item img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; margin-bottom: 4px; opacity: .55; transition: opacity .2s; }
+.sky-show-item input { position: absolute; top: 12px; left: 12px; width: 18px; height: 18px; accent-color: var(--violet); }
+.sky-show-item .ord { position: absolute; top: 10px; right: 12px; min-width: 22px; height: 22px; display: none; place-items: center; border-radius: 999px;
+  background: var(--violet); color: #fff; font: 600 .75rem var(--serif-display); box-shadow: 0 0 10px rgba(166,107,255,.8); }
+.sky-show-item:has(input:checked) { border-color: var(--violet-hot); color: var(--bone); box-shadow: 0 0 14px rgba(138,77,255,.35); }
+.sky-show-item:has(input:checked) img { opacity: 1; }
+.sky-show-item:has(input:checked) .ord { display: grid; }
+.sky-show-item span.nm { display: block; overflow-wrap: anywhere; }
+#sky-show-opts[hidden] { display: none; }
+
 /* Guild Bank */
 .bank-steps { padding-left: 1.3em; margin: 0 0 16px; }
 .bank-steps li { margin-bottom: 6px; }

@@ -64,7 +64,11 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   very top of the homepage and solid once you scroll. John changes the picture in the Sanctum Editor's "Homepage sky" tab,
   which writes a `<style id="hero-sky-pics">` just before `.hero-sky` (the picture paths; they must live in the page, since
   a url() in a CSS variable resolves from css/) and `--sky-pos`, `--sky-pos-m`, `--sky-bright`, `--sky-sat`,
-  `data-swirl="off"`, `data-eye="off"` on the `.hero-sky` tag. Uploaded skies are `img/uploads/*-sky-*`. Keep it if the site is regenerated.
+  `data-swirl="off"`, `data-eye="off"` on the `.hero-sky` tag. Uploaded skies are `img/uploads/*-sky-*`.
+  The sky can be a slideshow: `data-slides="a.webp|b.webp|…"`, `data-interval` (seconds), `data-transition` (fade, slide
+  or both) and `data-flash="off"` on the same tag, chosen in the editor's Slideshow section; js/hero-sky.js loads each
+  picture before showing it, drifts each one slowly closer, flashes a soft violet glow on each change, and pauses off
+  screen, in hidden tabs and for reduced motion. Keep it if the site is regenerated.
 - The homepage's Sacred Triangle section (`.pantheon`, styles "The Pantheon" in style.css) is the Icon of the Three triptych
   (`img/triangle/triptych.webp`, names, virtues and mottos painted in): three linked panels, each cropped from the one
   image by CSS (Vyrenna x 0-260, Xal'Reth 271-529, Nhalor 540-799), entering one by one in a burst of each god's light

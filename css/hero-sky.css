@@ -27,6 +27,31 @@
   background: radial-gradient(60% 45% at 50% 52%, rgba(8, 5, 15, 0.55), transparent 75%),
               linear-gradient(180deg, rgba(8, 5, 15, 0.35) 0%, rgba(8, 5, 15, 0.05) 30%, rgba(8, 5, 15, 0.25) 60%, rgba(8, 5, 15, 0.9) 100%); }
 
+/* THE SLIDESHOW: when .hero-sky carries data-slides="a.webp|b.webp|…" (set in the Sanctum Editor), js/hero-sky.js lays
+   one .hero-sky-slide per picture inside .hero-sky-img and cycles them every data-interval seconds with data-transition
+   (fade | slide | both). Each picture drifts slowly closer while it is shown, and each change arrives in a soft flash. */
+.hero-sky-slide { position: absolute; inset: 0; background: center / cover no-repeat; background-position: var(--sky-pos, 58% 32%);
+  opacity: 0; will-change: opacity, transform; }
+.hero-sky-slide.on, .hero-sky-slide.off { animation: sky-drift var(--sky-drift, 14s) ease-out forwards; }   /* the leaving sky keeps its drift */
+.hero-sky-slide.on { z-index: 2; opacity: 1; }
+.hero-sky-slide.off { z-index: 1; }
+@keyframes sky-drift { from { transform: scale(1); } to { transform: scale(1.09); } }
+/* fade: a slow crossfade */
+.show-fade .hero-sky-slide { transition: opacity 2s ease; }
+/* slide: the new sky sweeps in from the right over the old, which slips away to the left */
+.show-slide .hero-sky-slide { opacity: 1; translate: 100% 0; }
+.show-slide .hero-sky-slide.on { translate: 0 0; transition: translate 1.5s cubic-bezier(.75, 0, .2, 1); }
+.show-slide .hero-sky-slide.off { translate: -35% 0; transition: translate 1.5s cubic-bezier(.75, 0, .2, 1); }
+/* both: the new sky drifts in from the side as it fades up, the old drifts away as it fades out */
+.show-both .hero-sky-slide { translate: 7% 0; }
+.show-both .hero-sky-slide.on { translate: 0 0; transition: opacity 2s ease, translate 2.6s cubic-bezier(.2, .7, .2, 1); }
+.show-both .hero-sky-slide.off { translate: -7% 0; opacity: 0; transition: opacity 2s ease, translate 2.6s cubic-bezier(.2, .7, .2, 1); }
+/* the glow flash that comes with each new sky */
+.hero-sky-flash { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0; mix-blend-mode: screen;
+  background: radial-gradient(55% 45% at 52% 42%, rgba(246, 236, 255, .5), rgba(190, 150, 255, .28) 40%, rgba(138, 77, 255, .1) 62%, transparent 78%); }
+.hero-sky-flash.go { animation: sky-flash 1.8s cubic-bezier(.2, .7, .3, 1); }
+@keyframes sky-flash { 0% { opacity: 0; transform: scale(.85); } 22% { opacity: 1; } 100% { opacity: 0; transform: scale(1.15); } }
+
 /* the header goes glassy over the sky, and solid again once you scroll */
 .has-sky .site-header { transition: background .4s ease, border-color .4s ease, backdrop-filter .4s ease; }
 .has-sky.at-top .site-header { background: linear-gradient(180deg, rgba(8, 5, 15, 0.55), rgba(8, 5, 15, 0.08)); border-bottom-color: transparent; backdrop-filter: blur(2px); }
@@ -34,6 +59,7 @@
 @media (max-width: 700px) {
   .hero-sky { height: min(980px, 120vh); }
   .hero-sky-img { background-image: url("../img/hero-sanctum-mobile.webp"); background-position: var(--sky-pos-m, 50% 30%); inset: -4%; }
+  .hero-sky-slide { background-position: var(--sky-pos-m, 50% 30%); }
   .hero-sky-swirl { left: 5%; width: 90%; }
   .hero-sky-eye { left: 50%; width: 30%; }
 }

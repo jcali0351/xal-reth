@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css?v=4cb1bbfe">
-<link rel="stylesheet" href="css/cms.css?v=871f9b35">
+<link rel="stylesheet" href="css/cms.css?v=c8f8841f">
 </head>
 <body class="cms">
 
@@ -135,6 +135,17 @@
         <label class="cms-field inline"><span>Colour strength</span><input type="range" min="0" max="2" step="0.05" id="sky-sat"><output id="sky-sat-out"></output></label>
         <label class="cms-check"><input type="checkbox" id="sky-swirl"> Breathing violet glow at the top of the sky</label>
         <label class="cms-check"><input type="checkbox" id="sky-eye"> Pulsing light in the middle (made for the original sanctum's spire)</label>
+      </fieldset>
+      <fieldset class="cms-fieldset sky-show">
+        <legend>Slideshow</legend>
+        <label class="cms-check"><input type="checkbox" id="sky-show-on"> Cycle through several skies as a slideshow</label>
+        <div id="sky-show-opts">
+          <p class="cms-hint">Tick the skies to show, in the order you'd like them (the first one shows while the page loads).</p>
+          <div id="sky-show-list" class="sky-show-list"></div>
+          <label class="cms-field inline"><span>Each sky stays</span><input type="range" min="4" max="20" step="1" id="sky-show-every"><output id="sky-show-every-out"></output></label>
+          <label class="cms-field inline"><span>Change by</span><select id="sky-show-mode"><option value="both">Fade and slide</option><option value="fade">Fade</option><option value="slide">Slide</option></select></label>
+          <label class="cms-check"><input type="checkbox" id="sky-show-flash"> A soft glow flash with each new sky</label>
+        </div>
       </fieldset>
       <fieldset class="cms-fieldset">
         <legend>Phones</legend>
@@ -292,6 +303,6 @@
 
 <div class="cms-toast" id="cms-toast" role="status" aria-live="polite"></div>
 
-<script src="js/cms.js?v=0716a54b"></script>
+<script src="js/cms.js?v=dcbe55d1"></script>
 </body>
 </html>

@@ -1210,7 +1210,8 @@
   var sky = null;
   // the picture(s) go in a <style> just before the sky (so paths resolve from the page); the rest sits on the sky's own tag
   var SKY_TAG = /(?:<style id="hero-sky-pics">[\s\S]*?<\/style>\s*)?<div class="hero-sky"[^>]*>/;
-  var SKY_DEF = { img: null, imgM: null, pos: [58, 32], posM: [50, 30], bright: 0.82, sat: 1.15, swirl: true, eye: true };
+  var SKY_DEF = { img: null, imgM: null, pos: [58, 32], posM: [50, 30], bright: 0.82, sat: 1.15, swirl: true, eye: true,
+    slides: [], every: 8, mode: "both", flash: true };   // slides: the slideshow (data-slides on .hero-sky; js/hero-sky.js plays it)
   var SKY_ORIG = "img/hero-sanctum.webp", SKY_ORIG_M = "img/hero-sanctum-mobile.webp";
   function parseSky(html) {
     var m = html.match(SKY_TAG); if (!m) return null;
@@ -1223,7 +1224,11 @@
     if (/^\s*@media/.test(pics)) urls.unshift(null);    // a phone-only picture: computers keep the original
     return { img: urls[0] || null, imgM: urls[1] && urls[1] !== urls[0] ? urls[1] : null, pos: pos(v("sky-pos"), SKY_DEF.pos), posM: pos(v("sky-pos-m"), SKY_DEF.posM),
       bright: num(v("sky-bright"), SKY_DEF.bright), sat: num(v("sky-sat"), SKY_DEF.sat),
-      swirl: !/data-swirl="off"/.test(tag), eye: !/data-eye="off"/.test(tag) };
+      swirl: !/data-swirl="off"/.test(tag), eye: !/data-eye="off"/.test(tag),
+      slides: ((tag.match(/data-slides="([^"]*)"/) || [, ""])[1]).split("|").filter(Boolean),
+      every: num((tag.match(/data-interval="([^"]*)"/) || [])[1], SKY_DEF.every),
+      mode: (tag.match(/data-transition="(fade|slide|both)"/) || [, SKY_DEF.mode])[1],
+      flash: !/data-flash="off"/.test(tag) };
   }
   function skyTag(s) {
     var st = [], same = function (a, b) { return a[0] === b[0] && a[1] === b[1]; }, pics = "";
@@ -1237,7 +1242,8 @@
     if (s.bright !== SKY_DEF.bright) st.push("--sky-bright:" + s.bright);
     if (s.sat !== SKY_DEF.sat) st.push("--sky-sat:" + s.sat);
     return pics + '<div class="hero-sky" aria-hidden="true"' + (st.length ? ' style="' + st.join(";") + '"' : "") +
-      (s.swirl ? "" : ' data-swirl="off"') + (s.eye ? "" : ' data-eye="off"') + ">";
+      (s.swirl ? "" : ' data-swirl="off"') + (s.eye ? "" : ' data-eye="off"') +
+      (s.slides && s.slides.length > 1 ? ' data-slides="' + s.slides.map(esc).join("|") + '" data-interval="' + s.every + '" data-transition="' + s.mode + '"' + (s.flash ? "" : ' data-flash="off"') : "") + ">";
   }
   function skySrc(path) {
     if (sky.pending[path]) return sky.pending[path].url;
@@ -1275,8 +1281,37 @@
     $("#sky-phone-note").textContent = s.imgM ? "Phones show their own picture (" + s.imgM.replace(/^img\/uploads\//, "") + ")." :
       s.img ? "Phones show the same picture, cropped tall. Tap the phone preview to choose which part stays in view." :
       "Phones show the original sanctum's own tall crop.";
+    // the slideshow: every sky in the gallery, ticked if it is in the show, numbered in playing order
+    var on = (s.slides || []).length > 1 || sky.showOpen;
+    $("#sky-show-on").checked = on; $("#sky-show-opts").hidden = !on;
+    $("#sky-show-list").innerHTML = skyList().map(function (p) {
+      var path = p || SKY_ORIG, i = (s.slides || []).indexOf(path);
+      var name = p ? p.replace(/^img\/uploads\//, "").replace(/\.[^.]+$/, "") : "The original sanctum";
+      return '<label class="sky-show-item"><input type="checkbox" data-slide="' + esc(path) + '"' + (i >= 0 ? " checked" : "") + '>' +
+        '<span class="ord">' + (i + 1) + '</span><img src="' + esc(skySrc(path)) + '" alt="" loading="lazy"><span class="nm">' + esc(name) + "</span></label>";
+    }).join("");
+    $("#sky-show-every").value = s.every; $("#sky-show-mode").value = s.mode; $("#sky-show-flash").checked = s.flash;
+    $("#sky-show-every-out").textContent = s.every + " seconds";
     skyPreview();
   }
+  $("#sky-show-on").addEventListener("change", function () {
+    if (!sky) return;
+    sky.showOpen = this.checked;
+    if (this.checked && (sky.sel.slides || []).length < 2) {   // start with every uploaded sky, the current one first
+      var all = skyList().map(function (p) { return p || SKY_ORIG; }).filter(function (p) { return p !== SKY_ORIG; });
+      var cur = sky.sel.img; sky.sel.slides = cur ? [cur].concat(all.filter(function (p) { return p !== cur; })) : all;
+    }
+    if (!this.checked) sky.sel.slides = [];
+    skyChanged();
+  });
+  $("#sky-show-list").addEventListener("change", function (e) {
+    var p = e.target.getAttribute("data-slide"); if (!p || !sky) return;
+    var list = (sky.sel.slides || []).filter(function (x) { return x !== p; });
+    if (e.target.checked) list.push(p);
+    sky.sel.slides = list;
+    if (list.length < 2) toast("Tick at least two skies for a slideshow.");
+    skyChanged();
+  });
   function skyPreview() {
     var s = sky.sel;
     var paint = function (frame, src, pos) {
@@ -1312,6 +1347,8 @@
     if (!sky) return;
     sky.sel.bright = +$("#sky-bright").value; sky.sel.sat = +$("#sky-sat").value;
     sky.sel.swirl = $("#sky-swirl").checked; sky.sel.eye = $("#sky-eye").checked;
+    sky.sel.every = +$("#sky-show-every").value; sky.sel.mode = $("#sky-show-mode").value; sky.sel.flash = $("#sky-show-flash").checked;
+    $("#sky-show-every-out").textContent = sky.sel.every + " seconds";
     sky.dirty = true; skyPreview();
   });
   function skyUpload(input, phone) {
@@ -1337,7 +1374,8 @@
   });
   $("#sky-save").addEventListener("click", function () {
     var btn = this, s = sky.sel;
-    var uploads = [s.img, s.imgM].filter(function (p) { return p && sky.pending[p]; });
+    if (s.slides && s.slides.length === 1) s.slides = [];   // one sky is not a show
+    var uploads = [s.img, s.imgM].concat(s.slides || []).filter(function (p, i, a) { return p && sky.pending[p] && a.indexOf(p) === i; });
     busy(btn, true);
     Promise.all(uploads.map(function (p) { return blobToB64(sky.pending[p].blob).then(function (b) { return { path: p, base64: b }; }); }))
       .then(function (changes) {
