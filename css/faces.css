@@ -138,3 +138,66 @@
   .fs-signin { grid-template-columns: minmax(0, 1fr); }
 }
 @media (prefers-reduced-motion: reduce) { .fs-r { transition: none; } }
+
+/* ==========================================================
+   THE FACES, REFINED — one centred column of evenly spaced glass: the sign-in bar, the feed and the
+   directory share the same edges; pictures fill their card edge to edge; the manners sit in a card of their own.
+   ========================================================== */
+.fs-hub { max-width: 1140px; }
+.fs-bar { margin: 28px 0 22px; }
+.fs-cols { grid-template-columns: minmax(0, 1fr) 340px; gap: 28px; }
+.fs-main { min-width: 0; padding: 0; }
+.fs-hub .sr-only { margin: 0; padding: 0; border: 0; }
+.fs-more[hidden] { display: none; }
+
+/* the composer and every post: the same glass card, the same inner padding */
+.fs-compose, .fs-post { padding: 18px 20px; border: 1px solid rgba(228, 212, 255, .2); box-shadow: 0 18px 40px -24px rgba(0, 0, 0, .9), inset 0 1px 0 rgba(255, 255, 255, .06); }
+.fs-compose { margin-bottom: 22px; gap: 12px; background: linear-gradient(180deg, rgba(48, 24, 88, .55), rgba(14, 8, 28, .88)); }
+.fs-feed { gap: 22px; }
+.fs-post { border-left: 1px solid rgba(228, 212, 255, .2); background: linear-gradient(180deg, rgba(32, 17, 60, .78), rgba(11, 6, 22, .92)); overflow: hidden; }
+.fs-post::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--cc, var(--scale-bright)), transparent); }
+.fs-post header { gap: 12px; margin-bottom: 12px; }
+.fs-av { width: 48px; height: 48px; box-shadow: 0 0 16px -4px var(--cc, #a66bff); }
+.fs-av.small { width: 32px; height: 32px; box-shadow: none; }
+.fs-who a { font-size: 1.05rem; }
+.fs-body { margin: 0 0 14px; font-size: 1.05rem; line-height: 1.55; }
+
+/* pictures: the full width of the card, edge to edge, centred on a dark mat */
+.fs-pic { margin: 0 -20px 14px; background: #07040d; border-top: 1px solid rgba(228, 212, 255, .12); border-bottom: 1px solid rgba(228, 212, 255, .12);
+  display: flex; justify-content: center; align-items: center; }
+.fs-pic img { width: 100%; max-width: 100%; height: auto; max-height: 640px; object-fit: contain; border: 0; }
+.fs-pending { margin: 0 0 14px; padding: 12px 14px; border: 1px dashed var(--line); text-align: center; }
+
+/* reactions and comments line up with the text above */
+.fs-rx { gap: 8px; padding: 12px 0; }
+.fs-r { padding: 8px 12px; }
+.fs-cm { gap: 10px; }
+.fs-cm li { padding: 10px 12px; border: 1px solid rgba(228, 212, 255, .08); }
+.fs-cm-new { margin-top: 12px; }
+.fs-cm-new input { padding: 11px 12px; }
+.fs-cm-new button { padding: 0 18px; }
+.fs-more { margin-top: 26px; }
+
+/* the directory: a column of its own, on glass, with the same top edge as the feed */
+.fs-side { top: 96px; padding: 18px; border: 1px solid rgba(228, 212, 255, .2); background: linear-gradient(180deg, rgba(32, 17, 60, .7), rgba(11, 6, 22, .9));
+  box-shadow: 0 18px 40px -24px rgba(0, 0, 0, .9), inset 0 1px 0 rgba(255, 255, 255, .06); }
+.fs-side h2 { margin: 0 0 12px; font-size: 1.5rem; text-align: center; }
+.fs-side .rp-grid { gap: 10px; }
+
+/* the manners: centred, in a card that matches the rest */
+.fs-rules { max-width: 760px; margin: 56px auto 0; padding: 28px 34px 22px; border: 1px solid rgba(228, 212, 255, .2);
+  background: linear-gradient(180deg, rgba(32, 17, 60, .55), rgba(11, 6, 22, .85)); box-shadow: 0 18px 40px -24px rgba(0, 0, 0, .9); }
+.fs-rules h2 { text-align: center; margin: 0 0 18px; }
+.fs-rules ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+.fs-rules li { position: relative; padding-left: 26px; line-height: 1.55; }
+.fs-rules li::before { content: ""; position: absolute; left: 4px; top: .55em; width: 9px; height: 9px; transform: rotate(45deg);
+  background: var(--scale-bright, #a66bff); box-shadow: 0 0 10px var(--scale-bright, #a66bff); }
+
+@media (max-width: 1100px) { .fs-cols { grid-template-columns: minmax(0, 1fr) 300px; gap: 22px; } }
+@media (max-width: 860px) {
+  .fs-cols { grid-template-columns: minmax(0, 1fr); }
+  .fs-side { position: static; }
+  .fs-compose, .fs-post { padding: 14px 14px; }
+  .fs-pic { margin: 0 -14px 12px; }
+  .fs-rules { padding: 22px 18px 16px; margin-top: 40px; }
+}
