@@ -91,7 +91,8 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   The sky can be a slideshow: `data-slides="a.webp|b.webp|…"`, `data-interval` (seconds), `data-transition` (fade, slide
   or both) and `data-flash="off"` on the same tag, chosen in the editor's Slideshow section; js/hero-sky.js loads each
   picture before showing it, drifts each one slowly closer, flashes a soft violet glow on each change, and pauses off
-  screen, in hidden tabs and for reduced motion. Keep it if the site is regenerated.
+  screen, in hidden tabs and for reduced motion. On phones (700px and narrower) the sky holds still: one picture, no
+  slideshow, drift, flash, swirl, eye pulse or parallax; it wakes again if the window widens. Keep it if the site is regenerated.
 - The homepage's Sacred Triangle section (`.pantheon`, styles "The Pantheon" in style.css) is the Icon of the Three triptych
   (`img/triangle/triptych.webp`, names, virtues and mottos painted in): three linked panels, each cropped from the one
   image by CSS (Vyrenna x 0-260, Xal'Reth 271-529, Nhalor 540-799), entering one by one in a burst of each god's light

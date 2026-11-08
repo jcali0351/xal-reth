@@ -9,6 +9,10 @@
   var root = document.documentElement;
   root.classList.add("has-sky");
   var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* PHONES: at 700px and narrower the sky holds still (no slideshow, drift, flash, glow or parallax),
+     and it wakes up again if the window is widened. The breakpoint matches the phone crop in css/hero-sky.css. */
+  var phone = window.matchMedia ? matchMedia("(max-width: 700px)") : { matches: false };
+  function onPhoneChange(fn) { if (phone.addEventListener) phone.addEventListener("change", fn); else if (phone.addListener) phone.addListener(fn); }
   var mx = 0, my = 0, tx = 0, ty = 0, sy = window.scrollY, ticking = false, visible = true;
 
   function top() { root.classList.toggle("at-top", window.scrollY < 40); }
@@ -53,8 +57,9 @@
         schedule();
       });
     }
-    function schedule() { clearTimeout(timer); if (onScreen && !document.hidden && layers.length > 1) timer = setTimeout(function () { show((cur + 1) % layers.length); }, every); }
-    show(0);
+    function schedule() { clearTimeout(timer); if (cur < 0 || phone.matches) return; if (onScreen && !document.hidden && layers.length > 1) timer = setTimeout(function () { show((cur + 1) % layers.length); }, every); }
+    if (!phone.matches) show(0);
+    onPhoneChange(function () { if (!phone.matches && cur < 0) show(0); else schedule(); });
     if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { onScreen = es[0].isIntersecting; schedule(); }).observe(sky);
     document.addEventListener("visibilitychange", schedule);
   })();
@@ -69,7 +74,8 @@
   if ("IntersectionObserver" in window) {
     new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) kick(); }).observe(sky);
   }
-  function kick() { if (!ticking && visible) { ticking = true; requestAnimationFrame(frame); } }
+  onPhoneChange(function () { if (phone.matches) img.style.transform = ""; else kick(); });
+  function kick() { if (phone.matches) return; if (!ticking && visible) { ticking = true; requestAnimationFrame(frame); } }
   function frame() {
     ticking = false;
     tx += (mx - tx) * 0.06; ty += (my - ty) * 0.06;

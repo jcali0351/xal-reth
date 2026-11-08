@@ -63,6 +63,13 @@
   .hero-sky-swirl { left: 5%; width: 90%; }
   .hero-sky-eye { left: 50%; width: 30%; }
 }
+/* PHONES: the sky holds still at 700px and narrower (js/hero-sky.js also stops the slideshow and the parallax there) */
+@media (max-width: 700px) {
+  .hero-sky-img { animation: none; opacity: 1; transform: scale(1.04) !important; will-change: auto; }
+  .hero-sky-swirl, .hero-sky-eye { animation: none; }
+  .hero-sky-slide, .hero-sky-slide.on, .hero-sky-slide.off { animation: none; transition: none; translate: 0 0; transform: none; will-change: auto; }
+  .hero-sky-flash { display: none; }
+}
 @media (prefers-reduced-motion: reduce) {
   .hero-sky-img { animation: none; opacity: 1; transform: scale(1.04); }
   .hero-sky-swirl, .hero-sky-eye { animation: none; }
