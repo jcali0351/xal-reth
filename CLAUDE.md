@@ -44,7 +44,10 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   and the WebGL layer `js/xalreth-three.js` using the vendored Three.js r160 in `js/vendor/`): particle coil, fog, energy arcs,
   rotating eclipse halo, signal bursts, typed status messages, a Pause motion button, and an easter egg (click the sigil three
   times or type "hold light"). It lowers its resolution, then drops effects, then falls back to 2D if frames run slow, and
-  stays still for reduced-motion visitors. No audio. Keep it if the site is regenerated.
+  stays still for reduced-motion visitors. No audio. On phones (700px and narrower) the background stands down (no WebGL
+  layer, particles, halos, eclipse, pulses or beams) and the sigil itself is animated instead: it rises in, floats and sways,
+  its glow breathes and a violet sheen passes across it (masked to the logo); it all comes back if the window widens.
+  Keep it if the site is regenerated.
 - Recruitment (`recruit.html`, `css/recruit.css`, `js/recruit.js`; first item under Community in the menu): the recruiting
   pitch for PvE and RP players (Moon Guard US, Alliance), how joining works, a "Request to join" form (character name, server,
   class, role, professions, PvE/RP, a large message box, how to reach them) and, under #officers, a separate officer application

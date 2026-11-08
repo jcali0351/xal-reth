@@ -178,7 +178,43 @@
 #xalreth-hero.xr-still *, #xalreth-hero.xr-still *::after { animation-play-state: paused !important; }
 #xalreth-hero.xr-still .xr-beam { display: none; }
 
+/* PHONES (700px and narrower): the background stands down and the sigil itself comes alive (js/xalreth.js stops the
+   WebGL layer, particles and beams there too). The sigil rises out of a glow, then floats and sways gently, its light
+   breathes behind it, and a sheen of violet light passes across it, clipped to the sigil's own shape. */
+@media (max-width: 700px) {
+  #xalreth-hero .xr-webgl, #xalreth-hero .xr-particles, #xalreth-hero .xr-halo, #xalreth-hero .xr-eclipse,
+  #xalreth-hero .xr-pulse, #xalreth-hero .xr-signals { display: none !important; }
+  #xalreth-hero .xr-logo img {
+    filter: drop-shadow(0 0 16px rgba(138, 77, 255, 0.6));
+    animation: xr-rise 1.4s cubic-bezier(.2, .7, .2, 1) both, xr-float 6s ease-in-out 1.4s infinite;
+  }
+  #xalreth-hero .xr-stage::before { left: 6%; top: 8%; width: 88%; height: 88%; animation: xr-glow 4.5s ease-in-out infinite; }
+  #xalreth-hero .xr-logo::after {
+    content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background: linear-gradient(115deg, transparent 38%, rgba(246, 236, 255, 0.85) 48%, rgba(190, 150, 255, 0.5) 52%, transparent 62%) no-repeat;
+    background-size: 260% 100%; background-position: 130% 0; mix-blend-mode: screen;
+    -webkit-mask: url("../img/xalreth-logo.png") center / contain no-repeat; mask: url("../img/xalreth-logo.png") center / contain no-repeat;
+    animation: xr-sheen 5.5s ease-in-out 1.6s infinite;
+  }
+}
+@keyframes xr-rise {
+  0%   { opacity: 0; transform: translateY(18px) scale(0.86); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes xr-float {
+  0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+  25%      { transform: translateY(-6px) rotate(-1deg) scale(1.02); }
+  50%      { transform: translateY(-9px) rotate(0deg) scale(1.03); }
+  75%      { transform: translateY(-5px) rotate(1deg) scale(1.02); }
+}
+@keyframes xr-sheen {
+  0%       { background-position: 130% 0; }
+  45%, 100% { background-position: -30% 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  #xalreth-hero .xr-logo::after { display: none; }
   #xalreth-hero .xr-halo { animation: none; }
   #xalreth-hero .xr-moon, #xalreth-hero .xr-corona, #xalreth-hero .xr-pulse,
   #xalreth-hero .xr-logo img, #xalreth-hero .xr-caret, #xalreth-hero .xr-stage::before { animation: none; }
