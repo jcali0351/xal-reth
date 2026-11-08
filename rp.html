@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Faces of the Coil · Roleplay Profiles · Cult of Xal'Reth</title>
-<meta name="description" content="Roleplay profiles of the Cult of Xal'Reth, a World of Warcraft RP guild on Moon Guard: in-character names, appearances, histories, bonds and timelines.">
+<title>The Faces of the Coil · Roleplay Social Profiles · Cult of Xal'Reth</title>
+<meta name="description" content="The Faces of the Coil: the in-character social network of the Cult of Xal'Reth, a World of Warcraft RP guild on Moon Guard. Statuses, posts, reactions, comments, bonds and profiles.">
 <meta name="author" content="The Cult of Xal'Reth">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "The Cult of Xal'Reth", "item": "https://jcali0351.github.io/xal-reth/"}, {"@type": "ListItem", "position": 2, "name": "RP Profiles", "item": "https://jcali0351.github.io/xal-reth/rp.html"}]}</script>
 <link rel="canonical" href="https://jcali0351.github.io/xal-reth/rp.html">
@@ -13,11 +13,11 @@
 <meta property="og:site_name" content="The Cult of Xal'Reth">
 <meta property="og:url" content="https://jcali0351.github.io/xal-reth/rp.html">
 <meta property="og:title" content="The Faces of the Coil">
-<meta property="og:description" content="Roleplay profiles of the faithful: names, faces, histories and bonds.">
+<meta property="og:description" content="The faithful, in character: statuses, posts, bonds and profiles.">
 <meta property="og:image" content="https://jcali0351.github.io/xal-reth/xalreth-og.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The Faces of the Coil">
-<meta name="twitter:description" content="Roleplay profiles of the faithful: names, faces, histories and bonds.">
+<meta name="twitter:description" content="The faithful, in character: statuses, posts, bonds and profiles.">
 <meta name="twitter:image" content="https://jcali0351.github.io/xal-reth/xalreth-og.jpg">
 <link rel="sitemap" type="application/xml" href="sitemap.xml">
 <meta name="theme-color" content="#08050f">
@@ -25,9 +25,10 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://render.worldofwarcraft.com">
-<link rel="stylesheet" href="style.css?v=508aef9a">
+<link rel="stylesheet" href="style.css?v=ce0eb31f">
 <link rel="stylesheet" href="css/site-fonts.css?v=aeb406ab">
 <link rel="stylesheet" href="css/armory.css?v=a05cb4fe">
+<link rel="stylesheet" href="css/faces.css?v=4f1be0c8">
 </head>
 <body>
 <header class="site-header">
@@ -39,21 +40,37 @@
 </header>
 <main data-rp>
 <header class="page-head">
-  <p class="eyebrow">Community · Roleplay Profiles</p>
+  <p class="eyebrow">Community · The Faces of the Coil</p>
   <h1>The Faces of the Coil</h1>
-  <p>Every faithful is a story the serpent is holding. These are the ones they have written down: names, faces, histories, and who they owe a copper to.</p>
+  <p>Every faithful is a story the serpent is holding. Here they tell it themselves: what they are doing, who they are bound to, and who owes whom a copper. Speak in character. Hold light.</p>
 </header>
-<div class="wrap">
-  <div class="rp-tools">
-    <label for="rp-q" class="sr-only">Search the profiles</label>
-    <input id="rp-q" type="search" placeholder="Search names, titles, races, classes…" autocomplete="off" data-rp-q>
-    <span class="muted" data-rp-count></span>
+<div class="wrap fs-hub">
+  <div class="fs-bar" data-bar></div>
+  <div class="fs-cols" data-no-motion>
+    <section class="fs-main" data-social aria-labelledby="fs-feed-h">
+      <h2 id="fs-feed-h" class="sr-only">The feed</h2>
+      <div data-compose></div>
+      <div class="fs-feed" data-feed aria-live="polite"></div>
+      <button type="button" class="btn ghost fs-more" data-more hidden>Older posts</button>
+    </section>
+    <aside class="fs-side" aria-labelledby="fs-dir-h">
+      <h2 id="fs-dir-h">The Faces</h2>
+      <div class="rp-tools">
+        <label for="rp-q" class="sr-only">Search the faces</label>
+        <input id="rp-q" type="search" placeholder="Search names, titles, statuses…" autocomplete="off" data-rp-q>
+        <span class="muted" data-rp-count></span>
+      </div>
+      <ul class="rp-grid" data-rp-grid></ul>
+    </aside>
   </div>
-  <ul class="rp-grid" data-rp-grid aria-live="polite"></ul>
-  <section class="prose">
-    <h2 id="yours">Your profile</h2>
-    <p>Any member of the guild may have a page here: an in-character name and title, a quote, appearance and personality, a history, bonds with other faithful, a timeline, and a few words out of character. Send yours to an officer in <a href="https://discord.gg/wYakHBHPz" target="_blank" rel="noopener">our Discord</a> or through <a href="contact.html">the contact page</a>, and they will add it. Every profile is read before it goes up, as is proper.</p>
-    <p class="muted">Each profile sits beside the character's page in <a href="guild-roster.html">the Armory</a>, with their gear, progress and duel record. See also <a href="duels.html">the Duelling Ground</a>.</p>
+  <section class="prose fs-rules" id="rules">
+    <h2>The manners of the Faces</h2>
+    <ul>
+      <li><b>Speak in character.</b> Out-of-character notes belong on your profile's About page, or in our <a href="https://discord.gg/wYakHBHPz" target="_blank" rel="noopener">Discord</a>.</li>
+      <li><b>Be kind, even when your character isn't.</b> Rivalries are welcome; cruelty to the player behind the character is not. Report anything that crosses the line with the ⋯ on any post.</li>
+      <li><b>Pictures wait for an officer</b> before anyone else sees them. Screenshots and art you made or may share only.</li>
+      <li><b>Your Battle.net account stays private.</b> Only your characters on the guild roster are shown. Sign out anytime; the officers can remove anything on request through <a href="contact.html">the contact page</a>.</li>
+    </ul>
   </section>
 </div>
 </main>
@@ -76,6 +93,7 @@
 <script src="site.js?v=2c9ccaff"></script>
 <script src="masthead.js"></script>
 <script src="js/coil-faces.js?v=ce5118dd"></script>
-<script src="js/rp.js?v=bb88d358"></script>
+<script src="js/faces-social.js?v=5669bf13"></script>
+<script src="js/rp.js?v=d73e6b35"></script>
 </body>
 </html>

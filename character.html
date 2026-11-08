@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Armory of the Coil · Cult of Xal'Reth</title>
-<meta name="description" content="A faithful of the Cult of Xal'Reth: their character, gear, Mythic+ and raid progress from the World of Warcraft Armory, their roleplay profile and their duel record.">
+<title>The Faces of the Coil · Cult of Xal'Reth</title>
+<meta name="description" content="A faithful of the Cult of Xal'Reth: their in-character profile, status, wall, bonds and pictures, and their gear, Mythic+, raids and duels from the Armory.">
 <meta name="author" content="The Cult of Xal'Reth">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "The Cult of Xal'Reth", "item": "https://jcali0351.github.io/xal-reth/"}, {"@type": "ListItem", "position": 2, "name": "The Armory", "item": "https://jcali0351.github.io/xal-reth/character.html"}]}</script>
 <link rel="canonical" href="https://jcali0351.github.io/xal-reth/character.html">
@@ -12,12 +12,12 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="The Cult of Xal'Reth">
 <meta property="og:url" content="https://jcali0351.github.io/xal-reth/character.html">
-<meta property="og:title" content="The Armory of the Coil">
-<meta property="og:description" content="Gear, progress, roleplay profile and duel record of a faithful of the Coil.">
+<meta property="og:title" content="The Faces of the Coil">
+<meta property="og:description" content="An in-character profile of a faithful of the Coil: status, wall, bonds and the Armory.">
 <meta property="og:image" content="https://jcali0351.github.io/xal-reth/xalreth-og.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="The Armory of the Coil">
-<meta name="twitter:description" content="Gear, progress, roleplay profile and duel record of a faithful of the Coil.">
+<meta name="twitter:title" content="The Faces of the Coil">
+<meta name="twitter:description" content="An in-character profile of a faithful of the Coil: status, wall, bonds and the Armory.">
 <meta name="twitter:image" content="https://jcali0351.github.io/xal-reth/xalreth-og.jpg">
 <link rel="sitemap" type="application/xml" href="sitemap.xml">
 <meta name="theme-color" content="#08050f">
@@ -25,9 +25,10 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://render.worldofwarcraft.com">
-<link rel="stylesheet" href="style.css?v=508aef9a">
+<link rel="stylesheet" href="style.css?v=ce0eb31f">
 <link rel="stylesheet" href="css/site-fonts.css?v=aeb406ab">
 <link rel="stylesheet" href="css/armory.css?v=a05cb4fe">
+<link rel="stylesheet" href="css/faces.css?v=4f1be0c8">
 </head>
 <body>
 <header class="site-header">
@@ -38,18 +39,53 @@
   </div>
 </header>
 <main data-char>
-<header class="ch-hero" data-no-motion>
-  <div>
-    <p class="eyebrow">The Armory of the Coil</p>
-    <h1 data-c-name>Looking for them…</h1>
-    <p class="ch-title" data-c-title></p>
-    <p class="ch-line" data-c-line></p>
-    <a class="ch-rank" data-c-rank href="ranks.html"></a>
-    <div class="ch-chips" data-c-chips></div>
+<header class="pf-head" data-no-motion>
+  <div class="pf-cover" data-cover><img class="pf-cover-render" data-cover-render alt="" hidden></div>
+  <div class="pf-id">
+    <span class="pf-avatar" data-avatar role="img" aria-label="Profile picture"></span>
+    <div class="pf-names">
+      <p class="eyebrow">The Faces of the Coil</p>
+      <h1 data-c-name>Looking for them…</h1>
+      <p class="ch-title" data-c-title></p>
+      <p class="ch-line" data-c-line></p>
+      <p class="pf-status" data-c-status hidden></p>
+      <a class="ch-rank" data-c-rank href="ranks.html"></a>
+    </div>
+    <div class="pf-actions" data-actions></div>
   </div>
-  <img class="ch-render" data-c-render alt="">
+  <nav class="pf-tabs" role="tablist" aria-label="Profile" data-tabs>
+    <button role="tab" type="button" data-tab="wall" aria-selected="true">Wall</button>
+    <button role="tab" type="button" data-tab="about" aria-selected="false">About</button>
+    <button role="tab" type="button" data-tab="bonds" aria-selected="false">Bonds</button>
+    <button role="tab" type="button" data-tab="photos" aria-selected="false">Photos</button>
+    <button role="tab" type="button" data-tab="armory" aria-selected="false">Armory</button>
+  </nav>
 </header>
-<div class="wrap ch-body" data-c-body></div>
+<div class="wrap pf-body" data-no-motion>
+  <section data-panel="wall"><div data-wall-compose></div><div class="fs-feed" data-wall aria-live="polite"></div></section>
+  <section data-panel="about" hidden><div data-about></div></section>
+  <section data-panel="bonds" hidden><div data-bonds></div></section>
+  <section data-panel="photos" hidden><div data-photos></div></section>
+  <section data-panel="armory" hidden><div data-armory></div></section>
+</div>
+<dialog class="pf-edit" data-editdlg aria-labelledby="pf-edit-h">
+  <form method="dialog" data-editform>
+    <h2 id="pf-edit-h">Your profile</h2>
+    <p class="muted">Everything here is in character, except the About box, which may hold a few words out of character too.</p>
+    <div class="pf-grid">
+      <label>Name in character<input name="icName" maxlength="80"></label>
+      <label>Title<input name="title" maxlength="120" placeholder="Keeper of the Fifth Stone"></label>
+      <label>Pronouns<input name="pronouns" maxlength="40"></label>
+      <label>Home<input name="home" maxlength="120" placeholder="A room above the Crooked Lantern"></label>
+      <label>Affiliations<input name="affiliation" maxlength="160" placeholder="The Cult of Xal'Reth, the Ministry of Spare Change"></label>
+      <label>Relationship<input name="relationship" maxlength="80" placeholder="Married to the Ledger"></label>
+      <label>Likes<input name="likes" maxlength="400"></label>
+      <label>Dislikes<input name="dislikes" maxlength="400"></label>
+    </div>
+    <label>About<textarea name="about" rows="6" maxlength="3000"></textarea></label>
+    <div class="pf-edit-actions"><button class="btn ghost" value="cancel" formnovalidate>Cancel</button><button class="btn" type="submit" value="save">Save</button></div>
+  </form>
+</dialog>
 </main>
 <footer class="site-footer">
   <div class="wrap">
@@ -70,6 +106,7 @@
 <script src="site.js?v=2c9ccaff"></script>
 <script src="masthead.js"></script>
 <script src="js/coil-faces.js?v=ce5118dd"></script>
-<script src="js/character.js?v=969b7c6c"></script>
+<script src="js/faces-social.js?v=5669bf13"></script>
+<script src="js/character.js?v=30e7f9f9"></script>
 </body>
 </html>

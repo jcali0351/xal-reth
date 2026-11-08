@@ -272,6 +272,7 @@
     if (name === "fish") loadFish();
     if (name === "rp") loadRp();
     if (name === "duels") loadDuels();
+    if (name === "faces") loadMod();
     if (name === "stats") { renderWorkerBoxes(); if (!an.loaded) loadAnalytics(); }
     if (name === "x") { renderWorkerBoxes(); loadX(); }
   }
@@ -2080,6 +2081,68 @@
     var b = e.target.closest("[data-duel-del]"); if (!b || !confirm("Delete this duel from the ledger?")) return;
     var id = b.dataset.duelDel;
     saveDuels(function (all) { var i = all.findIndex(function (d) { return d.id === id; }); if (i >= 0) all.splice(i, 1); }, "CMS: Remove a duel", b);
+  });
+
+  /* ================================================================ THE FACES OF THE COIL: MODERATION (tools/social-worker/)
+     The social Worker trusts this editor's GitHub token as an officer's key (sent as X-Officer-Token). */
+  var MOD_KEY = "xr-social-worker", mod = { url: "" };
+  try { mod.url = localStorage.getItem(MOD_KEY) || ""; } catch (e) {}
+  function modFetch(path, body) {
+    if (!mod.url) return Promise.reject(new Error("Save the social Worker's address first."));
+    return fetch(mod.url.replace(/\/+$/, "") + path, { method: body ? "POST" : "GET", headers: Object.assign({ "X-Officer-Token": token }, body ? { "Content-Type": "application/json" } : {}), body: body ? JSON.stringify(body) : undefined, cache: "no-store" })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.error || ("The social Worker answered " + r.status)); return j; }); },
+        function () { throw new Error("The social Worker can't be reached. Check its address."); });
+  }
+  function modName(k) { var m = guild.byKey[k]; return m ? m.name : k; }
+  function loadMod() {
+    $("#mod-url").value = mod.url;
+    if (!mod.url) { $("#mod-status").textContent = "Not connected. Deploy the social Worker (tools/social-worker/README.md), then paste its address here."; return; }
+    $("#mod-status").textContent = "Reading the queue…";
+    loadGuild().then(function () { return modFetch("/mod/queue"); }).then(function (q) {
+      $("#mod-status").textContent = "Connected. " + q.pics.length + " pictures waiting, " + q.reports.length + " open reports.";
+      $("#mod-pics").innerHTML = q.pics.map(function (p) {
+        return '<figure class="mod-pic" data-pic="' + esc(p.id) + '"><div class="mod-prev">Loading…</div><figcaption>' + esc(modName(p.owner)) + " · " + esc(p.use) + " · " + Math.round(p.size / 1024) + " KB" +
+          '<br><button type="button" class="cms-btn small" data-pic-ok="' + esc(p.id) + '">Approve</button> <button type="button" class="cms-btn small danger" data-pic-no="' + esc(p.id) + '">Reject</button></figcaption></figure>';
+      }).join("") || '<p class="cms-hint">Nothing waiting.</p>';
+      q.pics.forEach(function (p) {
+        modFetch("/mod/pic", { id: p.id, preview: true }).then(function (r) {
+          var box = $('[data-pic="' + p.id + '"] .mod-prev'); if (box) box.innerHTML = r.data ? '<img alt="" src="' + r.data + '">' : "Missing";
+        }).catch(function () {});
+      });
+      $("#mod-reports").innerHTML = q.reports.map(function (r) {
+        var c = r.content || {};
+        return '<div class="mod-item"><b>' + esc(r.type) + "</b> by " + esc(c.author ? modName(c.author) : "?") + ', reported by ' + esc(r.reporter ? modName(r.reporter) : "a visitor") + " · " + esc(new Date(r.created).toLocaleString()) +
+          "<blockquote>" + esc(String(c.body || "(already gone)").slice(0, 600)) + "</blockquote><p><i>" + esc(r.reason) + "</i></p>" +
+          (r.type === "post" || r.type === "comment" ? '<button type="button" class="cms-btn small danger" data-hide="' + esc(r.target) + '" data-type="' + esc(r.type) + '">Hide it</button> ' : "") +
+          (c.author ? '<button type="button" class="cms-btn small ghost" data-mute="' + esc(c.author) + '">Pause ' + esc(modName(c.author)) + "'s posting</button> " : "") +
+          '<button type="button" class="cms-btn small ghost" data-resolve="' + esc(r.id) + '">Done</button></div>';
+      }).join("") || '<p class="cms-hint">No open reports. The Coil is calm.</p>';
+      $("#mod-hidden").innerHTML = q.hidden.map(function (p) {
+        return '<div class="mod-item"><b>' + esc(modName(p.author)) + "</b> · " + esc(new Date(p.created).toLocaleString()) + "<blockquote>" + esc(String(p.body).slice(0, 300)) + '</blockquote><button type="button" class="cms-btn small ghost" data-unhide="' + esc(p.id) + '">Show it again</button></div>';
+      }).join("") || '<p class="cms-hint">Nothing hidden.</p>';
+      $("#mod-muted").innerHTML = q.muted.map(function (u) {
+        var chars = String(u.chars || "").split(",").filter(Boolean);
+        return '<div class="mod-item">' + esc(chars.map(modName).join(", ") || "A member") + ' <button type="button" class="cms-btn small ghost" data-unmute="' + esc(chars[0] || "") + '">Let them post again</button></div>';
+      }).join("") || '<p class="cms-hint">Nobody is paused.</p>';
+    }).catch(function (e) { $("#mod-status").textContent = e.message; });
+  }
+  $("#mod-save").addEventListener("click", function () {
+    var v = $("#mod-url").value.trim();
+    if (v && !/^https?:\/\/[^\s/]+/.test(v)) { toast("The address should start with https://", true); return; }
+    mod.url = v; try { if (v) localStorage.setItem(MOD_KEY, v); else localStorage.removeItem(MOD_KEY); } catch (e) {}
+    loadMod();
+  });
+  $("#mod-refresh").addEventListener("click", loadMod);
+  $('[data-panel="faces"]').addEventListener("click", function (e) {
+    var t = e.target, d = t.dataset, p = null;
+    if (d.picOk) p = modFetch("/mod/pic", { id: d.picOk, approve: true });
+    if (d.picNo) p = modFetch("/mod/pic", { id: d.picNo, approve: false });
+    if (d.hide) p = modFetch("/mod/hide", { type: d.type, id: d.hide, hidden: true });
+    if (d.unhide) p = modFetch("/mod/hide", { type: "post", id: d.unhide, hidden: false });
+    if (d.mute) { if (!confirm("Pause " + modName(d.mute) + "'s posting? (Every character on their account.)")) return; p = modFetch("/mod/mute", { key: d.mute, muted: true }); }
+    if (d.unmute) p = modFetch("/mod/mute", { key: d.unmute, muted: false });
+    if (d.resolve) p = modFetch("/mod/resolve", { id: d.resolve });
+    if (p) { busy(t, true, "…"); p.then(function () { toast("Done."); loadMod(); }).catch(function (x) { busy(t, false); toast(x.message, true); }); }
   });
 
   /* ================================================================ THE ADMIN WORKER (tools/admin-worker/)

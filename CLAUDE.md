@@ -66,6 +66,11 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   (commands tables and the Drama Queen disclaimer are copied from addons.html). Each addon's title on addons.html links to
   its page, with a "Full page" button. When an addon changes or a new one is released, update addons.html and the script,
   run `python3 tools/build_addon_pages.py` and then `python3 tools/build_sitemap.py`. Coming-soon addons get no page yet.
+  CurseForge: Master Baiter Pro (https://www.curseforge.com/wow/addons/master-baiter-pro) and Xal'Reth RP
+  (https://www.curseforge.com/wow/addons/xalrethrp) have a "Get it on CurseForge" button beside Download, a panel saying
+  why (the app keeps it updated; a follow or comment helps others find it) and an "easy way" first install step, on
+  addons.html and on their pages (the `curseforge` and `cf_text` fields in build_addon_pages.py; styles "CURSEFORGE CALLS
+  TO ACTION" at the end of style.css). Give any other addon that goes up on CurseForge the same two fields.
 
 - Site-wide search, "the Seeking Glass": `js/search.js` + `css/search.css`, loaded on every page by a small loader at the top
   of `site.js`. It adds a search button to every page header, opens with / or Ctrl+K (Cmd+K), and the homepage has a search
@@ -152,6 +157,22 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   category/icons kept between runs and filled a few thousand per run, status.json): one commit replaced every hour so the
   repository never grows. The page reads it from raw.githubusercontent.com. Never commit auction data to main, and never
   hand-edit the ah-data branch. Until the first run it says the Ministry is counting. Keep it if the site is regenerated.
+- The Faces of the Coil, the in-character social network (rp.html hub + every character.html profile; `js/faces-social.js`,
+  `css/faces.css`; server `tools/social-worker/`: worker.js, schema.sql, README.md). Members sign in with Battle.net
+  (OAuth, scope wow.profile, through the guild's existing Blizzard API client, which needs the Worker's /auth/callback as a
+  redirect URL); only their characters on data/roster.json become theirs to post as; nothing about the Battle.net
+  account is shown. A Facebook-like profile: cover, avatar (class-colour ring; the Armory portrait until they upload
+  one), name, title, live status, Edit profile (name in character, title, pronouns, home, affiliations, relationship,
+  likes, dislikes, about), tabs Wall / About / Bonds / Photos / Armory (the old character page lives in the Armory tab).
+  The hub: Posting-as switcher, status, composer with a picture, the feed with reactions (Hold light, Basking, Gripped,
+  Let go) and comments, bond requests, and the directory of faces. Bonds: kin, friend, rival, mentor, student, sworn,
+  beloved (asked and accepted). Posts and comments appear at once and can be reported; pictures wait for an officer.
+  Officers moderate in the Sanctum Editor's "Faces" tab (its GitHub token is the officer key, sent as X-Officer-Token):
+  approve or reject pictures with previews, hide/show posts, pause or restore a member, close reports. Off until
+  ENDPOINT in faces-social.js holds the Worker's address (the editor tab keeps its own copy in localStorage
+  "xr-social-worker"); until then the pages show the officer-kept profiles from data/rp-profiles.json, which also stay
+  as the About tab's extra content. Limits: 20 posts/h, 60 comments/h, 12 pictures/day per character; all text is plain
+  text. counts.html says what the Faces keep. Local testing: README.md (DEV=1 only locally, never deployed).
 - The Armory, RP profiles and duels (all three load through `js/coil-faces.js`; styles in `css/armory.css`).
   `character.html?c=<realm-slug>/<name>` (`js/character.js`; out of the sitemap and search because it needs `?c=`):
   one faithful's page in their class colour with the Armory render, rank, item level, Mythic+ rating, achievements,

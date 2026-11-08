@@ -56,6 +56,8 @@ STEAM = ('<div class="notice"><strong>Steam Deck faithful:</strong> the AddOns f
 
 ADDONS = [
  dict(slug="addon-xalreth-rp.html", name="Xal'Reth RP", folder="XalRethRP", zip="XalRethRP.zip", version="4.1.1", game="Retail · Midnight 12.1",
+  curseforge="https://www.curseforge.com/wow/addons/xalrethrp",
+  cf_text="Let the rites come to you. Install Xal'Reth RP with the CurseForge app and every new edition of the Book arrives by itself, patiently, the way the Coil prefers. Following it there, or leaving a word for the faithful, helps other roleplayers find the Coil.",
   slash="/xrp", short="10,100 rites of Xal'Reth, performed as emotes",
   tagline="The Book of Xal'Reth. The rites of the Coil, performed as emotes, while Xal'Reth erupts in light.",
   desc="Xal'Reth RP is a free World of Warcraft roleplay addon for Midnight: 10,100 rites of Xal'Reth performed as /emotes on a timer, a glowing panel, a searchable Book and your own custom rites.",
@@ -204,6 +206,8 @@ ADDONS = [
        ("Can I keep it to myself?", "Yes. Set the channel to Local and the edge stays in your own chat window, where nobody can understand you.")]),
 
  dict(slug="addon-master-baiter-pro.html", name="Master Baiter Pro", folder="MasterBaiterPro", zip="MasterBaiterPro.zip", version="2.2", game="Retail · Midnight",
+  curseforge="https://www.curseforge.com/wow/addons/master-baiter-pro",
+  cf_text="Rather it kept itself up to date? Install Master Baiter Pro with the CurseForge app and every new version arrives on its own: no zips, no dragging folders, just more fish. A follow, a thumbs-up or a comment there helps more anglers find the one key.",
   slash="/mbp", short="One-key fishing with live auction house prices for every catch",
   tagline="One key casts, the same key hooks, and every fish tells you exactly what it is worth.",
   desc="Master Baiter Pro is a free World of Warcraft fishing addon for Midnight: one key casts and hooks, live auction house prices for every catch, your top five catches as icons, a live leaderboard of every angler running it, gold per hour, jackpot alerts and records.",
@@ -332,18 +336,33 @@ def shell(a, main_html, ld):
         t = t.replace("<body>", f'<body class="{a["theme"]}">', 1)
     return t
 
+CF_GLYPH = ('<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" '
+            'stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 0 1-13.7 5.6"/><path d="M4 12A8 8 0 0 1 17.7 6.4"/>'
+            '<path d="M18 2.5v4h-4"/><path d="M6 21.5v-4h4"/><path d="M12 8v5l3 2"/></svg>')
+
+def curseforge_panel(a):
+    """The CurseForge call to action: why to use it (updates arrive by themselves) and how it helps the addon."""
+    if not a.get("curseforge"): return ""
+    return (f'<aside class="cf-cta" aria-label="{esc(a["name"])} on CurseForge"><span class="cf-glyph">{CF_GLYPH}</span>'
+            f'<div><p class="kicker">Also on CurseForge</p><p>{a["cf_text"]}</p></div>'
+            f'<a class="btn cf-btn" href="{a["curseforge"]}" target="_blank" rel="noopener">Get it on CurseForge<span class="sr-only"> (opens in a new tab)</span></a></aside>')
+
 def build(a, others):
     slash_stat = "" if any(b == a["slash"] for b, _ in a["stats"]) else f'<div class="stat"><b>{esc(a["slash"])}</b><span>slash command</span></div>'
     stats = "".join(f'<div class="stat"><b>{esc(b)}</b><span>{esc(s)}</span></div>' for b, s in a["stats"])
     tags = f'<span class="tag green">Version {esc(a["version"])}</span><span class="tag">{esc(a["game"])}</span><span class="tag">Free</span>'
     if a.get("risk"): tags += '<span class="tag">Use at your own risk</span>'
-    buttons = f'<a class="btn big" href="{a["zip"]}" download>Download {esc(a["name"])}</a><a class="btn ghost" href="#install">How to install</a><a class="btn ghost" href="#commands">Commands</a>'
+    buttons = f'<a class="btn big" href="{a["zip"]}" download>Download {esc(a["name"])}</a>'
+    if a.get("curseforge"): buttons += f'<a class="btn cf-btn" href="{a["curseforge"]}" target="_blank" rel="noopener">Get it on CurseForge<span class="sr-only"> (opens in a new tab)</span></a>'
+    buttons += '<a class="btn ghost" href="#install">How to install</a><a class="btn ghost" href="#commands">Commands</a>'
     if a.get("disclaimer"): buttons += '<a class="btn ghost" href="#disclaimer">Disclaimer</a>'
     size = os.path.getsize(a["zip"]); size = f"{size/1048576:.1f} MB" if size > 1048576 else f"{max(1, round(size/1024))} KB"
     feats = "".join(f'<article class="card"><p class="kicker">{esc(k)}</p><h3>{esc(h)}</h3>{body}</article>' for k, h, body in a["features"])
     steps = [f'<a href="{a["zip"]}" download>Download {a["zip"]}</a> ({size}).'] + a["install_extra"] + [
         f'Extract the zip. Move the <code>{a["folder"]}</code> folder into <code>World of Warcraft\\{a.get("client", "_retail_")}\\Interface\\AddOns\\</code>. On Windows this is usually <code>C:\\Program Files (x86)\\World of Warcraft\\{a.get("client", "_retail_")}\\Interface\\AddOns</code>.',
         "Make sure the folder sits directly inside <code>AddOns</code>, not in a folder inside a folder.", a["restart"], a["last"]]
+    if a.get("curseforge"):
+        steps = [f'<strong>The easy way:</strong> install it with the <a href="{a["curseforge"]}" target="_blank" rel="noopener">CurseForge app</a>, which also keeps it up to date for you. Or do it by hand:'] + steps
     faq = "".join(f"<details><summary>{esc(q)}</summary><p>{ans}</p></details>" for q, ans in a.get("faq", []))
     rel = "".join(f'<article class="card"><p class="kicker">{esc(o["slash"])}</p><h3><a href="{o["slug"]}">{esc(o["name"])}</a></h3><p class="muted">{esc(o["short"])}.</p></article>' for o in others)
     risk_note = ('<p class="muted"><strong>Use at your own risk.</strong> Read the <a href="#disclaimer">disclaimer</a> before you install it.</p>' if a.get("disclaimer") else "")
@@ -360,6 +379,7 @@ def build(a, others):
           <p class="lede">{a["lede"]}</p>
           {risk_note}
           <div class="actions">{buttons}</div>
+          {curseforge_panel(a)}
         </div>
         <div class="stat-col">{stats}{slash_stat}</div>
       </div>
@@ -387,6 +407,7 @@ def build(a, others):
     ld = [{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": a["name"], "description": a["desc"],
            "applicationCategory": "GameApplication", "operatingSystem": "World of Warcraft Retail", "softwareVersion": a["version"],
            "downloadUrl": BASE + a["zip"], "url": BASE + a["slug"], "image": BASE + "xalreth-og.jpg", "isAccessibleForFree": True,
+           **({"sameAs": [a["curseforge"]]} if a.get("curseforge") else {}),
            "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}},
           {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
               {"@type": "ListItem", "position": 1, "name": "The Cult of Xal'Reth", "item": BASE},

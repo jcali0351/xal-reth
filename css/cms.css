@@ -306,3 +306,11 @@ body.cms { min-height: 100vh; overflow-x: hidden; background: radial-gradient(el
 .duel-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0 14px; align-items: end; margin-bottom: 10px; }
 .duel-form .cms-btn { margin-bottom: 14px; }
 @media (max-width: 760px) { .cms-grid2 { grid-template-columns: minmax(0, 1fr); } }
+/* FACES MODERATION */
+.mod-pics { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+.mod-pic { margin: 0; border: 1px solid var(--line); border-radius: 10px; padding: 8px; background: rgba(17,10,29,.6); }
+.mod-prev { min-height: 120px; display: grid; place-items: center; color: var(--bone-dim); }
+.mod-prev img { max-width: 100%; max-height: 220px; display: block; }
+.mod-pic figcaption { color: var(--bone-dim); font-size: .9rem; margin-top: 6px; }
+.mod-item { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; color: var(--bone); }
+.mod-item blockquote { margin: 8px 0; padding: 8px 12px; border-left: 3px solid var(--violet); color: #fff; white-space: pre-wrap; }
