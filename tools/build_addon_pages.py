@@ -205,7 +205,7 @@ ADDONS = [
        ("How annoying does it get?", "With Escalation on and the speed at 20 seconds, it reaches one line every 3 seconds in emote after about two minutes. We recommend not finding out in a raid."),
        ("Can I keep it to myself?", "Yes. Set the channel to Local and the edge stays in your own chat window, where nobody can understand you.")]),
 
- dict(slug="addon-master-baiter-pro.html", name="Master Baiter Pro", folder="MasterBaiterPro", zip="MasterBaiterPro.zip", version="2.3", game="Retail · Midnight",
+ dict(slug="addon-master-baiter-pro.html", name="Master Baiter Pro", folder="MasterBaiterPro", zip="MasterBaiterPro.zip", version="2.3.1", game="Retail · Midnight",
   curseforge="https://www.curseforge.com/wow/addons/master-baiter-pro",
   cf_text="Rather it kept itself up to date? Install Master Baiter Pro with the CurseForge app and every new version arrives on its own: no zips, no dragging folders, just more fish. A follow, a thumbs-up or a comment there helps more anglers find the one key.",
   slash="/mbp", short="One-key fishing with live auction house prices for every catch",
@@ -235,7 +235,7 @@ ADDONS = [
        ("How do I get onto the website's fishing leaderboard?", "Type <code>/mbp export</code>, copy it, and send it to an officer; they add it to <a href=\"fishing.html\">the Anglers of the Coil</a>. Anyone your export has heard on the network shows up there too, with the numbers they shared. Ask through the contact page to be left off."),
        ("I had Coil Angler. Do my records carry over?", "No. Master Baiter Pro starts a fresh record book. Delete the old CoilAngler folder so the two do not fight over your key.")]),
 
- dict(slug="addon-master-bait-forever.html", name="Master Bait Forever", folder="MasterBaitForever", zip="MasterBaitForever.zip", version="1.1", game="WoW Forever",
+ dict(slug="addon-master-bait-forever.html", name="Master Bait Forever", folder="MasterBaitForever", zip="MasterBaitForever.zip", version="1.1.1", game="WoW Forever",
   client="_forever_", slash="/mbf", short="Master Baiter Pro, rebuilt for World of Warcraft: Forever",
   tagline="One key casts, the same key hooks, and every fish tells you what it is worth, now in World of Warcraft: Forever.",
   desc="Master Bait Forever is a free fishing addon for World of Warcraft: Forever (interface 16001): one-key cast and hook, auction house prices for every catch, top five catch icons, a live leaderboard, jackpot alerts and records.",
