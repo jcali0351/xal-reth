@@ -1,0 +1,15 @@
+{
+  "updatedAt": "2026-11-08T20:46:15.488Z",
+  "hidden": [],
+  "exports": [
+    {"by":"Khaedara-MoonGuard","at":1794170744,"version":"2.3.1"}
+  ],
+  "anglers": [
+    {"name":"Khaedara-MoonGuard","catches":103,"week":103,"wid":2965,"best":238371,"bestValue":425200,"gph":11276105,"copper":895544,"seen":1794170744,"seconds":4322,"sessions":17,"session":22,"streak":9,"zones":4,"bestQuality":3,"casts":130,"misses":38,"top":[{"id":238371,"n":3,"q":1,"unit":420000},{"id":238380,"n":1,"q":3,"unit":900000},{"id":238378,"n":1,"q":2,"unit":341500},{"id":238383,"n":2,"q":3,"unit":150000},{"id":238366,"n":4,"q":1,"unit":27500},{"id":238372,"n":13,"q":2,"unit":4800},{"id":238384,"n":5,"q":2,"unit":11500},{"id":238370,"n":17,"q":2,"unit":2500},{"id":238379,"n":2,"q":3,"unit":20900},{"id":238381,"n":4,"q":2,"unit":3600}],"selfAt":1794170744,"self":true},
+    {"name":"Joseafina-MoonGuard","catches":1,"week":1,"wid":2965,"best":45196,"bestValue":100,"gph":0,"copper":0,"seen":1794166151},
+    {"name":"Xalathiela-MoonGuard","catches":0,"week":0,"wid":2965,"best":0,"bestValue":0,"gph":0,"copper":0,"seen":1794009299}
+  ],
+  "notable": [
+
+  ]
+}
