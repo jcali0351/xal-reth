@@ -44,7 +44,10 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   and the WebGL layer `js/xalreth-three.js` using the vendored Three.js r160 in `js/vendor/`): particle coil, fog, energy arcs,
   rotating eclipse halo, signal bursts, typed status messages, a Pause motion button, and an easter egg (click the sigil three
   times or type "hold light"). It lowers its resolution, then drops effects, then falls back to 2D if frames run slow, and
-  stays still for reduced-motion visitors. No audio. Keep it if the site is regenerated.
+  stays still for reduced-motion visitors. No audio. On phones (700px and narrower) the background stands down (no WebGL
+  layer, particles, halos, eclipse, pulses or beams) and the sigil itself is animated instead: it rises in, floats and sways,
+  its glow breathes and a violet sheen passes across it (masked to the logo); it all comes back if the window widens.
+  Keep it if the site is regenerated.
 - Recruitment (`recruit.html`, `css/recruit.css`, `js/recruit.js`; first item under Community in the menu): the recruiting
   pitch for PvE and RP players (Moon Guard US, Alliance), how joining works, a "Request to join" form (character name, server,
   class, role, professions, PvE/RP, a large message box, how to reach them) and, under #officers, a separate officer application
@@ -91,7 +94,8 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   The sky can be a slideshow: `data-slides="a.webp|b.webp|…"`, `data-interval` (seconds), `data-transition` (fade, slide
   or both) and `data-flash="off"` on the same tag, chosen in the editor's Slideshow section; js/hero-sky.js loads each
   picture before showing it, drifts each one slowly closer, flashes a soft violet glow on each change, and pauses off
-  screen, in hidden tabs and for reduced motion. Keep it if the site is regenerated.
+  screen, in hidden tabs and for reduced motion. On phones (700px and narrower) the sky holds still: one picture, no
+  slideshow, drift, flash, swirl, eye pulse or parallax; it wakes again if the window widens. Keep it if the site is regenerated.
 - The homepage's Sacred Triangle section (`.pantheon`, styles "The Pantheon" in style.css) is the Icon of the Three triptych
   (`img/triangle/triptych.webp`, names, virtues and mottos painted in): three linked panels, each cropped from the one
   image by CSS (Vyrenna x 0-260, Xal'Reth 271-529, Nhalor 540-799), entering one by one in a burst of each god's light

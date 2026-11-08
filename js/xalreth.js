@@ -8,10 +8,15 @@
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var visible = true, pageShown = !document.hidden, userPaused = false, three = null;
   try { userPaused = localStorage.getItem("xr-motion") === "paused"; } catch (e) {}
+  /* PHONES (700px and narrower): the background (WebGL coil, particles, halos, eclipse, pulses, beams) stops and is
+     hidden; only the sigil itself moves (css/xalreth.css, "PHONES"). It comes back if the window is widened. */
+  var phone = window.matchMedia ? window.matchMedia("(max-width: 700px)") : { matches: false };
   function running() { return visible && pageShown && !reduce && !userPaused; }
+  function bgOn() { return running() && !phone.matches; }
   function syncMotion() {
     hero.classList.toggle("xr-still", userPaused || reduce);
-    if (three && !three.dead) three.setPaused(!running());
+    hero.classList.toggle("xr-phone", !!phone.matches);
+    if (three && !three.dead) three.setPaused(!bgOn());
   }
 
   /* ------------------------------------------------------------ particles */
@@ -58,7 +63,7 @@
     }
     surge *= 0.96; if (surge < 0.01) surge = 0;
   }
-  function loop() { if (running() && (!three || three.dead)) draw(); requestAnimationFrame(loop); }
+  function loop() { if (bgOn() && (!three || three.dead)) draw(); requestAnimationFrame(loop); }
   if (ctx) {
     size(); draw();
     window.addEventListener("resize", size);
@@ -68,7 +73,7 @@
   /* ------------------------------------------------------------ signal bursts */
   var signals = hero.querySelector(".xr-signals");
   function burst(n) {
-    if (!signals || reduce) return;
+    if (!signals || reduce || phone.matches) return;
     n = n || 1 + Math.floor(Math.random() * 3);
     for (var i = 0; i < n; i++) {
       var b = document.createElement("span");
@@ -222,12 +227,18 @@
     catch (e) { return false; }
   }
   if (glCanvas && !reduce && webglOK()) {
+    var asked = false;
     var load = function () {
+      if (asked || phone.matches) return;
+      asked = true;
       import(new URL("xalreth-three.js", SCRIPT_URL).href).then(function (mod) {
         three = mod.start(hero, glCanvas);
         if (three) { hero.classList.add("xr-gl"); syncMotion(); }
       }).catch(function (e) { try { console.warn("Xal'Reth WebGL layer unavailable:", e); } catch (x) {} });
     };
     if (document.readyState === "complete") load(); else window.addEventListener("load", load);
+    var widened = function () { if (!phone.matches && document.readyState === "complete") load(); };
+    if (phone.addEventListener) phone.addEventListener("change", widened); else if (phone.addListener) phone.addListener(widened);
   }
+  if (phone.addEventListener) phone.addEventListener("change", syncMotion); else if (phone.addListener) phone.addListener(syncMotion);
 })();
