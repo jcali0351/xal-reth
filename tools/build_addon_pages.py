@@ -27,6 +27,7 @@ TABLE_ROT = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What
 TABLE_EDGE = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/edge</code>.*?</table>')
 TABLE_DQ = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/dq</code>.*?</table>')
 TABLE_MBF = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/mbf</code>.*?</table>')
+TABLE_NH = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/nh</code>.*?</table>')
 TABLE_MBP = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/mbp</code>.*?</table>')
 DISCLAIMER = grab(r'<section class="warning" id="dramaqueen-disclaimer".*?</section>').replace(' id="dramaqueen-disclaimer"', ' id="disclaimer"')
 
@@ -152,6 +153,26 @@ ADDONS = [
   faq=[("Should I perform the whole thing?", "No. At the default 12 seconds per line it takes about 33 hours. The option exists because the Litany demands completeness. Nobody should do this."),
        ("Does it contain real-world politics?", "None at all. Despite the word Politics appearing nearby, it is satire of bureaucratic writing, not of any real religion, group or person.")]),
 
+ dict(slug="addon-no-hablo.html", name="No Hablo", folder="NoHablo", zip="NoHablo.zip", version="1.0", game="Retail · Midnight",
+  slash="/nh", short="One red button that hides Spanish text chat from your own screen",
+  tagline="A language filter for your own chat: one red button hides text chat written in Spanish.",
+  desc="No Hablo is a free World of Warcraft chat filter for Midnight and WoW Forever: one red Block Spanish button hides text chat written in Spanish from your own chat windows and mutes Spanish speakers for the session.",
+  lede="Busy trade chat on a bilingual realm, and you only read English? Click the red <strong>Block Spanish</strong> button and every line written in Spanish disappears from your chat windows. Anyone who writes in Spanish is muted for the rest of your session, so the conversation does not come back half-translated. Click it again and everything shows. It only changes your own screen.",
+  stats=[("1", "red button"), ("16", "kinds of chat filtered"), ("/nh", "to show the button")],
+  features=[
+   ("The Red Button", "Block Spanish", "<p>A small box you can drag anywhere. Click <strong>Block Spanish</strong> and it lights up as <strong>Blocking Spanish</strong>, with a count of the lines hidden and the players muted. Click again to switch it off. <code>/nh</code> hides or shows the box.</p>"),
+   ("Every Text Chat", "Sixteen kinds", "<p>Say, yell and emotes, trade, general and every other channel, whispers and Battle.net whispers, guild and officer, party, raid, raid warnings, instance chat and communities. Your own lines are never touched.</p>"),
+   ("How It Knows", "Words and spelling, weighed", "<p>It looks for words that are Spanish and not English (hola, gracias, alguien, quiero, porfa, jaja) and Spanish spelling (ñ, ¿, ¡, accents), and weighs them against the English in the line. \"No problem amigo\", \"nada much\" and \"taco tuesday\" stay put. <code>/nh test</code> shows what it would do with any line.</p>"),
+   ("Only Your Screen", "Nobody is reported", "<p>Nothing is sent anywhere, nobody is reported or put on your ignore list, and nobody knows you are using it. <code>/nh list</code> shows who is muted, <code>/nh allow Name</code> lets someone back, and <code>/nh speakers</code> hides only the Spanish lines instead of the whole speaker.</p>")],
+  commands=TABLE_NH + '<p class="muted center">The setting is remembered between sessions; the list of muted players starts fresh each time you log in.</p>',
+  install_extra=["Playing WoW Forever? Download <a href=\"NoHablo-Forever.zip\" download>No Hablo for Forever</a> instead and move its <code>NoHablo</code> folder into <code>_forever_\\Interface\\AddOns</code>."],
+  restart="Restart World of Warcraft or type <code>/reload</code>.",
+  last="Click the red <strong>Block Spanish</strong> button near the top of your screen.",
+  note='<div class="notice"><strong>Etiquette of the Coil:</strong> No Hablo is for your own reading comfort. Plenty of the faithful speak Spanish; be kind in chat, and never tell anyone you have filtered them.</div>',
+  faq=[("Does anyone know I am filtering them?", "No. It only changes what your own chat windows show. Nothing is sent, reported or added to your ignore list."),
+       ("It hid an English line, or missed a Spanish one. Why?", "It reads words and spelling, so a line with a quoted Spanish phrase (\"mi casa es su casa\") can be hidden, and very short slang can slip through. <code>/nh allow Name</code> lets a player back, and <code>/nh test</code> shows what it would do."),
+       ("Some lines in a boss fight were not filtered.", "In Midnight, Blizzard hides some chat text from addons during encounters. No Hablo leaves those lines exactly as they arrive.")]),
+
  dict(slug="addon-paranoid-rp.html", name="Paranoid RP", folder="ParanoidRP", zip="ParanoidRP.zip", version="1.0.0", game="Retail · Midnight 12.1",
   slash="/para", short="103 escalating paranoid thoughts about your target",
   tagline="Target someone and slowly, publicly become convinced they are up to something.",
@@ -213,6 +234,7 @@ ADDONS = [
   desc="Master Baiter Pro is a free World of Warcraft fishing addon for Midnight: one key casts and hooks, live auction house prices for every catch, your top five catches as icons, a live leaderboard of every angler running it, gold per hour, jackpot alerts and records.",
   lede="Master Baiter Pro turns fishing into one key and turns every fish into a number. Press the key to cast, press it again when the bobber splashes, and the catch pops up with its icon and its auction house price while a gold counter rolls up your haul. It is a helper, not a bot: you press every key, so it plays by Blizzard's rules. Formerly Coil Angler, rebuilt for every angler in Azeroth.",
   stats=[("1", "key to cast and hook"), ("Top 5", "catches, priced live"), ("Live", "leaderboard of every angler")],
+  note='<div class="divider"><span>WATCH IT WORK</span></div><section id="watch"><figure class="addon-shot addon-video"><video src="media/master-baiter-pro-cast-and-catch.mp4" poster="media/master-baiter-pro-cast-and-catch.jpg" controls autoplay muted loop playsinline preload="metadata" width="1280" height="720" aria-label="Master Baiter Pro in game: one key casts, the bobber splashes, the same key hooks the fish and the panel adds it to the top catches"></video><figcaption>One key casts, one key hooks, and every catch lands in the panel with its price. Recorded in game on Moon Guard.</figcaption></figure></section>',
   features=[
    ("The Glow", "New in 2.3", "<p>The panel shines like deep water at night. A soft aura round the glass follows your session: dim while you rest, green when you are ready, bright fast water while your line is out, red in combat and gold when you are on record pace. A spark with a comet tail races round the rim, bubbles rise through the glass, stars twinkle over the title and a band of light sweeps the buttons. Every catch throws a burst of coins out of the haul counter; rare catches and jackpots light up the whole window, the catch card glows in the fish's quality colour, and the session summary opens in a shower of gold. The leaderboard glows too.</p><p>Prefer it calm? <code>/mbp glow off</code> stops the moving lights and keeps a still glow.</p>"),
    ("The One Key", "Cast, hook, repeat", "<p>While a session runs, your chosen key (F by default) casts Fishing when you are idle. The moment your line is in the water, the same key becomes Interact, which reaches the bobber through the game's soft-interact targeting, so there is nothing to aim. Loot it and the key turns back into a cast. Outside a session your key is exactly what it always was.</p><p>Sessions begin when you press Start, type <code>/mbp start</code>, or simply cast Fishing. Loud splash mode turns sound effects up and music down while you fish, and gives every setting back when you stop.</p>"),

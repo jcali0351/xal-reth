@@ -1751,3 +1751,8 @@ html, body { overflow-x: clip; }
 .cf-glyph svg { width: 22px; height: 22px; }
 .cf-cta .btn { grid-column: 2; justify-self: start; }
 @media (max-width: 560px) { .cf-cta .btn { grid-column: 1 / -1; } }
+
+/* the addon pages' video (Master Baiter Pro #watch): the screenshot frame, sized for a 16:9 clip */
+#watch { scroll-margin-top: 96px; }
+.addon-video video { display: block; width: 100%; max-width: 960px; height: auto; aspect-ratio: 16 / 9; margin: 0 auto; background: #07040d;
+  border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 0 28px rgba(138,77,255,.25); }
