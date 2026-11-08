@@ -4,7 +4,7 @@
    data/rp-profiles.json) until ENDPOINT holds the Worker's address. Needs js/coil-faces.js. */
 (function () {
   "use strict";
-  var ENDPOINT = "";   // the social Worker, e.g. "https://xalreth-social.yourname.workers.dev"; set once it is deployed
+  var ENDPOINT = "https://xalreth-social.jcali0351.workers.dev";   // the social Worker (tools/social-worker/)
   var local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   try {   // local testing only: ?social=http://127.0.0.1:8787 (kept for this tab)
     var q = new URLSearchParams(location.search).get("social");
