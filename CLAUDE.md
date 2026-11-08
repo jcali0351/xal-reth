@@ -37,6 +37,9 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
 - The logo (the violet triangle sigil, "Observe ▽ Analyze ▽ Transcend") is the site's brand mark: `img/xalreth-mark.png`
   in the header and footer of every page, `img/xalreth-logo.webp`/`.png` at the top of the homepage hero, and the tab icon
   (`favicon.svg` embeds it; `apple-touch-icon.png`). Keep these if the site is regenerated.
+  The link preview on X, Discord and Facebook is `img/xalreth-card.jpg` (1200 x 630: the sigil over the violet sanctum
+  with "Cult of Xal'Reth"), set as og:image (with og:image:width/height) and twitter:image on every page. Never point
+  those at a tall picture again: X crops it to a strip. `xalreth-og.jpg` (the tall portrait) is page art only now.
 - The homepage hero opens with the animated sigil (`#xalreth-hero` in index.html; `css/xalreth.css`, `js/xalreth.js`,
   and the WebGL layer `js/xalreth-three.js` using the vendored Three.js r160 in `js/vendor/`): particle coil, fog, energy arcs,
   rotating eclipse halo, signal bursts, typed status messages, a Pause motion button, and an easter egg (click the sigil three
