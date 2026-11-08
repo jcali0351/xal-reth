@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-07T08:10:26.653Z",
+  "updatedAt": "2026-11-08T04:00:13.769Z",
   "faction": "Alliance",
   "background": {
     "color": "rgba(35,35,35,1)"
@@ -7,11 +7,11 @@
   "emblem": {
     "id": 37,
     "image": "img/crest/emblem-37.png",
-    "color": "rgba(93,9,79,1)"
+    "color": "rgba(86,9,93,1)"
   },
   "border": {
     "id": 5,
     "image": "img/crest/border-5.png",
-    "color": "rgba(123,0,103,1)"
+    "color": "rgba(109,0,119,1)"
   }
 }
