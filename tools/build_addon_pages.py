@@ -27,6 +27,7 @@ TABLE_ROT = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What
 TABLE_EDGE = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/edge</code>.*?</table>')
 TABLE_DQ = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/dq</code>.*?</table>')
 TABLE_MBF = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/mbf</code>.*?</table>')
+TABLE_SC = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/story</code>.*?</table>')
 TABLE_NH = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/nh</code>.*?</table>')
 TABLE_MBP = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/mbp</code>.*?</table>')
 DISCLAIMER = grab(r'<section class="warning" id="dramaqueen-disclaimer".*?</section>').replace(' id="dramaqueen-disclaimer"', ' id="disclaimer"')
@@ -152,6 +153,25 @@ ADDONS = [
   more='<p class="center"><a class="btn ghost" href="litany-of-begging.txt" download>Plain text (10,000 lines)</a></p>',
   faq=[("Should I perform the whole thing?", "No. At the default 12 seconds per line it takes about 33 hours. The option exists because the Litany demands completeness. Nobody should do this."),
        ("Does it contain real-world politics?", "None at all. Despite the word Politics appearing nearby, it is satire of bureaucratic writing, not of any real religion, group or person.")]),
+
+ dict(slug="addon-storycaster.html", name="StoryCaster", folder="StoryCaster", zip="StoryCaster.zip", version="1.0.1", game="Retail · Midnight",
+  slash="/story", short="Paste your own roleplay and perform it as emotes with animations",
+  tagline="Write your own roleplay and perform it: /emotes on a timer, with real character animations.",
+  desc="StoryCaster is a free World of Warcraft roleplay addon for Midnight and WoW Forever: paste your own story and it becomes /emote lines performed on a timer, with animated emotes, 18 animation buttons, random timing and a test mode.",
+  lede="Paste a story, a speech or a whole scene, and StoryCaster turns it into /emote lines that play out on a timer while your character acts it out: a bow, a wave, a laugh, a kneel. Your words, your timing, no typing in the middle of the moment. Eighteen animated emote buttons on the panel cover everything in between.",
+  stats=[("18", "animated emote buttons"), ("3", "ways to cut your text"), ("/story", "to open the panel")],
+  features=[
+   ("Write a Script", "Paste it, it becomes emotes", "<p>Paste or type your roleplay. StoryCaster cuts it into emotes one per sentence, one per line, or packed as full as chat allows, splits anything too long for the 255-character limit, and removes your name, <code>/e</code> and numbering for you. A live count and a private <em>Preview in Chat</em> show exactly what will be said.</p><p>Macro-style lines work too: <code>/pause 4</code> on its own line waits four seconds before the next emote, <code>/bow</code> or <code>/wave</code> plays the animation, and <code>/s</code> or <code>/y</code> lines become <em>says, \"...\"</em> emotes. A slash command is never posted as words.</p>"),
+   ("Animations", "Act it out", "<p>Write <code>[bow]</code>, <code>[wave]</code> or <code>[kneel]</code> anywhere in a line and your character plays it as the line is posted; a line with only <code>[nod]</code> just plays the animation. With <em>Auto animate</em> on, lines that say bows, waves, laughs, cries or cheers animate on their own.</p>"),
+   ("The Panel", "Play, pause, timing", "<p>Play, Pause, Next and Stop, your saved scripts, a 5 to 60 second timer, random timing, Loop, Shuffle and a Test mode that shows the emotes only to you. It holds during combat and boss fights and picks up where it stopped.</p>"),
+   ("Eighteen Buttons", "Emotes on demand", "<p>Wave, Bow, Nod, Shake head, Talk, Point, Laugh, Chuckle, Cheer, Clap, Salute, Kneel, Cry, Shrug, Dance, Roar, Flex and Gasp, one click each, aimed at your target. <code>{target}</code> in a script becomes your target's name.</p>")],
+  commands=TABLE_SC + '<p class="muted center">Write in the third person, the way emotes read: the game puts your name first, so <em>walks to the door.</em> becomes <em>YourName walks to the door.</em></p>',
+  install_extra=["Playing WoW Forever? Download <a href=\"StoryCaster-Forever.zip\" download>StoryCaster for Forever</a> instead and move its <code>StoryCaster</code> folder into <code>_forever_\\Interface\\AddOns</code>."],
+  restart="Restart World of Warcraft or type <code>/reload</code>.",
+  last="Type <code>/story</code>, press <strong>Write a Script</strong>, paste your scene and press <strong>Save and Perform</strong>.",
+  faq=[("Why does a second line appear when my character bows?", "That is the game: every animated emote prints its own line (\"YourName bows.\"). Turn animations off in scripts with <code>/story animations</code> if you only want your own words."),
+       ("Can I rehearse without anyone seeing?", "Yes. Test mode shows every emote only in your own chat window, and <code>/story preview</code> reads a whole script to you."),
+       ("Can I edit a script later?", "Yes. Type its name in the Write a Script window and press Load: every emote comes back one per line, with its [animation] tag.")]),
 
  dict(slug="addon-no-hablo.html", name="No Hablo", folder="NoHablo", zip="NoHablo.zip", version="1.0", game="Retail · Midnight",
   slash="/nh", short="One red button that hides Spanish text chat from your own screen",

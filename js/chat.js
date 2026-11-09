@@ -202,14 +202,14 @@
       text: "This site is kept by **John**, a real person. Press **Talk to John** and your message lands in his inbox; he answers by email. There's also the [Contact page](contact.html).",
       handoff: "offer" },
     { re: /\b(commands?|slash)\b|(^|\s)\/[a-z]+/,
-      text: "The addons' commands:\n- **/xrp** Xal'Reth RP\n- **/vrp** Vyrenna RP\n- **/dod** Disciples of Devotion\n- **/litany** The Litany of Begging\n- **/para** Paranoid RP\n- **/rot** Brain Rotter Pro\n- **/edge** Edgelord Pro\n- **/dq** Drama Queen Pro\n- **/fs** Full Support\n- **/mbp** Master Baiter Pro (**/mbf** for WoW Forever)\n- **/ledger** Coil Ledger\n- **/nh** No Hablo\nEach addon's page lists the rest.",
+      text: "The addons' commands:\n- **/xrp** Xal'Reth RP\n- **/vrp** Vyrenna RP\n- **/dod** Disciples of Devotion\n- **/litany** The Litany of Begging\n- **/para** Paranoid RP\n- **/rot** Brain Rotter Pro\n- **/edge** Edgelord Pro\n- **/dq** Drama Queen Pro\n- **/fs** Full Support\n- **/mbp** Master Baiter Pro (**/mbf** for WoW Forever)\n- **/ledger** Coil Ledger\n- **/nh** No Hablo\n- **/story** StoryCaster\nEach addon's page lists the rest.",
       links: [L("addons.html", "All addons", "Addon")] }
   ];
   // what people call the addons, so "the fishing one" finds Master Baiter Pro
   var ADDON_WORDS = [
     [/\b(fish\w*|angl\w*|baiter|bait)\b/, /forever|classic|vanilla/, "addon-master-bait-forever.html", "addon-master-baiter-pro.html"],
     [/\bdrama\b/, null, "addon-drama-queen-pro.html"], [/\b(edge\w*|tryhard)\b/, null, "addon-edgelord-pro.html"],
-    [/\b(brain ?rot\w*|skibidi|rizz)\b/, null, "addon-brain-rotter-pro.html"], [/\bparanoi\w*\b/, null, "addon-paranoid-rp.html"], [/\b(no ?hablo|block spanish|spanish chat)\b/, null, "addon-no-hablo.html"],
+    [/\b(brain ?rot\w*|skibidi|rizz)\b/, null, "addon-brain-rotter-pro.html"], [/\bparanoi\w*\b/, null, "addon-paranoid-rp.html"], [/\b(no ?hablo|block spanish|spanish chat)\b/, null, "addon-no-hablo.html"], [/\b(story ?caster|emote script\w*|rp script\w*)\b/, null, "addon-storycaster.html"],
     [/\b(full support|supportive)\b/, null, "addon-full-support.html"], [/\bvyrenna rp\b/, null, "addon-vyrenna-rp.html"],
     [/\b(devotion|disciples)\b/, null, "addon-disciples-of-devotion.html"], [/\blitany\b/, null, "addon-litany-of-begging.html"],
     [/\b(xal ?reth rp|emotes?)\b/, null, "addon-xalreth-rp.html"]

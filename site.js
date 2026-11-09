@@ -7,7 +7,7 @@
   var me = document.currentScript;
   var base = me && me.src ? me.src.replace(/site\.js(\?.*)?$/, "") : "";
   window.COIL_BASE = base;
-  var v = "?v=20261108nh"; // bump when search or chat change, so visitors get the new copy at once
+  var v = "?v=20261109sc"; // bump when search or chat change, so visitors get the new copy at once
   if (!document.querySelector('link[href*="css/search.css"]')) {
     var l = document.createElement("link"); l.rel = "stylesheet"; l.href = base + "css/search.css" + v; document.head.appendChild(l);
   }
