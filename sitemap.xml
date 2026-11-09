@@ -493,7 +493,7 @@
   </url>
   <url>
     <loc>https://jcali0351.github.io/xal-reth/news.html</loc>
-    <lastmod>2026-11-08</lastmod>
+    <lastmod>2026-11-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
     <image:image><image:loc>https://jcali0351.github.io/xal-reth/img/xalreth-card.jpg</image:loc></image:image>
@@ -502,11 +502,19 @@
   </url>
   <url>
     <loc>https://jcali0351.github.io/xal-reth/herald.html</loc>
-    <lastmod>2026-11-08</lastmod>
+    <lastmod>2026-11-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
     <image:image><image:loc>https://jcali0351.github.io/xal-reth/img/xalreth-card.jpg</image:loc></image:image>
     <xhtml:a href="https://jcali0351.github.io/xal-reth/herald.html"><xr:title>The Herald Archive</xr:title><xr:desc>Every official post of the Coil Herald, the news page of the Cult of Xal'Reth, a World of Warcraft roleplay guild.</xr:desc></xhtml:a>
+  </url>
+  <url>
+    <loc>https://jcali0351.github.io/xal-reth/herald-20261109-0749-a-lullaby-for-the-eggs-a-new-shedfall-hymn-for-t.html</loc>
+    <lastmod>2026-11-09</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+    <image:image><image:loc>https://jcali0351.github.io/xal-reth/img/xalreth-card.jpg</image:loc></image:image>
+    <xhtml:a href="https://jcali0351.github.io/xal-reth/herald-20261109-0749-a-lullaby-for-the-eggs-a-new-shedfall-hymn-for-t.html"><xr:title>A Lullaby for the Eggs: A New Shedfall Hymn for Those Newly Joined</xr:title><xr:desc>The Inner Scale has approved a new hymn, to be hummed over eggs in their first week. It has four verses, one refrain, and no high notes, because eggs startle.</xr:desc></xhtml:a>
   </url>
   <url>
     <loc>https://jcali0351.github.io/xal-reth/herald-20261108-1948-dispatch-from-the-warm-ridge-the-first-cold-bask.html</loc>
