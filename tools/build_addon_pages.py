@@ -154,7 +154,7 @@ ADDONS = [
   faq=[("Should I perform the whole thing?", "No. At the default 12 seconds per line it takes about 33 hours. The option exists because the Litany demands completeness. Nobody should do this."),
        ("Does it contain real-world politics?", "None at all. Despite the word Politics appearing nearby, it is satire of bureaucratic writing, not of any real religion, group or person.")]),
 
- dict(slug="addon-storycaster.html", name="StoryCaster", folder="StoryCaster", zip="StoryCaster.zip", version="1.0.1", game="Retail · Midnight",
+ dict(slug="addon-storycaster.html", name="StoryCaster", folder="StoryCaster", zip="StoryCaster.zip", version="1.0.2", game="Retail · Midnight",
   slash="/story", short="Paste your own roleplay and perform it as emotes with animations",
   tagline="Write your own roleplay and perform it: /emotes on a timer, with real character animations.",
   desc="StoryCaster is a free World of Warcraft roleplay addon for Midnight and WoW Forever: paste your own story and it becomes /emote lines performed on a timer, with animated emotes, 18 animation buttons, random timing and a test mode.",
