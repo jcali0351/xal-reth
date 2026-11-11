@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "hash": "7d1790dfc9f61078",
-  "dataChangedAt": "2026-11-11T15:00:56.866Z",
+  "hash": "827600087fb68179",
+  "dataChangedAt": "2026-11-11T17:06:14.097Z",
   "guild": {
     "name": "Cult of Xal Reth",
     "realm": "Moon Guard",
     "realmSlug": "moon-guard",
     "region": "us",
     "faction": "Alliance",
-    "memberCount": 153,
+    "memberCount": 152,
     "achievementPoints": 60,
     "created": 1793384844000
   },
@@ -22,9 +22,9 @@
     "9": "Egg"
   },
   "stats": {
-    "totalMembers": 153,
+    "totalMembers": 152,
     "averageItemLevel": 114,
-    "averageAchievementPoints": 13255,
+    "averageAchievementPoints": 13282,
     "classesRepresented": 13,
     "classes": [
       "Death Knight",
@@ -202,7 +202,6 @@
     {"id":178764650,"name":"Thavanar","realm":"Moon Guard","realmSlug":"moon-guard","level":80,"classId":3,"class":"Hunter","race":"Void Elf","spec":"Marksmanship","specId":254,"role":"DPS","faction":"Alliance","gender":"Female","rank":9,"title":null,"ilvl":75,"avgIlvl":95,"achievementPoints":22210,"lastLogin":1793649509000,"mounts":670,"pets":684,"recent":[{"name":"Level 80","ts":1793649139000},{"name":"Bloodmaul Slag Mines","ts":1793649139000},{"name":"Auchindoun","ts":1793648101000},{"name":"Grimrail Depot","ts":1793647215000},{"name":"Shadowmoon Burial Grounds","ts":1793641765000}],"media":{"avatar":"https://render.worldofwarcraft.com/us/character/moon-guard/106/178764650-avatar.jpg","inset":"https://render.worldofwarcraft.com/us/character/moon-guard/106/178764650-inset.jpg","main":"https://render.worldofwarcraft.com/us/character/moon-guard/106/178764650-main-raw.png"},"available":true,"updatedAt":"2026-11-10T20:55:34.240Z"},
     {"id":115003937,"name":"Tsurynn","realm":"Moon Guard","realmSlug":"moon-guard","level":36,"classId":1,"class":"Warrior","race":"Pandaren","spec":"Fury","specId":72,"role":"DPS","faction":"Alliance","gender":"Female","rank":9,"title":"Firelord Tsurynn","ilvl":24,"avgIlvl":28,"achievementPoints":11225,"lastLogin":1793743825000,"mounts":98,"pets":275,"recent":[{"name":"Fashionista: Shoulder","ts":1793742420000},{"name":"Fashionista: Wrist","ts":1793742360000},{"name":"Fashionista: Waist","ts":1793742360000},{"name":"Fashionista: Hand","ts":1793742360000},{"name":"Fashionista: Head","ts":1793742300000}],"media":{"avatar":null,"inset":null,"main":null},"available":true,"updatedAt":"2026-11-10T20:55:18.621Z"},
     {"id":185665565,"name":"Tylphousia","realm":"Moon Guard","realmSlug":"moon-guard","level":25,"classId":9,"class":"Warlock","race":"Human","spec":"Affliction","specId":265,"role":"DPS","faction":"Alliance","gender":"Female","rank":9,"title":null,"ilvl":18,"avgIlvl":19,"achievementPoints":5175,"lastLogin":1793584489000,"mounts":44,"pets":128,"recent":[{"name":"Lunch Lady","ts":1793576833000},{"name":"Level 20","ts":1793572297000},{"name":"Into the Wild Blue Yonder","ts":1793572297000},{"name":"The Old Gnome and the Sea","ts":1793565558000},{"name":"Quite the Quilt I","ts":1793551260000}],"media":{"avatar":"https://render.worldofwarcraft.com/us/character/moon-guard/29/185665565-avatar.jpg","inset":"https://render.worldofwarcraft.com/us/character/moon-guard/29/185665565-inset.jpg","main":"https://render.worldofwarcraft.com/us/character/moon-guard/29/185665565-main-raw.png"},"available":true,"updatedAt":"2026-11-10T20:56:07.563Z"},
-    {"id":115571556,"name":"Vanîsh","realm":"Moon Guard","realmSlug":"moon-guard","level":80,"classId":4,"class":"Rogue","race":"Human","spec":"Subtlety","specId":261,"role":"DPS","faction":"Alliance","gender":"Female","rank":9,"title":null,"ilvl":100,"avgIlvl":108,"achievementPoints":9250,"lastLogin":1794198142000,"mounts":138,"pets":182,"recent":[{"name":"Runestone Rush","ts":1793760720000},{"name":"Silvermoon Court Champion","ts":1793152320000},{"name":"The Horseman's Reins","ts":1792806180000},{"name":"Kickin' With the Wick","ts":1792806060000},{"name":"A Cleansing Fire","ts":1792731035000}],"media":{"avatar":"https://render.worldofwarcraft.com/us/character/moon-guard/100/115571556-avatar.jpg","inset":"https://render.worldofwarcraft.com/us/character/moon-guard/100/115571556-inset.jpg","main":"https://render.worldofwarcraft.com/us/character/moon-guard/100/115571556-main-raw.png"},"available":true,"updatedAt":"2026-11-11T06:09:52.531Z"},
     {"id":185439946,"name":"Vashanth","realm":"Moon Guard","realmSlug":"moon-guard","level":90,"classId":9,"class":"Warlock","race":"Void Elf","spec":"Affliction","specId":265,"role":"DPS","faction":"Alliance","gender":"Male","rank":9,"title":null,"ilvl":262,"avgIlvl":263,"achievementPoints":11845,"lastLogin":1793459950000,"mounts":121,"pets":228,"recent":[{"name":"Explore Icecrown","ts":1793378760000},{"name":"A Mask for All Occasions","ts":1793303760000},{"name":"Prey: Insane Inventors (Hard)","ts":1792807200000},{"name":"Knock Knock","ts":1792790760000},{"name":"Prey: Sadistic Shamans (Hard)","ts":1792790100000}],"media":{"avatar":"https://render.worldofwarcraft.com/us/character/moon-guard/202/185439946-avatar.jpg","inset":"https://render.worldofwarcraft.com/us/character/moon-guard/202/185439946-inset.jpg","main":"https://render.worldofwarcraft.com/us/character/moon-guard/202/185439946-main-raw.png"},"available":true,"updatedAt":"2026-11-10T20:55:52.499Z"},
     {"id":185664031,"name":"Velistena","realm":"Moon Guard","realmSlug":"moon-guard","level":30,"classId":1,"class":"Warrior","race":"Human","spec":"Fury","specId":72,"role":"DPS","faction":"Alliance","gender":"Female","rank":9,"title":null,"ilvl":27,"avgIlvl":27,"achievementPoints":22755,"lastLogin":1793666238000,"mounts":436,"pets":661,"recent":[{"name":"Breaking the Sound Barrier","ts":1793665928000},{"name":"Level 30","ts":1793665928000},{"name":"My Labyrinth","ts":1793622960000},{"name":"Don't Lose Your Head, Man","ts":1793586212000},{"name":"A Cleansing Fire","ts":1793586212000}],"media":{"avatar":"https://render.worldofwarcraft.com/us/character/moon-guard/31/185664031-avatar.jpg","inset":"https://render.worldofwarcraft.com/us/character/moon-guard/31/185664031-inset.jpg","main":"https://render.worldofwarcraft.com/us/character/moon-guard/31/185664031-main-raw.png"},"available":true,"updatedAt":"2026-11-10T20:56:07.609Z"},
     {"id":185316805,"name":"Verdormî","realm":"Moon Guard","realmSlug":"moon-guard","level":59,"classId":1,"class":"Warrior","race":"Dracthyr","spec":"Arms","specId":71,"role":"DPS","faction":"Alliance","gender":"Female","rank":9,"title":"Verdormî of the Emerald Dream","ilvl":43,"avgIlvl":50,"achievementPoints":21905,"lastLogin":1793813048000,"mounts":392,"pets":1010,"recent":[{"name":"Delve Deepest","ts":1793665620000},{"name":"Challenging Sites","ts":1793481547000},{"name":"Flawless: Skoldus Hall (Layer 12)","ts":1792277160000},{"name":"The Promise of Tomorrow","ts":1792268340000},{"name":"Kith'ix","ts":1792267260000}],"media":{"avatar":"https://render.worldofwarcraft.com/us/character/moon-guard/197/185316805-avatar.jpg","inset":"https://render.worldofwarcraft.com/us/character/moon-guard/197/185316805-inset.jpg","main":"https://render.worldofwarcraft.com/us/character/moon-guard/197/185316805-main-raw.png"},"available":true,"updatedAt":"2026-11-10T20:55:49.567Z"},

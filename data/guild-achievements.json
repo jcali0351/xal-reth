@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-11T04:05:47.941Z",
+  "updatedAt": "2026-11-11T17:06:14.094Z",
   "totalPoints": 60,
   "totalQuantity": 6,
   "completed": 6,
@@ -307,7 +307,7 @@
       "progress": {
         "done": 0,
         "of": null,
-        "amount": 31
+        "amount": 32
       }
     },
     {
