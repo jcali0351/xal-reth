@@ -1,4 +1,4 @@
-# StoryCaster 1.9.1: every feature, explained
+# StoryCaster 2.0.0: every feature, explained
 
 StoryCaster is a free roleplay addon for World of Warcraft: Midnight and World of Warcraft: Forever. You write (or pick) roleplay, and StoryCaster performs it for you: emotes on a timer or one key press at a time, real character animations, spoken lines, scenes, duets and much more. It is completely standalone: no guild branding, no lore of its own, just tools for your own stories.
 
@@ -193,6 +193,15 @@ Without an RP addon, it uses what the game shows: name, race, class and guild. I
 **Give me a prompt** offers three of 24 random scene ideas, each a short starter script with {target} and &lt;mood&gt; ready. Examples: a sealed letter appears on the table; a rival needs your help; a wanted poster looks just like {target}; a crate twitches.
 
 ---
+
+## 7b. What are you doing?
+
+At the top of the **Ideas** tab is a **Doing** box. Type your character's status, what they're doing, where and with whom, and press **Write 25 lines** (or Enter).
+
+- **24 everyday activities** have 25 lines each, written for them: Fishing, Cooking, Reading, Drinking at the Tavern, Waiting for Someone, Standing Guard, Training and Sparring, Crafting at the Forge, Praying and Meditating, Resting and Relaxing, Traveling and Exploring, Shopping and Trading, Healing and Tending Wounds, Studying Magic, Writing Letters, Playing Music, Dancing, Gathering Herbs, Hunting and Tracking, Celebrating, Grieving, Lost, Working a Shift and Caring for a Pet. StoryCaster picks the one your words fit best.
+- **Anything else** gets 25 lines written around your own words. It tidies what you typed so it reads naturally: *I'm reading a book* becomes *reading a book*, *read a book by the fire* becomes *reading a book by the fire*, and *at the docks* becomes *spending time at the docks*.
+- The lines appear as a card: **Perform** plays all 25 on your timer, **Edit** opens them in Write a Script, and **Line** says one random line now. Line never repeats until all 25 are used and rests 15 seconds after each.
+- Your last status is remembered. `/story status fishing by the lake` does it from chat; `/story status` alone says one line.
 
 ## 8. Player Focus
 
