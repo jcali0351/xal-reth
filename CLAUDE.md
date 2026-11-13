@@ -77,6 +77,9 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   why (the app keeps it updated; a follow or comment helps others find it) and an "easy way" first install step, on
   addons.html and on their pages (the `curseforge` and `cf_text` fields in build_addon_pages.py; styles "CURSEFORGE CALLS
   TO ACTION" at the end of style.css). Give any other addon that goes up on CurseForge the same two fields.
+  StoryCaster has two CurseForge projects, Midnight (https://www.curseforge.com/wow/addons/storycaster) and WoW Forever
+  (https://www.curseforge.com/wow/addons/storycaster-wow-forever): the extra `curseforge_forever` field turns the one button
+  into "CurseForge: Midnight" and "CurseForge: Forever" (cf_buttons() in build_addon_pages.py), on addons.html too.
 
 - Site-wide search, "the Seeking Glass": `js/search.js` + `css/search.css`, loaded on every page by a small loader at the top
   of `site.js`. It adds a search button to every page header, opens with / or Ctrl+K (Cmd+K), and the homepage has a search

@@ -509,7 +509,7 @@
   </url>
   <url>
     <loc>https://jcali0351.github.io/xal-reth/news.html</loc>
-    <lastmod>2026-11-09</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
     <image:image><image:loc>https://jcali0351.github.io/xal-reth/img/xalreth-card.jpg</image:loc></image:image>
@@ -518,11 +518,19 @@
   </url>
   <url>
     <loc>https://jcali0351.github.io/xal-reth/herald.html</loc>
-    <lastmod>2026-11-09</lastmod>
+    <lastmod>2026-11-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
     <image:image><image:loc>https://jcali0351.github.io/xal-reth/img/xalreth-card.jpg</image:loc></image:image>
     <xhtml:a href="https://jcali0351.github.io/xal-reth/herald.html"><xr:title>The Herald Archive</xr:title><xr:desc>Every official post of the Coil Herald, the news page of the Cult of Xal'Reth, a World of Warcraft roleplay guild.</xr:desc></xhtml:a>
+  </url>
+  <url>
+    <loc>https://jcali0351.github.io/xal-reth/herald-20261113-0224-storycaster-2.html</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+    <image:image><image:loc>https://jcali0351.github.io/xal-reth/img/xalreth-card.jpg</image:loc></image:image>
+    <xhtml:a href="https://jcali0351.github.io/xal-reth/herald-20261113-0224-storycaster-2.html"><xr:title>StoryCaster 2.0: Tell Your Story, and Let It Tell Itself</xr:title><xr:desc>StoryCaster, our free roleplay addon for Midnight and WoW Forever, reaches 2.0: a mini player, 69 ready-made scripts, moods, Player Focus, themed libraries, dungeon phrases and 25 lines for whatever you happen to be doing.</xr:desc></xhtml:a>
   </url>
   <url>
     <loc>https://jcali0351.github.io/xal-reth/herald-20261109-1348-canon-commentary-the-untying-teachings-book-iii.html</loc>
