@@ -80,6 +80,9 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   StoryCaster has two CurseForge projects, Midnight (https://www.curseforge.com/wow/addons/storycaster) and WoW Forever
   (https://www.curseforge.com/wow/addons/storycaster-wow-forever): the extra `curseforge_forever` field turns the one button
   into "CurseForge: Midnight" and "CurseForge: Forever" (cf_buttons() in build_addon_pages.py), on addons.html too.
+  On addons.html the StoryCaster card is laid out as an intro, John's YouTube Short (4KulNX_EOHY) embedded muted, looping and
+  autoplaying from youtube-nocookie.com (.sc-hero; not autoplaying for reduced motion), a "What's new" list one version per
+  row (.sc-changes) with the img/shots/storycaster-*.jpg pictures between, and "How it works" (styles at the end of style.css).
 
 - Site-wide search, "the Seeking Glass": `js/search.js` + `css/search.css`, loaded on every page by a small loader at the top
   of `site.js`. It adds a search button to every page header, opens with / or Ctrl+K (Cmd+K), and the homepage has a search
