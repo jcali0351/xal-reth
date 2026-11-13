@@ -6,7 +6,7 @@
    and settled searches in the Seeking Glass (xr:search from search.js; the words only, nothing about who searched). */
 (function () {
   "use strict";
-  var CODE = "";   // the GoatCounter code; set it once John has made the GoatCounter site
+  var CODE = "xalreth";   // the GoatCounter code (https://xalreth.goatcounter.com)
   var queue = [];
   window.coilCount = function (name, title) { queue.push([name, title]); };
   if (!CODE) return;

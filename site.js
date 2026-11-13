@@ -36,7 +36,7 @@
   }
   // What the sanctum counts: cookieless page views and goals through GoatCounter (js/counter.js; off until its CODE is set).
   if (!document.querySelector('script[src*="js/counter.js"]')) {
-    var ct = document.createElement("script"); ct.src = base + "js/counter.js?v=20261107c1"; ct.defer = true; document.head.appendChild(ct);
+    var ct = document.createElement("script"); ct.src = base + "js/counter.js?v=20261113c2"; ct.defer = true; document.head.appendChild(ct);
   }
   // ...and every footer says so, with a link to counts.html (added here so every page, old or new, has it).
   function countsLink() {
