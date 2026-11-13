@@ -273,6 +273,7 @@
     if (name === "rp") loadRp();
     if (name === "duels") loadDuels();
     if (name === "faces") loadMod();
+    if (name === "casino") loadCasino();
     if (name === "stats") { renderWorkerBoxes(); if (!an.loaded) loadAnalytics(); }
     if (name === "x") { renderWorkerBoxes(); loadX(); }
   }
@@ -2145,6 +2146,52 @@
     if (p) { busy(t, true, "…"); p.then(function () { toast("Done."); loadMod(); }).catch(function (x) { busy(t, false); toast(x.message, true); }); }
   });
 
+  /* ================================================================ THE XAL'RETH CASINO (casino.html; the social Worker's /mod/casino)
+     Tickets are fulfilled by hand: write what was given (e.g. "500g mailed") and press Fulfilled. Voiding a ticket gives the
+     member their tokens back; use it for duplicates, cheats or anyone who has left the guild. */
+  function czWhen(t) { return t ? new Date(t).toLocaleString() : ""; }
+  function loadCasino() {
+    if (!mod.url) { $("#cz-status").textContent = "Not connected. Save the social Worker's address in the Faces tab first."; return; }
+    $("#cz-status").textContent = "Reading the casino…";
+    loadGuild().then(function () { return modFetch("/mod/casino"); }).then(function (d) {
+      var open = d.tickets.filter(function (t) { return t.status === "open"; });
+      $("#cz-status").textContent = "Connected. " + open.length + " ticket" + (open.length === 1 ? "" : "s") + " waiting.";
+      var jp = d.jackpot || {};
+      $("#cz-cards").innerHTML = [["Spins today", d.today.spins], ["Tokens won today", d.today.tokens], ["Tickets waiting", open.length],
+        ["Jackpots claimed", d.jackpotClaims], ["This week's jackpot", (jp.pool || 0) + (jp.winner ? " (won by " + modName(jp.winner) + ")" : "")]].map(function (c) {
+        return '<div class="cz-admin-card"><span>' + esc(c[0]) + "</span><b>" + esc(c[1]) + "</b></div>";
+      }).join("");
+      $("#cz-tickets").innerHTML = d.tickets.length ? '<table class="cz-admin-table"><thead><tr><th>Ticket</th><th>Character</th><th>Realm</th><th>Tokens</th><th>When</th><th>Status</th><th>Prize note and action</th></tr></thead><tbody>' +
+        d.tickets.map(function (t) {
+          return '<tr class="' + esc(t.status) + '"><td><code>' + esc(t.id) + "</code>" + (t.kind === "jackpot" ? " <b>jackpot</b>" : "") + "</td><td>" + esc(t.name) + "</td><td>" + esc(t.realm) + "</td><td>" + esc(t.amount) + "</td><td>" + esc(czWhen(t.created)) + "</td><td>" + esc(t.status) + "</td>" +
+            '<td><input type="text" maxlength="300" placeholder="e.g. 500g mailed" value="' + esc(t.note || "") + '" data-cz-note="' + esc(t.id) + '"> ' +
+            (t.status !== "fulfilled" ? '<button type="button" class="cms-btn small" data-cz-set="fulfilled" data-cz-id="' + esc(t.id) + '">Fulfilled</button> ' : "") +
+            (t.status !== "void" ? '<button type="button" class="cms-btn small danger" data-cz-set="void" data-cz-id="' + esc(t.id) + '">Void</button> ' : "") +
+            (t.status !== "open" ? '<button type="button" class="cms-btn small ghost" data-cz-set="open" data-cz-id="' + esc(t.id) + '">Reopen</button>' : "") + "</td></tr>";
+        }).join("") + "</tbody></table>" : '<p class="cms-hint">No tickets yet.</p>';
+      var f = d.flags || {}, flags = [];
+      (f.sharedIp || []).forEach(function (x) { flags.push("<b>" + esc(x.accounts) + " accounts</b> spun from the same place on " + esc(x.day) + ": " + esc(String(x.chars || "").split(",").map(modName).join(", "))); });
+      (f.newAccounts || []).forEach(function (x) { flags.push("<b>New account</b> (first seen " + esc(czWhen(x.created)) + ") has already won " + esc(x.total_won) + " tokens: " + esc(modName(x.char_key))); });
+      (f.leftGuild || []).forEach(function (k) { flags.push("<b>No longer on the roster:</b> " + esc(modName(k))); });
+      $("#cz-flags").innerHTML = flags.length ? "<ul>" + flags.map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ul><p class=\"cms-hint\">A shared place can be a household or a guild meet-up; look before you void.</p>" : '<p class="cms-hint">Nothing suspicious.</p>';
+      $("#cz-top").innerHTML = d.top.length ? '<table class="cz-admin-table"><thead><tr><th>Character</th><th>Tokens now</th><th>Won in all</th><th>Spins</th><th>Jackpots</th><th>Best streak</th></tr></thead><tbody>' +
+        d.top.map(function (t) { return "<tr><td>" + esc(modName(t.char_key)) + "</td><td>" + esc(t.tokens) + "</td><td>" + esc(t.total_won) + "</td><td>" + esc(t.spins) + "</td><td>" + esc(t.jackpots) + "</td><td>" + esc(t.best_streak) + "</td></tr>"; }).join("") +
+        "</tbody></table>" : '<p class="cms-hint">Nobody has spun yet.</p>';
+      $("#cz-spins").innerHTML = d.spins.length ? '<table class="cz-admin-table"><thead><tr><th>When</th><th>Character</th><th>Reels</th><th>Result</th><th>Tokens</th></tr></thead><tbody>' +
+        d.spins.map(function (s) { return "<tr><td>" + esc(czWhen(s.created)) + "</td><td>" + esc(modName(s.char_key)) + "</td><td>" + esc(s.reels.replace(/,/g, " · ")) + "</td><td>" + esc(s.kind) + "</td><td>" + esc(s.prize) + "</td></tr>"; }).join("") +
+        "</tbody></table>" : '<p class="cms-hint">No spins yet.</p>';
+    }).catch(function (e) { $("#cz-status").textContent = e.message; });
+  }
+  $("#cz-refresh").addEventListener("click", loadCasino);
+  $('[data-panel="casino"]').addEventListener("click", function (e) {
+    var b = e.target.closest("[data-cz-set]"); if (!b) return;
+    var id = b.dataset.czId, status = b.dataset.czSet;
+    if (status === "void" && !confirm("Void ticket " + id + "? The member gets the tokens back.")) return;
+    var note = ($('[data-cz-note="' + id + '"]') || {}).value || "";
+    busy(b, true, "…");
+    modFetch("/mod/casino/ticket", { id: id, status: status, note: note }).then(function () { toast("Ticket " + id + ": " + status + "."); loadCasino(); })
+      .catch(function (x) { busy(b, false); toast(x.message, true); });
+  });
   /* ================================================================ THE ADMIN WORKER (tools/admin-worker/)
      Holds the GoatCounter and X keys. The editor sends it the same GitHub token it signs in with; the Worker asks
      GitHub whether that token can save to the site, and answers only then. Its address is kept in this browser. */

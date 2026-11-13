@@ -89,3 +89,56 @@ CREATE TABLE IF NOT EXISTS reports (
   created INTEGER NOT NULL,
   resolved INTEGER NOT NULL DEFAULT 0
 );
+
+-- The Xal'Reth Casino: one free spin a day per Battle.net account, rolled on the server; winnings are Xal Tokens,
+-- which members redeem for tickets that officers fulfil by hand (guild events, raffles, contests). No money.
+CREATE TABLE IF NOT EXISTS casino_wallet (
+  user_id TEXT PRIMARY KEY,       -- Battle.net account id (one wallet per player, whichever character spins)
+  char_key TEXT NOT NULL,         -- the character who spun last
+  tokens INTEGER NOT NULL DEFAULT 0,
+  total_won INTEGER NOT NULL DEFAULT 0,
+  best_win INTEGER NOT NULL DEFAULT 0,
+  spins INTEGER NOT NULL DEFAULT 0,
+  jackpots INTEGER NOT NULL DEFAULT 0,
+  streak INTEGER NOT NULL DEFAULT 0,
+  best_streak INTEGER NOT NULL DEFAULT 0,
+  last_day TEXT,                  -- YYYY-MM-DD (UTC) of the last spin
+  achievements TEXT NOT NULL DEFAULT '{}'
+);
+CREATE INDEX IF NOT EXISTS casino_wallet_won ON casino_wallet(total_won);
+
+CREATE TABLE IF NOT EXISTS casino_spins (
+  id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  char_key TEXT NOT NULL,
+  day TEXT NOT NULL,
+  reels TEXT NOT NULL,            -- e.g. "eye,crystal,eye"
+  prize INTEGER NOT NULL,
+  kind TEXT NOT NULL,             -- none | small | pair | triple | jackpot
+  ip_hash TEXT,                   -- a salted hash, only to spot many accounts spinning from one place
+  created INTEGER NOT NULL
+);
+CREATE UNIQUE INDEX IF NOT EXISTS casino_spins_daily ON casino_spins(user_id, day);
+CREATE INDEX IF NOT EXISTS casino_spins_created ON casino_spins(created);
+
+CREATE TABLE IF NOT EXISTS casino_tickets (
+  id TEXT PRIMARY KEY,            -- XR-XXXX-XXXX
+  user_id TEXT NOT NULL,
+  char_key TEXT NOT NULL,
+  name TEXT NOT NULL,
+  realm TEXT NOT NULL,
+  amount INTEGER NOT NULL,        -- tokens
+  kind TEXT NOT NULL,             -- redeem | jackpot
+  status TEXT NOT NULL DEFAULT 'open', -- open | fulfilled | void
+  note TEXT NOT NULL DEFAULT '',
+  created INTEGER NOT NULL,
+  handled_at INTEGER
+);
+CREATE INDEX IF NOT EXISTS casino_tickets_status ON casino_tickets(status, created);
+
+CREATE TABLE IF NOT EXISTS casino_jackpot (
+  week TEXT PRIMARY KEY,          -- the Monday (UTC) the week began
+  pool INTEGER NOT NULL,
+  winner TEXT,                    -- character key
+  won_at INTEGER
+);

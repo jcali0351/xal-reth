@@ -56,6 +56,8 @@ export default {
         if (p === "/mod/pic" && m === "POST") return json(await modPic(ctx, await body(request)));
         if (p === "/mod/mute" && m === "POST") return json(await modMute(ctx, await body(request)));
         if (p === "/mod/resolve" && m === "POST") return json(await modResolve(ctx, await body(request)));
+        if (p === "/mod/casino" && m === "GET") return json(await casinoAdmin(ctx));
+        if (p === "/mod/casino/ticket" && m === "POST") return json(await casinoTicket(ctx, await body(request)));
         return json({ error: "Not found" }, 404);
       }
       // --- reading (anyone; signed-in members also see their own reactions)
@@ -65,6 +67,7 @@ export default {
       if (p === "/profile" && m === "GET") return json(await profile(ctx, me, url.searchParams.get("c")));
       if (p === "/post" && m === "GET") return json(await onePost(ctx, me, url.searchParams.get("id")));
       if (p === "/directory" && m === "GET") return json(await directory(ctx));
+      if (p === "/casino/state" && m === "GET") return json(await casinoState(ctx, me));
       // --- writing (members)
       if (!me) return json({ error: "Sign in with Battle.net first." }, 401);
       if (p === "/me" && m === "GET") return json(await meInfo(ctx, me));
@@ -83,6 +86,8 @@ export default {
       if (p === "/bonds" && m === "DELETE") return json(await dropBond(ctx, me, { as: url.searchParams.get("as"), other: url.searchParams.get("other") }));
       if (p === "/pics" && m === "POST") return json(await upload(ctx, me));
       if (p === "/report" && m === "POST") return json(await report(ctx, me, b));
+      if (p === "/casino/spin" && m === "POST") return json(await casinoSpin(ctx, me, b));
+      if (p === "/casino/redeem" && m === "POST") return json(await casinoRedeem(ctx, me, b));
       return json({ error: "Not found" }, 404);
     } catch (e) {
       return json({ error: String((e && e.message) || e) }, (e && e.status) || 500);
@@ -484,5 +489,181 @@ async function modMute(ctx, b) {
 }
 async function modResolve(ctx, b) {
   await ctx.env.DB.prepare("UPDATE reports SET resolved = 1 WHERE id = ?").bind(String(b.id || "")).run();
+  return { ok: true };
+}
+
+/* ------------------------------------------------------------------ the Xal'Reth Casino */
+// One free spin a day per Battle.net account, rolled here with crypto randomness so nobody can fake a win.
+// Winnings are Xal Tokens. Tokens are redeemed for tickets; officers fulfil tickets by hand in the Sanctum
+// Editor (guild events, raffles, contests). There is no money, no buying of spins and no paying out by itself.
+const SYMBOLS = [ // id, weight (out of 100)
+  ["flame", 30], ["crystal", 25], ["triangle", 18], ["crown", 12], ["serpent", 10], ["eye", 5],
+];
+const TRIPLE = { flame: 20, crystal: 30, triangle: 50, crown: 80, serpent: 120 }; // three eyes = the weekly jackpot
+const JACKPOT_BASE = 500, JACKPOT_PER_SPIN = 10, REDEEM_MIN = 100;
+const ACHIEVEMENTS = {
+  first: "First Spin", streak3: "Three Days Faithful", streak7: "A Week Beneath the Temple", spins30: "Thirty Turns of the Wheel",
+  pair: "A Pair of Omens", triple: "Three of a Kind", jackpot: "The Eternal Gaze", tokens1000: "A Thousand Tokens", ticket: "First Ticket",
+};
+const utcDay = (t = now()) => new Date(t).toISOString().slice(0, 10);
+function weekOf(t = now()) {
+  const d = new Date(t); const dow = (d.getUTCDay() + 6) % 7; // Monday = 0
+  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() - dow)).toISOString().slice(0, 10);
+}
+function rollSymbol() {
+  const r = new Uint32Array(1); crypto.getRandomValues(r);
+  let n = r[0] % 100;
+  for (const [id, w] of SYMBOLS) { if (n < w) return id; n -= w; }
+  return "flame";
+}
+function judge(reels) {
+  const [a, b, c] = reels;
+  const eyes = reels.filter((s) => s === "eye").length;
+  if (a === b && b === c) return a === "eye" ? { kind: "jackpot", prize: 0 } : { kind: "triple", prize: TRIPLE[a] };
+  if (eyes === 2) return { kind: "pair", prize: 15 };
+  if (a === b || b === c || a === c) return { kind: "pair", prize: 5 };
+  if (eyes === 1) return { kind: "small", prize: 2 };
+  return { kind: "none", prize: 0 };
+}
+async function jackpotRow(db) {
+  const week = weekOf();
+  await db.prepare("INSERT INTO casino_jackpot (week, pool) VALUES (?, ?) ON CONFLICT(week) DO NOTHING").bind(week, JACKPOT_BASE).run();
+  return db.prepare("SELECT week, pool, winner, won_at FROM casino_jackpot WHERE week = ?").bind(week).first();
+}
+function ticketId() {
+  const abc = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789", r = new Uint8Array(8); crypto.getRandomValues(r);
+  const s = [...r].map((x) => abc[x % abc.length]).join("");
+  return `XR-${s.slice(0, 4)}-${s.slice(4)}`;
+}
+async function ipHash(ctx) {
+  const ip = ctx.request.headers.get("CF-Connecting-IP") || "";
+  if (!ip) return null;
+  return b64url(await crypto.subtle.digest("SHA-256", enc.encode((ctx.env.SESSION_SECRET || "") + "|" + ip + "|" + utcDay()))).slice(0, 16);
+}
+async function charInfo(ctx, key) {
+  const row = await ctx.env.DB.prepare("SELECT name FROM chars WHERE key = ?").bind(key).first();
+  const realm = key.split("/")[0].replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  return { name: row ? row.name : key.split("/").pop(), realm };
+}
+async function casinoState(ctx, me) {
+  const db = ctx.env.DB, day = utcDay();
+  const [jp, top, recent, today, jackpots] = await Promise.all([
+    jackpotRow(db),
+    db.prepare("SELECT w.char_key, w.total_won, w.best_win, w.jackpots, w.spins, w.best_streak FROM casino_wallet w ORDER BY w.total_won DESC LIMIT 15").all(),
+    db.prepare("SELECT char_key, prize, kind, reels, created FROM casino_spins WHERE prize >= 30 OR kind = 'jackpot' ORDER BY created DESC LIMIT 12").all(),
+    db.prepare("SELECT COUNT(*) AS n FROM casino_spins WHERE day = ?").bind(day).first(),
+    db.prepare("SELECT week, pool, winner, won_at FROM casino_jackpot WHERE winner IS NOT NULL ORDER BY won_at DESC LIMIT 8").all(),
+  ]);
+  const keys = [...new Set([...(top.results || []).map((r) => r.char_key), ...(recent.results || []).map((r) => r.char_key), ...(jackpots.results || []).map((r) => r.winner)])];
+  const faces = await facesOf(ctx, keys);
+  const out = { jackpot: jp, leaders: top.results || [], recent: recent.results || [], jackpots: jackpots.results || [], spinsToday: today?.n || 0,
+    faces, day, nextDay: Date.UTC(...day.split("-").map((x, i) => i === 1 ? x - 1 : +x)) + DAY, achievementNames: ACHIEVEMENTS, redeemMin: REDEEM_MIN };
+  if (me) {
+    const w = await db.prepare("SELECT * FROM casino_wallet WHERE user_id = ?").bind(me.u).first();
+    const tickets = await db.prepare("SELECT id, char_key, amount, kind, status, note, created FROM casino_tickets WHERE user_id = ? ORDER BY created DESC LIMIT 20").bind(me.u).all();
+    out.me = { wallet: w ? { ...w, achievements: safeJson(w.achievements) } : null, canSpin: !w || w.last_day !== day, tickets: tickets.results || [], chars: await myChars(ctx, me) };
+  }
+  return out;
+}
+async function casinoSpin(ctx, me, b) {
+  const db = ctx.env.DB, day = utcDay(), t = now();
+  const key = await asChar(ctx, me, b.as);
+  const guild = await roster(ctx);
+  if (!guild.has(key)) fail("Only characters on the guild roster may spin.", 403);
+  const w = await db.prepare("SELECT * FROM casino_wallet WHERE user_id = ?").bind(me.u).first();
+  if (w && w.last_day === day) fail("You have had today's spin. The Void turns again at midnight (UTC).", 429);
+  const reels = [rollSymbol(), rollSymbol(), rollSymbol()];
+  let { kind, prize } = judge(reels);
+  const jp = await jackpotRow(db);
+  const yesterday = utcDay(t - DAY);
+  const streak = w && w.last_day === yesterday ? w.streak + 1 : 1;
+  // one jackpot a week: once it is claimed, three eyes pay 200 tokens until the pool reopens on Monday
+  if (kind === "jackpot" && jp.winner) { kind = "triple"; prize = 200; }
+  if (kind === "jackpot") prize = jp.pool;
+  else if (prize > 0) prize = Math.round(prize * (1 + Math.min(0.5, (streak - 1) * 0.1))); // lucky streak: +10% a day, up to +50%
+  const ach = safeJson(w && w.achievements);
+  const got = [];
+  const give = (k) => { if (!ach[k]) { ach[k] = t; got.push(k); } };
+  give("first");
+  if (streak >= 3) give("streak3");
+  if (streak >= 7) give("streak7");
+  if ((w ? w.spins : 0) + 1 >= 30) give("spins30");
+  if (kind === "pair") give("pair");
+  if (kind === "triple" || kind === "jackpot") give("triple");
+  if (kind === "jackpot") give("jackpot");
+  if ((w ? w.total_won : 0) + prize >= 1000) give("tokens1000");
+  const spinId = newId(), ih = await ipHash(ctx);
+  const stmts = [
+    db.prepare("INSERT INTO casino_spins (id, user_id, char_key, day, reels, prize, kind, ip_hash, created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)").bind(spinId, me.u, key, day, reels.join(","), prize, kind, ih, t),
+    db.prepare(`INSERT INTO casino_wallet (user_id, char_key, tokens, total_won, best_win, spins, jackpots, streak, best_streak, last_day, achievements)
+      VALUES (?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?)
+      ON CONFLICT(user_id) DO UPDATE SET char_key = excluded.char_key, tokens = tokens + ?, total_won = total_won + ?, best_win = MAX(best_win, ?),
+        spins = spins + 1, jackpots = jackpots + ?, streak = ?, best_streak = MAX(best_streak, ?), last_day = ?, achievements = ?`)
+      .bind(me.u, key, prize, prize, prize, kind === "jackpot" ? 1 : 0, streak, streak, day, JSON.stringify(ach),
+        prize, prize, prize, kind === "jackpot" ? 1 : 0, streak, streak, day, JSON.stringify(ach)),
+  ];
+  if (kind === "jackpot") {
+    // the jackpot is paid as a ticket straight away, and the pool starts again
+    const ci = await charInfo(ctx, key);
+    stmts.push(db.prepare("INSERT INTO casino_tickets (id, user_id, char_key, name, realm, amount, kind, created) VALUES (?, ?, ?, ?, ?, ?, 'jackpot', ?)").bind(ticketId(), me.u, key, ci.name, ci.realm, prize, t));
+    stmts.push(db.prepare("UPDATE casino_wallet SET tokens = tokens - ? WHERE user_id = ?").bind(prize, me.u));
+    stmts.push(db.prepare("UPDATE casino_jackpot SET winner = ?, won_at = ? WHERE week = ?").bind(key, t, jp.week));
+  } else {
+    stmts.push(db.prepare("UPDATE casino_jackpot SET pool = pool + ? WHERE week = ? AND winner IS NULL").bind(JACKPOT_PER_SPIN, jp.week));
+  }
+  try { await db.batch(stmts); }
+  catch (e) { if (String(e).includes("UNIQUE")) fail("You have had today's spin.", 429); throw e; }
+  return { reels, kind, prize, streak, bonus: kind !== "jackpot" && prize > 0 && streak > 1 ? Math.min(50, (streak - 1) * 10) : 0, achievements: got.map((k) => ACHIEVEMENTS[k]), jackpotPool: kind === "jackpot" ? JACKPOT_BASE : jp.pool + JACKPOT_PER_SPIN };
+}
+async function casinoRedeem(ctx, me, b) {
+  const db = ctx.env.DB;
+  const key = await asChar(ctx, me, b.as);
+  const amount = Math.floor(Number(b.amount) || 0);
+  const w = await db.prepare("SELECT tokens, achievements FROM casino_wallet WHERE user_id = ?").bind(me.u).first();
+  if (!w) fail("Spin first: you have no tokens yet.");
+  if (amount < REDEEM_MIN) fail(`A ticket needs at least ${REDEEM_MIN} tokens.`);
+  if (amount > w.tokens) fail("You don't have that many tokens.");
+  const open = (await db.prepare("SELECT COUNT(*) AS n FROM casino_tickets WHERE user_id = ? AND status = 'open'").bind(me.u).first())?.n || 0;
+  if (open >= 3) fail("You already have three tickets waiting for an officer. Let them catch up first.", 429);
+  const ci = await charInfo(ctx, key), id = ticketId(), t = now();
+  const ach = safeJson(w.achievements); if (!ach.ticket) ach.ticket = t;
+  const r = await db.batch([
+    db.prepare("UPDATE casino_wallet SET tokens = tokens - ?, achievements = ? WHERE user_id = ? AND tokens >= ?").bind(amount, JSON.stringify(ach), me.u, amount),
+    db.prepare("INSERT INTO casino_tickets (id, user_id, char_key, name, realm, amount, kind, created) SELECT ?, ?, ?, ?, ?, ?, 'redeem', ? WHERE changes() > 0").bind(id, me.u, key, ci.name, ci.realm, amount, t),
+  ]);
+  if (!r[0].meta.changes) fail("You don't have that many tokens.");
+  return { ok: true, ticket: { id, amount, name: ci.name, realm: ci.realm, created: t } };
+}
+async function casinoAdmin(ctx) {
+  const db = ctx.env.DB, day = utcDay(), t = now();
+  const [today, claims, tickets, spins, top, sharedIp, newAccounts, jp] = await Promise.all([
+    db.prepare("SELECT COUNT(*) AS n, COALESCE(SUM(prize), 0) AS tokens FROM casino_spins WHERE day = ?").bind(day).first(),
+    db.prepare("SELECT COUNT(*) AS n FROM casino_spins WHERE kind = 'jackpot'").first(),
+    db.prepare("SELECT * FROM casino_tickets ORDER BY CASE status WHEN 'open' THEN 0 ELSE 1 END, created DESC LIMIT 200").all(),
+    db.prepare("SELECT s.id, s.char_key, s.day, s.reels, s.prize, s.kind, s.created, s.user_id FROM casino_spins s ORDER BY s.created DESC LIMIT 200").all(),
+    db.prepare("SELECT char_key, user_id, tokens, total_won, spins, jackpots, best_streak FROM casino_wallet ORDER BY total_won DESC LIMIT 25").all(),
+    // fraud signs: several accounts spinning from the same place on the same day, and brand-new accounts winning big
+    db.prepare("SELECT day, ip_hash, COUNT(DISTINCT user_id) AS accounts, GROUP_CONCAT(char_key) AS chars FROM casino_spins WHERE ip_hash IS NOT NULL AND created > ? GROUP BY day, ip_hash HAVING accounts > 1 ORDER BY day DESC LIMIT 30").bind(t - 14 * DAY).all(),
+    db.prepare("SELECT w.char_key, w.total_won, u.created FROM casino_wallet w JOIN users u ON u.id = w.user_id WHERE u.created > ? AND w.total_won >= 200 ORDER BY w.total_won DESC LIMIT 20").bind(t - 3 * DAY).all(),
+    jackpotRow(db),
+  ]);
+  const guild = await roster(ctx);
+  const left = (top.results || []).filter((r) => !guild.has(r.char_key)).map((r) => r.char_key);
+  return {
+    today: { spins: today?.n || 0, tokens: today?.tokens || 0 }, jackpotClaims: claims?.n || 0, jackpot: jp,
+    tickets: tickets.results || [], spins: spins.results || [], top: top.results || [],
+    flags: { sharedIp: sharedIp.results || [], newAccounts: newAccounts.results || [], leftGuild: left },
+  };
+}
+async function casinoTicket(ctx, b) {
+  const status = ["open", "fulfilled", "void"].includes(b.status) ? b.status : fail("Status must be open, fulfilled or void.");
+  const id = String(b.id || "");
+  const row = await ctx.env.DB.prepare("SELECT user_id, amount, status FROM casino_tickets WHERE id = ?").bind(id).first();
+  if (!row) fail("No such ticket.", 404);
+  const stmts = [ctx.env.DB.prepare("UPDATE casino_tickets SET status = ?, note = ?, handled_at = ? WHERE id = ?").bind(status, clean(b.note, 300), now(), id)];
+  // voiding a redeemed ticket gives the tokens back; reopening takes them again
+  if (status === "void" && row.status !== "void") stmts.push(ctx.env.DB.prepare("UPDATE casino_wallet SET tokens = tokens + ? WHERE user_id = ?").bind(row.amount, row.user_id));
+  if (row.status === "void" && status !== "void") stmts.push(ctx.env.DB.prepare("UPDATE casino_wallet SET tokens = MAX(0, tokens - ?) WHERE user_id = ?").bind(row.amount, row.user_id));
+  await ctx.env.DB.batch(stmts);
   return { ok: true };
 }

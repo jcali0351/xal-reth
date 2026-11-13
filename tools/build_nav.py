@@ -19,7 +19,7 @@ MENU = [
                             ("The Legends", "legends.html"), ("The Library", "library.html")]),
     ("Community", "sub-community", [("Recruitment", "recruit.html"), ("News", "news.html"), ("Blog", "blog.html"),
                                     ("Testimonials", "testimonials.html"), ("Merch", "merch.html"), ("Guild Bank", "guild-bank.html"), ("Auction House", "auction-house.html"),
-                                    ("Fishing Leaderboard", "fishing.html"), ("RP Profiles", "rp.html"), ("Duels", "duels.html"),
+                                    ("Fishing Leaderboard", "fishing.html"), ("RP Profiles", "rp.html"), ("Duels", "duels.html"), ("Casino", "casino.html"),
                                     ("Guild Ranks", "ranks.html"), ("Guild Achievements", "achievements.html")]),
     ("Faith", "sub-faith", [("Devotion", "devotion.html"), ("The Altar", "altar.html"), ("The Path", "path.html"), ("The Atlas", "map.html")]),
     ("Addons", "addons.html"),

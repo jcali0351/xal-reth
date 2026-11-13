@@ -314,3 +314,16 @@ body.cms { min-height: 100vh; overflow-x: hidden; background: radial-gradient(el
 .mod-pic figcaption { color: var(--bone-dim); font-size: .9rem; margin-top: 6px; }
 .mod-item { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; color: var(--bone); }
 .mod-item blockquote { margin: 8px 0; padding: 8px 12px; border-left: 3px solid var(--violet); color: #fff; white-space: pre-wrap; }
+
+/* the Casino tab */
+.cz-admin-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; margin: 10px 0 18px; }
+.cz-admin-card { padding: 12px 14px; border: 1px solid var(--line, #3a2d55); background: rgba(17, 10, 29, .7); }
+.cz-admin-card span { display: block; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; opacity: .75; }
+.cz-admin-card b { font-size: 1.4rem; color: #ffd24a; }
+.cz-admin-table { width: 100%; border-collapse: collapse; font-size: .9rem; margin-bottom: 14px; }
+.cz-admin-table th, .cz-admin-table td { text-align: left; padding: 7px 8px; border-bottom: 1px solid rgba(228, 212, 255, .1); vertical-align: middle; }
+.cz-admin-table th { font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; opacity: .75; }
+.cz-admin-table code { color: #ffd24a; }
+.cz-admin-table input { width: 170px; max-width: 100%; }
+.cz-admin-table tr.fulfilled td { opacity: .65; }
+.cz-admin-table tr.void td { opacity: .45; text-decoration: line-through; }

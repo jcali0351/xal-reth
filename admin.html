@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="style.css?v=5ef37471">
 <link rel="stylesheet" href="css/site-fonts.css?v=aeb406ab">
 <link rel="stylesheet" href="fonts/catalog.css">
-<link rel="stylesheet" href="css/cms.css?v=7a38a28e">
+<link rel="stylesheet" href="css/cms.css?v=ee153f78">
 </head>
 <body class="cms">
 
@@ -63,6 +63,7 @@
     <button role="tab" data-tab="rp" aria-selected="false">RP Profiles</button>
     <button role="tab" data-tab="duels" aria-selected="false">Duels</button>
     <button role="tab" data-tab="faces" aria-selected="false">Faces</button>
+    <button role="tab" data-tab="casino" aria-selected="false">Casino</button>
     <button role="tab" data-tab="stats" aria-selected="false">Analytics</button>
     <button role="tab" data-tab="x" aria-selected="false">X</button>
   </nav>
@@ -282,6 +283,19 @@
     <ul class="duel-list" id="duel-list"></ul>
   </section>
 
+  <section class="cms-panel" data-panel="casino" hidden>
+    <div class="cms-panel-head">
+      <div><h2>The Xal'Reth Casino</h2><p class="cms-hint">Members spin <a class="cms-link" href="casino.html" target="_blank" rel="noopener">the Void Machine</a> once a day and trade Xal Tokens for tickets. Here you fulfil tickets with whatever prize you choose, void cheats, and keep an eye on the spin log. It uses the social Worker address saved in the Faces tab.</p></div>
+      <button class="cms-btn small" type="button" id="cz-refresh">Refresh</button>
+    </div>
+    <p class="cms-hint" id="cz-status"></p>
+    <div class="cz-admin-cards" id="cz-cards"></div>
+    <h3>Ticket queue</h3><div id="cz-tickets"></div>
+    <h3>Watch list</h3><div id="cz-flags"></div>
+    <h3>Top players</h3><div id="cz-top"></div>
+    <h3>Spin log</h3><div id="cz-spins"></div>
+  </section>
+
   <section class="cms-panel" data-panel="faces" hidden>
     <div class="cms-panel-head">
       <div><h2>Faces of the Coil: moderation</h2><p class="cms-hint">Members post on <a class="cms-link" href="rp.html" target="_blank" rel="noopener">the Faces</a> as their own characters. Posts appear at once; pictures wait here for your blessing; reports land here too. Your editor sign-in is your officer key.</p></div>
@@ -491,6 +505,6 @@
 
 <div class="cms-toast" id="cms-toast" role="status" aria-live="polite"></div>
 
-<script src="js/cms.js?v=5859fdf6"></script>
+<script src="js/cms.js?v=14dbe736"></script>
 </body>
 </html>

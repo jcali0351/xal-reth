@@ -218,6 +218,14 @@
     <xhtml:a href="https://jcali0351.github.io/xal-reth/auction-house.html"><xr:title>The Auction House</xr:title><xr:desc>Every auction on Moon Guard (US) and every region commodity, read from the Blizzard API every hour: search any item, filter by category and quality, and sort by price.</xr:desc></xhtml:a>
   </url>
   <url>
+    <loc>https://jcali0351.github.io/xal-reth/casino.html</loc>
+    <lastmod>2026-11-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://jcali0351.github.io/xal-reth/img/xalreth-card.jpg</image:loc></image:image>
+    <xhtml:a href="https://jcali0351.github.io/xal-reth/casino.html"><xr:title>The Xal'Reth Casino</xr:title><xr:desc>The Void Machine beneath the temple: one free spin a day for guild members, Xal Tokens, a weekly jackpot, lucky streaks, achievements and the Hall of Fortune. No money, ever.</xr:desc></xhtml:a>
+  </url>
+  <url>
     <loc>https://jcali0351.github.io/xal-reth/counts.html</loc>
     <lastmod>2026-11-07</lastmod>
     <changefreq>monthly</changefreq>

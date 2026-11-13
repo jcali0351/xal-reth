@@ -17,7 +17,7 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   Keep both if the site is regenerated. `sitemap.xml` is rebuilt from every page by `tools/build_sitemap.py`
   (new_post.py runs it); don't hand-edit it. `sitemap.css` styles it for people (CSS, not XSLT: Chrome drops XSLT in Nov 2026).
 - The main menu is written into every page by `tools/build_nav.py` (edit MENU there, then run it):
-  Home · About (The Sacred Triangle, The Chronicle, The Canon, The Legends, The Library) · Community (Recruitment, News, Blog, Testimonials, Merch, Guild Bank, Auction House, Fishing Leaderboard, RP Profiles, Duels, Guild Ranks, Guild Achievements) ·
+  Home · About (The Sacred Triangle, The Chronicle, The Canon, The Legends, The Library) · Community (Recruitment, News, Blog, Testimonials, Merch, Guild Bank, Auction House, Fishing Leaderboard, RP Profiles, Duels, Casino, Guild Ranks, Guild Achievements) ·
   Faith (Devotion, The Altar, The Path, The Atlas) · Addons · Guild Roster · Join · Sitemap · Contact. Submenus open on hover on wide screens and on click or tap
   everywhere (script in site.js, styles at the end of style.css); the one holding the current page is highlighted.
   The full menu shows above 860px; at 860px and below it folds into the Menu button.
@@ -180,6 +180,14 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   "xr-social-worker"); until then the pages show the officer-kept profiles from data/rp-profiles.json, which also stay
   as the About tab's extra content. Limits: 20 posts/h, 60 comments/h, 12 pictures/day per character; all text is plain
   text. counts.html says what the Faces keep. Local testing: README.md (DEV=1 only locally, never deployed).
+- The Xal'Reth Casino (`casino.html`, `css/casino.css`, `js/casino.js`; Community menu after Duels; officers use the Sanctum
+  Editor's "Casino" tab). The Void Machine: one free slot spin a day per Battle.net account (guild characters only), rolled
+  on the Faces Worker (`/casino/*`, tables `casino_*` in tools/social-worker/schema.sql) so nobody can fake a win; symbols
+  Xal'Reth Eye, Void Crystal, Sacred Triangle, Cosmic Crown, Serpent Sigil (never a dragon: Xal'Reth has no wings),
+  Purple Flame; three Eyes = the weekly jackpot ("THE ETERNAL GAZE FALLS UPON YOU"), lucky streak +10% a day up to +50%,
+  achievements, Hall of Fortune. Winnings are Xal Tokens, traded (100+) for tickets that officers fulfil by hand for guild
+  events; voiding gives the tokens back. No money, no prices, no buying spins: keep it that way. Keep PAYS in casino.js
+  in step with the paytable in worker.js. Keep it if the site is regenerated.
 - The Armory, RP profiles and duels (all three load through `js/coil-faces.js`; styles in `css/armory.css`).
   `character.html?c=<realm-slug>/<name>` (`js/character.js`; out of the sitemap and search because it needs `?c=`):
   one faithful's page in their class colour with the Armory render, rank, item level, Mythic+ rating, achievements,

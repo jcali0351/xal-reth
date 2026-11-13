@@ -60,3 +60,12 @@ binds a local D1 `DB` and KV `PICS`, and sets `DEV = "1"`, `SITE = "http://127.0
 `SESSION_SECRET` in `.dev.vars`: `wrangler d1 execute xalreth-social --local --file=schema.sql`, then `wrangler dev`.
 `/auth/dev?user=1&chars=moon-guard/name` signs in without Battle.net, and the officer token
 `dev-officer-token-local-only` works, only while DEV is "1". Open the site with `?social=http://127.0.0.1:8787`.
+
+## The Xal'Reth Casino (casino.html)
+
+The same Worker runs the casino: `/casino/state` (anyone), `/casino/spin` and `/casino/redeem` (signed-in members) and
+`/mod/casino`, `/mod/casino/ticket` (officers, from the Sanctum Editor's Casino tab). Spins are rolled here with
+crypto randomness, one per Battle.net account per UTC day, guild characters only. Winnings are Xal Tokens; members trade
+100 or more for a ticket and officers fulfil tickets by hand. No money, no buying spins. The tables are the `casino_*`
+ones at the end of schema.sql; on a new database run the whole file. Paytable and jackpot are the constants at the top of
+the casino section in worker.js (keep PAYS in js/casino.js the same).
