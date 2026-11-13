@@ -1789,3 +1789,34 @@ html, body { overflow-x: clip; }
 .addon-gallery-note { margin-top: 10px; font-size: .85rem; }
 @media (max-width: 760px) { .addon-gallery { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { .addon-gallery .addon-shot img { transition: none; } }
+
+/* ===== THE STORYCASTER CARD (addons.html): intro, pictures, "What's new" one version per row ===== */
+.sc-card .featured-grid { align-items: start; }
+.sc-card .stat-col { position: sticky; top: 120px; }
+.sc-lede { font-size: 1.12rem; line-height: 1.7; margin: 0 0 6px; }
+.sc-sub { margin: 30px 0 12px; font-size: .78rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold, #edc261);
+  display: flex; align-items: center; gap: 12px; }
+.sc-sub::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(237, 194, 97, .5), transparent); }
+.sc-changes { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.sc-changes li { display: grid; grid-template-columns: 52px 1fr; gap: 14px; align-items: start; line-height: 1.65;
+  padding: 12px 14px; border: 1px solid rgba(160, 110, 255, .18); border-radius: 8px; background: rgba(20, 10, 40, .35); }
+.sc-ver { display: inline-flex; align-items: center; justify-content: center; height: 30px; border-radius: 6px; font-weight: 900;
+  font-size: .82rem; letter-spacing: .04em; color: #1c0f2e; background: linear-gradient(180deg, #ffe9b0, #e0aa52);
+  box-shadow: 0 0 14px rgba(237, 194, 97, .35); }
+.sc-changes li:first-child .sc-ver { background: linear-gradient(180deg, #e7d4ff, #a46bff); box-shadow: 0 0 16px rgba(164, 107, 255, .55); }
+.sc-changes strong { color: var(--bone, #f3ecff); }
+.sc-shot { margin: 18px 0; }
+.sc-shot img { transition: transform .25s ease, box-shadow .25s ease; }
+.sc-shot a:hover img, .sc-shot a:focus-visible img { transform: translateY(-3px); box-shadow: 0 0 34px rgba(237, 194, 97, .35); }
+.sc-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 18px 0; align-items: start; }
+.sc-pair .sc-shot { margin: 0; }
+.sc-how { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; line-height: 1.6; color: var(--bone-dim, #b9b0c8); }
+.sc-how li::marker { color: var(--gold, #edc261); }
+.sc-card .actions { margin-top: 26px; }
+@media (max-width: 860px) { .sc-card .stat-col { position: static; } }
+@media (max-width: 560px) {
+  .sc-pair { grid-template-columns: 1fr; }
+  .sc-changes li { grid-template-columns: 1fr; gap: 6px; }
+  .sc-ver { justify-self: start; padding: 0 10px; }
+}
+@media (prefers-reduced-motion: reduce) { .sc-shot img { transition: none; } }
