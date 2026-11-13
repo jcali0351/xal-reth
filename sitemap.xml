@@ -207,7 +207,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image><image:loc>https://jcali0351.github.io/xal-reth/img/xalreth-card.jpg</image:loc></image:image>
-    <xhtml:a href="https://jcali0351.github.io/xal-reth/addon-storycaster.html"><xr:title>StoryCaster</xr:title><xr:desc>StoryCaster is a free World of Warcraft roleplay addon for Midnight and WoW Forever: paste your own story and it becomes /emote lines performed on a timer, with animated emotes, 18 animation buttons, random timing and a test mode.</xr:desc></xhtml:a>
+    <xhtml:a href="https://jcali0351.github.io/xal-reth/addon-storycaster.html"><xr:title>StoryCaster</xr:title><xr:desc>StoryCaster is a free World of Warcraft roleplay addon for Midnight and WoW Forever: paste your own story and it becomes /emote lines performed on a timer, with animated emotes, 18 animation buttons, random timing, a test mode and a Lore Library of ready-made roleplay for every class, race and faction.</xr:desc></xhtml:a>
   </url>
   <url>
     <loc>https://jcali0351.github.io/xal-reth/auction-house.html</loc>
