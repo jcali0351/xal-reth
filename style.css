@@ -1759,3 +1759,33 @@ html, body { overflow-x: clip; }
 
 /* Master Baiter Pro's logo on its card and page: round, in a violet glow */
 .dq-logo.mbp-logo { width: 140px; height: 140px; border-radius: 50%; filter: drop-shadow(0 0 20px rgba(150, 80, 255, .6)); }
+
+
+/* ========================================================================
+   ADDON FEATURE GUIDES (the "Every feature, explained" section on addon pages,
+   built by tools/build_addon_pages.py from docs/*.md)
+   ======================================================================== */
+.prose.guide { max-width: 860px; margin-left: auto; margin-right: auto; }
+.prose.guide h2[id^="guide-"] { margin-top: 2.2em; padding-bottom: .3em; border-bottom: 1px solid rgba(232, 190, 96, .25); scroll-margin-top: 90px; }
+.prose.guide h3 { margin-top: 1.4em; scroll-margin-top: 90px; }
+.prose.guide ul { padding-left: 1.3em; }
+.prose.guide li { margin: .35em 0; line-height: 1.6; }
+.guide-toc { margin: 1.2em 0 2em; padding: 1em 1.4em; border: 1px solid rgba(232, 190, 96, .35); border-radius: 10px;
+  background: linear-gradient(180deg, rgba(120, 80, 200, .10), rgba(0, 0, 0, .15)); }
+.guide-toc ol { columns: 2; column-gap: 2em; margin: .4em 0 0; padding-left: 0; list-style: none; }
+.guide-toc li { break-inside: avoid; margin: .25em 0; }
+.guide-toc a { text-decoration: none; }
+.guide-toc a:hover, .guide-toc a:focus-visible { text-decoration: underline; }
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1em 0; }
+.table-wrap table { min-width: 520px; }
+@media (max-width: 640px) { .guide-toc ol { columns: 1; } }
+
+/* StoryCaster and other multi-image screenshot galleries on addon pages */
+.addon-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
+.addon-gallery .addon-shot { margin: 0; }
+.addon-gallery .addon-shot:first-child { grid-column: 1 / -1; }
+.addon-gallery .addon-shot img { transition: transform .25s ease, box-shadow .25s ease; }
+.addon-gallery .addon-shot a:hover img, .addon-gallery .addon-shot a:focus-visible img { transform: translateY(-3px); box-shadow: 0 0 34px rgba(237, 194, 97, .35); }
+.addon-gallery-note { margin-top: 10px; font-size: .85rem; }
+@media (max-width: 760px) { .addon-gallery { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .addon-gallery .addon-shot img { transition: none; } }

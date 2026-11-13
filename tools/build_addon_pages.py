@@ -32,6 +32,57 @@ TABLE_NH = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What 
 TABLE_MBP = grab(r'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody><tr><td><code>/mbp</code>.*?</table>')
 DISCLAIMER = grab(r'<section class="warning" id="dramaqueen-disclaimer".*?</section>').replace(' id="dramaqueen-disclaimer"', ' id="disclaimer"')
 
+def guide_html(path, heading):
+    """A full feature guide written in Markdown (docs/...md) as a page section with its own contents list.
+    Handles what the guides use: ## and ### headings, paragraphs, - lists, | tables, ---, **bold**, *italic*, `code`.
+    The first # heading is left out (the page has its own title)."""
+    def inline(s):
+        s = html.escape(s, quote=False).replace("&amp;lt;", "&lt;").replace("&amp;gt;", "&gt;").replace("&amp;amp;", "&amp;")
+        s = re.sub(r"`+([^`]+?)`+", r"<code>\1</code>", s)
+        s = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", s)
+        s = re.sub(r"(?<![\w*])\*(?!\s)(.+?)(?<!\s)\*(?![\w*])", r"<em>\1</em>", s)
+        return s
+    def slug(t): return "guide-" + re.sub(r"[^a-z0-9]+", "-", re.sub(r"<[^>]+>", "", t).lower()).strip("-")
+    lines = open(path, encoding="utf-8").read().splitlines()
+    out, toc, para, items, rows = [], [], [], [], []
+    def flush():
+        nonlocal para, items, rows
+        if para: out.append("<p>" + inline(" ".join(para)) + "</p>"); para = []
+        if items: out.append("<ul>" + "".join(f"<li>{inline(i)}</li>" for i in items) + "</ul>"); items = []
+        if rows:
+            head, body = rows[0], [r for r in rows[1:] if not re.match(r"^[\s|:-]+$", "|".join(r))]
+            out.append('<div class="table-wrap"><table class="ranks"><thead><tr>' + "".join(f"<th>{inline(c)}</th>" for c in head) +
+                       "</tr></thead><tbody>" + "".join("<tr>" + "".join(f"<td>{inline(c)}</td>" for c in r) + "</tr>" for r in body) + "</tbody></table></div>")
+            rows = []
+    for raw in lines:
+        line = raw.rstrip()
+        if line.startswith("# "): flush(); continue
+        if line.startswith("## ") or line.startswith("### "):
+            flush()
+            level = 2 if line.startswith("## ") else 3
+            text = inline(line[level + 1:].strip())
+            sid = slug(text)
+            if level == 2: toc.append((sid, text))
+            out.append(f'<h{level} id="{sid}">{text}</h{level}>')
+        elif line.strip() == "---": flush()
+        elif line.lstrip().startswith("|"):
+            if para or items: flush()
+            rows.append([c.strip() for c in line.strip().strip("|").split("|")])
+        elif re.match(r"^\s*- ", line):
+            if para or rows: flush()
+            items.append(re.sub(r"^\s*- ", "", line))
+        elif not line.strip(): flush()
+        elif items and line.startswith("  "): items[-1] += " " + line.strip()
+        else:
+            if items or rows: flush()
+            para.append(line.strip())
+    flush()
+    nav = "".join(f'<li><a href="#{sid}">{t}</a></li>' for sid, t in toc)
+    return (f'<div class="divider"><span>{esc(heading).upper()}</span></div>'
+            f'<section class="prose guide" id="guide"><h2>{esc(heading)}</h2>'
+            f'<nav class="guide-toc" aria-label="Contents"><p class="kicker">Contents</p><ol>{nav}</ol></nav>{"".join(out)}'
+            f'<p class="center"><a class="btn ghost" href="#guide">Back to the contents</a></p></section>')
+
 def table(rows):
     body = "".join(f"<tr><td><code>{c}</code></td><td>{d}</td></tr>" for c, d in rows)
     return f'<table class="ranks cmds"><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody>{body}</tbody></table>'
@@ -154,15 +205,22 @@ ADDONS = [
   faq=[("Should I perform the whole thing?", "No. At the default 12 seconds per line it takes about 33 hours. The option exists because the Litany demands completeness. Nobody should do this."),
        ("Does it contain real-world politics?", "None at all. Despite the word Politics appearing nearby, it is satire of bureaucratic writing, not of any real religion, group or person.")]),
 
- dict(slug="addon-storycaster.html", name="StoryCaster", folder="StoryCaster", zip="StoryCaster.zip", version="1.2.0", game="Retail · Midnight",
+ dict(slug="addon-storycaster.html", name="StoryCaster", folder="StoryCaster", zip="StoryCaster.zip", version="1.9.1", game="Retail · Midnight",
   slash="/story", short="Paste your own roleplay and perform it as emotes with animations",
   tagline="Write your own roleplay and perform it: /emotes on a timer, with real character animations.",
-  desc="StoryCaster is a free World of Warcraft roleplay addon for Midnight and WoW Forever: paste your own story and it becomes /emote lines performed on a timer, with animated emotes, 18 animation buttons, random timing, a test mode and a Lore Library of ready-made roleplay for every class, race and faction.",
+  desc="StoryCaster is a free World of Warcraft roleplay addon for Midnight and WoW Forever: paste your own story and it becomes /emote lines performed on a timer, with animated emotes, 18 animation buttons, random timing, a test mode, moods, branching choices, reactions, every emote in the game, Drama and a Lore Library of ready-made roleplay for every class, race, faction, profession, holiday and occasion.",
   lede="Paste a story, a speech or a whole scene, alone or as a duet, and StoryCaster turns it into /emote lines that play out on a timer while your character acts it out: a bow, a wave, a laugh, a kneel. Your words, your timing, no typing in the middle of the moment. Eighteen animated emote buttons on the panel cover everything in between.",
-  stats=[("41", "ready-made lore scripts"), ("18", "animated emote buttons"), ("/story", "to open the panel")],
+  stats=[("69", "ready-made lore scripts"), ("1,544", "pirate, love, war, peace and after-dark lines"), ("40", "dungeon phrases")],
   art='<picture><source srcset="img/addons/storycaster-logo.webp" type="image/webp"><img class="dq-logo mbp-logo" src="img/addons/storycaster-logo.png" alt="StoryCaster logo: a glowing open hand reaching out of violet smoke, in a round frame" width="140" height="140"></picture>',
   features=[
-   ("The Lore Library", "Ready-made roleplay for every character", "<p>Not sure what to say? Open <strong>Lore</strong> on the panel (or <code>/story lore</code>) and pick from three dropdowns: <strong>Class</strong> (all 13), <strong>Faction</strong> (Alliance, Horde or unaligned) and <strong>Race</strong> (all 25). Each one starts on your own character. Every choice is an original script of 50 lines or more, in scenes, with animations and a few lines said aloud: a paladin's vigil, a death knight remembering being alive, a goblin's first deal, a dracthyr's first sunrise.</p><p><strong>Perform</strong> saves it to your scripts and plays it on your timer, <strong>Preview</strong> shows it in your own chat only, and <strong>Edit</strong> opens a copy in Write a Script to make it yours. <code>/story lore blood elf</code> performs one straight away. Target someone first and lines that mention them use their name.</p>"),
+   ("Pirate, Love, War and Peace", "Four themed libraries, one click each", "<p>The theme bar under the header holds <strong>Drama, Pirate, Love, War, Peace and Dungeon</strong>. Each theme slides out its own panel of categories: <strong>Pirate</strong> has 701 lines in twelve (hails, boasts, insults, treasure, ship life, grog, original shanties, battle, superstitions, the parrot, the sea, farewells) and a <strong>pirate accent</strong> that turns everything you say into pirate speak; <strong>Love</strong> (flirting, compliments, courtship, longing, heartbreak, devotion), <strong>War</strong> (battle cries, the eve of battle, the fray, taunts, victory, the aftermath) and <strong>Peace</strong> (greetings, stillness, wisdom, mending quarrels, blessings, rest and nature) have over 200 lines each. Every category has <strong>Line</strong> (one now) and <strong>Scene</strong> (a dozen on your timer); a big button picks from anywhere; Say, Emote or Mix; one line every 15 seconds at most.</p>"),
+   ("After Dark (18+)", "Nightlife, cheeky but never explicit", "<p>The <strong>NSFW</strong> button opens <strong>After Dark</strong>: 218 adult-themed lines of nightlife comedy in seven categories: Drinking, Go-Go Dancing, Cheeky Flirting, Bar Crawl and Nightlife, Dares and Games, Bar Brawls and The Morning After. It asks once that you're 18 or older before it opens. The lines are suggestive at most and never explicit; anything you post in public still has to follow the game's chat rules.</p>"),
+   ("Dungeon", "Say the right thing, fast", "<p>The <strong>Dungeon</strong> panel is forty one-click phrases for your group, in eight groups: hello, ready, combat (interrupt!, stun!, focus, CC, move!, line of sight, AoE, defensives, bloodlust, wipe), loot (need that?, greed, trade?, grats!), breaks (brb, AFK, back, bio), sorry, thanks (GG, great run, nice heal, nice tank) and goodbye. Each button picks one of a few wordings, never the same twice in a row, and speaks in instance, raid or party chat, whichever your group is.</p>"),
+   ("Player Focus and Ideas", "Bring other players into the story", "<p><strong>Player Focus</strong> sits right under the script: turn it on, pick your target or type a name, and whatever you perform finds room for them now and then: <em>says to Brannoc, \"...\"</em> here, <em>..., glancing over at Brannoc.</em> there. Light or More, never two lines in a row, never when they're already named. The <strong>Ideas</strong> tab reads your target's <strong>Total RP 3</strong> or <strong>MyRolePlay</strong> profile (name, title, race, home, eyes, what they're up to, their About text) and writes three openers made from it, or gives you random scene prompts. It only reads what your RP addon already knows; nothing is sent anywhere.</p><p>Also new: a gold-framed look with icons on every button, sparkles and glows on the gold accents, your RP name for <code>{name}</code> and <code>{title}</code>, <strong>Backup and Restore</strong> for all your scripts, duets that wait until everyone has joined, and a minimap button.</p>"),
+   ("Drama", "Drama Queen, Paranoid and Brain Rot, built in", "<p>The pink <strong>Drama</strong> button slides out three pages. <strong>Drama Queen</strong>: deadpan personal drama every few minutes (you pick 1 to 60), in guild chat and/or publicly as an emote and a /say line, with multi-part sagas, one voice per guild and the Queen Detector, which also finds Drama Queen Pro users. It starts switched off; please read the <a href=\"addons.html#dramaqueen-disclaimer\">use-at-your-own-risk disclaimer</a> first. <strong>Paranoid</strong>: target someone and perform five acts of growing suspicion, from a nervous glance to light trash talk, on the panel's own timer, or as a private inner monologue. <strong>Brain Rot</strong>: one click, one of over a thousand random lines, said or emoted, recharging for 15 seconds.</p>"),
+   ("Choices, Reactions and Your Voice", "Scripts that answer back", "<p>A line like <code>?? Fight it | Run away &gt; The Escape</code> stops the script and shows the options as buttons; each jumps to its scene. <code>/goto The Escape</code> jumps, <code>/end</code> ends, and <code>/mood sad</code> changes the mood mid-script, with a fitting animation now and then. Under <strong>More</strong>: <strong>Reactions</strong> answer emotes and words aimed at you (off until you turn them on, once a minute per person), <strong>Send a script</strong> offers your script straight to a friend's StoryCaster, and <strong>My voice</strong> keeps this character's title, catchphrase and own words for each mood, so <code>{title}</code> and <code>{catchphrase}</code> fill themselves in.</p>"),
+   ("The Lore Library", "Ready-made roleplay for every character", "<p>Not sure what to say? Open the glowing <strong>Lore Library</strong> tab at the bottom of the panel (or type <code>/story lore</code>) and pick from six dropdowns: <strong>Class</strong> (all 13), <strong>Faction</strong> (Alliance, Horde or unaligned), <strong>Race</strong> (all 25), <strong>Profession</strong> (all 15, from Alchemy to First Aid), <strong>Holiday</strong> (5, starting on the one in season) and <strong>Occasion</strong>: a wedding, a funeral, departing for battle, the birth of a child, the loss of a friend and three romances, written to fit any race and class. Each one starts on your own character; star your favorites, and <strong>Line</strong> says a single line from any of them. Every choice is an original script of 50 lines or more, in scenes, with animations and a few lines said aloud: a paladin's vigil, a death knight remembering being alive, a goblin's first deal, a dracthyr's first sunrise.</p><p><strong>Perform</strong> saves it to your scripts and plays it on your timer, <strong>Preview</strong> shows it in your own chat only, and <strong>Edit</strong> opens a copy in Write a Script to make it yours. <code>/story lore blood elf</code> performs one straight away. Target someone first and lines that mention them use their name.</p>"),
+   ("Moods and Every Emote", "Same words, a different feeling", "<p>Put <code>&lt;mood&gt;</code> after a verb in any script, like <code>says &lt;mood&gt;, \"Stay a while.\"</code>, then choose a feeling from the <strong>Mood</strong> button: Happy, Sad, Angry, Scared, Calm, Excited, Nervous, Tired, Playful or Serious. Each line takes a fitting phrase as it is posted (<em>says through gritted teeth</em>, <em>says with a warm smile</em>), picked fresh every time, and changing the mood mid-scene changes the very next line. <em>None</em> leaves it out. Every Lore Library script already has it.</p><p><strong>All emotes</strong> opens every emote in the game (read from the game's own list) with a search box, one click each. <strong>Random</strong> plays a random one and then rests for 15 seconds, so it can never be spammed.</p>"),
    ("Duets and Group Scenes", "Everyone plays their part", "<p>Start a line with a character's name, like <code>[Brannoc] draws his blade.</code>, and that line belongs to them. Press Play and your StoryCaster invites the others (through your party or raid, or a whisper), then runs the scene: each player's own StoryCaster performs their lines on cue, with their own animations. Everyone needs StoryCaster and presses Join.</p>"),
    ("Deliver, Scenes and Sharing", "Live RP, on cue", "<p><code>/s</code>, <code>/y</code>, <code>/p</code>, <code>/ra</code> and <code>/g</code> lines are spoken in that chat; /say and /yell wait for the <strong>Deliver</strong> button or key, because the game only allows them from a key press. <em>Manual</em> mode makes every line wait for Deliver, like a teleprompter. <code>## Act Two</code> starts a scene you can jump to. <strong>Share</strong> copies a script as text for friends, and <strong>Edit Lines</strong> lets you start from, test, move or delete any line.</p>"),
    ("Placeholders and Pacing", "Never the same twice", "<p><code>{target}</code>, <code>{name}</code>, <code>{class}</code>, <code>{race}</code>, <code>{zone}</code>, <code>{subzone}</code> and <code>{time}</code> fill themselves in, and <code>{smiles|grins|smirks}</code> picks one at random. <em>Auto pace</em> gives longer lines more time. <strong>Ambient</strong> runs a quiet loop of small idle actions for standing RP, and five starter scripts show what is possible. Compact mode and key bindings (Key Bindings &gt; AddOns &gt; StoryCaster) keep it out of your way.</p><p><strong>Never spam:</strong> on its own StoryCaster never posts faster than one line every 15 seconds, or more than 4 lines a minute, whatever the timer or a <code>/pause</code> says. Only your own Deliver presses go faster.</p>"),
@@ -172,6 +230,7 @@ ADDONS = [
    ("Eighteen Buttons", "Emotes on demand", "<p>Wave, Bow, Nod, Shake head, Talk, Point, Laugh, Chuckle, Cheer, Clap, Salute, Kneel, Cry, Shrug, Dance, Roar, Flex and Gasp, one click each, aimed at your target. <code>{target}</code> in a script becomes your target's name.</p>")],
   commands=TABLE_SC + '<p class="muted center">Write in the third person, the way emotes read: the game puts your name first, so <em>walks to the door.</em> becomes <em>YourName walks to the door.</em></p>',
   install_extra=["Playing WoW Forever? Download <a href=\"StoryCaster-Forever.zip\" download>StoryCaster for Forever</a> instead and move its <code>StoryCaster</code> folder into <code>_forever_\\Interface\\AddOns</code>."],
+  more=guide_html("docs/storycaster-features.md", "Every feature, explained"),
   restart="Restart World of Warcraft or type <code>/reload</code>.",
   last="Type <code>/story</code>, press <strong>Write a Script</strong>, paste your scene and press <strong>Save and Perform</strong>.",
   faq=[("Why does a second line appear when my character bows?", "That is the game: every animated emote prints its own line (\"YourName bows.\"). Turn animations off in scripts with <code>/story animations</code> if you only want your own words."),
@@ -345,6 +404,20 @@ ADDONS = [
 
 # Panel previews (img/shots/<name>.jpg), recreated from each addon's code. slug -> (image, alt text)
 SHOTS = {
+    "addon-storycaster.html": [
+        ("storycaster-console.jpg", "The full StoryCaster console: the gold-framed mini player performing Lore: Hunter, with Studio, Library (Animated Emotes) and Stage open underneath, beside the chat it produces",
+         "The full console: the player with Studio, Library and Stage stacked underneath, and the emotes it posts (Player Focus weaves in Brannoc)."),
+        ("storycaster-mini.jpg", "The StoryCaster mini player on its own: header, script card, play controls and the violet, emerald and rose Studio, Library and Stage toggles",
+         "The mini player: everything you need while you play. Studio, Library and Stage slide out from underneath."),
+        ("storycaster-lore.jpg", "The Lore Library tab: six dropdowns for class, faction, race, profession, holiday and occasion, each with favorite, Perform, Preview, Edit and Line buttons",
+         "The Lore Library: 69 ready-made scripts of 50+ lines, starting on your own character."),
+        ("storycaster-pirate.jpg", "The Pirate slide-out beside the player: ARR!, Say/Emote/Mix, the pirate accent and twelve categories with Line and Scene buttons, and pirate chat",
+         "Pirate: 701 lines in twelve categories, scenes, and a pirate accent for everything you say."),
+        ("storycaster-ideas.jpg", "The Ideas tab reading a Total RP 3 profile for Brannoc Ashvale, Knight-Captain, with three openers made from it",
+         "Ideas: openers written from your target's Total RP 3 or MyRolePlay profile."),
+        ("storycaster-dungeon.jpg", "The Dungeon slide-out: forty one-click group phrases in eight groups, and the instance chat they post",
+         "Dungeon: forty one-click phrases for your group, in instance, raid or party chat."),
+    ],
     "addon-vyrenna-rp.html": ("vyrenna-rp.jpg", "Vyrenna RP panel in green and gold: Vyrenna in a ring of crescents, chapter I.4 The Four Lights being read, and the emotes it produces",
                               "Panel preview, recreated from the addon's own textures. In game it uses your own character, target and guild."),
     "addon-xalreth-rp.html": ("xalreth-rp.jpg", "Xal'Reth RP panel: the glowing gold frame, a rite in progress and the emotes it produces"),
@@ -360,6 +433,12 @@ SHOTS = {
 
 def shot_html(slug):
     if slug not in SHOTS: return ""
+    if isinstance(SHOTS[slug], list):  # a gallery: [(image, alt, caption), ...]
+        figs = "".join(f'<figure class="addon-shot"><a href="img/shots/{img}" target="_blank" rel="noopener"><img src="img/shots/{img}" alt="{alt.replace(chr(34), "&quot;")}" loading="lazy"></a><figcaption>{cap}</figcaption></figure>'
+                       for img, alt, cap in SHOTS[slug])
+        return ('\n  <div class="divider"><span>SCREENSHOTS</span></div>\n'
+                f'  <section id="screenshots" class="addon-gallery">{figs}</section>'
+                '\n  <p class="muted center addon-gallery-note">Previews recreated from the addon\'s own textures and code. In game they use your own character, target and group.</p>')
     img, alt, *cap = SHOTS[slug]
     cap = cap[0] if cap else "Panel preview, recreated from the addon's code. In game it uses your own character, target and guild."
     return ('\n  <div class="divider"><span>SCREENSHOTS</span></div>\n'
