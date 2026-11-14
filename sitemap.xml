@@ -509,7 +509,7 @@
   </url>
   <url>
     <loc>https://jcali0351.github.io/xal-reth/news.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
     <image:image><image:loc>https://jcali0351.github.io/xal-reth/img/xalreth-card.jpg</image:loc></image:image>
@@ -518,11 +518,19 @@
   </url>
   <url>
     <loc>https://jcali0351.github.io/xal-reth/herald.html</loc>
-    <lastmod>2026-11-13</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
     <image:image><image:loc>https://jcali0351.github.io/xal-reth/img/xalreth-card.jpg</image:loc></image:image>
     <xhtml:a href="https://jcali0351.github.io/xal-reth/herald.html"><xr:title>The Herald Archive</xr:title><xr:desc>Every official post of the Coil Herald, the news page of the Cult of Xal'Reth, a World of Warcraft roleplay guild.</xr:desc></xhtml:a>
+  </url>
+  <url>
+    <loc>https://jcali0351.github.io/xal-reth/herald-20261114-0748-proverbs-from-the-bank-door-twelve-sayings-scrat.html</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+    <image:image><image:loc>https://jcali0351.github.io/xal-reth/img/xalreth-card.jpg</image:loc></image:image>
+    <xhtml:a href="https://jcali0351.github.io/xal-reth/herald-20261114-0748-proverbs-from-the-bank-door-twelve-sayings-scrat.html"><xr:title>Proverbs from the Bank Door: Twelve Sayings Scratched Beside the Guild Vault</xr:title><xr:desc>The wall beside the guild bank has been written on for years by the faithful who stood there deciding. The Ministry of Spare Change has copied down the twelve most legible. The rest were mostly sums.</xr:desc></xhtml:a>
   </url>
   <url>
     <loc>https://jcali0351.github.io/xal-reth/herald-20261113-1948-rite-how-to-the-unfinished-sentence-for-those-wh.html</loc>
