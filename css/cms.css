@@ -221,6 +221,20 @@ body.cms { min-height: 100vh; overflow-x: hidden; background: radial-gradient(el
 .fonts-preview .lede { font-style: italic; font-weight: 300; color: var(--bone-dim); }
 .fonts-preview.bold-h h1, .fonts-preview.bold-h h2 { font-weight: 700; }
 .fonts-preview .btn { pointer-events: none; }
+/* heading styles */
+.hstyles { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 0 18px; }
+.hs-group legend { font: 700 .8rem var(--serif-display); letter-spacing: .14em; text-transform: uppercase; color: var(--violet-hot); padding: 0 6px; }
+.hs-group legend small { font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--bone-dim); }
+.hs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 4px 14px; }
+.hs-field { margin-bottom: 10px; }
+.hs-field > span { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.hs-field output { min-width: 0; text-transform: none; letter-spacing: 0; font-size: .7rem; color: var(--bone-dim); }
+.hs-field.is-set output { color: var(--venom); }
+.hs-field .hs-reset { font-size: .62rem; letter-spacing: .1em; margin-left: auto; opacity: .5; }
+.hs-field.is-set .hs-reset { opacity: 1; }
+.hs-field input[type=range] { width: 100%; accent-color: var(--violet); }
+.hs-field select { width: 100%; padding: 7px 8px; }
+.hs-field .hs-custom { margin-top: 6px; width: 100%; height: 34px; border: 1px solid var(--line); border-radius: 8px; background: transparent; padding: 2px; }
 
 /* ---------- Add a picture */
 .dlg-insert-pv { margin: 0 0 12px; text-align: center; color: var(--bone-dim); font-size: .85rem; }

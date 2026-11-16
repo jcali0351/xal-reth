@@ -89,7 +89,36 @@ def site_fonts_css(choice, cat):
     s += "".join(face_css(f, "../fonts/") for f in used)
     s += f":root{{--fat:{stack(h)};--serif-body:{stack(b)};--serif-display:{stack(l)}}}\n"
     if choice.get("headingBold"): s += "h1,h2{font-weight:700}\n"
+    s += heading_css(choice.get("hs") or {})
     return s
+
+# Heading styles from the Fonts tab: same output as headingCss() in js/cms.js, keep the two in step.
+HS_GROUPS = [("big", "body:not(.cms) :is(h1,h2)"), ("small", "body:not(.cms) :is(h3,h4)")]
+HS_COLORS = {"lilac": "var(--gold)", "violet": "var(--violet-hot)", "deep": "var(--scale-bright)", "bone": "var(--bone)", "white": "#fff", "gold": "#e2be6e"}
+HS_GLOWS = {"none": "none", "soft": "0 0 18px rgba(166,107,255,.55)", "strong": "0 0 8px rgba(201,162,255,.9),0 0 32px rgba(166,107,255,.75)", "gold": "0 0 18px rgba(226,190,110,.6)"}
+HS_SIZES = [(".page-head h1", "2.4rem", "7vw", "4.2rem"), (".hero h1", "2.7rem", "9vw", "5.8rem"), ("section h2", "1.75rem", "4.2vw", "2.6rem")]
+
+def heading_css(hs):
+    s = ""
+    for key, sel in HS_GROUPS:
+        o = hs.get(key) or {}
+        d = []
+        if o.get("weight"): d.append("font-weight:" + o["weight"])
+        if o.get("spacing"): d.append("letter-spacing:" + o["spacing"] + "em")
+        if o.get("line"): d.append("line-height:" + o["line"])
+        if o.get("case") == "small-caps": d += ["font-variant-caps:small-caps", "text-transform:none"]
+        elif o.get("case"): d.append("text-transform:" + o["case"])
+        if o.get("style"): d.append("font-style:" + o["style"])
+        c = o.get("color") or ""
+        c = HS_COLORS.get(c) or (c if re.fullmatch(r"#[0-9a-fA-F]{6}", c) else "")
+        if c: d += ["color:" + c, "-webkit-text-fill-color:" + c]
+        if o.get("glow") in HS_GLOWS: d.append("text-shadow:" + HS_GLOWS[o["glow"]])
+        if d: s += sel + "{" + ";".join(x + "!important" for x in d) + "}\n"
+        if key == "big" and o.get("size") and o["size"] != "100":
+            m = "*" + o["size"] + "/100)"
+            for z in HS_SIZES:
+                s += f"body:not(.cms) {z[0]}{{font-size:clamp(calc({z[1]}{m},calc({z[2]}{m},calc({z[3]}{m})!important}}\n"
+    return "/* Heading styles, set in the Fonts tab */\n" + s if s else ""
 
 GOOGLE = re.compile(r'[ \t]*<link (?:rel="preconnect" href="https://fonts\.(?:googleapis|gstatic)\.com"(?: crossorigin(?:="")?)?|href="https://fonts\.googleapis\.com/css2\?[^"]*" rel="stylesheet")>\n?')
 STYLE = re.compile(r'(<link rel="stylesheet" href="((?:/xal-reth/)?)style\.css(?:\?v=[^"]*)?">)')

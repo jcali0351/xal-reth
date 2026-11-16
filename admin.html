@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="style.css?v=31bd2e8b">
 <link rel="stylesheet" href="css/site-fonts.css?v=aeb406ab">
 <link rel="stylesheet" href="fonts/catalog.css">
-<link rel="stylesheet" href="css/cms.css?v=ee153f78">
+<link rel="stylesheet" href="css/cms.css?v=36a03ee6">
 </head>
 <body class="cms">
 
@@ -168,7 +168,7 @@
 
   <section class="cms-panel" data-panel="fonts" hidden>
     <div class="cms-panel-head">
-      <div><h2>Fonts</h2><p class="cms-hint">Choose the lettering for the whole site. Every font is stored on the site itself, so each page only downloads the ones you pick.</p></div>
+      <div><h2>Fonts</h2><p class="cms-hint">Choose the lettering for the whole site, and how the headings are set: weight, letter spacing, line height, size, capitals, italic, colour and glow. Every font is stored on the site itself, so each page only downloads the ones you pick.</p></div>
       <button class="cms-btn" type="button" id="fonts-save" disabled>Save &amp; publish</button>
     </div>
     <form id="fonts-form" class="hero-form fonts-form" autocomplete="off">
@@ -176,8 +176,8 @@
         <label class="cms-field"><span>Headings <small>(page titles and section headings)</small></span><select id="font-heading"></select></label>
         <label class="cms-field"><span>Body text <small>(paragraphs, lists, quotes)</small></span><select id="font-body"></select></label>
         <label class="cms-field"><span>Menu, labels &amp; buttons</span><select id="font-labels"></select></label>
-        <label class="cms-check"><input type="checkbox" id="font-heading-bold"> Bold headings <small>(fat display fonts like Abril Fatface look best without)</small></label>
       </div>
+      <div class="hstyles" id="hstyles"><!-- heading style controls, built by js/cms.js (HSTYLE) --></div>
       <div class="fonts-preview" id="fonts-preview" aria-label="Preview">
         <span class="hp-label">Preview</span>
         <p class="eyebrow">The Coil Herald</p>
@@ -188,7 +188,7 @@
         <h3>A smaller heading</h3>
         <p><a class="btn" href="#" tabindex="-1">Enter the Altar</a> <a class="btn ghost" href="#" tabindex="-1">Join the Coil</a></p>
       </div>
-      <p class="cms-hint"><button type="button" class="cms-link" id="fonts-restore">Put back the original fonts (Abril Fatface and Lato)</button> · Changes reach visitors about a minute after saving.</p>
+      <p class="cms-hint"><button type="button" class="cms-link" id="fonts-restore">Put back the original fonts (Abril Fatface and Lato)</button> · <button type="button" class="cms-link" id="hstyle-restore">Put back the original heading styles</button> · Changes reach visitors about a minute after saving.</p>
     </form>
   </section>
 
@@ -505,6 +505,6 @@
 
 <div class="cms-toast" id="cms-toast" role="status" aria-live="polite"></div>
 
-<script src="js/cms.js?v=14dbe736"></script>
+<script src="js/cms.js?v=a9362db8"></script>
 </body>
 </html>

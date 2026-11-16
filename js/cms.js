@@ -1367,10 +1367,69 @@
   var FONT_DEF = { heading: "abril-fatface", body: "lato", labels: "", headingBold: false };
   var CAT_NAMES = { display: "Display and fantasy", serif: "Serif (book type)", sans: "Sans serif (clean)", script: "Handwriting and script", mono: "Typewriter (monospace)" };
   function fontStack(f) { return '"' + f.name + '", ' + f.fallback; }
+
+  /* Heading styles: two groups, big (h1, h2) and small (h3, h4). Every value is a string ("" = the site's own style)
+     and only the ones John sets are written, as !important rules for body:not(.cms) so they win over page styles but
+     leave this editor alone. Kept in the xr-fonts JSON as "hs". headingCss() must stay in step with heading_css() in
+     tools/build_fonts.py. */
+  var HS_GROUPS = [
+    { key: "big", title: "Big headings", note: "page titles and section headings (h1, h2)", sel: "body:not(.cms) :is(h1,h2)" },
+    { key: "small", title: "Small headings", note: "sub-headings, card titles and footer labels (h3, h4)", sel: "body:not(.cms) :is(h3,h4)" }
+  ];
+  var HS_COLORS = { lilac: "var(--gold)", violet: "var(--violet-hot)", deep: "var(--scale-bright)", bone: "var(--bone)", white: "#fff", gold: "#e2be6e" };
+  var HS_GLOWS = { none: "none", soft: "0 0 18px rgba(166,107,255,.55)", strong: "0 0 8px rgba(201,162,255,.9),0 0 32px rgba(166,107,255,.75)", gold: "0 0 18px rgba(226,190,110,.6)" };
+  var HS_SIZES = [[".page-head h1", "2.4rem", "7vw", "4.2rem"], [".hero h1", "2.7rem", "9vw", "5.8rem"], ["section h2", "1.75rem", "4.2vw", "2.6rem"]];
+  var HS_FIELDS = [
+    { k: "weight", label: "Weight", opts: [["", "Site default"], ["100", "Thin (100)"], ["200", "Extra light (200)"], ["300", "Light (300)"], ["400", "Regular (400)"], ["500", "Medium (500)"], ["600", "Semibold (600)"], ["700", "Bold (700)"], ["800", "Extra bold (800)"], ["900", "Black (900)"]] },
+    { k: "spacing", label: "Letter spacing", range: [-0.05, 0.5, 0.01], unit: "em", def: { big: 0.01, small: 0.02 } },
+    { k: "line", label: "Line height", range: [0.8, 2, 0.02], unit: "", def: { big: 1.12, small: 1.3 } },
+    { k: "size", label: "Size", range: [60, 160, 5], unit: "%", def: { big: 100 }, only: "big" },
+    { k: "case", label: "Capitals", opts: [["", "Site default"], ["none", "As written"], ["uppercase", "ALL CAPITALS"], ["small-caps", "Small Capitals"], ["capitalize", "Every Word Capitalised"], ["lowercase", "all lowercase"]] },
+    { k: "style", label: "Style", opts: [["", "Site default"], ["normal", "Upright"], ["italic", "Italic"]] },
+    { k: "color", label: "Colour", opts: [["", "Site default"], ["lilac", "Lilac (the site's accent)"], ["violet", "Bright violet"], ["deep", "Deep violet"], ["bone", "Bone white"], ["white", "Pure white"], ["gold", "Real gold"], ["custom", "Custom colour…"]] },
+    { k: "glow", label: "Glow", opts: [["", "Site default"], ["none", "No glow"], ["soft", "Soft violet glow"], ["strong", "Strong violet glow"], ["gold", "Gold glow"]] }
+  ];
+  function hsDecl(o) {
+    var d = [];
+    if (o.weight) d.push("font-weight:" + o.weight);
+    if (o.spacing) d.push("letter-spacing:" + o.spacing + "em");
+    if (o.line) d.push("line-height:" + o.line);
+    if (o["case"] === "small-caps") d.push("font-variant-caps:small-caps", "text-transform:none");
+    else if (o["case"]) d.push("text-transform:" + o["case"]);
+    if (o.style) d.push("font-style:" + o.style);
+    var c = o.color ? (HS_COLORS[o.color] || (/^#[0-9a-f]{6}$/i.test(o.color) ? o.color : "")) : "";
+    if (c) d.push("color:" + c, "-webkit-text-fill-color:" + c);
+    if (o.glow && HS_GLOWS[o.glow]) d.push("text-shadow:" + HS_GLOWS[o.glow]);
+    return d;
+  }
+  function headingCss(hs) {
+    var s = "";
+    HS_GROUPS.forEach(function (g) {
+      var o = (hs && hs[g.key]) || {}, d = hsDecl(o);
+      if (d.length) s += g.sel + "{" + d.map(function (x) { return x + "!important"; }).join(";") + "}\n";
+      if (g.key === "big" && o.size && o.size !== "100") HS_SIZES.forEach(function (z) {
+        var m = "*" + o.size + "/100)";
+        s += "body:not(.cms) " + z[0] + "{font-size:clamp(calc(" + z[1] + m + ",calc(" + z[2] + m + ",calc(" + z[3] + m + ")!important}\n";
+      });
+    });
+    return s ? "/* Heading styles, set in the Fonts tab */\n" + s : "";
+  }
+  function cleanHs(hs) {
+    var out = {};
+    HS_GROUPS.forEach(function (g) {
+      var o = (hs && hs[g.key]) || {}, c = {};
+      HS_FIELDS.forEach(function (f) { if (o[f.k] && !(f.k === "size" && o[f.k] === "100")) c[f.k] = String(o[f.k]); });
+      if (Object.keys(c).length) out[g.key] = c;
+    });
+    return out;
+  }
+
   function fontsCss(choice) {
     var by = fonts.by, h = by[choice.heading] || by["abril-fatface"], b = by[choice.body] || by.lato, l = by[choice.labels || ""] || b;
     var used = []; [h, b, l].forEach(function (f) { if (used.indexOf(f) < 0) used.push(f); });
-    var s = "/* xr-fonts " + JSON.stringify({ heading: choice.heading, body: choice.body, labels: choice.labels || "", headingBold: !!choice.headingBold }) + " */\n" +
+    var meta = { heading: choice.heading, body: choice.body, labels: choice.labels || "", headingBold: !!choice.headingBold };
+    var hs = cleanHs(choice.hs); if (Object.keys(hs).length) meta.hs = hs;
+    var s = "/* xr-fonts " + JSON.stringify(meta) + " */\n" +
       "/* The site's fonts, chosen in the Sanctum Editor (admin.html, Fonts tab), which rewrites this file.\n" +
       "   Headings use --fat, body text --serif-body, menu, labels and buttons --serif-display. Font files live in fonts/. */\n";
     used.forEach(function (f) {
@@ -1380,8 +1439,79 @@
     });
     s += ":root{--fat:" + fontStack(h) + ";--serif-body:" + fontStack(b) + ";--serif-display:" + fontStack(l) + "}\n";
     if (choice.headingBold) s += "h1,h2{font-weight:700}\n";
+    s += headingCss(hs);
     return s;
   }
+
+  /* The heading style controls, built once into #hstyles. */
+  function buildHsForm() {
+    var box = $("#hstyles"); if (!box || box.dataset.built) return; box.dataset.built = "1";
+    HS_GROUPS.forEach(function (g) {
+      var fs = document.createElement("fieldset"); fs.className = "cms-fieldset hs-group"; fs.dataset.group = g.key;
+      fs.innerHTML = "<legend>" + esc(g.title) + " <small>" + esc(g.note) + "</small></legend>";
+      var grid = document.createElement("div"); grid.className = "hs-grid"; fs.appendChild(grid);
+      HS_FIELDS.forEach(function (f) {
+        if (f.only && f.only !== g.key) return;
+        var id = "hs-" + g.key + "-" + f.k, lab = document.createElement("div"); lab.className = "cms-field hs-field";
+        if (f.range) {
+          var dv = f.def[g.key];
+          lab.innerHTML = '<span><label for="' + id + '">' + esc(f.label) + '</label> <output for="' + id + '"></output> <button type="button" class="cms-link hs-reset" title="Back to the site default">default</button></span>' +
+            '<input type="range" id="' + id + '" min="' + f.range[0] + '" max="' + f.range[1] + '" step="' + f.range[2] + '" value="' + dv + '" data-def="' + dv + '" data-unit="' + f.unit + '">';
+          var r = lab.querySelector("input");
+          r.addEventListener("input", function () { r.dataset.set = "1"; hsOut(r); });
+          lab.querySelector(".hs-reset").addEventListener("click", function () { delete r.dataset.set; r.value = r.dataset.def; hsOut(r); fontsChanged(); });
+        } else {
+          lab.innerHTML = '<span><label for="' + id + '">' + esc(f.label) + "</label></span><select id=\"" + id + '">' +
+            f.opts.map(function (o) { return '<option value="' + o[0] + '">' + esc(o[1]) + "</option>"; }).join("") + "</select>" +
+            (f.k === "color" ? '<input type="color" class="hs-custom" id="' + id + '-custom" value="#c9a2ff" hidden aria-label="Custom colour">' : "");
+          if (f.k === "color") {
+            var sel = lab.querySelector("select"), pick = lab.querySelector(".hs-custom");
+            sel.addEventListener("change", function () { pick.hidden = sel.value !== "custom"; });
+          }
+        }
+        grid.appendChild(lab);
+      });
+      box.appendChild(fs);
+    });
+  }
+  function hsOut(r) {
+    var o = r.parentNode.querySelector("output") || r.closest(".hs-field").querySelector("output");
+    o.textContent = r.dataset.set ? r.value + r.dataset.unit : "site default";
+    r.closest(".hs-field").classList.toggle("is-set", !!r.dataset.set);
+  }
+  function setHsForm(hs) {
+    buildHsForm();
+    HS_GROUPS.forEach(function (g) {
+      var o = (hs && hs[g.key]) || {};
+      HS_FIELDS.forEach(function (f) {
+        var el = document.getElementById("hs-" + g.key + "-" + f.k); if (!el) return;
+        var v = o[f.k] || "";
+        if (f.range) {
+          if (v) { el.dataset.set = "1"; el.value = v; } else { delete el.dataset.set; el.value = el.dataset.def; }
+          hsOut(el);
+        } else if (f.k === "color") {
+          var pick = document.getElementById(el.id + "-custom");
+          if (/^#/.test(v)) { el.value = "custom"; pick.value = v; } else el.value = v;
+          pick.hidden = el.value !== "custom";
+        } else el.value = v;
+      });
+    });
+  }
+  function hsValues() {
+    var hs = {};
+    HS_GROUPS.forEach(function (g) {
+      var o = {};
+      HS_FIELDS.forEach(function (f) {
+        var el = document.getElementById("hs-" + g.key + "-" + f.k); if (!el) return;
+        if (f.range) { if (el.dataset.set) o[f.k] = el.value; }
+        else if (f.k === "color" && el.value === "custom") o[f.k] = document.getElementById(el.id + "-custom").value;
+        else if (el.value) o[f.k] = el.value;
+      });
+      hs[g.key] = o;
+    });
+    return cleanHs(hs);
+  }
+
   function fillFontSelect(sel, withSame) {
     sel.innerHTML = "";
     if (withSame) { var o0 = document.createElement("option"); o0.value = ""; o0.textContent = "Same as body text"; sel.appendChild(o0); }
@@ -1404,43 +1534,54 @@
       var by = {}; r[0].forEach(function (f) { by[f.slug] = f; });
       var m = /\/\* xr-fonts (\{.*?\}) \*\//.exec(r[1].text), choice = Object.assign({}, FONT_DEF);
       if (m) { try { Object.assign(choice, JSON.parse(m[1])); } catch (e) {} }
+      /* The old "Bold headings" box is now the big headings' weight. */
+      choice.hs = cleanHs(choice.hs);
+      if (choice.headingBold) { choice.hs.big = choice.hs.big || {}; if (!choice.hs.big.weight) choice.hs.big.weight = "700"; choice.headingBold = false; }
       fonts = { list: r[0], by: by, sha: r[1].sha, saved: choice, dirty: false };
       fillFontSelect($("#font-heading")); fillFontSelect($("#font-body")); fillFontSelect($("#font-labels"), true);
-      setFontForm(choice); $("#fonts-save").disabled = true;
+      setFontForm(choice); setHsForm(choice.hs); fontPreview(); $("#fonts-save").disabled = true;
     }).catch(function (e) { toast("The fonts couldn't be loaded: " + e.message, true); });
   }
   function setFontForm(c) {
     $("#font-heading").value = fonts.by[c.heading] ? c.heading : FONT_DEF.heading;
     $("#font-body").value = fonts.by[c.body] ? c.body : FONT_DEF.body;
     $("#font-labels").value = fonts.by[c.labels] ? c.labels : "";
-    $("#font-heading-bold").checked = !!c.headingBold;
     fontPreview();
   }
   function fontValues() {
-    return { heading: $("#font-heading").value, body: $("#font-body").value, labels: $("#font-labels").value, headingBold: $("#font-heading-bold").checked };
+    return { heading: $("#font-heading").value, body: $("#font-body").value, labels: $("#font-labels").value, headingBold: false, hs: hsValues() };
   }
   function fontPreview() {
     var v = fontValues(), pv = $("#fonts-preview"), by = fonts.by;
     var h = by[v.heading], b = by[v.body], l = by[v.labels] || b;
     pv.style.setProperty("--fat", fontStack(h)); pv.style.setProperty("--serif-body", fontStack(b)); pv.style.setProperty("--serif-display", fontStack(l));
-    pv.classList.toggle("bold-h", v.headingBold);
     [$("#font-heading"), $("#font-body"), $("#font-labels")].forEach(function (sel) { var f = by[sel.value] || b; sel.style.fontFamily = fontStack(f); });
+    /* Heading styles go straight onto the preview's headings. */
+    HS_GROUPS.forEach(function (g) {
+      var o = v.hs[g.key] || {}, css = hsDecl(o).join(";");
+      $$(g.key === "big" ? "h1, h2" : "h3, h4", pv).forEach(function (el) {
+        var size = "";
+        if (g.key === "big" && o.size) size = ";font-size:calc(" + (el.tagName === "H1" ? "clamp(2rem, 6vw, 3.4rem)" : "clamp(1.5rem, 4vw, 2.2rem)") + "*" + o.size + "/100)";
+        el.style.cssText = css + size;
+      });
+    });
   }
   function fontsChanged() {
     if (!fonts) return;
     var v = fontValues(), s = fonts.saved;
-    fonts.dirty = v.heading !== s.heading || v.body !== s.body || v.labels !== (s.labels || "") || v.headingBold !== !!s.headingBold;
+    fonts.dirty = v.heading !== s.heading || v.body !== s.body || v.labels !== (s.labels || "") || JSON.stringify(v.hs) !== JSON.stringify(cleanHs(s.hs));
     $("#fonts-save").disabled = !fonts.dirty; fontPreview();
   }
   $("#fonts-form").addEventListener("change", fontsChanged);
   $("#fonts-form").addEventListener("input", fontsChanged);
   $("#fonts-restore").addEventListener("click", function () { if (fonts) { setFontForm(FONT_DEF); fontsChanged(); } });
+  $("#hstyle-restore").addEventListener("click", function () { if (fonts) { setHsForm({}); fontsChanged(); } });
   $("#fonts-save").addEventListener("click", function () {
     var btn = this, v = fontValues();
     busy(btn, true);
     loadTree().then(function () {
       return commit([{ path: "css/site-fonts.css", text: fontsCss(v) }],
-        "CMS: Fonts (headings " + fonts.by[v.heading].name + ", body " + fonts.by[v.body].name + (v.labels ? ", labels " + fonts.by[v.labels].name : "") + ")");
+        "CMS: Fonts (headings " + fonts.by[v.heading].name + ", body " + fonts.by[v.body].name + (v.labels ? ", labels " + fonts.by[v.labels].name : "") + (Object.keys(v.hs).length ? ", custom heading styles" : "") + ")");
     }).then(function () {
       busy(btn, false); fonts.saved = v; fonts.dirty = false; btn.disabled = true; published("Fonts");
     }).catch(function (e) { busy(btn, false); toast(e.message, true); });

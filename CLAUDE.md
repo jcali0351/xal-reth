@@ -294,8 +294,12 @@ Live at https://jcali0351.github.io/xal-reth/ (deploys from the root of `main`).
   `data/hero-text.json`, read by js/xalreth.js with its built-in lines as a fallback; the "For the Alliance" banner text in
   index.html), Homepage sky (choose, upload or restore the picture behind the header and sigil, its focus point on
   computers and phones, brightness, colour strength, the glow and the eye; see the homepage sky above). Fonts (dropdowns
-  for the heading font, the body font and optionally the menu/labels/buttons font, bold headings, a live preview and
-  "Put back the original fonts"; writes css/site-fonts.css). In Pages, tapping a picture replaces or removes it (removing
+  for the heading font, the body font and optionally the menu/labels/buttons font, a live preview and
+  "Put back the original fonts"; plus heading styles for big headings (h1, h2) and small headings (h3, h4): weight,
+  letter spacing, line height, size (big only: scales .page-head h1, .hero h1, section h2), capitals, italic, colour
+  (presets or custom) and glow, kept as "hs" in the xr-fonts JSON and written as !important rules for body:not(.cms)
+  (headingCss() in js/cms.js, heading_css() in tools/build_fonts.py: keep them in step), with "Put back the original
+  heading styles"; the old "Bold headings" box became the big headings' weight; writes css/site-fonts.css). In Pages, tapping a picture replaces or removes it (removing
   takes its <picture>, and its <figure> or link if the picture is all they hold), and "+ Picture" adds a new picture
   after the text being edited as `<figure class="illum|illum wide|illum side|illum side left">` with an optional
   `<figcaption><b>title</b>caption</figcaption>`; the blog editor's "+ Picture" adds the same figures where the cursor is,
