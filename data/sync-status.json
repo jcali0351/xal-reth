@@ -1,10 +1,10 @@
 {
-  "lastAttemptAt": "2026-11-18T04:06:15.310Z",
-  "lastSuccessAt": "2026-11-18T04:06:15.310Z",
+  "lastAttemptAt": "2026-11-18T05:12:43.425Z",
+  "lastSuccessAt": "2026-11-18T05:12:43.425Z",
   "ok": true,
   "message": "150 characters: 6 refreshed, 142 unchanged, 2 private or inactive, 0 failed. 204 API requests. Roster updated.",
   "mode": "scheduled",
-  "durationMs": 11466,
+  "durationMs": 11118,
   "members": 150,
   "fetched": 6,
   "unchanged": 142,
