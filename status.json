@@ -1,0 +1,11 @@
+{
+  "updatedAt": "2026-11-21T16:24:54.460Z",
+  "ok": true,
+  "message": "26031 items (62939 realm auctions, 179612 commodity listings); looked up 1 new names.",
+  "counts": {
+    "realmAuctions": 62939,
+    "commodityListings": 179612,
+    "items": 26031,
+    "named": 26031
+  }
+}
