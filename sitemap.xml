@@ -509,7 +509,7 @@
   </url>
   <url>
     <loc>https://jcali0351.github.io/xal-reth/news.html</loc>
-    <lastmod>2026-11-20</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
     <image:image><image:loc>https://jcali0351.github.io/xal-reth/img/xalreth-card.jpg</image:loc></image:image>
@@ -518,11 +518,19 @@
   </url>
   <url>
     <loc>https://jcali0351.github.io/xal-reth/herald.html</loc>
-    <lastmod>2026-11-20</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
     <image:image><image:loc>https://jcali0351.github.io/xal-reth/img/xalreth-card.jpg</image:loc></image:image>
     <xhtml:a href="https://jcali0351.github.io/xal-reth/herald.html"><xr:title>The Herald Archive</xr:title><xr:desc>Every official post of the Coil Herald, the news page of the Cult of Xal'Reth, a World of Warcraft roleplay guild.</xr:desc></xhtml:a>
+  </url>
+  <url>
+    <loc>https://jcali0351.github.io/xal-reth/herald-20261121-0748-a-legend-retold-korrash-after-the-throne-and-the.html</loc>
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+    <image:image><image:loc>https://jcali0351.github.io/xal-reth/img/xalreth-card.jpg</image:loc></image:image>
+    <xhtml:a href="https://jcali0351.github.io/xal-reth/herald-20261121-0748-a-legend-retold-korrash-after-the-throne-and-the.html"><xr:title>A Legend Retold: Korrash After the Throne, and the Net He Never Mended Loudly</xr:title><xr:desc>Everyone knows how the loudest king of the Nest lost his voice. Fewer know what he did with the thirty quiet years that followed, or why the fishers of the coast still hum instead of calling out.</xr:desc></xhtml:a>
   </url>
   <url>
     <loc>https://jcali0351.github.io/xal-reth/herald-20261120-1948-the-two-seams-a-triangle-reflection-on-the-dark.html</loc>
