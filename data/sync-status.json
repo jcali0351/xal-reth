@@ -1,15 +1,15 @@
 {
-  "lastAttemptAt": "2026-11-22T14:07:04.649Z",
-  "lastSuccessAt": "2026-11-22T14:07:04.649Z",
+  "lastAttemptAt": "2026-11-22T15:55:41.476Z",
+  "lastSuccessAt": "2026-11-22T15:55:41.476Z",
   "ok": true,
-  "message": "150 characters: 2 refreshed, 146 unchanged, 2 private or inactive, 0 failed. 172 API requests. Roster updated.",
+  "message": "150 characters: 12 refreshed, 136 unchanged, 2 private or inactive, 0 failed. 252 API requests. Roster updated.",
   "mode": "scheduled",
-  "durationMs": 9667,
+  "durationMs": 12591,
   "members": 150,
-  "fetched": 2,
-  "unchanged": 146,
+  "fetched": 12,
+  "unchanged": 136,
   "unavailable": 2,
   "failed": 0,
-  "requests": 172,
+  "requests": 252,
   "rosterChanged": true
 }
