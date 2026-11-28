@@ -509,7 +509,7 @@
   </url>
   <url>
     <loc>https://jcali0351.github.io/xal-reth/news.html</loc>
-    <lastmod>2026-11-27</lastmod>
+    <lastmod>2026-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
     <image:image><image:loc>https://jcali0351.github.io/xal-reth/img/xalreth-card.jpg</image:loc></image:image>
@@ -518,11 +518,19 @@
   </url>
   <url>
     <loc>https://jcali0351.github.io/xal-reth/herald.html</loc>
-    <lastmod>2026-11-27</lastmod>
+    <lastmod>2026-11-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
     <image:image><image:loc>https://jcali0351.github.io/xal-reth/img/xalreth-card.jpg</image:loc></image:image>
     <xhtml:a href="https://jcali0351.github.io/xal-reth/herald.html"><xr:title>The Herald Archive</xr:title><xr:desc>Every official post of the Coil Herald, the news page of the Cult of Xal'Reth, a World of Warcraft roleplay guild.</xr:desc></xhtml:a>
+  </url>
+  <url>
+    <loc>https://jcali0351.github.io/xal-reth/herald-20261128-0748-holy-day-notes-the-first-accusation-after-shedfa.html</loc>
+    <lastmod>2026-11-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+    <image:image><image:loc>https://jcali0351.github.io/xal-reth/img/xalreth-card.jpg</image:loc></image:image>
+    <xhtml:a href="https://jcali0351.github.io/xal-reth/herald-20261128-0748-holy-day-notes-the-first-accusation-after-shedfa.html"><xr:title>Holy-Day Notes: The First Accusation After Shedfall, and How to Make It Gently</xr:title><xr:desc>Shedfall closes on the thirtieth and the Day of Accusation opens on the first, with nothing between them but one night's sleep. The Inner Scale offers notes for crossing from a season of letting go into a day of pointing.</xr:desc></xhtml:a>
   </url>
   <url>
     <loc>https://jcali0351.github.io/xal-reth/herald-20261127-1947-the-hymn-of-the-empty-coats-a-new-song-for-the-l.html</loc>
